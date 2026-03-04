@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WeBuild Agency — AI Automation for Australian SMBs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #1a1a1a;
+      --bg-alt: #2d2d2d;
+      --card: rgba(255, 255, 255, 0.03);
+      --border: rgba(255, 255, 255, 0.08);
+      --text: #f5f6fa;
+      --muted: #a6a8b3;
+      --accent1: #c8e636;
+      --accent2: #d4e94e;
+      --gradient: linear-gradient(135deg, #ffffff, var(--accent2));
+      --mono: "Space Grotesk", "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --rounded: 14px;
+      --shadow: 0 20px 60px rgba(0,0,0,0.35);
+      --section-pad: 70px;
+      --max-width: 1200px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      background-image:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 60px 60px;
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    .container { width: min(1200px, 92vw); margin: 0 auto; }
+    .section { padding: var(--section-pad) 0; position: relative; }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border: 1px solid var(--accent1);
+      border-radius: 999px;
+      color: var(--accent1);
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-family: var(--mono);
+      background: rgba(200, 230, 54, 0.08);
+    }
+    .badge::before { content: '•'; color: var(--accent1); font-size: 16px; }
+    h1,h2,h3,h4 { margin: 0; font-family: 'Space Grotesk', 'Inter', sans-serif; }
+    p { margin: 10px 0 0; color: var(--muted); }
+    .grid { display: grid; gap: 20px; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--rounded);
+      padding: 24px;
+      position: relative;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow);
+      border-color: rgba(200, 230, 54, 0.4);
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 20px;
+      border-radius: 12px;
+      font-weight: 600;
+      border: 1px solid var(--accent1);
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.3s ease, background 0.3s ease;
+      font-size: 15px;
+    }
+    .btn:active { transform: translateY(1px); }
+    .btn-primary {
+      background: var(--accent1);
+      color: #0a0a0f;
+      box-shadow: 0 14px 30px rgba(200, 230, 54, 0.35);
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border-color: var(--border);
+    }
+    /* Nav */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      backdrop-filter: blur(16px);
+      background: rgba(26,26,26,0.8);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 0;
+    }
+    .logo {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: flex-start;
+      line-height: 1;
+      text-decoration: none;
+    }
+    .logo-main {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #fff;
+    }
+    .logo-main .w-accent {
+      position: relative;
+      display: inline-block;
+    }
+    .logo-main .w-accent::after {
+      content: '';
+      position: absolute;
+      left: 4px;
+      top: 2px;
+      width: 3px;
+      height: 85%;
+      background: var(--accent1);
+      transform: rotate(-12deg);
+      border-radius: 2px;
+    }
+    .logo-sub {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--accent1);
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+    .nav-links {
+      display: flex;
+      gap: 22px;
+      align-items: center;
+      font-weight: 500;
+      color: var(--muted);
+    }
+    .nav-links a { position: relative; padding: 6px 0; }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: -6px;
+      width: 0; height: 2px;
+      background: var(--gradient);
+      transition: width 0.25s ease;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-cta { margin-left: 10px; }
+    .hamburger { display: none; width: 34px; height: 2px; background: var(--text); position: relative; }
+    .hamburger::before, .hamburger::after {
+      content: '';
+      position: absolute;
+      width: 34px; height: 2px;
+      background: var(--text);
+      left: 0;
+      transition: transform 0.3s ease;
+    }
+    .hamburger::before { top: -8px; }
+    .hamburger::after { top: 8px; }
+    /* Hero */
+    .hero {
+      padding: 140px 0 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 480px; height: 480px;
+      background: radial-gradient(circle at 30% 30%, rgba(200, 230, 54, 0.12), transparent 50%);
+      top: -80px; left: -120px;
+      filter: blur(40px);
+      z-index: 0;
+    }
+    .hero-content { position: relative; z-index: 1; text-align: center; }
+    .hero-grid { display: grid; gap: 32px; grid-template-columns: 1fr; justify-items: center; align-items: center; }
+    .hero h1 {
+      font-size: clamp(52px, 6vw, 92px);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin: 18px 0 16px;
+    }
+    .hero h1 .gradient { background: var(--gradient); -webkit-background-clip: text; color: transparent; }
+    .hero p.sub {
+      font-size: 18px;
+      max-width: 680px;
+      margin-left: auto;
+      margin-right: auto;
+      color: #cdd0dc;
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 22px; justify-content: center; }
+    .stats-bar {
+      margin-top: 30px;
+      display: inline-grid;
+      grid-template-columns: repeat(3, auto);
+      gap: 12px;
+    }
+    .stat {
+      padding: 16px 18px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: rgba(255,255,255,0.02);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .stat strong { font-size: 20px; }
+    .stat span { color: var(--muted); font-size: 14px; }
+    .logo-strip {
+      margin-top: 24px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      background: rgba(255,255,255,0.02);
+      position: relative;
+    }
+    .logo-strip::before {
+      content: 'Trusted by founders and operators across Australia';
+      position: absolute;
+      left: 14px; top: 10px;
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-family: var(--mono);
+      z-index: 2;
+    }
+    .logo-track {
+      display: flex;
+      gap: 38px;
+      padding: 34px 20px 16px;
+      animation: scroll 24s linear infinite;
+      white-space: nowrap;
+    }
+    .logo-pill {
+      padding: 10px 16px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      background: rgba(255,255,255,0.04);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+      color: #e7e8f0;
+      font-size: 14px;
+    }
+    @keyframes scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    /* Problem */
+    .section-head { margin-bottom: 28px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px; max-width: 760px; margin-left: auto; margin-right: auto; }
+    .problem-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+    .card h3 { font-size: 20px; }
+    .card .pill { display: inline-block; padding: 8px 12px; background: rgba(255,255,255,0.05); border-radius: 999px; font-size: 13px; color: #e8e8f5; margin-bottom: 10px; }
+    /* Solution */
+    .comparison { width: 100%; border-collapse: collapse; margin-top: 24px; overflow: hidden; border-radius: 16px; }
+    .comparison th, .comparison td {
+      border: 1px solid var(--border);
+      padding: 18px;
+      text-align: left;
+      color: var(--muted);
+    }
+    .comparison th { background: rgba(255,255,255,0.04); color: #f5f6fa; font-size: 15px; }
+    .comparison tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+    .comparison .highlight { background: rgba(200, 230, 54, 0.12); color: #fff; border-left: 2px solid var(--accent1); border-right: 2px solid var(--accent1); }
+    /* Services */
+    .services-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+    .icon-circle {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: rgba(200,230,54,0.12);
+      display: grid; place-items: center;
+      border: 1px solid rgba(200, 230, 54, 0.4);
+      color: #fff;
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+    /* Process */
+    .process-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      position: relative;
+    }
+    .process-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      transform: rotate(-1.5deg);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.3);
+    }
+    .process-card:nth-child(2) { transform: rotate(1.2deg) translateY(10px); }
+    .process-card:nth-child(3) { transform: rotate(-0.8deg) translateY(20px); }
+    .process-card:hover { transform: rotate(0deg) translateY(-4px); border-color: rgba(200,230,54,0.5); }
+    .step-number {
+      font-family: var(--mono);
+      font-size: 13px;
+      letter-spacing: 0.1em;
+      color: var(--accent2);
+      margin-bottom: 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    /* Industries */
+    .industries-grid { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+    .industry-card { position: relative; overflow: hidden; }
+    .industry-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent, rgba(200,230,54,0.12));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .industry-card:hover::after { opacity: 1; }
+    /* Good Fit */
+    .fit-grid { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+    .fit-item { display: flex; gap: 12px; align-items: flex-start; }
+    .check { color: #c8e636; font-size: 18px; }
+    .cross { color: #f87171; font-size: 18px; }
+    /* Pricing */
+    .pricing-grid { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+    .price { font-size: 26px; font-weight: 800; margin: 6px 0 12px; }
+    .price small { color: var(--muted); font-size: 14px; font-weight: 500; }
+    .pricing-features { list-style: none; padding: 0; margin: 14px 0 20px; display: flex; flex-direction: column; gap: 8px; color: var(--muted); }
+    .pricing-features li::before { content: '• '; color: var(--accent2); }
+    /* CTA Footer */
+    .cta-footer {
+      background: #050507;
+      padding: 140px 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-footer::before {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(200,230,54,0.18), transparent 55%);
+      left: 50%; top: 30%; transform: translate(-50%, -50%);
+      filter: blur(50px);
+    }
+    .cta-footer h2.big {
+      font-size: clamp(120px, 16vw, 240px);
+      letter-spacing: -0.05em;
+      margin: 0;
+      color: #fff;
+      position: relative;
+      z-index: 1;
+      line-height: 0.9;
+    }
+    .cta-footer p { position: relative; z-index: 1; color: #dfe1ea; max-width: 720px; margin: 18px auto 28px; }
+    .cta-footer .location { color: var(--muted); font-family: var(--mono); letter-spacing: 0.12em; margin-top: 18px; }
+    footer { position: relative; z-index: 1; color: #a3a6b5; font-size: 14px; margin-top: 20px; }
+    /* Animations */
+    .fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .visible { opacity: 1; transform: translateY(0); }
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: block; }
+      .nav-inner { padding: 14px 0; }
+      .hero { padding-top: 110px; }
+      .hero h1 { font-size: clamp(46px, 10vw, 72px); }
+      .hero p.sub { font-size: 16px; }
+      .logo-strip::before { position: static; display: block; padding: 12px 14px 0; }
+      .logo-track { animation-duration: 18s; }
+      .process-card { transform: rotate(0deg) !important; }
+      .cta-footer h2.big { font-size: clamp(110px, 20vw, 180px); }
+    }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="container nav-inner">
+      <a href="#" class="logo">
+        <div class="logo-main"><span class="w-accent">W</span>eBuild</div>
+        <div class="logo-sub">Agency</div>
+      </a>
+      <nav class="nav-links">
+        <a href="#services">Services</a>
+        <a href="#process">Process</a>
+        <a href="#industries">Industries</a>
+        <a href="#about">About</a>
+      </nav>
+      <a class="btn btn-primary nav-cta" href="https://cal.com/webuildco/30min" target="_blank">Book a Call →</a>
+      <div class="hamburger" aria-hidden="true"></div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero section fade-in" id="top">
+      <div class="container hero-content">
+        <div class="hero-grid">
+          <div>
+            <div class="badge">AI Automation Agency</div>
+            <h1>Empower Your Growth <span class="gradient">with AI.</span></h1>
+            <p class="sub">We give businesses the autonomy to operate smarter — AI systems that handle the work, so you have the agency to focus on what matters.</p>
+            <div class="founder-intro" style="display:flex;align-items:center;gap:14px;margin:28px auto 24px;padding:16px 20px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:12px;max-width:520px;text-align:left;">
+              <div style="width:52px;height:52px;border-radius:50%;background:var(--bg-alt);border:2px solid var(--accent1);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:var(--accent1);">J</div>
+              <div style="font-size:14px;line-height:1.6;color:var(--muted);">I'm <strong style="color:var(--text);">Johan</strong>, an <strong style="color:var(--accent1);">Agentic AI Architect</strong>. I help businesses get their time back by building AI systems that handle the busywork — so you can focus on what you actually love doing.</div>
+            </div>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="https://cal.com/webuildco/30min" target="_blank">Book a Call →</a>
+              <a class="btn btn-outline" href="#work">See Our Work →</a>
+            </div>
+            <div class="stats-bar">
+              <div class="stat"><strong>50+</strong><span>Hours Saved/Week</span></div>
+              <div class="stat"><strong>24/7</strong><span>Lead Capture</span></div>
+              <div class="stat"><strong>10x</strong><span>ROI Average</span></div>
+            </div>
+          </div>
+          <div>
+            <div class="card" style="height:100%; min-height: 340px; display:flex; flex-direction:column; justify-content:space-between; text-align:center;">
+              <div>
+                <div class="pill" style="color:#fff;">Live AI Ops Snapshot</div>
+                <h3 style="font-size:24px; margin: 8px 0 6px;">Your future digital employee</h3>
+                <p style="max-width: 520px; margin-left: auto; margin-right: auto;">We design agentic systems that answer calls, qualify leads, draft documents, and sync data across your stack with human-like context — reliably.</p>
+              </div>
+              <div style="display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:12px; margin-top: 18px;">
+                <div class="card" style="padding:14px; background: rgba(255,255,255,0.02);">
+                  <div class="step-number">VOICE</div>
+                  <strong>AI Receptionist</strong>
+                  <p>Greets callers, books meetings, routes urgent tickets.</p>
+                </div>
+                <div class="card" style="padding:14px; background: rgba(255,255,255,0.02);">
+                  <div class="step-number">OPS</div>
+                  <strong>Lead Ops</strong>
+                  <p>Captures forms, qualifies, and auto-follows-up within seconds.</p>
+                </div>
+                <div class="card" style="padding:14px; background: rgba(255,255,255,0.02);">
+                  <div class="step-number">DOCS</div>
+                  <strong>Docs & Billing</strong>
+                  <p>Drafts contracts, invoices, and sends status updates.</p>
+                </div>
+                <div class="card" style="padding:14px; background: rgba(255,255,255,0.02);">
+                  <div class="step-number">24/7</div>
+                  <strong>Always On</strong>
+                  <p>Runs continuously with human oversight built-in.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="logo-strip" aria-label="Client logos">
+          <div class="logo-track">
+            <span class="logo-pill">Pacific Homes</span>
+            <span class="logo-pill">Harbour Legal</span>
+            <span class="logo-pill">Urban Trades</span>
+            <span class="logo-pill">Ledger & Co</span>
+            <span class="logo-pill">Riverine Realty</span>
+            <span class="logo-pill">Civic Build</span>
+            <span class="logo-pill">Coastal Clinics</span>
+            <span class="logo-pill">Southbank Advisors</span>
+            <span class="logo-pill">Beacon Labs</span>
+            <span class="logo-pill">Brightline</span>
+            <!-- duplicate for seamless scroll -->
+            <span class="logo-pill">Pacific Homes</span>
+            <span class="logo-pill">Harbour Legal</span>
+            <span class="logo-pill">Urban Trades</span>
+            <span class="logo-pill">Ledger & Co</span>
+            <span class="logo-pill">Riverine Realty</span>
+            <span class="logo-pill">Civic Build</span>
+            <span class="logo-pill">Coastal Clinics</span>
+            <span class="logo-pill">Southbank Advisors</span>
+            <span class="logo-pill">Beacon Labs</span>
+            <span class="logo-pill">Brightline</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Problem -->
+    <section class="section fade-in" id="problem">
+      <div class="container">
+        <div class="section-head">
+          <div class="badge">The Problem</div>
+          <h2 style="font-size:42px;">Admin bloat is killing your margins.</h2>
+          <p>Manual follow-ups, slow intake, and duplicated data entry waste hundreds of hours per month. We fix that with AI systems that never sleep.</p>
+        </div>
+        <div class="grid problem-grid">
+          <div class="card">
+            <div class="pill">Wasted Hours</div>
+            <h3>15-25 hrs/week lost to admin</h3>
+            <p>Repetitive tasks, manual data entry, and triaging inbound enquiries drain your team's time.</p>
+          </div>
+          <div class="card">
+            <div class="pill">Missed Leads</div>
+            <h3>30-50% go cold after-hours</h3>
+            <p>No one should wait until Monday. AI receptionists qualify and book instantly, 24/7.</p>
+          </div>
+          <div class="card">
+            <div class="pill">Rising Costs</div>
+            <h3>$65-85k admin salaries</h3>
+            <p>Margins shrink while payroll grows. Digital employees scale output without headcount.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Solution -->
+    <section class="section fade-in" id="solution">
+      <div class="container">
+        <div class="section-head">
+          <div class="badge">Why Agentic AI is Different</div>
+          <h2 style="font-size:42px;">Automation moves data. We build digital employees.</h2>
+          <p>Typical automations are brittle, push data from A to B, and fail silently. We design agentic systems that reason, converse, and own outcomes.</p>
+        </div>
+        <div class="card" style="padding:0; overflow:hidden;">
+          <table class="comparison">
+            <thead>
+              <tr>
+                <th>Feature</th>
+                <th>Standard Automation (Zapier/Make)</th>
+                <th class="highlight">WeBuild Systems</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Trigger</td>
+                <td>Simple event → action</td>
+                <td class="highlight">Understands intent, context, and priority</td>
+              </tr>
+              <tr>
+                <td>Capability</td>
+                <td>Moves data between apps</td>
+                <td class="highlight">Converses, decides, executes multi-step workflows</td>
+              </tr>
+              <tr>
+                <td>Maintenance</td>
+                <td>Breaks on schema or field changes</td>
+                <td class="highlight">Monitored agents with guardrails and human-in-the-loop</td>
+              </tr>
+              <tr>
+                <td>The Result</td>
+                <td>Time savings, but limited coverage</td>
+                <td class="highlight">Digital employee that owns outcomes end-to-end</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services -->
+    <section class="section fade-in" id="services">
+      <div class="container">
+        <div class="section-head">
+          <div class="badge">What We Build</div>
+          <h2 style="font-size:42px;">Agentic systems that cover your front desk and back office.</h2>
+          <p>From voice reception to lead intake and document automation, we architect reliable systems tuned to your operations.</p>
+        </div>
+        <div class="grid services-grid">
+          <div class="card">
+            <div class="icon-circle">📞</div>
+            <h3>AI Receptionist</h3>
+            <p>Voice agent that answers calls, books meetings, and routes urgent issues — 24/7.</p>
+          </div>
+          <div class="card">
+            <div class="icon-circle">🤝</div>
+            <h3>Lead Capture & CRM</h3>
+            <p>Auto-qualify inbound leads, sync to your CRM, and book in seconds with zero human lag.</p>
+          </div>
+          <div class="card">
+            <div class="icon-circle">📄</div>
+            <h3>Document Automation</h3>
+            <p>Generate invoices, contracts, and reports with contextual AI checks before anything is sent.</p>
+          </div>
+          <div class="card">
+            <div class="icon-circle">⚙️</div>
+            <h3>Custom AI Workflows</h3>
+            <p>Tailored agentic flows that map to your specific processes and compliance needs.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Process -->
+    <section class="section fade-in" id="process">
+      <div class="container">
+        <div class="section-head">
+          <div class="badge">Our Process</div>
+          <h2 style="font-size:42px;">Your shortcut to full automation.</h2>
+          <p>Three steps, fully managed. We design, build, and ship your digital employee without slowing your team.</p>
+        </div>
+        <div class="process-cards">
+          <div class="process-card">
+            <div class="step-number">Step 01</div>
+            <h3>Discovery Call</h3>
+            <p>Understand your workflows, systems, and outcomes. Identify the fastest path to ROI.</p>
+          </div>
+          <div class="process-card">
+            <div class="step-number">Step 02</div>
+            <h3>We Build Your System</h3>
+            <p>Architect and deploy agentic AI that plugs into your stack, with monitoring and guardrails.</p>
+          </div>
+          <div class="process-card">
+            <div class="step-number">Step 03</div>
+            <h3>Go Live & Scale</h3>
+            <p>Launch, measure, and iterate. Train the digital employee to take on more of the work.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Industries -->
+    <section class="section fade-in" id="industries">
+      <div class="container">
+        <div class="section-head">
+          <div class="badge">Built For</div>
+          <h2 style="font-size:42px;">Purpose-built for Australian operators.</h2>
+          <p>Verticalized playbooks that respect how you sell, serve, and stay compliant.</p>
+        </div>
+        <div class="grid industries-grid">
+          <div class="card industry-card">
+            <h3>Real Estate</h3>
+            <p>Lead capture, listing automation, inspections scheduling, instant callbacks.</p>
+          </div>
+          <div class="card industry-card">
+            <h3>Law Firms</h3>
+            <p>Client intake, document generation, calendar sync, informed follow-ups.</p>
+          </div>
+          <div class="card industry-card">
+            <h3>Trades</h3>
+            <p>Quoting, dispatch, job status updates, post-job reviews on autopilot.</p>
+          </div>
+          <div class="card industry-card">
+            <h3>Accounting</h3>
+            <p>Data entry, reconciliations, client comms, recurring reports delivered on time.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Good Fit / Not a Fit - REMOVED -->
+
+    <!-- Pricing -->
+    <section class="section fade-in" id="pricing">
+      <div class="container">
+        <div class="section-head">
+          <div class="badge">Investment</div>
+          <h2 style="font-size:42px;">Pick the path that matches your urgency.</h2>
+          <p>Transparent pricing built around outcomes. Every package maps to a clear ROI and includes post-launch support.</p>
+        </div>
+        <div class="grid pricing-grid">
+          <div class="card">
+            <h3>The Lookaround</h3>
+            <div class="price">$1.5-2.5k <small>+ GST</small></div>
+            <ul class="pricing-features">
+              <li>System audit + opportunity map</li>
+              <li>Roadmap with ROI model</li>
+              <li>Tooling recommendations</li>
+            </ul>
+            <a class="btn btn-outline" href="https://cal.com/webuildco/30min" target="_blank">Book a Call →</a>
+          </div>
+          <div class="card" style="border-color: rgba(200,230,54,0.4); box-shadow: var(--shadow);">
+            <h3>The Blueprint</h3>
+            <div class="price">$3.5-6.5k <small>+ GST</small></div>
+            <ul class="pricing-features">
+              <li>Core automation build</li>
+              <li>Voice/lead agent + CRM sync</li>
+              <li>Compliance + monitoring setup</li>
+            </ul>
+            <a class="btn btn-primary" href="https://cal.com/webuildco/30min" target="_blank">Book a Call →</a>
+          </div>
+          <div class="card">
+            <h3>The Full Build</h3>
+            <div class="price">$9.5-25k+ <small>+ GST</small></div>
+            <ul class="pricing-features">
+              <li>End-to-end digital employee</li>
+              <li>Custom workflows + doc automation</li>
+              <li>Ongoing optimisation & scale</li>
+            </ul>
+            <a class="btn btn-outline" href="https://cal.com/webuildco/30min" target="_blank">Book a Call →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About / Contact anchor -->
+    <section class="section fade-in" id="about">
+      <div class="container">
+        <div class="section-head">
+          <div class="badge">About</div>
+          <h2 style="font-size:42px;">We build agentic AI for real operators.</h2>
+          <p>WeBuild Agency is based in Sydney and works hands-on with Australian SMBs. We integrate with your stack, document everything, and ship with monitoring so you stay in control.</p>
+        </div>
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+          <div class="card">
+            <h3>Australia-first</h3>
+            <p>We respect local compliance, privacy, and your customers' expectations.</p>
+          </div>
+          <div class="card">
+            <h3>Full stack build</h3>
+            <p>From voice to CRM to billing, we design systems that own outcomes end-to-end.</p>
+          </div>
+          <div class="card">
+            <h3>Ongoing training</h3>
+            <p>We iterate your digital employee with real-world data and team feedback.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact anchor (for CTA links) -->
+    <section class="section fade-in" id="contact">
+      <div class="container">
+        <div class="section-head">
+          <div class="badge">Book a Call</div>
+          <h2 style="font-size:42px;">Ready to meet your first digital employee?</h2>
+          <p>Tell us about your workflows, systems, and bottlenecks. We'll show you a tailored plan.</p>
+        </div>
+        <div class="card" style="max-width: 760px; margin: 0 auto; text-align:center;">
+          <p style="color:#dfe1ea;">hello@webuildco.com.au</p>
+          <div class="hero-actions" style="justify-content:center; margin-top:18px;">
+            <a class="btn btn-primary" href="https://cal.com/webuildco/30min" target="_blank">Book a free intro call →</a>
+            <a class="btn btn-outline" href="#top">Back to top ↑</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- CTA Footer -->
+  <section class="cta-footer" id="work">
+    <div class="container">
+      <div class="logo" style="align-items:center;margin-bottom:24px;">
+        <div class="logo-main" style="font-size:48px;"><span class="w-accent">W</span>eBuild</div>
+        <div class="logo-sub" style="font-size:16px;">Agency</div>
+      </div>
+      <h2 class="big">EMPOWER YOUR<br>GROWTH.</h2>
+      <p>The AI automation team that gives you back your agency.</p>
+      <a class="btn btn-primary" href="https://cal.com/webuildco/30min" target="_blank">Book a free intro call →</a>
+      <div class="location">SYDNEY, AUSTRALIA</div>
+      <footer>© 2026 WeBuild Agency</footer>
+    </div>
+  </section>
+
+  <script>
+    // Smooth nav for mobile hamburger (placeholder)
+    // Intersection Observer for fade-in
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.16 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
