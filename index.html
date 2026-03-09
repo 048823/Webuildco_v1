@@ -384,8 +384,29 @@
     /* Responsive */
     @media (max-width: 768px) {
       .nav-links { display: none; }
-      .hamburger { display: block; }
+      .hamburger { display: block; order: -1; cursor: pointer; z-index: 10; }
       .nav-inner { padding: 14px 0; }
+      .nav-inner .logo { order: 0; position: absolute; left: 50%; transform: translateX(-50%); }
+      .nav-inner { position: relative; }
+      .nav-cta { order: 1; margin-left: auto; font-size: 13px; padding: 8px 14px !important; }
+      /* Mobile menu */
+      .nav-links {
+        display: none !important;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(10,10,12,0.98);
+        backdrop-filter: blur(16px);
+        flex-direction: column;
+        padding: 20px 24px;
+        gap: 16px;
+        border-bottom: 1px solid var(--border);
+      }
+      .nav-links.open { display: flex !important; }
+      .hamburger.active { background: transparent; }
+      .hamburger.active::before { transform: rotate(45deg); top: 0; }
+      .hamburger.active::after { transform: rotate(-45deg); top: 0; }
       .hero { padding-top: 110px; }
       .hero h1 { font-size: clamp(46px, 10vw, 72px); }
       .hero p.sub { font-size: 16px; }
@@ -421,7 +442,7 @@
         <a href="#about">About</a>
       </nav>
       <a class="btn btn-primary nav-cta" href="https://cal.com/webuildco/30min" target="_blank">Book a Call →</a>
-      <div class="hamburger" aria-hidden="true"></div>
+      <div class="hamburger" onclick="this.classList.toggle('active');document.querySelector('.nav-links').classList.toggle('open');" role="button" tabindex="0"></div>
     </div>
   </header>
 
@@ -1150,7 +1171,13 @@
   </section>
 
   <script>
-    // Smooth nav for mobile hamburger (placeholder)
+    // Close mobile menu on link tap
+    document.querySelectorAll('.nav-links a').forEach(a => {
+      a.addEventListener('click', () => {
+        document.querySelector('.hamburger').classList.remove('active');
+        document.querySelector('.nav-links').classList.remove('open');
+      });
+    });
     // Intersection Observer for fade-in
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
