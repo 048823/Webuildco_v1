@@ -214,9 +214,18 @@
     .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 22px; justify-content: center; }
     .stats-bar {
       margin-top: 30px;
-      display: inline-grid;
-      grid-template-columns: repeat(3, auto);
+      overflow: hidden;
+      width: 100%;
+    }
+    .stats-track {
+      display: flex;
       gap: 12px;
+      animation: scrollStats 20s linear infinite;
+      width: max-content;
+    }
+    @keyframes scrollStats {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
     }
     .stat {
       padding: 16px 18px;
@@ -420,8 +429,9 @@
       .hero, .hero-content, .hero-grid, section, .section { max-width: 100vw !important; overflow: hidden !important; }
       .hero-grid > *, .hero-content > *, .container > * { max-width: 100% !important; min-width: 0 !important; }
       .hero h1 { font-size: clamp(36px, 9vw, 72px) !important; word-break: break-word; }
-      .stats-bar { display: flex !important; overflow-x: auto !important; flex-wrap: nowrap !important; -webkit-overflow-scrolling: touch; gap: 10px; padding-bottom: 4px; }
-      .stats-bar .stat { flex-shrink: 0 !important; min-width: 140px; }
+      .stats-bar { overflow: hidden !important; }
+      .stats-track { gap: 10px; }
+      .stat { flex-shrink: 0 !important; min-width: 130px; }
       .founder-intro { max-width: 100% !important; box-sizing: border-box !important; }
       p, h1, h2, h3, div, span, a { overflow-wrap: break-word; word-wrap: break-word; }
       .card { max-width: 100% !important; overflow: hidden; }
@@ -463,10 +473,22 @@
               <a class="btn btn-primary" href="https://cal.com/webuildco/30min" target="_blank">Book a Call →</a>
               <a class="btn btn-outline" href="#scope">See Our Work →</a>
             </div>
-            <div class="stats-bar">
-              <div class="stat"><strong>50+</strong><span>Hours Saved/Week</span></div>
-              <div class="stat"><strong>24/7</strong><span>Lead Capture</span></div>
-              <div class="stat"><strong>10x</strong><span>ROI Average</span></div>
+            <div class="stats-bar" style="overflow:hidden;">
+              <div class="stats-track">
+                <div class="stat"><strong>50+</strong><span>Hours Saved/Week</span></div>
+                <div class="stat"><strong>24/7</strong><span>Lead Capture</span></div>
+                <div class="stat"><strong>10x</strong><span>ROI Average</span></div>
+                <div class="stat"><strong>99%</strong><span>Uptime SLA</span></div>
+                <div class="stat"><strong>5min</strong><span>Avg Response</span></div>
+                <div class="stat"><strong>0</strong><span>Junior Devs</span></div>
+                <!-- duplicate for seamless loop -->
+                <div class="stat"><strong>50+</strong><span>Hours Saved/Week</span></div>
+                <div class="stat"><strong>24/7</strong><span>Lead Capture</span></div>
+                <div class="stat"><strong>10x</strong><span>ROI Average</span></div>
+                <div class="stat"><strong>99%</strong><span>Uptime SLA</span></div>
+                <div class="stat"><strong>5min</strong><span>Avg Response</span></div>
+                <div class="stat"><strong>0</strong><span>Junior Devs</span></div>
+              </div>
             </div>
           </div>
           <div>
