@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Audit — WeBuild Agency</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%276%27 fill=%27%230a0a0a%27/%3E%3Ctext x=%2716%27 y=%2723%27 text-anchor=%27middle%27 font-family=%27system-ui%27 font-weight=%27700%27 font-size=%2722%27 fill=%27%23c8ff00%27%3EW%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0c;
+  --bg-alt: #1a1a1e;
+  --card: rgba(255, 255, 255, 0.03);
+  --border: rgba(255, 255, 255, 0.08);
+  --text: #f5f6fa;
+  --muted: #a6a8b3;
+  --accent1: #c8e636;
+  --accent2: #d4e94e;
+  --gradient: linear-gradient(135deg, #ffffff, var(--accent2));
+  --mono: "Space Grotesk", "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --rounded: 14px;
+  --shadow: 0 20px 60px rgba(0,0,0,0.35);
+  --section-pad: 70px;
+  --max-width: 1200px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+h1,h2,h3,h4 { margin: 0; font-family: 'Space Grotesk', 'Inter', sans-serif; }
+p { margin: 10px 0 0; color: var(--muted); }
+.container { width: 100%; max-width: var(--max-width); margin: 0 auto; padding-left: 24px; padding-right: 24px; }
+.section { padding: var(--section-pad) 0; position: relative; }
+
+/* Badge */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 1px solid var(--accent1);
+  border-radius: 999px;
+  color: var(--accent1);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-family: var(--mono);
+  background: rgba(200, 230, 54, 0.08);
+}
+.badge::before { content: '•'; color: var(--accent1); font-size: 16px; }
+
+/* Card */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--rounded);
+  padding: 24px;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow);
+  border-color: rgba(200, 230, 54, 0.4);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  border: 1px solid var(--accent1);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.3s ease, background 0.3s ease;
+  font-size: 15px;
+}
+.btn:active { transform: translateY(1px); }
+.btn-primary {
+  background: var(--accent1);
+  color: #0a0a0f;
+  box-shadow: 0 14px 30px rgba(200, 230, 54, 0.35);
+}
+.btn-outline {
+  background: transparent;
+  color: var(--text);
+  border-color: var(--border);
+}
+
+/* Nav */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  backdrop-filter: blur(16px);
+  background: rgba(26,26,26,0.8);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 0;
+}
+.logo {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1;
+  text-decoration: none;
+}
+.logo-main {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+.logo-main .w-accent {
+  position: relative;
+  display: inline-block;
+}
+.logo-main .w-accent::after {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 2px;
+  width: 3px;
+  height: 85%;
+  background: var(--accent1);
+  transform: rotate(-12deg);
+  border-radius: 2px;
+}
+.logo-sub {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--accent1);
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+.nav-links {
+  display: flex;
+  gap: 22px;
+  align-items: center;
+  font-weight: 500;
+  color: var(--muted);
+}
+.nav-links a { position: relative; padding: 6px 0; }
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  left: 0; bottom: -6px;
+  width: 0; height: 2px;
+  background: var(--gradient);
+  transition: width 0.25s ease;
+}
+.nav-links a:hover { color: var(--text); }
+.nav-links a:hover::after { width: 100%; }
+.nav-cta { margin-left: 10px; }
+.hamburger { display: none; width: 34px; height: 2px; background: var(--text); position: relative; }
+.hamburger::before, .hamburger::after {
+  content: '';
+  position: absolute;
+  width: 34px; height: 2px;
+  background: var(--text);
+  left: 0;
+  transition: transform 0.3s ease;
+}
+.hamburger::before { top: -8px; }
+.hamburger::after { top: 8px; }
+
+/* Section heads */
+.section-head {
+  margin-bottom: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 14px;
+  max-width: 760px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Grid */
+.grid { display: grid; gap: 20px; }
+
+/* Hero */
+.hero {
+  padding: 140px 0 80px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  width: 480px; height: 480px;
+  background: radial-gradient(circle at 30% 30%, rgba(200, 230, 54, 0.12), transparent 50%);
+  top: -80px; left: -120px;
+  filter: blur(40px);
+  z-index: 0;
+}
+.hero-content { position: relative; z-index: 1; text-align: center; }
+.hero h1 {
+  font-size: clamp(42px, 6vw, 72px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin: 18px 0 16px;
+}
+.hero h1 .gradient { background: var(--gradient); -webkit-background-clip: text; color: transparent; }
+.hero p.sub {
+  font-size: 18px;
+  max-width: 680px;
+  margin-left: auto;
+  margin-right: auto;
+  color: #cdd0dc;
+}
+.hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 22px; justify-content: center; }
+
+/* Stats bar */
+.stats-bar { margin-top: 30px; overflow: hidden; width: 100%; }
+.stats-track {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.stat {
+  padding: 16px 18px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: rgba(255,255,255,0.02);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.stat strong { font-size: 20px; color: var(--accent1); }
+.stat span { color: var(--muted); font-size: 14px; }
+
+/* Icon circles */
+.icon-circle {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: rgba(200,230,54,0.12);
+  display: grid; place-items: center;
+  border: 1px solid rgba(200, 230, 54, 0.4);
+  color: #fff;
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+/* Pain/phase cards */
+.card h3 { font-size: 20px; }
+.card .pill {
+  display: inline-block;
+  padding: 8px 12px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 999px;
+  font-size: 13px;
+  color: #e8e8f5;
+  margin-bottom: 10px;
+}
+
+/* Process cards */
+.process-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+.step-number {
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  color: var(--accent2);
+  margin-bottom: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Deliverables */
+.deliverables {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+.deliverable {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+.del-icon {
+  flex-shrink: 0;
+  width: 44px; height: 44px;
+  background: rgba(200,230,54,0.12);
+  border: 1px solid rgba(200, 230, 54, 0.4);
+  border-radius: 50%;
+  display: grid; place-items: center;
+  font-size: 18px;
+}
+.del-text h4 { font-size: 16px; margin-bottom: 4px; }
+.del-text p { font-size: 14px; }
+
+/* Guarantee */
+.guarantee-section {
+  text-align: center;
+  background: rgba(200, 230, 54, 0.04);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+/* Pricing */
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+  align-items: start;
+}
+.price-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--rounded);
+  padding: 28px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+.price-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow);
+  border-color: rgba(200, 230, 54, 0.4);
+}
+.price-card.premium { border-color: rgba(200, 230, 54, 0.2); }
+.price-card h3 { font-size: 22px; margin-bottom: 8px; }
+.price-row { display: flex; align-items: baseline; gap: 10px; margin-bottom: 4px; }
+.price-old { font-size: 16px; color: var(--muted); text-decoration: line-through; }
+.price-new { font-family: 'Space Grotesk', sans-serif; font-size: 32px; font-weight: 800; color: var(--accent1); }
+.price-note { font-size: 13px; color: var(--muted); margin-bottom: 16px; margin-top: 4px; }
+.price-desc { font-size: 14px; color: var(--muted); margin-bottom: 16px; font-style: italic; margin-top: 4px; }
+.feature-list { list-style: none; padding: 0; margin: 14px 0 20px; display: flex; flex-direction: column; gap: 8px; color: var(--muted); flex: 1; }
+.feature-list li::before { content: '• '; color: var(--accent2); }
+.feature-list li { font-size: 14px; }
+.plus-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent1);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 10px 0 6px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+.price-cta {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 15px;
+  border: 1px solid var(--accent1);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+.price-cta:active { transform: translateY(1px); }
+.price-cta.primary {
+  background: var(--accent1);
+  color: #0a0a0f;
+  box-shadow: 0 14px 30px rgba(200, 230, 54, 0.35);
+}
+.price-cta.secondary {
+  background: transparent;
+  color: var(--text);
+  border-color: var(--border);
+}
+.price-small { font-size: 12px; color: var(--muted); text-align: center; margin-top: 10px; }
+.geo-note {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 16px;
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.03);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+
+/* After audit */
+.impl-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  margin-bottom: 20px;
+}
+.impl-price {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 20px;
+  color: var(--accent1);
+  margin-bottom: 6px;
+}
+
+/* Fit grid */
+.fit-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 32px;
+  margin-top: 24px;
+}
+
+/* FAQ */
+.faq-list { max-width: 720px; margin: 0 auto; }
+.faq-item {
+  border: 1px solid var(--border);
+  border-radius: var(--rounded);
+  margin-bottom: 10px;
+  overflow: hidden;
+  transition: border-color 0.3s ease;
+}
+.faq-item:hover { border-color: rgba(200, 230, 54, 0.4); }
+.faq-q {
+  padding: 18px 20px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  font-size: 15px;
+  background: var(--card);
+  user-select: none;
+}
+.faq-q::after { content: '+'; font-size: 20px; color: var(--accent1); transition: transform 0.2s; font-weight: 400; }
+.faq-item.open .faq-q::after { transform: rotate(45deg); }
+.faq-a { max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease; }
+.faq-item.open .faq-a { max-height: 200px; padding: 0 20px 18px; }
+.faq-a p { color: var(--muted); font-size: 14px; }
+
+/* CTA Footer */
+.cta-footer {
+  background: #050507;
+  padding: 100px 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.cta-footer::before {
+  content: '';
+  position: absolute;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(200,230,54,0.18), transparent 55%);
+  left: 50%; top: 30%; transform: translate(-50%, -50%);
+  filter: blur(50px);
+}
+
+/* Footer */
+footer {
+  padding: 30px 24px;
+  text-align: center;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 14px;
+}
+
+/* Animations */
+.fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.visible { opacity: 1; transform: translateY(0); }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .hamburger { display: block; order: -1; cursor: pointer; z-index: 10; }
+  .nav-inner { padding: 14px 0; }
+  .nav-inner .logo { order: 0; position: absolute; left: 50%; transform: translateX(-50%); }
+  .nav-inner { position: relative; }
+  .nav-cta { order: 1; margin-left: auto; font-size: 13px; padding: 8px 14px !important; }
+  .nav-links {
+    display: none !important;
+    position: absolute;
+    top: 100%;
+    left: 0; right: 0;
+    background: rgba(10,10,12,0.98);
+    backdrop-filter: blur(16px);
+    flex-direction: column;
+    padding: 20px 24px;
+    gap: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-links.open { display: flex !important; }
+  .hamburger.active { background: transparent; }
+  .hamburger.active::before { transform: rotate(45deg); top: 0; }
+  .hamburger.active::after { transform: rotate(-45deg); top: 0; }
+  .hero { padding: 110px 0 60px; }
+  .hero h1 { font-size: clamp(36px, 9vw, 72px) !important; }
+  .pricing-grid { grid-template-columns: 1fr; }
+  .fit-grid { grid-template-columns: 1fr; }
+  h2 { font-size: clamp(28px, 6vw, 42px) !important; }
+  .stats-track { flex-direction: column; align-items: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav">
+  <div class="container nav-inner">
+    <a href="/" class="logo">
+      <div class="logo-main"><span class="w-accent">W</span>eBuild</div>
+      <div class="logo-sub">Agency</div>
+    </a>
+    <nav class="nav-links">
+      <a href="#how">Process</a>
+      <a href="#deliverables">Deliverables</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a class="btn btn-primary nav-cta" href="https://cal.com/webuildco/30min" target="_blank">Book a Call →</a>
+    <div class="hamburger" onclick="this.classList.toggle('active');document.querySelector('.nav-links').classList.toggle('open');" role="button" tabindex="0"></div>
+  </div>
+</header>
+
+<main>
+
+<!-- HERO -->
+<section class="hero section fade-in" id="top">
+  <div class="container hero-content">
+    <div class="badge">AI Audit</div>
+    <h1>Stop Guessing.<br><span class="gradient">Start Automating.</span></h1>
+    <p class="sub">We audit your operations, identify where AI saves you 5+ hours/week, and hand you a custom implementation roadmap.</p>
+    <div class="stats-bar">
+      <div class="stats-track">
+        <div class="stat"><strong>50+</strong><span>Hours Saved / Week</span></div>
+        <div class="stat"><strong>10x</strong><span>ROI Average</span></div>
+        <div class="stat"><strong>5+</strong><span>Hours Guaranteed</span></div>
+      </div>
+    </div>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#pricing">See Pricing ↓</a>
+      <a class="btn btn-outline" href="#how">How It Works →</a>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="section fade-in" id="problem">
+  <div class="container">
+    <div class="section-head">
+      <div class="badge">The Problem</div>
+      <h2 style="font-size:42px;">You know AI can help.<br>You just don't know where to start.</h2>
+      <p>Most businesses waste months experimenting with the wrong tools. We fix that in 72 hours.</p>
+    </div>
+    <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));">
+      <div class="card">
+        <div class="icon-circle">🌊</div>
+        <h3>Drowning in Tools</h3>
+        <p>ChatGPT, Zapier, Notion AI, Make… hundreds of options, zero clarity on what actually moves the needle for your business.</p>
+      </div>
+      <div class="card">
+        <div class="icon-circle">📉</div>
+        <h3>No Clear ROI</h3>
+        <p>You've tried a few things but can't quantify the impact. Leadership wants numbers, not experiments.</p>
+      </div>
+      <div class="card">
+        <div class="icon-circle">⏳</div>
+        <h3>Wasted Time on Wrong Solutions</h3>
+        <p>Hours lost building automations that don't stick, or paying for tools nobody uses after week one.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section fade-in" id="how">
+  <div class="container">
+    <div class="section-head">
+      <div class="badge">How It Works</div>
+      <h2 style="font-size:42px;">Four phases. One week. Total clarity.</h2>
+      <p>A structured process designed to give you a clear, actionable AI roadmap.</p>
+    </div>
+    <div class="process-cards">
+      <div class="card">
+        <div class="step-number">01</div>
+        <h3>Discovery Session</h3>
+        <p>45-minute deep-dive into your workflows, pain points, and goals. We map every process.</p>
+      </div>
+      <div class="card">
+        <div class="step-number">02</div>
+        <h3>AI Analysis</h3>
+        <p>We analyze your operations with AI tools and human expertise to find high-impact opportunities.</p>
+      </div>
+      <div class="card">
+        <div class="step-number">03</div>
+        <h3>Custom Report</h3>
+        <p>Priority matrix, tool recommendations, financial impact projections, and a 4-day quickstart plan.</p>
+      </div>
+      <div class="card">
+        <div class="step-number">04</div>
+        <h3>Review Call</h3>
+        <p>30-minute walkthrough of your report, Q&A, and implementation options discussion.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT YOU GET -->
+<section class="section fade-in" id="deliverables">
+  <div class="container">
+    <div class="section-head">
+      <div class="badge">What You Get</div>
+      <h2 style="font-size:42px;">Your complete AI implementation package.</h2>
+      <p>Everything you need to start saving time in week one.</p>
+    </div>
+    <div class="deliverables">
+      <div class="card" style="display:flex;gap:14px;align-items:flex-start;">
+        <div class="del-icon">📊</div>
+        <div class="del-text"><h4>Executive Summary</h4><p>Top 3 AI opportunities ranked by impact, with clear ROI projections for each.</p></div>
+      </div>
+      <div class="card" style="display:flex;gap:14px;align-items:flex-start;">
+        <div class="del-icon">🎯</div>
+        <div class="del-text"><h4>Priority Matrix</h4><p>What to do first, second, and third — mapped by effort vs. impact.</p></div>
+      </div>
+      <div class="card" style="display:flex;gap:14px;align-items:flex-start;">
+        <div class="del-icon">🛠️</div>
+        <div class="del-text"><h4>3-7 Tool Recommendations</h4><p>Specific AI tools matched to your workflows, with ROI calculated for each.</p></div>
+      </div>
+      <div class="card" style="display:flex;gap:14px;align-items:flex-start;">
+        <div class="del-icon">⚡</div>
+        <div class="del-text"><h4>4-Day Quick Start Plan</h4><p>Step-by-step implementation guide to capture your first wins immediately.</p></div>
+      </div>
+      <div class="card" style="display:flex;gap:14px;align-items:flex-start;">
+        <div class="del-icon">💰</div>
+        <div class="del-text"><h4>Financial Impact Breakdown</h4><p>Hours saved, cost reduction, and revenue impact — in real numbers.</p></div>
+      </div>
+      <div class="card" style="display:flex;gap:14px;align-items:flex-start;">
+        <div class="del-icon">📞</div>
+        <div class="del-text"><h4>30-Minute Review Call</h4><p>Walk through every recommendation together. Ask anything. Plan next steps.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GUARANTEE -->
+<section class="section guarantee-section fade-in">
+  <div class="container">
+    <div class="section-head">
+      <div class="badge">The Guarantee</div>
+      <h2 style="font-size:42px;"><span style="color:var(--accent1);">5+ hours returned per week,</span><br>or your money back. No questions asked.</h2>
+      <p style="font-size:18px;">Most clients see 6+ hours freed up. That's a 25x return on a $497 audit.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="section fade-in" id="pricing">
+  <div class="container">
+    <div class="section-head">
+      <div class="badge">Pricing</div>
+      <h2 style="font-size:42px;">Choose your audit.</h2>
+      <p>Two options. Same rigorous process. Same guarantee.</p>
+    </div>
+    <div class="pricing-grid">
+      <!-- REMOTE -->
+      <div class="price-card">
+        <div class="badge" style="margin-bottom:16px;">Introductory Offer</div>
+        <h3>Remote AI Audit</h3>
+        <div class="price-row">
+          <span class="price-old">$997</span>
+          <span class="price-new">$497</span>
+        </div>
+        <p class="price-note">Limited to first 10 clients</p>
+        <ul class="feature-list">
+          <li>45-minute Zoom discovery session</li>
+          <li>Full AI workflow analysis</li>
+          <li>Custom report with 3-7 recommendations</li>
+          <li>Priority matrix & ROI calculations</li>
+          <li>4-day quick start plan</li>
+          <li>30-minute review call</li>
+          <li>Money-back guarantee</li>
+        </ul>
+        <a href="https://cal.com/webuildco/30min" class="price-cta primary">Book Remote Audit →</a>
+        <p class="price-small">Delivered within 72 hours of discovery call</p>
+      </div>
+      <!-- ON-SITE -->
+      <div class="price-card premium">
+        <div class="badge" style="margin-bottom:16px;">Premium</div>
+        <h3>On-Site AI Audit</h3>
+        <div class="price-row">
+          <span class="price-new">$1,497</span>
+        </div>
+        <p class="price-desc">I come to you. See your operations firsthand.</p>
+        <ul class="feature-list">
+          <li>Everything in Remote Audit</li>
+        </ul>
+        <div class="plus-label">Plus:</div>
+        <ul class="feature-list">
+          <li>In-person visit to your business</li>
+          <li>Hands-on workflow observation</li>
+          <li>Staff interviews & pain point mapping</li>
+          <li>Physical infrastructure assessment</li>
+          <li>Same-day preliminary findings debrief</li>
+          <li>Extended report with on-site observations</li>
+        </ul>
+        <div class="geo-note">Sydney Metro area included. Regional NSW quoted on request.</div>
+        <a href="https://cal.com/webuildco/30min" class="price-cta secondary">Book On-Site Audit →</a>
+        <p class="price-small">Limited availability — 2 slots per week</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AFTER THE AUDIT -->
+<section class="section fade-in">
+  <div class="container">
+    <div class="section-head">
+      <div class="badge">After the Audit</div>
+      <h2 style="font-size:42px;">Most clients don't stop at the audit.</h2>
+      <p>Here's what comes next:</p>
+    </div>
+    <div class="impl-cards">
+      <div class="card">
+        <div class="impl-price">$1,500 – $3K</div>
+        <h3>Quick Wins</h3>
+        <p>We set up the automations for you. Fast, focused, and live within days.</p>
+      </div>
+      <div class="card">
+        <div class="impl-price">$5K – $10K</div>
+        <h3>Full Build</h3>
+        <p>Custom AI agents built for your specific business workflows and systems.</p>
+      </div>
+      <div class="card">
+        <div class="impl-price">$1,500 – $2,500/mo</div>
+        <h3>Managed AI</h3>
+        <p>We run your AI operations ongoing. Monitoring, optimising, scaling.</p>
+      </div>
+    </div>
+    <p style="color:var(--muted);font-size:15px;font-style:italic;text-align:center;">60% of audit clients choose implementation. The audit pays for itself.</p>
+  </div>
+</section>
+
+<!-- WHO THIS IS FOR -->
+<section class="section fade-in">
+  <div class="container">
+    <div class="section-head">
+      <div class="badge">Straight Talk</div>
+      <h2 style="font-size:42px;">Is this right for you?</h2>
+    </div>
+    <div class="fit-grid">
+      <div>
+        <p style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:20px;">Good Fit</p>
+        <div style="display:flex;flex-direction:column;gap:18px;">
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <span style="color:#22c55e;font-size:18px;flex-shrink:0;">✅</span>
+            <div><strong>Businesses doing $20K–$500K/month in revenue</strong><br><span style="color:var(--muted);font-size:14px;">Drowning in admin, manual processes, repetitive tasks</span></div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <span style="color:#22c55e;font-size:18px;flex-shrink:0;">✅</span>
+            <div><strong>Ready to invest in systems that save real time</strong><br><span style="color:var(--muted);font-size:14px;">Open to changing how things are done</span></div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <span style="color:#22c55e;font-size:18px;flex-shrink:0;">✅</span>
+            <div><strong>Want data-driven decisions, not gut feelings</strong></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <p style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:20px;">Not a Fit</p>
+        <div style="display:flex;flex-direction:column;gap:18px;">
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <span style="color:#ef4444;font-size:18px;flex-shrink:0;">❌</span>
+            <div><strong>Idea-stage startups with no operations yet</strong></div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <span style="color:#ef4444;font-size:18px;flex-shrink:0;">❌</span>
+            <div><strong>Micromanagers who won't let AI touch anything</strong></div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <span style="color:#ef4444;font-size:18px;flex-shrink:0;">❌</span>
+            <div><strong>Looking for a magic button that fixes everything</strong></div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <span style="color:#ef4444;font-size:18px;flex-shrink:0;">❌</span>
+            <div><strong>Not willing to implement recommendations</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section fade-in" id="faq">
+  <div class="container">
+    <div class="section-head">
+      <div class="badge">FAQ</div>
+      <h2 style="font-size:42px;">Common questions.</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item"><div class="faq-q">Do I need technical skills?</div><div class="faq-a"><p>No. The audit and report are designed for business owners, not engineers. We explain everything in plain language.</p></div></div>
+      <div class="faq-item"><div class="faq-q">How long does it take?</div><div class="faq-a"><p>72 hours from your discovery call to report delivery. The review call is scheduled at your convenience after that.</p></div></div>
+      <div class="faq-item"><div class="faq-q">What industries do you serve?</div><div class="faq-a"><p>Medical, legal, trades, accounting, real estate, retail — any service-based or operations-heavy business.</p></div></div>
+      <div class="faq-item"><div class="faq-q">What if I'm not in Sydney?</div><div class="faq-a"><p>Remote audit works great. Most of our clients are remote. The on-site option is available for Sydney Metro businesses.</p></div></div>
+      <div class="faq-item"><div class="faq-q">Can I expense this?</div><div class="faq-a"><p>Yes. You receive a proper tax invoice upon booking. It's a legitimate business consulting expense.</p></div></div>
+      <div class="faq-item"><div class="faq-q">What happens after the audit?</div><div class="faq-a"><p>You get a complete roadmap. Implement it yourself, hire your own team, or engage us to build it for you. No pressure either way.</p></div></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <a href="/" class="logo" style="display:inline-flex;margin-bottom:8px;">
+    <div class="logo-main"><span class="w-accent">W</span>eBuild</div>
+    <div class="logo-sub">Agency</div>
+  </a>
+  <p>Sydney, Australia</p>
+  <p><a href="mailto:hello@webuildagency.com" style="color:var(--accent1);">hello@webuildagency.com</a></p>
+  <p style="margin-top:10px;font-size:12px;">ABN: XX XXX XXX XXX</p>
+</footer>
+
+<script>
+// FAQ accordion
+document.querySelectorAll('.faq-q').forEach(q=>{
+  q.addEventListener('click',()=>{
+    const item=q.parentElement;
+    document.querySelectorAll('.faq-item').forEach(i=>{if(i!==item)i.classList.remove('open')});
+    item.classList.toggle('open');
+  });
+});
+// Fade-in on scroll
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:0.1});
+document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
