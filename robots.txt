@@ -1,0 +1,33 @@
+# WeBuild Agency — robots.txt
+# NOTE: Cloudflare "Manage AI crawlers / Managed robots.txt" is currently ENABLED at the
+# zone level and injects Disallow rules for GPTBot, ClaudeBot, Google-Extended, CCBot, etc.
+# That managed file overrides this one. To make the rules below take effect, disable the
+# Cloudflare AI-crawler block in the dashboard (see WEB-21). GEO goal = be citable in AI answers.
+
+# Traditional search + AI answer engines: allowed.
+User-agent: *
+Allow: /
+
+# Explicitly welcome AI retrieval/answer bots (GEO — get cited in ChatGPT, Claude, Perplexity, Gemini, AI Overviews)
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: https://www.webuildco.com.au/sitemap.xml

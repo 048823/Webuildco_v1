@@ -1,0 +1,15 @@
+# Cloudflare Pages headers — WeBuild Agency
+# Adds the security headers Cloudflare's edge does not inject by default (HSTS, Permissions-Policy)
+# and sensible caching. Cloudflare already sets X-Frame-Options, X-Content-Type-Options, Referrer-Policy.
+
+/*
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=()
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+
+# HTML: short cache, always revalidate so deploys go live immediately
+/
+  Cache-Control: public, max-age=0, must-revalidate
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate

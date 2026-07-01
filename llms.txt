@@ -1,0 +1,27 @@
+# WeBuild Agency
+
+> Sydney-based AI automation agency. We build production agentic systems — voice agents, lead-qualification agents, and document-automation agents — for Australian SMBs, with monitoring and human oversight built in. Positioning: "Hire agents, not headcount."
+
+## What we do
+- **Voice agents** — answer calls, book meetings, and route urgent issues 24/7.
+- **Lead-qualification agents** — intake and qualify leads, then sync to your CRM.
+- **Document-automation agents** — draft, extract, and process documents.
+- Every system integrates with your existing stack (CRM, project management, email, Slack), ships with monitoring and alerting, and keeps humans in the loop for high-risk actions.
+
+## Who it's for
+Australian SMBs drowning in manual admin work who want outcomes owned end-to-end, not another tool to manage.
+
+## Offers
+- **AIOS Foundations Session** — a working session that maps your workflows and hands you a prioritised, ROI-ranked automation roadmap you own.
+- **Agent Install** — a purpose-built agentic system, architected, engineered, deployed with human-in-the-loop guardrails, and handed to you to own.
+- **Ongoing Maintenance Retainer** (optional) — monitoring, uptime, model/API updates, and security patching for deployed agents.
+
+## Delivery
+- Focused build: 2–4 weeks. Complex multi-agent systems: 6–8 weeks.
+- Australia-first: local compliance, privacy, and customer expectations respected.
+- Every engagement is architected, engineered, and deployed by the founder personally — no outsourcing, no junior devs.
+
+## Contact
+- Website: https://www.webuildco.com.au
+- Email: hello@webuildco.com.au
+- Location: Sydney, Australia
