@@ -213,73 +213,6 @@
       color: #cdd0dc;
     }
     .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 22px; justify-content: center; }
-    .stats-bar {
-      margin-top: 30px;
-      overflow: hidden;
-      width: 100%;
-    }
-    .stats-track {
-      display: flex;
-      gap: 12px;
-      animation: scrollStats 20s linear infinite;
-      width: max-content;
-    }
-    @keyframes scrollStats {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
-    .stat {
-      padding: 16px 18px;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      background: rgba(255,255,255,0.02);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .stat strong { font-size: 20px; }
-    .stat span { color: var(--muted); font-size: 14px; }
-    .logo-strip {
-      margin-top: 24px;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      overflow: hidden;
-      background: rgba(255,255,255,0.02);
-      position: relative;
-    }
-    .logo-strip::before {
-      content: 'Trusted by founders and operators across Australia';
-      position: absolute;
-      left: 14px; top: 10px;
-      font-size: 12px;
-      color: var(--muted);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      font-family: var(--mono);
-      z-index: 2;
-    }
-    .logo-track {
-      display: flex;
-      gap: 38px;
-      padding: 34px 20px 16px;
-      animation: scroll 24s linear infinite;
-      white-space: nowrap;
-    }
-    .logo-pill {
-      padding: 10px 16px;
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      background: rgba(255,255,255,0.04);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
-      color: #e7e8f0;
-      font-size: 14px;
-    }
-    @keyframes scroll {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
     /* Problem */
     .section-head { margin-bottom: 28px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px; max-width: 760px; margin-left: auto; margin-right: auto; }
     .problem-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
@@ -420,8 +353,6 @@
       .hero { padding-top: 110px; }
       .hero h1 { font-size: clamp(46px, 10vw, 72px); }
       .hero p.sub { font-size: 16px; }
-      .logo-strip::before { position: static; display: block; padding: 12px 14px 0; }
-      .logo-track { animation-duration: 18s; }
       .process-card { transform: rotate(0deg) !important; }
       .cta-footer h2.big { font-size: clamp(110px, 20vw, 180px); }
       /* Force all multi-column grids to single column on mobile */
@@ -430,9 +361,6 @@
       .hero, .hero-content, .hero-grid, section, .section { max-width: 100vw !important; overflow: hidden !important; }
       .hero-grid > *, .hero-content > *, .container > * { max-width: 100% !important; min-width: 0 !important; }
       .hero h1 { font-size: clamp(36px, 9vw, 72px) !important; word-break: break-word; }
-      .stats-bar { overflow: hidden !important; }
-      .stats-track { gap: 10px; }
-      .stat { flex-shrink: 0 !important; min-width: 130px; }
       .founder-intro { max-width: 100% !important; box-sizing: border-box !important; }
       p, h1, h2, h3, div, span, a { overflow-wrap: break-word; word-wrap: break-word; }
       .card { max-width: 100% !important; overflow: hidden; }
@@ -475,79 +403,6 @@
               <a class="btn btn-primary" href="https://cal.com/webuildai/30min" target="_blank">Book a Call →</a>
               <a class="btn btn-outline" href="#scope">See Our Work →</a>
             </div>
-            <div class="stats-bar" style="overflow:hidden;">
-              <div class="stats-track">
-                <div class="stat"><strong>50+</strong><span>Hours Saved/Week</span></div>
-                <div class="stat"><strong>24/7</strong><span>Lead Capture</span></div>
-                <div class="stat"><strong>10x</strong><span>ROI Average</span></div>
-                <div class="stat"><strong>99%</strong><span>Uptime SLA</span></div>
-                <div class="stat"><strong>5min</strong><span>Avg Response</span></div>
-                <div class="stat"><strong>0</strong><span>Junior Devs</span></div>
-                <!-- duplicate for seamless loop -->
-                <div class="stat"><strong>50+</strong><span>Hours Saved/Week</span></div>
-                <div class="stat"><strong>24/7</strong><span>Lead Capture</span></div>
-                <div class="stat"><strong>10x</strong><span>ROI Average</span></div>
-                <div class="stat"><strong>99%</strong><span>Uptime SLA</span></div>
-                <div class="stat"><strong>5min</strong><span>Avg Response</span></div>
-                <div class="stat"><strong>0</strong><span>Junior Devs</span></div>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div class="card" style="height:100%; min-height: 340px; display:flex; flex-direction:column; justify-content:space-between; text-align:center;">
-              <div>
-                <div class="pill" style="color:#fff;">Live AI Ops Snapshot</div>
-                <h3 style="font-size:24px; margin: 8px 0 6px;">Your future digital employee</h3>
-                <p style="max-width: 520px; margin-left: auto; margin-right: auto;">We design agentic systems that answer calls, qualify leads, draft documents, and sync data across your stack with human-like context — reliably.</p>
-              </div>
-              <div style="display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:12px; margin-top: 18px;">
-                <div class="card" style="padding:14px; background: rgba(255,255,255,0.02);">
-                  <div class="step-number">VOICE</div>
-                  <strong>AI Receptionist</strong>
-                  <p>Greets callers, books meetings, routes urgent tickets.</p>
-                </div>
-                <div class="card" style="padding:14px; background: rgba(255,255,255,0.02);">
-                  <div class="step-number">OPS</div>
-                  <strong>Lead Ops</strong>
-                  <p>Captures forms, qualifies, and auto-follows-up within seconds.</p>
-                </div>
-                <div class="card" style="padding:14px; background: rgba(255,255,255,0.02);">
-                  <div class="step-number">DOCS</div>
-                  <strong>Docs & Billing</strong>
-                  <p>Drafts contracts, invoices, and sends status updates.</p>
-                </div>
-                <div class="card" style="padding:14px; background: rgba(255,255,255,0.02);">
-                  <div class="step-number">24/7</div>
-                  <strong>Always On</strong>
-                  <p>Runs continuously with human oversight built-in.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="logo-strip" aria-label="Client logos">
-          <div class="logo-track">
-            <span class="logo-pill">Pacific Homes</span>
-            <span class="logo-pill">Harbour Legal</span>
-            <span class="logo-pill">Urban Trades</span>
-            <span class="logo-pill">Ledger & Co</span>
-            <span class="logo-pill">Riverine Realty</span>
-            <span class="logo-pill">Civic Build</span>
-            <span class="logo-pill">Coastal Clinics</span>
-            <span class="logo-pill">Southbank Advisors</span>
-            <span class="logo-pill">Beacon Labs</span>
-            <span class="logo-pill">Brightline</span>
-            <!-- duplicate for seamless scroll -->
-            <span class="logo-pill">Pacific Homes</span>
-            <span class="logo-pill">Harbour Legal</span>
-            <span class="logo-pill">Urban Trades</span>
-            <span class="logo-pill">Ledger & Co</span>
-            <span class="logo-pill">Riverine Realty</span>
-            <span class="logo-pill">Civic Build</span>
-            <span class="logo-pill">Coastal Clinics</span>
-            <span class="logo-pill">Southbank Advisors</span>
-            <span class="logo-pill">Beacon Labs</span>
-            <span class="logo-pill">Brightline</span>
           </div>
         </div>
       </div>
@@ -828,7 +683,7 @@
           </div>
         </div>
         <div style="text-align:center;margin-top:36px;">
-          <a href="https://cal.com/webuildai/30min" target="_blank" class="btn btn-primary">Apply for a Build →</a>
+          <a href="https://cal.com/webuildai/30min" target="_blank" class="btn btn-primary">Book a free intro call →</a>
         </div>
       </div>
     </section>
@@ -912,7 +767,7 @@
         <div style="text-align:center;margin-top:48px;padding:40px;background:rgba(200,230,54,0.06);border:1px solid rgba(200,230,54,0.25);border-radius:16px;">
           <h3 style="font-size:24px;margin-bottom:12px;">Something specific on your mind?</h3>
           <p style="color:var(--muted);font-size:15px;line-height:1.6;margin-bottom:24px;">Every build starts with a call. Bring your messiest process and I'll tell you honestly what AI can and can't do for it</p>
-          <a href="https://cal.com/webuildai/30min" target="_blank" class="btn" style="background:#fff;color:#000;border-color:#fff;">Apply for a Build</a>
+          <a href="https://cal.com/webuildai/30min" target="_blank" class="btn" style="background:#fff;color:#000;border-color:#fff;">Book a free intro call →</a>
         </div>
       </div>
     </section>
@@ -1007,174 +862,20 @@
       </div>
     </section>
 
-    <!-- Project Application -->
+    <!-- Intro Call CTA -->
     <section class="section fade-in" id="contact">
       <div class="container">
-        <div class="section-head" id="apply-header">
-          <div class="badge">Project Application</div>
-          <h2 style="font-size:42px;">Apply for a <span style="color:var(--accent1);"><em>Build</em></span></h2>
-          <p class="sub">I review every application personally. Answer honestly — this helps me send you to the right place, even if it's not a call with me.</p>
+        <div class="section-head">
+          <div class="badge">Get Started</div>
+          <h2 style="font-size:42px;">Tell me what your team spends their time on</h2>
+          <p class="sub">Book a free 30-minute intro call and I'll tell you straight whether AI can handle it.</p>
         </div>
-        <div id="apply-form" style="max-width:640px;margin:0 auto;">
-          <div class="card" style="padding:32px;">
-            <!-- Progress bar -->
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:28px;">
-              <div id="progress-bar" style="display:flex;gap:4px;flex:1;"></div>
-              <span id="step-counter" style="font-size:13px;color:var(--muted);font-family:var(--mono);"></span>
-            </div>
-            <!-- Steps container -->
-            <div id="steps-container"></div>
-            <!-- Navigation -->
-            <div id="form-nav" style="display:flex;gap:12px;margin-top:28px;"></div>
-          </div>
-        </div>
-        <!-- Low budget result -->
-        <div id="low-budget-result" style="display:none;max-width:640px;margin:0 auto;">
-          <div class="card" style="padding:40px;text-align:center;">
-            <div style="width:56px;height:56px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:24px;">ℹ️</div>
-            <h3 style="font-size:22px;margin-bottom:12px;"><em>Not quite the budget for a full build — yet.</em></h3>
-            <p style="color:var(--muted);font-size:15px;line-height:1.7;margin-bottom:28px;">That's okay. A <strong style="color:var(--text);">1-hour Paid Strategy Session</strong> might be exactly what you need to map the workflow, validate the idea, and get a real quote — before committing to anything larger.</p>
-            <a href="https://cal.com/webuildai/30min" target="_blank" class="btn btn-primary" style="margin-bottom:20px;">Book a Strategy Session — $250 →</a>
-            <div style="display:flex;flex-direction:column;gap:10px;margin-top:16px;">
-              <a href="#" style="display:flex;justify-content:space-between;align-items:center;padding:16px 20px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;color:var(--text);text-decoration:none;font-weight:600;font-size:15px;">Free YouTube Tutorials <span style="color:var(--muted);">→</span></a>
-              <a href="#" style="display:flex;justify-content:space-between;align-items:center;padding:16px 20px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;color:var(--text);text-decoration:none;font-weight:600;font-size:15px;">Join the Skool Community <span style="color:var(--muted);">→</span></a>
-            </div>
-            <p style="margin-top:20px;"><a href="#" onclick="resetForm();return false;" style="color:var(--muted);font-size:14px;">Start over</a></p>
-          </div>
-        </div>
-        <!-- Success result -->
-        <div id="success-result" style="display:none;max-width:640px;margin:0 auto;">
-          <div class="card" style="padding:40px;text-align:center;">
-            <div style="width:56px;height:56px;border-radius:50%;border:2px solid var(--accent1);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:24px;">✅</div>
-            <h3 style="font-size:22px;margin-bottom:12px;">Application received.</h3>
-            <p style="color:var(--muted);font-size:15px;line-height:1.7;margin-bottom:28px;">I'll review your answers and get back to you within 24–48 hours. If it's a good fit, we'll book a call to map out your build.</p>
-            <a href="https://cal.com/webuildai/30min" target="_blank" class="btn btn-primary">Skip the wait — Book a Call Now →</a>
-            <p style="margin-top:20px;"><a href="#" onclick="resetForm();return false;" style="color:var(--muted);font-size:14px;">Start over</a></p>
-          </div>
+        <div style="text-align:center;margin-top:8px;">
+          <a class="btn btn-primary" href="https://cal.com/webuildai/30min" target="_blank">Book a free intro call →</a>
         </div>
       </div>
     </section>
-    <script>
-    (function(){
-      const steps = [
-        { q: "Which best describes your role?", sub: "This helps me understand who I'm talking to.", options: ["Business Owner / Founder (Decision Maker)", "Employee looking for tools", "Student / Hobbyist"] },
-        { q: "What is your estimated budget for this project?", sub: "Custom OpenClaw builds are engineering projects, not plug-and-play tools.", options: ["Under $1,000", "$1k – $3k", "$3k – $10k", "$10k+"] },
-        { q: "How soon are you looking to start?", sub: "No wrong answer — this helps with scheduling.", options: ["Immediately", "1–3 Months", "Just looking around"] },
-        { q: "Briefly describe the manual process you want to automate.", sub: "Be specific — the messier and more manual, the better.", type: "textarea" },
-        { q: "How can I reach you?", sub: "I'll use this to confirm your application and send next steps.", type: "contact" },
-        { q: "Last two questions.", sub: "This helps me understand where you're coming from and what you're looking for.", type: "final" }
-      ];
-      let current = 0;
-      let answers = {};
-      const container = document.getElementById('steps-container');
-      const nav = document.getElementById('form-nav');
-      const bar = document.getElementById('progress-bar');
-      const counter = document.getElementById('step-counter');
 
-      function render() {
-        const step = steps[current];
-        // Progress
-        bar.innerHTML = steps.map((_,i) => `<div style="flex:1;height:3px;border-radius:2px;background:${i < current ? 'var(--accent1)' : i === current ? 'var(--accent1)' : 'rgba(255,255,255,0.08)'};"></div>`).join('');
-        counter.textContent = `${current+1}/${steps.length}`;
-
-        if (step.type === 'contact') {
-          container.innerHTML = `
-            <h3 style="font-size:18px;margin-bottom:6px;">${step.q}</h3>
-            <p style="color:var(--muted);font-size:14px;margin-bottom:22px;">${step.sub}</p>
-            <div style="display:flex;flex-direction:column;gap:18px;">
-              <div>
-                <label style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-family:var(--mono);display:block;margin-bottom:8px;">Full Name *</label>
-                <input type="text" id="contact-name" placeholder="Jane Smith" style="width:100%;box-sizing:border-box;padding:16px 18px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:15px;outline:none;font-family:inherit;">
-              </div>
-              <div>
-                <label style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-family:var(--mono);display:block;margin-bottom:8px;">Email *</label>
-                <input type="email" id="contact-email" placeholder="jane@company.com" style="width:100%;box-sizing:border-box;padding:16px 18px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:15px;outline:none;font-family:inherit;">
-              </div>
-              <div>
-                <label style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-family:var(--mono);display:block;margin-bottom:8px;">Phone <span style="text-transform:none;">(optional)</span></label>
-                <input type="tel" id="contact-phone" placeholder="+1 (555) 000-0000" style="width:100%;box-sizing:border-box;padding:16px 18px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:15px;outline:none;font-family:inherit;">
-              </div>
-            </div>`;
-        } else if (step.type === 'final') {
-          container.innerHTML = `
-            <h3 style="font-size:18px;margin-bottom:6px;">${step.q}</h3>
-            <p style="color:var(--muted);font-size:14px;margin-bottom:22px;">${step.sub}</p>
-            <div>
-              <label style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-family:var(--mono);display:block;margin-bottom:10px;">How did you find me? *</label>
-              <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px;">
-                ${["Google Search","YouTube","Instagram / Social Media","Referred by someone","Skool Community","Other"].map((o,i) => `
-                  <label style="display:flex;align-items:center;gap:14px;padding:16px 18px;background:rgba(255,255,255,0.04);border:1px solid ${answers['source']===i?'var(--accent1)':'var(--border)'};border-radius:10px;cursor:pointer;transition:border-color 0.2s;" onclick="answers['source']=${i};render();">
-                    <span style="width:20px;height:20px;border-radius:50%;border:2px solid ${answers['source']===i?'var(--accent1)':'var(--border)'};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                      ${answers['source']===i?'<span style="width:10px;height:10px;border-radius:50%;background:var(--accent1);"></span>':''}
-                    </span>
-                    <span style="font-size:15px;">${o}</span>
-                  </label>`).join('')}
-              </div>
-              <label style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-family:var(--mono);display:block;margin-bottom:8px;">Why do you want to work with me specifically? *</label>
-              <textarea id="why-me" placeholder="e.g. I watched your YouTube video on voice agents and it clicked — I have exactly that problem in my business..." style="width:100%;box-sizing:border-box;padding:16px 18px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:15px;outline:none;font-family:inherit;min-height:100px;resize:vertical;line-height:1.6;"></textarea>
-            </div>`;
-        } else if (step.type === 'textarea') {
-          container.innerHTML = `
-            <h3 style="font-size:18px;margin-bottom:6px;">${step.q}</h3>
-            <p style="color:var(--muted);font-size:14px;margin-bottom:22px;">${step.sub}</p>
-            <textarea id="process-desc" placeholder="e.g. Every morning I manually check three inboxes, copy leads into a spreadsheet, then look each company up on LinkedIn before writing an outreach email..." style="width:100%;box-sizing:border-box;padding:16px 18px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:15px;outline:none;font-family:inherit;min-height:120px;resize:vertical;line-height:1.6;"></textarea>`;
-        } else {
-          container.innerHTML = `
-            <h3 style="font-size:18px;margin-bottom:6px;">${step.q}</h3>
-            <p style="color:var(--muted);font-size:14px;margin-bottom:22px;">${step.sub}</p>
-            <div style="display:flex;flex-direction:column;gap:10px;">
-              ${step.options.map((o,i) => `
-                <label style="display:flex;align-items:center;gap:14px;padding:16px 18px;background:rgba(255,255,255,0.04);border:1px solid ${answers[current]===i?'var(--accent1)':'var(--border)'};border-radius:10px;cursor:pointer;transition:border-color 0.2s;" onclick="selectOpt(${current},${i},this)">
-                  <span style="width:20px;height:20px;border-radius:50%;border:2px solid ${answers[current]===i?'var(--accent1)':'var(--border)'};display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:border-color 0.2s;">
-                    ${answers[current]===i?'<span style="width:10px;height:10px;border-radius:50%;background:var(--accent1);"></span>':''}
-                  </span>
-                  <span style="font-size:15px;">${o}</span>
-                </label>`).join('')}
-            </div>`;
-        }
-
-        // Nav buttons
-        let navHtml = '';
-        if (current > 0) navHtml += `<button onclick="goBack()" style="padding:14px 24px;background:transparent;border:1px solid var(--border);border-radius:10px;color:var(--text);cursor:pointer;font-size:15px;font-family:inherit;">← Back</button>`;
-        const isLast = current === steps.length - 1;
-        navHtml += `<button onclick="goNext()" style="flex:1;padding:14px 24px;background:${isLast?'var(--accent1)':'rgba(200,230,54,0.15)'};border:1px solid ${isLast?'var(--accent1)':'rgba(200,230,54,0.3)'};border-radius:10px;color:${isLast?'#000':'var(--text)'};cursor:pointer;font-size:15px;font-weight:600;font-family:inherit;">${isLast ? 'Submit Application' : 'Continue →'}</button>`;
-        nav.innerHTML = navHtml;
-      }
-
-      window.selectOpt = function(step, idx, el) {
-        answers[step] = idx;
-        render();
-      };
-      window.goBack = function() { if(current>0){current--;render();} };
-      window.goNext = function() {
-        if (current === steps.length - 1) {
-          // Submit — check budget
-          if (answers[1] === 0) { // Under $1,000
-            document.getElementById('apply-form').style.display='none';
-            document.getElementById('apply-header').style.display='none';
-            document.getElementById('low-budget-result').style.display='block';
-          } else {
-            document.getElementById('apply-form').style.display='none';
-            document.getElementById('apply-header').style.display='none';
-            document.getElementById('success-result').style.display='block';
-          }
-          return;
-        }
-        if (answers[current] === undefined && steps[current].type !== 'contact') return;
-        current++;
-        render();
-      };
-      window.resetForm = function() {
-        current=0; answers={};
-        document.getElementById('apply-form').style.display='block';
-        document.getElementById('apply-header').style.display='';
-        document.getElementById('low-budget-result').style.display='none';
-        document.getElementById('success-result').style.display='none';
-        render();
-      };
-      render();
-    })();
-    </script>
   <!-- AI Audit Pricing Section -->
   <section class="section fade-in" id="ai-audit" style="padding:70px 0;">
     <div class="container">
@@ -1236,10 +937,6 @@
         <div class="card" style="padding:20px;text-align:center;">
           <div style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--accent1);margin-bottom:4px;">72 hours</div>
           <div style="font-size:13px;color:var(--muted);">Report delivery turnaround</div>
-        </div>
-        <div class="card" style="padding:20px;text-align:center;">
-          <div style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--accent1);margin-bottom:4px;">60%</div>
-          <div style="font-size:13px;color:var(--muted);">Of clients choose full implementation</div>
         </div>
       </div>
     </div>
