@@ -1,0 +1,38 @@
+# robots.txt for https://www.webuildco.com.au/
+
+# Default: allow all crawlers full access
+User-agent: *
+Allow: /
+
+# Explicitly allow AI / LLM crawlers and search agents
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+Sitemap: https://www.webuildco.com.au/sitemap.xml
