@@ -1,1082 +1,602 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%276%27 fill=%27%230a0a0a%27/%3E%3Ctext x=%2716%27 y=%2723%27 text-anchor=%27middle%27 font-family=%27system-ui%27 font-weight=%27700%27 font-size=%2722%27 fill=%27%23c8ff00%27%3EW%3C/text%3E%3C/svg%3E">
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>WeBuild Agency — AI Automation for Australian SMBs</title>
-  <meta name="description" content="WeBuild builds AI digital employees for Australian SMBs — voice reception, lead capture, document automation — engineered, secured, and owned by you forever. Founder-built in Sydney.">
-  <link rel="canonical" href="https://www.webuildco.com.au/">
-  <!-- Open Graph / social -->
-  <meta property="og:title" content="WeBuild Agency — AI Automation for Australian SMBs">
-  <meta property="og:description" content="WeBuild builds AI digital employees for Australian SMBs — voice reception, lead capture, document automation — engineered, secured, and owned by you forever. Founder-built in Sydney.">
-  <meta property="og:url" content="https://www.webuildco.com.au/">
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="WeBuild">
-  <meta name="twitter:card" content="summary">
-  <!-- Structured data -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "WeBuild",
-    "url": "https://www.webuildco.com.au/",
-    "founder": {
-      "@type": "Person",
-      "name": "Johan Iskandar"
-    },
-    "areaServed": "Australia",
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "Sydney",
-      "addressCountry": "Australia"
-    }
-  }
-  </script>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "Do I need a technical team to manage this?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "No. I build the system to run on autopilot. If it breaks, it alerts me — not you. Plus, the Handoff training ensures you know how to \"steer\" it without writing a single line of code."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "How much does it cost to run the AI agents monthly?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Most setups run between $50–$300/month in API and hosting costs depending on volume. I design for cost-efficiency from day one — local models where possible, cloud only when necessary."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Will the AI make mistakes with my customers?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Every agent has guardrails. High-risk actions (money, emails to clients, data deletion) require human approval before executing. You set the boundaries, the AI respects them."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "How long does a typical build take?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "A focused build takes 2–4 weeks from kickoff to launch. Complex multi-agent systems may take 6–8 weeks. Every project includes a clear timeline before we start."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What if it breaks after handoff?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Every build includes monitoring and alerting. If something goes down, I know before you do. Post-launch support is included to make sure everything stays running smoothly."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Can I keep using my existing tools?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Absolutely. I build around your stack — CRM, project management, email, Slack, whatever you already use. The AI plugs in, it doesn't replace your tools."
-        }
-      }
-    ]
-  }
-  </script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #0a0a0c;
-      --bg-alt: #1a1a1e;
-      --card: rgba(255, 255, 255, 0.03);
-      --border: rgba(255, 255, 255, 0.08);
-      --text: #f5f6fa;
-      --muted: #a6a8b3;
-      --accent1: #c8e636;
-      --accent2: #d4e94e;
-      --gradient: linear-gradient(135deg, #ffffff, var(--accent2));
-      --mono: "Space Grotesk", "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      --rounded: 14px;
-      --shadow: 0 20px 60px rgba(0,0,0,0.35);
-      --section-pad: 70px;
-      --max-width: 1200px;
-    }
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    *, *::before, *::after { box-sizing: border-box; }
-    html { overflow-x: hidden; }
-    body {
-      margin: 0;
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      background: var(--bg);
-      overflow-x: hidden;
-      max-width: 100vw;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1440' height='320' viewBox='0 0 1440 320'%3E%3Cpath fill='none' stroke='rgba(255,255,255,0.03)' stroke-width='1' d='M0,160 C240,100 480,220 720,160 C960,100 1200,220 1440,160'/%3E%3Cpath fill='none' stroke='rgba(255,255,255,0.025)' stroke-width='1' d='M0,200 C240,140 480,260 720,200 C960,140 1200,260 1440,200'/%3E%3Cpath fill='none' stroke='rgba(255,255,255,0.02)' stroke-width='1' d='M0,240 C240,180 480,300 720,240 C960,180 1200,300 1440,240'/%3E%3Cpath fill='none' stroke='rgba(255,255,255,0.015)' stroke-width='1' d='M0,120 C240,60 480,180 720,120 C960,60 1200,180 1440,120'/%3E%3Cpath fill='none' stroke='rgba(255,255,255,0.02)' stroke-width='1' d='M0,80 C240,20 480,140 720,80 C960,20 1200,140 1440,80'/%3E%3C/svg%3E");
-      background-size: 100% 320px;
-      color: var(--text);
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
-    a { color: inherit; text-decoration: none; }
-    img { max-width: 100%; display: block; }
-    .container { width: 100%; max-width: 1200px; margin: 0 auto; padding-left: 24px; padding-right: 24px; box-sizing: border-box; }
-    .section { padding: var(--section-pad) 0; position: relative; }
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 14px;
-      border: 1px solid var(--accent1);
-      border-radius: 999px;
-      color: var(--accent1);
-      font-size: 12px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      font-family: var(--mono);
-      background: rgba(200, 230, 54, 0.08);
-    }
-    .badge::before { content: '•'; color: var(--accent1); font-size: 16px; }
-    h1,h2,h3,h4 { margin: 0; font-family: 'Space Grotesk', 'Inter', sans-serif; }
-    p { margin: 10px 0 0; color: var(--muted); }
-    .grid { display: grid; gap: 20px; }
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--rounded);
-      padding: 24px;
-      position: relative;
-      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-    }
-    .card:hover {
-      transform: translateY(-6px);
-      box-shadow: var(--shadow);
-      border-color: rgba(200, 230, 54, 0.4);
-    }
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 20px;
-      border-radius: 10px;
-      font-weight: 600;
-      border: 1px solid var(--accent1);
-      cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.3s ease, background 0.3s ease;
-      font-size: 15px;
-    }
-    .btn:active { transform: translateY(1px); }
-    .btn-primary {
-      background: var(--accent1);
-      color: #0a0a0f;
-      box-shadow: 0 14px 30px rgba(200, 230, 54, 0.35);
-    }
-    .btn-outline {
-      background: transparent;
-      color: var(--text);
-      border-color: var(--border);
-    }
-    /* Nav */
-    .nav {
-      position: sticky;
-      top: 0;
-      z-index: 999;
-      backdrop-filter: blur(16px);
-      background: rgba(26,26,26,0.8);
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-    }
-    .nav-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 18px 0;
-    }
-    .logo {
-      display: inline-flex;
-      flex-direction: column;
-      align-items: flex-start;
-      line-height: 1;
-      text-decoration: none;
-    }
-    .logo-main {
-      font-size: 26px;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      color: #fff;
-    }
-    .logo-main .w-accent {
-      position: relative;
-      display: inline-block;
-    }
-    .logo-main .w-accent::after {
-      content: '';
-      position: absolute;
-      left: 4px;
-      top: 2px;
-      width: 3px;
-      height: 85%;
-      background: var(--accent1);
-      transform: rotate(-12deg);
-      border-radius: 2px;
-    }
-    .logo-sub {
-      font-size: 10px;
-      font-weight: 600;
-      color: var(--accent1);
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      margin-top: 2px;
-    }
-    .nav-links {
-      display: flex;
-      gap: 22px;
-      align-items: center;
-      font-weight: 500;
-      color: var(--muted);
-    }
-    .nav-links a { position: relative; padding: 6px 0; }
-    .nav-links a::after {
-      content: '';
-      position: absolute;
-      left: 0; bottom: -6px;
-      width: 0; height: 2px;
-      background: var(--gradient);
-      transition: width 0.25s ease;
-    }
-    .nav-links a:hover { color: var(--text); }
-    .nav-links a:hover::after { width: 100%; }
-    .nav-cta { margin-left: 10px; }
-    .hamburger { display: none; width: 34px; height: 2px; background: var(--text); position: relative; }
-    .hamburger::before, .hamburger::after {
-      content: '';
-      position: absolute;
-      width: 34px; height: 2px;
-      background: var(--text);
-      left: 0;
-      transition: transform 0.3s ease;
-    }
-    .hamburger::before { top: -8px; }
-    .hamburger::after { top: 8px; }
-    /* Hero */
-    .hero {
-      padding: 140px 0 80px;
-      position: relative;
-      overflow: hidden;
-    }
-    .hero::before {
-      content: '';
-      position: absolute;
-      width: 480px; height: 480px;
-      background: radial-gradient(circle at 30% 30%, rgba(200, 230, 54, 0.12), transparent 50%);
-      top: -80px; left: -120px;
-      filter: blur(40px);
-      z-index: 0;
-    }
-    .hero-content { position: relative; z-index: 1; text-align: center; }
-    .hero-grid { display: grid; gap: 32px; grid-template-columns: 1fr; justify-items: center; align-items: center; }
-    .hero-grid > * { min-width: 0; width: 100%; }
-    .hero h1 {
-      font-size: clamp(52px, 6vw, 92px);
-      line-height: 1.05;
-      letter-spacing: -0.02em;
-      margin: 18px 0 16px;
-    }
-    .hero h1 .gradient { background: var(--gradient); -webkit-background-clip: text; color: transparent; }
-    .hero p.sub {
-      font-size: 18px;
-      max-width: 680px;
-      margin-left: auto;
-      margin-right: auto;
-      color: #cdd0dc;
-    }
-    .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 22px; justify-content: center; }
-    /* Problem */
-    .section-head { margin-bottom: 28px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px; max-width: 760px; margin-left: auto; margin-right: auto; }
-    .problem-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
-    .card h3 { font-size: 20px; }
-    .card .pill { display: inline-block; padding: 8px 12px; background: rgba(255,255,255,0.05); border-radius: 999px; font-size: 13px; color: #e8e8f5; margin-bottom: 10px; }
-    /* Solution */
-    .comparison { width: 100%; border-collapse: collapse; margin-top: 24px; overflow: hidden; border-radius: 16px; }
-    .comparison th, .comparison td {
-      border: 1px solid var(--border);
-      padding: 18px;
-      text-align: left;
-      color: var(--muted);
-    }
-    .comparison th { background: rgba(255,255,255,0.04); color: #f5f6fa; font-size: 15px; }
-    .comparison tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
-    .comparison .highlight { background: rgba(200, 230, 54, 0.12); color: #fff; border-left: 2px solid var(--accent1); border-right: 2px solid var(--accent1); }
-    /* Services */
-    .services-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
-    .icon-circle {
-      width: 44px; height: 44px;
-      border-radius: 50%;
-      background: rgba(200,230,54,0.12);
-      display: grid; place-items: center;
-      border: 1px solid rgba(200, 230, 54, 0.4);
-      color: #fff;
-      margin-bottom: 10px;
-      font-size: 18px;
-    }
-    /* Process */
-    .process-cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 20px;
-      position: relative;
-    }
-    .process-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 24px;
-      transform: rotate(-1.5deg);
-      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-      box-shadow: 0 18px 40px rgba(0,0,0,0.3);
-    }
-    .process-card:nth-child(2) { transform: rotate(1.2deg) translateY(10px); }
-    .process-card:nth-child(3) { transform: rotate(-0.8deg) translateY(20px); }
-    .process-card:hover { transform: rotate(0deg) translateY(-4px); border-color: rgba(200,230,54,0.5); }
-    .step-number {
-      font-family: var(--mono);
-      font-size: 13px;
-      letter-spacing: 0.1em;
-      color: var(--accent2);
-      margin-bottom: 10px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-    /* Industries */
-    .industries-grid { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
-    .industry-card { position: relative; overflow: hidden; }
-    .industry-card::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, transparent, rgba(200,230,54,0.12));
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-    .industry-card:hover::after { opacity: 1; }
-    /* Good Fit */
-    .fit-grid { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
-    .fit-item { display: flex; gap: 12px; align-items: flex-start; }
-    .check { color: #c8e636; font-size: 18px; }
-    .cross { color: #f87171; font-size: 18px; }
-    /* Pricing */
-    .pricing-grid { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
-    .price { font-size: 26px; font-weight: 800; margin: 6px 0 12px; }
-    .price small { color: var(--muted); font-size: 14px; font-weight: 500; }
-    .pricing-features { list-style: none; padding: 0; margin: 14px 0 20px; display: flex; flex-direction: column; gap: 8px; color: var(--muted); }
-    .pricing-features li::before { content: '• '; color: var(--accent2); }
-    /* CTA Footer */
-    .cta-footer {
-      background: #050507;
-      padding: 140px 0;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    .cta-footer::before {
-      content: '';
-      position: absolute;
-      width: 600px; height: 600px;
-      background: radial-gradient(circle, rgba(200,230,54,0.18), transparent 55%);
-      left: 50%; top: 30%; transform: translate(-50%, -50%);
-      filter: blur(50px);
-    }
-    .cta-footer h2.big {
-      font-size: clamp(120px, 16vw, 240px);
-      letter-spacing: -0.05em;
-      margin: 0;
-      color: #fff;
-      position: relative;
-      z-index: 1;
-      line-height: 0.9;
-    }
-    .cta-footer p { position: relative; z-index: 1; color: #dfe1ea; max-width: 720px; margin: 18px auto 28px; }
-    .cta-footer .location { color: var(--muted); font-family: var(--mono); letter-spacing: 0.12em; margin-top: 18px; }
-    footer { position: relative; z-index: 1; color: #a3a6b5; font-size: 14px; margin-top: 20px; }
-    /* Animations */
-    .fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
-    .visible { opacity: 1; transform: translateY(0); }
-    /* Responsive */
-    @media (max-width: 768px) {
-      .nav-links { display: none; }
-      .hamburger { display: block; order: -1; cursor: pointer; z-index: 10; }
-      .nav-inner { padding: 14px 0; }
-      .nav-inner .logo { order: 0; position: absolute; left: 50%; transform: translateX(-50%); }
-      .nav-inner { position: relative; }
-      .nav-cta { order: 1; margin-left: auto; font-size: 13px; padding: 8px 14px !important; }
-      /* Mobile menu */
-      .nav-links {
-        display: none !important;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: rgba(10,10,12,0.98);
-        backdrop-filter: blur(16px);
-        flex-direction: column;
-        padding: 20px 24px;
-        gap: 16px;
-        border-bottom: 1px solid var(--border);
-      }
-      .nav-links.open { display: flex !important; }
-      .hamburger.active { background: transparent; }
-      .hamburger.active::before { transform: rotate(45deg); top: 0; }
-      .hamburger.active::after { transform: rotate(-45deg); top: 0; }
-      .hero { padding-top: 110px; }
-      .hero h1 { font-size: clamp(46px, 10vw, 72px); }
-      .hero p.sub { font-size: 16px; }
-      .process-card { transform: rotate(0deg) !important; }
-      .cta-footer h2.big { font-size: clamp(110px, 20vw, 180px); }
-      /* Force all multi-column grids to single column on mobile */
-      [style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
-      h2 { font-size: clamp(28px, 6vw, 42px) !important; }
-      .hero, .hero-content, .hero-grid, section, .section { max-width: 100vw !important; overflow: hidden !important; }
-      .hero-grid > *, .hero-content > *, .container > * { max-width: 100% !important; min-width: 0 !important; }
-      .hero h1 { font-size: clamp(36px, 9vw, 72px) !important; word-break: break-word; }
-      .founder-intro { max-width: 100% !important; box-sizing: border-box !important; }
-      p, h1, h2, h3, div, span, a { overflow-wrap: break-word; word-wrap: break-word; }
-      .card { max-width: 100% !important; overflow: hidden; }
-    }
-  </style>
-  <!-- Google Analytics 4 (GA4) -->
-  <!-- TODO: Replace the placeholder G-XXXXXXXXXX (both occurrences) with your real GA4 Measurement ID from Google Analytics > Admin > Data Streams. -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-XXXXXXXXXX');
-  </script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WeBuild Co — Hire agents, not headcount</title>
+<meta name="description" content="AI agents for Australian SMBs. We scope, build and wire AI agents into the tools you already run — live in weeks, owned by you.">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/app.css">
 </head>
-<body>
-  <header class="nav">
-    <div class="container nav-inner">
-      <a href="#top" class="logo">
-        <div class="logo-main"><span class="w-accent">W</span>eBuild</div>
-        <div class="logo-sub">Agency</div>
-      </a>
-      <nav class="nav-links">
-        <a href="#services">Services</a>
-        <a href="#process">Process</a>
-        <a href="#industries">Industries</a>
-        <a href="#about">About</a>
-        <a href="#ai-audit" style="color:var(--accent1);font-weight:600;">AI Audit</a>
-      </nav>
-      <a class="btn btn-primary nav-cta" href="https://cal.com/webuildai/30min" target="_blank">Book a Call →</a>
-      <div class="hamburger" onclick="this.classList.toggle('active');document.querySelector('.nav-links').classList.toggle('open');" role="button" tabindex="0"></div>
+<body class="bg-mist text-ink overflow-x-hidden">
+
+<!-- Announcement banner -->
+<div class="max-w-[1200px] mx-auto px-24">
+  <div class="bg-obsidian text-snow rounded-full mt-16 px-24 py-12 flex items-center justify-center gap-12 text-body backdrop-blur">
+    <span class="w-[7px] h-[7px] rounded-full bg-lime pulse-dot shrink-0"></span>
+    <span class="font-light">New — <b class="font-semibold">AIOS Foundations Sessions</b> open for Q3 intake</span>
+    <a href="#pricing" class="text-ash font-medium hover:text-snow transition-colors">See dates →</a>
+  </div>
+</div>
+
+<!-- Nav -->
+<nav id="nav" class="sticky top-0 z-50 bg-mist/75 backdrop-blur-md border-b border-transparent transition-colors">
+  <div class="max-w-[1200px] mx-auto px-24 py-16 flex items-center justify-between gap-24">
+    <a href="#" class="flex items-center gap-8 font-bold text-subheading text-obsidian">
+      <span class="w-[26px] h-[26px] rounded-xl bg-obsidian grid place-items-center"><span class="w-[11px] h-[11px] rounded-[3px] bg-lime"></span></span>
+      WeBuild<span class="text-slate font-normal">Co</span>
+    </a>
+    <div class="hidden md:flex gap-32 text-body font-medium">
+      <a href="#agents" class="text-slate hover:text-obsidian transition-colors">Agents</a>
+      <a href="#work" class="text-slate hover:text-obsidian transition-colors">Work</a>
+      <a href="#how" class="text-slate hover:text-obsidian transition-colors">How it works</a>
+      <a href="#pricing" class="text-slate hover:text-obsidian transition-colors">Pricing</a>
+      <a href="#faq" class="text-slate hover:text-obsidian transition-colors">FAQ</a>
     </div>
-  </header>
+    <div class="flex items-center gap-16">
+      <a href="#" class="hidden sm:block text-body font-medium text-slate hover:text-obsidian transition-colors">Sign in</a>
+      <a href="https://cal.com/webuildco/intro" target="_blank" rel="noopener" class="inline-flex items-center bg-obsidian text-snow text-body font-medium rounded-3xl-3 px-20 py-12 shadow-subtle hover:brightness-115 hover:-translate-y-px transition cursor-pointer">Book a demo →</a>
+    </div>
+  </div>
+</nav>
 
-  <main>
-    <!-- Hero -->
-    <section class="hero section fade-in" id="top">
-      <div class="container hero-content">
-        <div class="hero-grid">
-          <div>
-            <div class="badge">AI Automation Agency</div>
-            <h1>Empower Your Growth <span class="gradient">with AI.</span></h1>
-            <p class="sub">We give businesses the autonomy to operate smarter — AI systems that handle the work, so you have the agency to focus on what matters.</p>
-            <div class="founder-intro" style="display:flex;align-items:center;gap:14px;margin:28px auto 24px;padding:16px 20px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:12px;max-width:520px;text-align:left;">
-              <img src="data:image/jpeg;base64,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" alt="Johan" style="width:52px;height:52px;border-radius:50%;border:2px solid var(--accent1);flex-shrink:0;object-fit:cover;">
-              <div style="font-size:14px;line-height:1.6;color:var(--muted);">I'm <strong style="color:var(--text);">Johan</strong>, an <strong style="color:var(--accent1);">Agentic AI Architect</strong>. I help businesses get their time back by building AI systems that handle the busywork — so you can focus on what you actually love doing.</div>
-            </div>
-            <div class="hero-actions">
-              <a class="btn btn-primary" href="https://cal.com/webuildai/30min" target="_blank">Book a Call →</a>
-              <a class="btn btn-outline" href="#scope">See Our Work →</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+<main>
+<!-- Hero -->
+<header class="pt-64 pb-40 text-center">
+  <div class="max-w-[1200px] mx-auto px-24">
+    <div class="flex flex-wrap justify-center gap-12 mb-32">
+      <span class="inline-flex items-center gap-8 bg-snow border border-fog rounded-xl px-12 py-8 text-[12.5px] font-medium text-slate shadow-md"><span class="w-8 h-8 rounded-full bg-lime"></span>Sydney-built, SMB-focused</span>
+      <span class="inline-flex items-center gap-8 bg-snow border border-fog rounded-xl px-12 py-8 text-[12.5px] font-medium text-slate shadow-md"><span class="text-lime-deep">★</span><b class="text-obsidian">5.0</b> client rating</span>
+      <span class="inline-flex items-center gap-8 bg-ember text-obsidian rounded-xl px-12 py-8 text-[12.5px] font-semibold">Founding rate live</span>
+    </div>
 
-    <!-- Problem -->
-    <section class="section fade-in" id="problem">
-      <div class="container">
-        <div class="section-head">
-          <div class="badge">The Problem</div>
-          <h2 style="font-size:42px;">Admin bloat is killing your margins.</h2>
-          <p>Manual follow-ups, slow intake, and duplicated data entry waste hundreds of hours per month. We fix that with AI systems that never sleep.</p>
-        </div>
-        <div class="grid problem-grid">
-          <div class="card">
-            <div class="pill">Wasted Hours</div>
-            <h3>15-25 hrs/week lost to admin</h3>
-            <p>Repetitive tasks, manual data entry, and triaging inbound enquiries drain your team's time.</p>
-          </div>
-          <div class="card">
-            <div class="pill">Missed Leads</div>
-            <h3>30-50% go cold after-hours</h3>
-            <p>No one should wait until Monday. AI receptionists qualify and book instantly, 24/7.</p>
-          </div>
-          <div class="card">
-            <div class="pill">Rising Costs</div>
-            <h3>$65-85k admin salaries</h3>
-            <p>Margins shrink while payroll grows. Digital employees scale output without headcount.</p>
-          </div>
-        </div>
-      </div>
-    </section>
+    <h1 class="font-semibold text-obsidian tracking-[-0.02em] text-[clamp(40px,6.2vw,64px)] leading-[1.04] max-w-[900px] mx-auto">
+      All your <span class="flip" id="flip1"><span class="cur">sales</span><span class="in">support</span></span><br>busywork done by agents
+    </h1>
+    <p class="text-body-lg text-slate max-w-[560px] mx-auto mt-24 mb-32 font-light">Stop hiring for repeatable work. We scope, build and wire AI agents into the tools you already run — live in weeks, owned by <b class="font-semibold text-ink">you</b>.</p>
 
-    <!-- Solution -->
-    <section class="section fade-in" id="solution">
-      <div class="container">
-        <div class="section-head">
-          <div class="badge">Why Agentic AI is Different</div>
-          <h2 style="font-size:42px;">Automation moves data. We build digital employees.</h2>
-          <p>Typical automations are brittle, push data from A to B, and fail silently. We design agentic systems that reason, converse, and own outcomes.</p>
-        </div>
-        <div class="card" style="padding:0; overflow:hidden;">
-          <table class="comparison">
-            <thead>
-              <tr>
-                <th>Feature</th>
-                <th>Standard Automation (Zapier/Make)</th>
-                <th class="highlight">WeBuild Systems</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Trigger</td>
-                <td>Simple event → action</td>
-                <td class="highlight">Understands intent, context, and priority</td>
-              </tr>
-              <tr>
-                <td>Capability</td>
-                <td>Moves data between apps</td>
-                <td class="highlight">Converses, decides, executes multi-step workflows</td>
-              </tr>
-              <tr>
-                <td>Maintenance</td>
-                <td>Breaks on schema or field changes</td>
-                <td class="highlight">Monitored agents with guardrails and human-in-the-loop</td>
-              </tr>
-              <tr>
-                <td>The Result</td>
-                <td>Time savings, but limited coverage</td>
-                <td class="highlight">Digital employee that owns outcomes end-to-end</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
+    <div class="flex flex-wrap justify-center gap-16">
+      <a href="https://cal.com/webuildco/intro" target="_blank" rel="noopener" class="inline-flex items-center bg-obsidian text-snow text-[15px] font-medium rounded-3xl-3 px-28 py-16 shadow-subtle hover:brightness-115 hover:-translate-y-px transition cursor-pointer">Book a demo →</a>
+      <a href="#agents" class="inline-flex items-center bg-snow text-graphite text-[15px] font-medium rounded-3xl-3 px-24 py-16 border border-graphite hover:text-obsidian transition cursor-pointer">See the agents</a>
+    </div>
 
-    <!-- Services -->
-    <section class="section fade-in" id="services">
-      <div class="container">
-        <div class="section-head">
-          <div class="badge">What We Build</div>
-          <h2 style="font-size:42px;">Agentic systems that cover your front desk and back office.</h2>
-          <p>From voice reception to lead intake and document automation, we architect reliable systems tuned to your operations.</p>
-        </div>
-        <div class="grid services-grid">
-          <div class="card">
-            <div class="icon-circle">📞</div>
-            <h3>AI Receptionist</h3>
-            <p>Voice agent that answers calls, books meetings, and routes urgent issues — 24/7.</p>
-          </div>
-          <div class="card">
-            <div class="icon-circle">🤝</div>
-            <h3>Lead Capture & CRM</h3>
-            <p>Auto-qualify inbound leads, sync to your CRM, and book in seconds with zero human lag.</p>
-          </div>
-          <div class="card">
-            <div class="icon-circle">📄</div>
-            <h3>Document Automation</h3>
-            <p>Generate invoices, contracts, and reports with contextual AI checks before anything is sent.</p>
-          </div>
-          <div class="card">
-            <div class="icon-circle">⚙️</div>
-            <h3>Custom AI Workflows</h3>
-            <p>Tailored agentic flows that map to your specific processes and compliance needs.</p>
-          </div>
-        </div>
-      </div>
-    </section>
+    <!-- Stat blocks -->
+    <div class="flex flex-wrap justify-center gap-x-64 gap-y-28 mt-48">
+      <div class="reveal"><div class="text-heading-lg font-bold text-obsidian" data-count="14">0</div><div class="text-[13px] text-slate">agents in production</div></div>
+      <div class="reveal"><div class="text-heading-lg font-bold text-obsidian" data-count="30" data-suffix="+">0</div><div class="text-[13px] text-slate">workflows automated</div></div>
+      <div class="reveal"><div class="text-heading-lg font-bold text-obsidian" data-literal="24/7">0</div><div class="text-[13px] text-slate">always on, no leave</div></div>
+      <div class="reveal"><div class="text-heading-lg font-bold text-obsidian" data-count="3" data-prefix="wk ">0</div><div class="text-[13px] text-slate">typical time to live</div></div>
+    </div>
 
-    <!-- Engineering Scope -->
-    <section class="section fade-in" id="scope">
-      <div class="container">
-        <div class="section-head">
-          <h2 style="font-size:42px;"><span style="color:var(--accent1);"><em>Engineering Scope</em></span> &amp; Delivery</h2>
-          <p class="sub">Every engagement is architected, engineered, and deployed by me personally. No outsourcing. No junior devs. You get a Computer Engineer building your infrastructure.</p>
-        </div>
-        <div class="grid" style="grid-template-columns:1fr 1fr;gap:20px;max-width:960px;margin:0 auto;">
-          <div style="padding:28px 24px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:12px;">
-            <h3 style="font-size:18px;margin-bottom:10px;">Custom OpenClaw Skills</h3>
-            <p style="color:var(--muted);font-size:14px;line-height:1.6;margin-bottom:16px;">Beyond the defaults, I write custom TypeScript and Go code to give your agents control over your specific internal tools.</p>
-            <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;">
-              <li style="color:var(--muted);font-size:13px;display:flex;gap:8px;align-items:flex-start;"><span style="color:var(--accent1);">✓</span> Custom Skill Authoring: Bespoke TypeScript/Go development.</li>
-              <li style="color:var(--muted);font-size:13px;display:flex;gap:8px;align-items:flex-start;"><span style="color:var(--accent1);">✓</span> Deep Integration: Full API and internal tool connectivity.</li>
-              <li style="color:var(--muted);font-size:13px;display:flex;gap:8px;align-items:flex-start;"><span style="color:var(--accent1);">✓</span> Hardened Testing: Full test coverage across production-ready workflows.</li>
-            </ul>
-          </div>
-          <div style="padding:28px 24px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:12px;">
-            <h3 style="font-size:18px;margin-bottom:10px;">Hybrid Architectures (The Best of Both Worlds)</h3>
-            <p style="color:var(--muted);font-size:14px;line-height:1.6;margin-bottom:16px;">I combine the deterministic reliability of n8n with the cognitive autonomy of OpenClaw.</p>
-            <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;">
-              <li style="color:var(--muted);font-size:13px;display:flex;gap:8px;align-items:flex-start;"><span style="color:var(--accent1);">✓</span> Pipeline Design: n8n for logic, OpenClaw for execution.</li>
-              <li style="color:var(--muted);font-size:13px;display:flex;gap:8px;align-items:flex-start;"><span style="color:var(--accent1);">✓</span> Error Handling: Advanced fallback and self-recovery logic.</li>
-              <li style="color:var(--muted);font-size:13px;display:flex;gap:8px;align-items:flex-start;"><span style="color:var(--accent1);">✓</span> Multi-Agent Swarms: Orchestration across specialized digital roles.</li>
-            </ul>
-          </div>
-          <div style="padding:28px 24px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:12px;">
-            <h3 style="font-size:18px;margin-bottom:10px;">Secure Deployment (The Cage)</h3>
-            <p style="color:var(--muted);font-size:14px;line-height:1.6;margin-bottom:16px;">Self-hosted setups that keep your data local. Your intelligence stays on your hardware, not in a third-party cloud.</p>
-            <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;">
-              <li style="color:var(--muted);font-size:13px;display:flex;gap:8px;align-items:flex-start;"><span style="color:var(--accent1);">✓</span> Sovereign Hosting: On-premise or private cloud (Hetzner/AWS) installs.</li>
-              <li style="color:var(--muted);font-size:13px;display:flex;gap:8px;align-items:flex-start;"><span style="color:var(--accent1);">✓</span> Data Residency: Strict access controls and zero-leakage configurations.</li>
-              <li style="color:var(--muted);font-size:13px;display:flex;gap:8px;align-items:flex-start;"><span style="color:var(--accent1);">✓</span> Security Hardening: Ongoing monitoring and system isolation (Docker).</li>
-            </ul>
-          </div>
-          <div style="padding:28px 24px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:12px;">
-            <h3 style="font-size:18px;margin-bottom:10px;">Full Ownership &amp; Handoff</h3>
-            <p style="color:var(--muted);font-size:14px;line-height:1.6;margin-bottom:16px;">I build systems you own forever. The goal is that you never need to call me again. That's the win.</p>
-            <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;">
-              <li style="color:var(--muted);font-size:13px;display:flex;gap:8px;align-items:flex-start;"><span style="color:var(--accent1);">✓</span> Live Training: I walk your team through the architecture until they own it.</li>
-              <li style="color:var(--muted);font-size:13px;display:flex;gap:8px;align-items:flex-start;"><span style="color:var(--accent1);">✓</span> Technical Docs: Full reference manuals written for non-engineers.</li>
-              <li style="color:var(--muted);font-size:13px;display:flex;gap:8px;align-items:flex-start;"><span style="color:var(--accent1);">✓</span> 30-Day Launch Support: Post-deployment check-ins to ensure stability.</li>
-            </ul>
-          </div>
-        </div>
-        <!-- Add-on retainer -->
-        <div style="margin-top:28px;max-width:960px;margin-left:auto;margin-right:auto;padding:28px 32px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:12px;display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center;">
-          <div>
-            <div class="badge" style="margin-bottom:14px;">Add-On</div>
-            <h3 style="font-size:20px;margin-bottom:10px;">Optional: Ongoing Maintenance Retainer</h3>
-            <p style="color:var(--muted);font-size:14px;line-height:1.7;">I build robust systems — but APIs change, models get updated, and the internet moves fast. My optional monthly retainer keeps your agents current, secure, and running without you lifting a finger.</p>
-          </div>
-          <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;">
-            <li style="color:var(--muted);font-size:13px;display:flex;gap:8px;align-items:flex-start;"><span style="color:var(--accent1);">✓</span> Priority response if something breaks</li>
-            <li style="color:var(--muted);font-size:13px;display:flex;gap:8px;align-items:flex-start;"><span style="color:var(--accent1);">✓</span> Proactive updates when upstream APIs or models change</li>
-            <li style="color:var(--muted);font-size:13px;display:flex;gap:8px;align-items:flex-start;"><span style="color:var(--accent1);">✓</span> Monthly health-check report</li>
-            <li style="color:var(--muted);font-size:13px;display:flex;gap:8px;align-items:flex-start;"><span style="color:var(--accent1);">✓</span> Discounted rate for new feature requests</li>
-          </ul>
-        </div>
+    <!-- Marquee -->
+    <div class="mt-48 py-20 border-y border-fog overflow-hidden relative">
+      <div class="absolute inset-y-0 left-0 w-[90px] bg-gradient-to-r from-mist to-transparent z-10 pointer-events-none"></div>
+      <div class="absolute inset-y-0 right-0 w-[90px] bg-gradient-to-l from-mist to-transparent z-10 pointer-events-none"></div>
+      <div class="text-caption uppercase tracking-widest text-slate mb-16 font-medium">Plugs into the stack you already pay for</div>
+      <div class="marquee flex gap-48 w-max">
+        <span class="text-subheading font-medium text-slate whitespace-nowrap">Gmail</span><span class="text-subheading font-medium text-slate whitespace-nowrap">Google Calendar</span><span class="text-subheading font-medium text-slate whitespace-nowrap">Slack</span><span class="text-subheading font-medium text-slate whitespace-nowrap">HubSpot</span><span class="text-subheading font-medium text-slate whitespace-nowrap">Notion</span><span class="text-subheading font-medium text-slate whitespace-nowrap">Xero</span><span class="text-subheading font-medium text-slate whitespace-nowrap">Zoho</span><span class="text-subheading font-medium text-slate whitespace-nowrap">WhatsApp</span><span class="text-subheading font-medium text-slate whitespace-nowrap">Airtable</span><span class="text-subheading font-medium text-slate whitespace-nowrap">Stripe</span><span class="text-subheading font-medium text-slate whitespace-nowrap">Gmail</span><span class="text-subheading font-medium text-slate whitespace-nowrap">Google Calendar</span><span class="text-subheading font-medium text-slate whitespace-nowrap">Slack</span><span class="text-subheading font-medium text-slate whitespace-nowrap">HubSpot</span><span class="text-subheading font-medium text-slate whitespace-nowrap">Notion</span><span class="text-subheading font-medium text-slate whitespace-nowrap">Xero</span><span class="text-subheading font-medium text-slate whitespace-nowrap">Zoho</span><span class="text-subheading font-medium text-slate whitespace-nowrap">WhatsApp</span><span class="text-subheading font-medium text-slate whitespace-nowrap">Airtable</span><span class="text-subheading font-medium text-slate whitespace-nowrap">Stripe</span>
       </div>
-    </section>
+    </div>
+  </div>
+</header>
 
-    <!-- Process -->
-    <section class="section fade-in" id="process">
-      <div class="container">
-        <div class="section-head">
-          <div class="badge">Our Process</div>
-          <h2 style="font-size:42px;">Your shortcut to full automation.</h2>
-          <p>Three steps, fully managed. We design, build, and ship your digital employee without slowing your team.</p>
-        </div>
-        <div class="process-cards">
-          <div class="process-card">
-            <div class="step-number">Step 01</div>
-            <h3>Discovery Call</h3>
-            <p>Understand your workflows, systems, and outcomes. Identify the fastest path to ROI.</p>
-          </div>
-          <div class="process-card">
-            <div class="step-number">Step 02</div>
-            <h3>We Build Your System</h3>
-            <p>Architect and deploy agentic AI that plugs into your stack, with monitoring and guardrails.</p>
-          </div>
-          <div class="process-card">
-            <div class="step-number">Step 03</div>
-            <h3>Go Live & Scale</h3>
-            <p>Launch, measure, and iterate. Train the digital employee to take on more of the work.</p>
-          </div>
-        </div>
-      </div>
-    </section>
+<!-- Agent bento -->
+<section class="py-80" id="agents">
+  <div class="max-w-[1200px] mx-auto px-24">
+    <div class="max-w-[660px] mb-48 reveal">
+      <div class="text-caption uppercase tracking-widest text-slate font-medium mb-16 flex items-center gap-8"><span class="w-[22px] h-px bg-pebble"></span>The roster</div>
+      <h2 class="text-heading md:text-heading-lg font-semibold text-obsidian tracking-[-0.02em]">Agents built for <span class="font-light text-slate">one job</span> — and good at it.</h2>
+    </div>
 
-    <!-- Industries -->
-    <section class="section fade-in" id="industries">
-      <div class="container">
-        <div class="section-head">
-          <div class="badge">Built For</div>
-          <h2 style="font-size:42px;">Purpose-built for Australian operators.</h2>
-          <p>Verticalized playbooks that respect how you sell, serve, and stay compliant.</p>
+    <div class="grid grid-cols-1 md:grid-cols-6 gap-20">
+      <!-- BizDev -->
+      <div class="md:col-span-4 bg-snow rounded-3xl-3 p-28 shadow-subtle-2 hover:-translate-y-4 hover:shadow-lg transition reveal">
+        <h3 class="text-heading-sm font-bold text-obsidian mb-4">BizDev Copilot</h3>
+        <p class="text-body text-slate mb-16 max-w-[320px] font-light">Researches, enriches and <b class="font-semibold text-ink">replies to inbound</b> before it goes cold — then books the call.</p>
+        <div class="flex flex-wrap gap-8 mb-20">
+          <span class="bg-graphite text-[#fafafa] text-caption font-medium rounded-xl px-8 py-4">Gmail</span>
+          <span class="bg-graphite text-[#fafafa] text-caption font-medium rounded-xl px-8 py-4">HubSpot</span>
+          <span class="bg-graphite text-[#fafafa] text-caption font-medium rounded-xl px-8 py-4">Apollo</span>
         </div>
-        <div class="grid industries-grid">
-          <div class="card industry-card">
-            <h3>Real Estate</h3>
-            <p>Lead capture, listing automation, inspections scheduling, instant callbacks.</p>
-          </div>
-          <div class="card industry-card">
-            <h3>Law Firms</h3>
-            <p>Client intake, document generation, calendar sync, informed follow-ups.</p>
-          </div>
-          <div class="card industry-card">
-            <h3>Trades</h3>
-            <p>Quoting, dispatch, job status updates, post-job reviews on autopilot.</p>
-          </div>
-          <div class="card industry-card">
-            <h3>Accounting</h3>
-            <p>Data entry, reconciliations, client comms, recurring reports delivered on time.</p>
-          </div>
-          <div class="industry-card card">
-            <h3>Medical Practice</h3>
-            <p>Patient intake, appointment reminders, referral management, and after-hours triage routing.</p>
-          </div>
+        <div class="rounded-2xl-2 overflow-hidden border border-fog shadow-md">
+          <svg viewBox="0 0 640 240" class="w-full h-auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Lead pipeline mockup">
+            <rect width="640" height="240" fill="#fafafa"/><rect width="640" height="32" fill="#fff"/><line x1="0" y1="32" x2="640" y2="32" stroke="#ececee"/>
+            <circle cx="18" cy="16" r="4" fill="#d4d4d8"/><circle cx="32" cy="16" r="4" fill="#d4d4d8"/><circle cx="46" cy="16" r="4" fill="#d4d4d8"/>
+            <g font-family="monospace" font-size="9" fill="#71717a"><text x="24" y="56">NEW · 6</text><text x="184" y="56">ENRICHED · 4</text><text x="344" y="56">REPLIED · 5</text><text x="504" y="56">BOOKED · 3</text></g>
+            <rect x="20" y="64" width="140" height="42" rx="10" fill="#fff" stroke="#ececee"/><rect x="30" y="74" width="76" height="7" rx="3" fill="#d4d4d8"/><rect x="30" y="88" width="100" height="6" rx="3" fill="#ececee"/>
+            <rect x="20" y="112" width="140" height="42" rx="10" fill="#fff" stroke="#ececee"/><rect x="30" y="122" width="60" height="7" rx="3" fill="#d4d4d8"/><rect x="30" y="136" width="90" height="6" rx="3" fill="#ececee"/>
+            <rect x="180" y="64" width="140" height="42" rx="10" fill="#fff" stroke="#ececee"/><rect x="190" y="74" width="70" height="7" rx="3" fill="#d4d4d8"/><rect x="190" y="88" width="96" height="6" rx="3" fill="#ececee"/>
+            <rect x="340" y="64" width="140" height="56" rx="10" fill="#09090b"/><rect x="350" y="74" width="72" height="7" rx="3" fill="#3f3f46"/><rect x="350" y="88" width="104" height="6" rx="3" fill="#27272a"/><rect x="350" y="102" width="56" height="10" rx="5" fill="#c8e636"/>
+            <rect x="500" y="64" width="120" height="42" rx="10" fill="#fff" stroke="#c8e636" stroke-width="1.5"/><rect x="510" y="74" width="58" height="7" rx="3" fill="#d4d4d8"/><circle cx="604" cy="85" r="7" fill="#c8e636"/><path d="M600.5 85l2.5 2.5 4.5-5" stroke="#09090b" stroke-width="1.6" fill="none"/>
+            <rect x="20" y="164" width="600" height="52" rx="12" fill="#09090b"/><text x="36" y="186" font-family="monospace" font-size="10" fill="#c8e636">agent › scan inbound → enrich · score · draft</text><text x="36" y="203" font-family="monospace" font-size="10" fill="#71717a">booked: 4 calls this week</text>
+          </svg>
         </div>
       </div>
-    </section>
 
-    <!-- Good Fit / Not a Fit -->
-    <section class="section fade-in" id="fit">
-      <div class="container">
-        <div class="section-head">
-          <div class="badge">Straight Talk</div>
-          <h2 style="font-size:42px;">Who I <span style="color:var(--accent1);">Work With</span></h2>
-          <p class="sub">I'd rather be honest now than waste both our time.</p>
+      <!-- Migration Concierge -->
+      <div class="md:col-span-2 bg-obsidian rounded-3xl-3 p-28 hover:-translate-y-4 transition reveal">
+        <h3 class="text-heading-sm font-bold text-snow mb-4">Migration Concierge</h3>
+        <p class="text-body text-ash mb-20 font-light">First-touch intake — <b class="font-semibold text-snow">qualifies, collects docs, books</b> the consult.</p>
+        <div class="rounded-2xl-2 overflow-hidden border border-snow/10">
+          <svg viewBox="0 0 300 180" class="w-full h-auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Chat intake mockup">
+            <rect width="300" height="180" fill="#101110"/>
+            <rect x="14" y="14" width="170" height="32" rx="13" fill="#1d1e1d"/><rect x="26" y="24" width="110" height="6" rx="3" fill="#3f3f46"/><rect x="26" y="34" width="76" height="5" rx="2.5" fill="#2c2d2c"/>
+            <rect x="110" y="56" width="176" height="42" rx="13" fill="#c8e636"/><rect x="122" y="66" width="136" height="6" rx="3" fill="#09090b" opacity=".75"/><rect x="122" y="77" width="108" height="5" rx="2.5" fill="#09090b" opacity=".45"/><rect x="122" y="87" width="84" height="5" rx="2.5" fill="#09090b" opacity=".45"/>
+            <rect x="14" y="108" width="146" height="28" rx="12" fill="#1d1e1d"/><rect x="26" y="117" width="94" height="6" rx="3" fill="#3f3f46"/>
+            <rect x="110" y="146" width="176" height="22" rx="11" fill="#1d1e1d" stroke="#c8e636" stroke-opacity=".4"/>
+            <text x="122" y="161" font-family="monospace" font-size="8.5" fill="#c8e636">✓ consult booked · Tue 10:30</text>
+          </svg>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;max-width:860px;margin:0 auto;">
-          <!-- Good Fit -->
-          <div>
-            <p style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:20px;">Good Fit</p>
-            <div style="display:flex;flex-direction:column;gap:22px;">
-              <div style="display:flex;gap:12px;align-items:flex-start;">
-                <span style="color:#22c55e;font-size:18px;flex-shrink:0;">✅</span>
-                <div><strong>Scaling Businesses</strong><br><span style="color:var(--muted);font-size:14px;">You're doing $20k–$500k/mo and drowning in admin work that doesn't need a human.</span></div>
-              </div>
-              <div style="display:flex;gap:12px;align-items:flex-start;">
-                <span style="color:#22c55e;font-size:18px;flex-shrink:0;">✅</span>
-                <div><strong>Technical Teams</strong><br><span style="color:var(--muted);font-size:14px;">You have a dev team but they don't understand Agentic AI or OpenClaw yet. I bridge the gap.</span></div>
-              </div>
-              <div style="display:flex;gap:12px;align-items:flex-start;">
-                <span style="color:#22c55e;font-size:18px;flex-shrink:0;">✅</span>
-                <div><strong>Agencies</strong><br><span style="color:var(--muted);font-size:14px;">You want to white-label AI automation and deliver it to your own clients under your brand.</span></div>
-              </div>
-            </div>
-          </div>
-          <!-- Not a Fit -->
-          <div>
-            <p style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:20px;">Not a Fit</p>
-            <div style="display:flex;flex-direction:column;gap:22px;">
-              <div style="display:flex;gap:12px;align-items:flex-start;">
-                <span style="color:#ef4444;font-size:18px;flex-shrink:0;">❌</span>
-                <div><strong>Idea Stage</strong><br><span style="color:var(--muted);font-size:14px;">You have an idea for an app but no business yet. Come back when you have revenue to protect.</span></div>
-              </div>
-              <div style="display:flex;gap:12px;align-items:flex-start;">
-                <span style="color:#ef4444;font-size:18px;flex-shrink:0;">❌</span>
-                <div><strong>Micromanagers</strong><br><span style="color:var(--muted);font-size:14px;">You want to watch me code live and approve every line. That's not how engineering works.</span></div>
-              </div>
-              <div style="display:flex;gap:12px;align-items:flex-start;">
-                <span style="color:#ef4444;font-size:18px;flex-shrink:0;">❌</span>
-                <div><strong>Magic Button Seekers</strong><br><span style="color:var(--muted);font-size:14px;">You want results without understanding your own workflow. AI amplifies process — it doesn't replace it.</span></div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div style="text-align:center;margin-top:36px;">
-          <a href="https://cal.com/webuildai/30min" target="_blank" class="btn btn-primary">Book a free intro call →</a>
-        </div>
+        <div class="flex gap-8 mt-16"><span class="border border-snow/30 text-snow text-caption font-medium rounded-xl px-8 py-4">WhatsApp</span><span class="border border-snow/30 text-snow text-caption font-medium rounded-xl px-8 py-4">Drive</span></div>
       </div>
-    </section>
 
-    <!-- Tech Stack -->
-    <section class="section fade-in" id="stack">
-      <div class="container">
-        <div class="section-head">
-          <div class="badge">The Stack I Use</div>
-          <h2 style="font-size:42px;">Sovereign Intelligence. <span style="color:var(--accent1);">Local-First, Owned Forever.</span></h2>
-        </div>
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:32px;max-width:900px;margin:0 auto;">
-          <div>
-            <p style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--accent1);margin-bottom:14px;font-family:var(--mono);">Core</p>
-            <div style="display:flex;flex-direction:column;gap:10px;">
-              <div style="padding:12px 16px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;font-size:14px;">OpenClaw</div>
-              <div style="padding:12px 16px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;font-size:14px;">Docker</div>
-              <div style="padding:12px 16px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;font-size:14px;">Python</div>
-              <div style="padding:12px 16px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;font-size:14px;">Go</div>
-            </div>
-          </div>
-          <div>
-            <p style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--accent1);margin-bottom:14px;font-family:var(--mono);">Orchestration</p>
-            <div style="display:flex;flex-direction:column;gap:10px;">
-              <div style="padding:12px 16px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;font-size:14px;">n8n</div>
-              <div style="padding:12px 16px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;font-size:14px;">Supabase</div>
-            </div>
-          </div>
-          <div>
-            <p style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--accent1);margin-bottom:14px;font-family:var(--mono);">Voice &amp; Comms</p>
-            <div style="display:flex;flex-direction:column;gap:10px;">
-              <div style="padding:12px 16px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;font-size:14px;">VAPI</div>
-              <div style="padding:12px 16px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;font-size:14px;">Twilio</div>
-            </div>
-          </div>
-          <div>
-            <p style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--accent1);margin-bottom:14px;font-family:var(--mono);">LLMs</p>
-            <div style="display:flex;flex-direction:column;gap:10px;">
-              <div style="padding:12px 16px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;font-size:14px;">Claude 3.5</div>
-              <div style="padding:12px 16px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;font-size:14px;">OpenAI o3</div>
-              <div style="padding:12px 16px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;font-size:14px;">Local Llama</div>
-            </div>
-          </div>
-        </div>
+      <!-- Support Deflector -->
+      <div class="md:col-span-2 bg-fog rounded-3xl-2 p-24 hover:-translate-y-4 transition reveal">
+        <h3 class="text-heading-sm font-bold text-obsidian mb-4">Support Deflector</h3>
+        <p class="text-body text-slate font-light">Answers repeat questions <b class="font-semibold text-ink">from your own docs</b>; escalates only the real ones.</p>
+        <div class="flex gap-8 mt-16"><span class="bg-graphite text-[#fafafa] text-caption font-medium rounded-xl px-8 py-4">Zendesk</span><span class="bg-graphite text-[#fafafa] text-caption font-medium rounded-xl px-8 py-4">Notion</span></div>
       </div>
-    </section>
 
-    <!-- Digital Roles -->
-    <section class="section fade-in" id="roles">
-      <div class="container">
-        <div class="section-head">
-          <h2 style="font-size:42px;">Meet Your New <span style="color:var(--accent1);"><em>Digital Roles</em></span></h2>
-          <p class="sub">Not templates. Not triggers. Autonomous agents engineered to fill real positions in your business.</p>
-        </div>
-        <div class="grid" style="grid-template-columns:repeat(3,1fr);gap:24px;max-width:960px;margin:0 auto;">
-          <div style="padding:28px 24px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:12px;">
-            <h3 style="font-size:18px;margin-bottom:12px;">The Autonomous SDR</h3>
-            <p style="color:var(--muted);font-size:14px;line-height:1.6;">It doesn't just auto-reply. It researches the lead on LinkedIn, checks their company size, and drafts a hyper-personalized email intro — before a human ever touches the thread.</p>
-          </div>
-          <div style="padding:28px 24px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:12px;">
-            <h3 style="font-size:18px;margin-bottom:12px;">Property Management Automation</h3>
-            <p style="color:var(--muted);font-size:14px;line-height:1.6;">Handles tenant inquiries, maintenance requests, and lease renewals so your team focuses on portfolio growth, not inbox management</p>
-          </div>
-          <div style="padding:28px 24px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:12px;">
-            <h3 style="font-size:18px;margin-bottom:12px;">24/7 Customer Support</h3>
-            <p style="color:var(--muted);font-size:14px;line-height:1.6;">Resolves common issues, escalates the right ones, and logs everything — your support load drops without hiring a single extra person</p>
-          </div>
-          <div style="padding:28px 24px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:12px;">
-            <h3 style="font-size:18px;margin-bottom:12px;">The "Ops Manager" Agent</h3>
-            <p style="color:var(--muted);font-size:14px;line-height:1.6;">It logs into your project management tool, nags team members about overdue tasks, and generates the Monday Morning Report automatically.</p>
-          </div>
-          <div style="padding:28px 24px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:12px;">
-            <h3 style="font-size:18px;margin-bottom:12px;">Lead Nurture Sequences</h3>
-            <p style="color:var(--muted);font-size:14px;line-height:1.6;">Multi-step outreach that adapts to how prospects respond, keeping them warm until they're ready to buy</p>
-          </div>
-          <div style="padding:28px 24px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:12px;">
-            <h3 style="font-size:18px;margin-bottom:12px;">The 24/7 Chief of Staff</h3>
-            <p style="color:var(--muted);font-size:14px;line-height:1.6;">Stop answering "where is that file?" Your team asks the agent, and it pulls answers from your Notion, Drive, and Slack history instantly.</p>
-          </div>
-        </div>
-        <div style="text-align:center;margin-top:48px;padding:40px;background:rgba(200,230,54,0.06);border:1px solid rgba(200,230,54,0.25);border-radius:16px;">
-          <h3 style="font-size:24px;margin-bottom:12px;">Something specific on your mind?</h3>
-          <p style="color:var(--muted);font-size:15px;line-height:1.6;margin-bottom:24px;">Every build starts with a call. Bring your messiest process and I'll tell you honestly what AI can and can't do for it</p>
-          <a href="https://cal.com/webuildai/30min" target="_blank" class="btn" style="background:#fff;color:#000;border-color:#fff;">Book a free intro call →</a>
-        </div>
+      <!-- Broker Copilot -->
+      <div class="md:col-span-2 bg-fog rounded-3xl-2 p-24 hover:-translate-y-4 transition reveal">
+        <h3 class="text-heading-sm font-bold text-obsidian mb-4">Broker Copilot</h3>
+        <p class="text-body text-slate font-light">Chases missing docs and keeps <b class="font-semibold text-ink">every application moving</b>.</p>
+        <div class="flex gap-8 mt-16"><span class="bg-graphite text-[#fafafa] text-caption font-medium rounded-xl px-8 py-4">Email</span><span class="bg-graphite text-[#fafafa] text-caption font-medium rounded-xl px-8 py-4">CRM</span><span class="bg-graphite text-[#fafafa] text-caption font-medium rounded-xl px-8 py-4">SMS</span></div>
       </div>
-    </section>
 
-    <!-- Security -->
-    <section class="section fade-in" id="security">
-      <div class="container">
-        <div class="section-head">
-          <div class="badge">Security First</div>
-          <h2 style="font-size:42px;">Engineered for Security, <span style="color:var(--accent1);"><em>Not Just Speed.</em></span></h2>
-          <p class="sub">Giving an AI "agency" requires strict guardrails. I don't just install the software — I build the cage it runs in.</p>
-        </div>
-        <div class="grid" style="grid-template-columns:repeat(3,1fr);gap:24px;max-width:900px;margin:0 auto;">
-          <div style="padding:28px 24px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:12px;">
-            <h3 style="font-size:18px;margin-bottom:12px;">Sandbox Environments</h3>
-            <p style="color:var(--muted);font-size:14px;line-height:1.6;">Your agents run in isolated Docker containers. Even if they try to go off-script, they can't touch your core OS or production systems.</p>
-          </div>
-          <div style="padding:28px 24px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:12px;">
-            <h3 style="font-size:18px;margin-bottom:12px;">Human-in-the-Loop</h3>
-            <p style="color:var(--muted);font-size:14px;line-height:1.6;">Critical actions — sending money, deleting files, emailing VIPs — are configured to draft the action and ping you for approval on Slack or Teams before executing.</p>
-          </div>
-          <div style="padding:28px 24px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:12px;">
-            <h3 style="font-size:18px;margin-bottom:12px;">Local-First Data</h3>
-            <p style="color:var(--muted);font-size:14px;line-height:1.6;">No data is sent to OpenAI or any external LLM unless you explicitly require it. Your internal docs and customer data stay on your own servers.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- FAQ -->
-    <section class="section fade-in" id="faq">
-      <div class="container" style="max-width:720px;">
-        <div class="section-head">
-          <div class="badge">Common Questions</div>
-          <h2 style="font-size:42px;">Frequently Asked <span style="color:var(--accent1);"><em>Questions</em></span></h2>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:2px;">
-          <details style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;padding:0;">
-            <summary style="padding:18px 22px;cursor:pointer;font-weight:600;font-size:15px;list-style:none;display:flex;justify-content:space-between;align-items:center;">Do I need a technical team to manage this?<span style="color:var(--accent1);font-size:20px;transition:transform 0.2s;">+</span></summary>
-            <div style="padding:0 22px 18px;color:var(--muted);font-size:14px;line-height:1.7;">No. I build the system to run on autopilot. If it breaks, it alerts me — not you. Plus, the Handoff training ensures you know how to "steer" it without writing a single line of code.</div>
-          </details>
-          <details style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;padding:0;">
-            <summary style="padding:18px 22px;cursor:pointer;font-weight:600;font-size:15px;list-style:none;display:flex;justify-content:space-between;align-items:center;">How much does it cost to run the AI agents monthly?<span style="color:var(--accent1);font-size:20px;transition:transform 0.2s;">+</span></summary>
-            <div style="padding:0 22px 18px;color:var(--muted);font-size:14px;line-height:1.7;">Most setups run between $50–$300/month in API and hosting costs depending on volume. I design for cost-efficiency from day one — local models where possible, cloud only when necessary.</div>
-          </details>
-          <details style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;padding:0;">
-            <summary style="padding:18px 22px;cursor:pointer;font-weight:600;font-size:15px;list-style:none;display:flex;justify-content:space-between;align-items:center;">Will the AI make mistakes with my customers?<span style="color:var(--accent1);font-size:20px;transition:transform 0.2s;">+</span></summary>
-            <div style="padding:0 22px 18px;color:var(--muted);font-size:14px;line-height:1.7;">Every agent has guardrails. High-risk actions (money, emails to clients, data deletion) require human approval before executing. You set the boundaries, the AI respects them.</div>
-          </details>
-          <details style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;padding:0;">
-            <summary style="padding:18px 22px;cursor:pointer;font-weight:600;font-size:15px;list-style:none;display:flex;justify-content:space-between;align-items:center;">How long does a typical build take?<span style="color:var(--accent1);font-size:20px;transition:transform 0.2s;">+</span></summary>
-            <div style="padding:0 22px 18px;color:var(--muted);font-size:14px;line-height:1.7;">A focused build takes 2–4 weeks from kickoff to launch. Complex multi-agent systems may take 6–8 weeks. Every project includes a clear timeline before we start.</div>
-          </details>
-          <details style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;padding:0;">
-            <summary style="padding:18px 22px;cursor:pointer;font-weight:600;font-size:15px;list-style:none;display:flex;justify-content:space-between;align-items:center;">What if it breaks after handoff?<span style="color:var(--accent1);font-size:20px;transition:transform 0.2s;">+</span></summary>
-            <div style="padding:0 22px 18px;color:var(--muted);font-size:14px;line-height:1.7;">Every build includes monitoring and alerting. If something goes down, I know before you do. Post-launch support is included to make sure everything stays running smoothly.</div>
-          </details>
-          <details style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;padding:0;">
-            <summary style="padding:18px 22px;cursor:pointer;font-weight:600;font-size:15px;list-style:none;display:flex;justify-content:space-between;align-items:center;">Can I keep using my existing tools?<span style="color:var(--accent1);font-size:20px;transition:transform 0.2s;">+</span></summary>
-            <div style="padding:0 22px 18px;color:var(--muted);font-size:14px;line-height:1.7;">Absolutely. I build around your stack — CRM, project management, email, Slack, whatever you already use. The AI plugs in, it doesn't replace your tools.</div>
-          </details>
-        </div>
-      </div>
-    </section>
-    <style>
-      details[open] summary span:last-child { transform: rotate(45deg); }
-      details summary::-webkit-details-marker { display: none; }
-    </style>
-
-    <!-- About / Contact anchor -->
-    <section class="section fade-in" id="about">
-      <div class="container">
-        <div class="section-head">
-          <div class="badge">About</div>
-          <h2 style="font-size:42px;">We build agentic AI for real operators.</h2>
-          <p>WeBuild Agency is based in Sydney and works hands-on with Australian SMBs. We integrate with your stack, document everything, and ship with monitoring so you stay in control.</p>
-        </div>
-        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
-          <div class="card">
-            <h3>Australia-first</h3>
-            <p>We respect local compliance, privacy, and your customers' expectations.</p>
-          </div>
-          <div class="card">
-            <h3>Full stack build</h3>
-            <p>From voice to CRM to billing, we design systems that own outcomes end-to-end.</p>
-          </div>
-          <div class="card">
-            <h3>Ongoing training</h3>
-            <p>We iterate your digital employee with real-world data and team feedback.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Intro Call CTA -->
-    <section class="section fade-in" id="contact">
-      <div class="container">
-        <div class="section-head">
-          <div class="badge">Get Started</div>
-          <h2 style="font-size:42px;">Tell me what your team spends their time on</h2>
-          <p class="sub">Book a free 30-minute intro call and I'll tell you straight whether AI can handle it.</p>
-        </div>
-        <div style="text-align:center;margin-top:8px;">
-          <a class="btn btn-primary" href="https://cal.com/webuildai/30min" target="_blank">Book a free intro call →</a>
-        </div>
-      </div>
-    </section>
-
-  <!-- AI Audit Pricing Section -->
-  <section class="section fade-in" id="ai-audit" style="padding:70px 0;">
-    <div class="container">
-      <div class="section-head" style="margin-bottom:28px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px;max-width:760px;margin-left:auto;margin-right:auto;">
-        <div class="badge">AI Audit</div>
-        <h2 style="font-size:42px;">Know exactly where AI fits in your business.</h2>
-        <p style="max-width:680px;">A structured audit that maps your workflows, identifies automation opportunities, and delivers a custom implementation roadmap with guaranteed ROI.</p>
-      </div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px;align-items:start;margin-bottom:20px;">
-        <div class="card" style="padding:28px;display:flex;flex-direction:column;">
-          <div class="badge" style="width:fit-content;margin-bottom:16px;">Introductory Offer</div>
-          <h3 style="font-size:22px;margin-bottom:8px;">Remote AI Audit</h3>
-          <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:4px;">
-            <span style="font-size:16px;color:var(--muted);text-decoration:line-through;">$997</span>
-            <span style="font-family:var(--mono);font-size:32px;font-weight:800;color:var(--accent1);">$497</span>
-          </div>
-          <p style="font-size:13px;margin:4px 0 16px;">Limited to first 10 clients</p>
-          <ul style="list-style:none;padding:0;margin:14px 0 20px;display:flex;flex-direction:column;gap:8px;color:var(--muted);flex:1;">
-            <li style="font-size:14px;"><span style="color:var(--accent2);">• </span>45-minute Zoom discovery session</li>
-            <li style="font-size:14px;"><span style="color:var(--accent2);">• </span>Full AI workflow analysis</li>
-            <li style="font-size:14px;"><span style="color:var(--accent2);">• </span>Custom report with 3-7 recommendations</li>
-            <li style="font-size:14px;"><span style="color:var(--accent2);">• </span>Priority matrix & ROI calculations</li>
-            <li style="font-size:14px;"><span style="color:var(--accent2);">• </span>4-day quick start plan</li>
-            <li style="font-size:14px;"><span style="color:var(--accent2);">• </span>30-minute review call</li>
-            <li style="font-size:14px;"><span style="color:var(--accent2);">• </span>Money-back guarantee</li>
-          </ul>
-          <a class="btn btn-outline" href="https://cal.com/webuildai/30min" target="_blank" style="display:block;width:100%;text-align:center;">Book a call to get started →</a>
-          <p style="font-size:12px;text-align:center;margin-top:10px;">Delivered within 72 hours of discovery call</p>
-        </div>
-        <div class="card" style="padding:28px;display:flex;flex-direction:column;border-color:rgba(200,230,54,0.2);">
-          <div class="badge" style="width:fit-content;margin-bottom:16px;">Premium</div>
-          <h3 style="font-size:22px;margin-bottom:8px;">On-Site AI Audit</h3>
-          <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:4px;">
-            <span style="font-family:var(--mono);font-size:32px;font-weight:800;color:var(--accent1);">$1,497</span>
-          </div>
-          <p style="font-size:14px;font-style:italic;margin:4px 0 16px;">I come to you. See your operations firsthand.</p>
-          <ul style="list-style:none;padding:0;margin:14px 0 8px;display:flex;flex-direction:column;gap:8px;color:var(--muted);">
-            <li style="font-size:14px;"><span style="color:var(--accent2);">• </span>Everything in Remote Audit</li>
-          </ul>
-          <div style="font-size:12px;font-weight:700;color:var(--accent1);text-transform:uppercase;letter-spacing:0.08em;margin:10px 0 6px;padding-top:10px;border-top:1px solid var(--border);">Plus:</div>
-          <ul style="list-style:none;padding:0;margin:0 0 20px;display:flex;flex-direction:column;gap:8px;color:var(--muted);flex:1;">
-            <li style="font-size:14px;"><span style="color:var(--accent2);">• </span>In-person visit to your business</li>
-            <li style="font-size:14px;"><span style="color:var(--accent2);">• </span>Hands-on workflow observation</li>
-            <li style="font-size:14px;"><span style="color:var(--accent2);">• </span>Staff interviews & pain point mapping</li>
-            <li style="font-size:14px;"><span style="color:var(--accent2);">• </span>Physical infrastructure assessment</li>
-            <li style="font-size:14px;"><span style="color:var(--accent2);">• </span>Same-day preliminary findings debrief</li>
-            <li style="font-size:14px;"><span style="color:var(--accent2);">• </span>Extended report with on-site observations</li>
-          </ul>
-          <div style="font-size:13px;color:var(--muted);margin-bottom:16px;padding:10px 14px;background:rgba(255,255,255,0.03);border-radius:10px;border:1px solid var(--border);">Sydney Metro area included. Regional NSW quoted on request.</div>
-          <a class="btn btn-primary" href="https://cal.com/webuildai/30min" target="_blank" style="display:block;width:100%;text-align:center;">Book a call to get started →</a>
-          <p style="font-size:12px;text-align:center;margin-top:10px;">Limited availability — 2 slots per week</p>
-        </div>
-      </div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;">
-        <div class="card" style="padding:20px;text-align:center;">
-          <div style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--accent1);margin-bottom:4px;">5+ hrs/week</div>
-          <div style="font-size:13px;color:var(--muted);">Guaranteed savings or money back</div>
-        </div>
-        <div class="card" style="padding:20px;text-align:center;">
-          <div style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--accent1);margin-bottom:4px;">72 hours</div>
-          <div style="font-size:13px;color:var(--muted);">Report delivery turnaround</div>
+      <!-- Lime wash tile: orchid-flash role -->
+      <div class="md:col-span-2 bg-lime rounded-3xl-3 p-28 flex flex-col justify-between cursor-pointer hover:-translate-y-4 transition reveal" role="button" tabindex="0">
+        <div class="w-[48px] h-[48px] rounded-full bg-obsidian text-lime grid place-items-center text-subheading self-end">↗</div>
+        <div>
+          <h3 class="text-heading-sm font-bold text-obsidian mb-4">Build your own →</h3>
+          <p class="text-body text-obsidian/70 font-light">Tell us the task that never gets done. We'll scope it in one session.</p>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  </main>
-
-  <!-- CTA Footer -->
-  <section class="cta-footer" id="work">
-    <div class="container">
-      <div class="logo" style="align-items:center;margin-bottom:24px;">
-        <div class="logo-main" style="font-size:48px;"><span class="w-accent">W</span>eBuild</div>
-        <div class="logo-sub" style="font-size:16px;">Agency</div>
-      </div>
-      <h2 class="big">EMPOWER YOUR<br>GROWTH.</h2>
-      <p>The AI automation team that gives you back your agency.</p>
-      <a class="btn btn-primary" href="https://cal.com/webuildai/30min" target="_blank">Book a free intro call →</a>
-      <div class="location">SYDNEY, AUSTRALIA</div>
-      <footer style="display:flex;flex-direction:column;align-items:center;gap:8px;">
-        <div style="display:flex;gap:20px;margin-bottom:4px;">
-          <a href="privacy.html" style="color:var(--muted);font-size:13px;text-decoration:none;">Privacy Policy</a>
-          <a href="terms.html" style="color:var(--muted);font-size:13px;text-decoration:none;">Terms of Service</a>
+<!-- Dark problem panel -->
+<section class="pb-80">
+  <div class="max-w-[1200px] mx-auto px-24 reveal">
+    <div class="bg-obsidian rounded-3xl-3 p-32 md:p-64 text-snow relative overflow-hidden">
+      <div class="grid md:grid-cols-2 gap-48 items-center relative">
+        <div>
+          <h2 class="text-heading md:text-heading-lg font-semibold tracking-[-0.02em] mb-28">We solve the busywork that <span class="font-light text-ash">kills your speed</span></h2>
+          <ul class="text-subheading">
+            <li class="flex items-center gap-16 py-12 border-b border-snow/10"><span class="w-[30px] h-[30px] rounded-xl bg-lime/10 border border-lime/25 grid place-items-center text-lime text-[13px] shrink-0">→</span><span class="font-light text-ash">Forget <b class="font-semibold text-snow">leads going cold</b> overnight</span></li>
+            <li class="flex items-center gap-16 py-12 border-b border-snow/10"><span class="w-[30px] h-[30px] rounded-xl bg-lime/10 border border-lime/25 grid place-items-center text-lime text-[13px] shrink-0">→</span><span class="font-light text-ash">No more <b class="font-semibold text-snow">copy-pasting</b> across five tabs</span></li>
+            <li class="flex items-center gap-16 py-12 border-b border-snow/10"><span class="w-[30px] h-[30px] rounded-xl bg-lime/10 border border-lime/25 grid place-items-center text-lime text-[13px] shrink-0">→</span><span class="font-light text-ash">Stop <b class="font-semibold text-snow">rebuilding the Monday report</b></span></li>
+            <li class="flex items-center gap-16 py-12"><span class="w-[30px] h-[30px] rounded-xl bg-lime/10 border border-lime/25 grid place-items-center text-lime text-[13px] shrink-0">→</span><span class="font-light text-ash">Skip <b class="font-semibold text-snow">hiring</b> for work software should do</span></li>
+          </ul>
         </div>
-        <span>© 2026 WeBuild Agency</span>
-      </footer>
+        <div>
+          <div class="bg-snow/5 border border-snow/10 rounded-3xl p-28 backdrop-blur">
+            <div class="flex items-center gap-12 mb-16">
+              <div class="w-[44px] h-[44px] rounded-2xl bg-lime text-obsidian grid place-items-center font-bold text-subheading">A</div>
+              <div><div class="font-semibold text-body">Operations lead</div><div class="text-caption text-ash">Waqf institution · Sydney</div></div>
+            </div>
+            <p class="text-body text-pebble font-light">"The Foundations Session paid for itself in the first week — we finally saw which processes were actually automatable, and which one to build first."</p>
+          </div>
+          <div class="grid grid-cols-3 gap-16 mt-20">
+            <div class="bg-snow/5 border border-snow/10 rounded-2xl-2 p-20"><div class="text-heading font-bold text-lime" data-count="70" data-suffix="%">0</div><div class="text-caption text-ash">lower cost vs a junior hire</div></div>
+            <div class="bg-snow/5 border border-snow/10 rounded-2xl-2 p-20"><div class="text-heading font-bold text-lime" data-count="40" data-suffix="%">0</div><div class="text-caption text-ash">faster inbound response</div></div>
+            <div class="bg-snow/5 border border-snow/10 rounded-2xl-2 p-20"><div class="text-heading font-bold text-lime" data-literal="24/7">0</div><div class="text-caption text-ash">coverage, no ramp-up</div></div>
+          </div>
+        </div>
+      </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <script>
-    // Close mobile menu on link tap
-    document.querySelectorAll('.nav-links a').forEach(a => {
-      a.addEventListener('click', () => {
-        document.querySelector('.hamburger').classList.remove('active');
-        document.querySelector('.nav-links').classList.remove('open');
-      });
+<!-- Production funnel -->
+<section class="pb-80">
+  <div class="max-w-[1200px] mx-auto px-24">
+    <div class="max-w-[660px] mb-48 reveal">
+      <div class="text-caption uppercase tracking-widest text-slate font-medium mb-16 flex items-center gap-8"><span class="w-[22px] h-px bg-pebble"></span>Quality gate</div>
+      <h2 class="text-heading md:text-heading-lg font-semibold text-obsidian tracking-[-0.02em]">Only <span class="font-light text-slate">tested</span> agents reach production.</h2>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-16">
+      <div class="bg-snow rounded-3xl-2 p-24 shadow-subtle-2 reveal">
+        <div class="text-caption uppercase tracking-widest text-slate font-medium mb-12">Gate 1</div>
+        <h3 class="text-heading-sm font-bold text-obsidian mb-8">Scoped</h3>
+        <p class="text-[13px] text-slate font-light mb-20">One workflow, defined inputs and outputs, a written spec you approve.</p>
+        <div class="h-8 rounded-md bg-fog overflow-hidden mb-8"><i class="bar-fill block h-full rounded-md bg-obsidian" data-w="100%"></i></div>
+        <div class="text-heading font-bold text-obsidian">100%</div>
+      </div>
+      <div class="bg-snow rounded-3xl-2 p-24 shadow-subtle-2 reveal">
+        <div class="text-caption uppercase tracking-widest text-slate font-medium mb-12">Gate 2</div>
+        <h3 class="text-heading-sm font-bold text-obsidian mb-8">Built & tested</h3>
+        <p class="text-[13px] text-slate font-light mb-20">Run against real historical cases from your business — not toy examples.</p>
+        <div class="h-8 rounded-md bg-fog overflow-hidden mb-8"><i class="bar-fill block h-full rounded-md bg-obsidian" data-w="75%"></i></div>
+        <div class="text-heading font-bold text-obsidian">wk 2–3</div>
+      </div>
+      <div class="bg-snow rounded-3xl-2 p-24 shadow-subtle-2 reveal">
+        <div class="text-caption uppercase tracking-widest text-slate font-medium mb-12">Gate 3</div>
+        <h3 class="text-heading-sm font-bold text-obsidian mb-8">Shadow mode</h3>
+        <p class="text-[13px] text-slate font-light mb-20">Agent drafts, human approves. Every miss becomes a fix before go-live.</p>
+        <div class="h-8 rounded-md bg-fog overflow-hidden mb-8"><i class="bar-fill block h-full rounded-md bg-obsidian" data-w="45%"></i></div>
+        <div class="text-heading font-bold text-obsidian">wk 3–4</div>
+      </div>
+      <div class="bg-obsidian rounded-3xl-2 p-24 reveal">
+        <div class="text-caption uppercase tracking-widest text-lime font-medium mb-12">Production</div>
+        <h3 class="text-heading-sm font-bold text-snow mb-8">Live & monitored</h3>
+        <p class="text-[13px] text-ash font-light mb-20">Full autonomy with logging, alerts and a human escape hatch.</p>
+        <div class="h-8 rounded-md bg-snow/10 overflow-hidden mb-8"><i class="bar-fill block h-full rounded-md bg-lime" data-w="100%"></i></div>
+        <div class="text-heading font-bold text-snow">Live ✓</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Work rail -->
+<section class="pb-80" id="work">
+  <div class="max-w-[1200px] mx-auto px-24">
+    <div class="flex flex-wrap items-end justify-between gap-20 mb-32 reveal">
+      <div>
+        <div class="text-caption uppercase tracking-widest text-slate font-medium mb-16 flex items-center gap-8"><span class="w-[22px] h-px bg-pebble"></span>Recent work</div>
+        <h2 class="text-heading md:text-heading-lg font-semibold text-obsidian tracking-[-0.02em]">Ideas that became <span class="font-light text-slate">running agents</span></h2>
+      </div>
+      <div class="flex gap-8">
+        <button id="railPrev" aria-label="Previous" class="w-[44px] h-[44px] rounded-full bg-snow border border-pebble grid place-items-center hover:border-obsidian hover:-translate-y-px transition cursor-pointer">←</button>
+        <button id="railNext" aria-label="Next" class="w-[44px] h-[44px] rounded-full bg-snow border border-pebble grid place-items-center hover:border-obsidian hover:-translate-y-px transition cursor-pointer">→</button>
+      </div>
+    </div>
+    <div class="rail flex gap-20 overflow-x-auto snap-x snap-mandatory pb-8" id="rail">
+      <div class="snap-start shrink-0 w-[320px] bg-snow rounded-3xl-3 overflow-hidden shadow-subtle-2 hover:-translate-y-4 hover:shadow-lg transition reveal">
+        <svg viewBox="0 0 340 180" class="w-full"><rect width="340" height="180" fill="#09090b"/><text x="22" y="36" font-family="monospace" font-size="10" fill="#c8e636">$ hermes deploy --agent ea</text><rect x="22" y="50" width="200" height="7" rx="3.5" fill="#3f3f46"/><rect x="22" y="64" width="160" height="7" rx="3.5" fill="#27272a"/><rect x="22" y="86" width="118" height="18" rx="9" fill="#c8e636"/><text x="34" y="99" font-family="monospace" font-size="9" fill="#09090b">● agent live</text><text x="22" y="162" font-family="monospace" font-size="9" fill="#52525b">telegram · zoho · knowledge base</text></svg>
+        <div class="p-24">
+          <h3 class="text-body-lg font-bold text-obsidian mb-4">Waqf institution — EA agent</h3>
+          <p class="text-[13px] text-slate font-light mb-12">Knowledge base + Telegram EA agent, phased pilot.</p>
+          <div class="flex flex-wrap gap-8"><span class="bg-graphite text-[#fafafa] text-caption font-medium rounded-xl px-8 py-4">Telegram</span><span class="bg-graphite text-[#fafafa] text-caption font-medium rounded-xl px-8 py-4">Zoho</span></div>
+        </div>
+      </div>
+      <div class="snap-start shrink-0 w-[320px] bg-snow rounded-3xl-3 overflow-hidden shadow-subtle-2 hover:-translate-y-4 hover:shadow-lg transition reveal">
+        <svg viewBox="0 0 340 180" class="w-full"><rect width="340" height="180" fill="#f4f4f5"/><rect x="24" y="20" width="292" height="140" rx="14" fill="#fff" stroke="#ececee"/><rect x="40" y="38" width="110" height="10" rx="5" fill="#09090b"/><rect x="40" y="76" width="80" height="64" rx="10" fill="#f4f4f5" stroke="#ececee"/><rect x="130" y="76" width="80" height="64" rx="10" fill="#f4f4f5" stroke="#c8e636" stroke-width="1.5"/><rect x="220" y="76" width="80" height="64" rx="10" fill="#f4f4f5" stroke="#ececee"/><rect x="140" y="88" width="60" height="8" rx="4" fill="#09090b"/><rect x="140" y="118" width="52" height="12" rx="6" fill="#c8e636"/></svg>
+        <div class="p-24">
+          <h3 class="text-body-lg font-bold text-obsidian mb-4">Optora — recruiting Command Center</h3>
+          <p class="text-[13px] text-slate font-light mb-12">Smart Hands Engineer pipeline: JD Builder + processing.</p>
+          <div class="flex flex-wrap gap-8"><span class="bg-graphite text-[#fafafa] text-caption font-medium rounded-xl px-8 py-4">Data centres</span><span class="bg-graphite text-[#fafafa] text-caption font-medium rounded-xl px-8 py-4">Recruiting</span></div>
+        </div>
+      </div>
+      <div class="snap-start shrink-0 w-[320px] bg-snow rounded-3xl-3 overflow-hidden shadow-subtle-2 hover:-translate-y-4 hover:shadow-lg transition reveal">
+        <svg viewBox="0 0 340 180" class="w-full"><rect width="340" height="180" fill="#101110"/><text x="22" y="32" font-family="monospace" font-size="9" fill="#71717a">SMARTLEAD · CMO AGENT</text><rect x="22" y="46" width="296" height="22" rx="8" fill="#1d1e1d"/><rect x="22" y="76" width="296" height="22" rx="8" fill="#1d1e1d"/><rect x="22" y="106" width="200" height="22" rx="8" fill="#1d1e1d"/><circle cx="38" cy="57" r="4" fill="#c8e636"/><circle cx="38" cy="87" r="4" fill="#c8e636"/><circle cx="38" cy="117" r="4" fill="#3f3f46"/><text x="22" y="162" font-family="monospace" font-size="9" fill="#52525b">research → enrich → sequence</text></svg>
+        <div class="p-24">
+          <h3 class="text-body-lg font-bold text-obsidian mb-4">WeBuild — BizDev CMO agent</h3>
+          <p class="text-[13px] text-slate font-light mb-12">Cold-email research pipeline feeding Smartlead. Our own dog food.</p>
+          <div class="flex flex-wrap gap-8"><span class="bg-graphite text-[#fafafa] text-caption font-medium rounded-xl px-8 py-4">Outbound</span><span class="bg-graphite text-[#fafafa] text-caption font-medium rounded-xl px-8 py-4">Smartlead</span></div>
+        </div>
+      </div>
+      <div class="snap-start shrink-0 w-[320px] bg-snow rounded-3xl-3 overflow-hidden shadow-subtle-2 hover:-translate-y-4 hover:shadow-lg transition reveal">
+        <svg viewBox="0 0 340 180" class="w-full"><rect width="340" height="180" fill="#09090b"/><text x="22" y="30" font-family="monospace" font-size="9" fill="#c8e636">OPEN BRAIN · shared memory</text><g stroke="#2c2d2c"><path d="M170 95 L80 55 M170 95 L260 55 M170 95 L80 140 M170 95 L260 140"/></g><circle cx="170" cy="95" r="15" fill="#c8e636"/><circle cx="80" cy="55" r="8" fill="#1d1e1d" stroke="#3f3f46"/><circle cx="260" cy="55" r="8" fill="#1d1e1d" stroke="#3f3f46"/><circle cx="80" cy="140" r="8" fill="#1d1e1d" stroke="#3f3f46"/><circle cx="260" cy="140" r="8" fill="#1d1e1d" stroke="#3f3f46"/><text x="22" y="166" font-family="monospace" font-size="9" fill="#52525b">pgvector · supabase · MCP</text></svg>
+        <div class="p-24">
+          <h3 class="text-body-lg font-bold text-obsidian mb-4">Open Brain — memory layer</h3>
+          <p class="text-[13px] text-slate font-light mb-12">A company brain every agent reads from and writes to.</p>
+          <div class="flex flex-wrap gap-8"><span class="bg-graphite text-[#fafafa] text-caption font-medium rounded-xl px-8 py-4">RAG</span><span class="bg-graphite text-[#fafafa] text-caption font-medium rounded-xl px-8 py-4">MCP</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- How it works accordion -->
+<section class="pb-80" id="how">
+  <div class="max-w-[1200px] mx-auto px-24">
+    <div class="max-w-[660px] mb-48 reveal">
+      <div class="text-caption uppercase tracking-widest text-slate font-medium mb-16 flex items-center gap-8"><span class="w-[22px] h-px bg-pebble"></span>How it works</div>
+      <h2 class="text-heading md:text-heading-lg font-semibold text-obsidian tracking-[-0.02em]">Skip the hiring pain. <span class="font-light text-slate">Move straight to a working agent.</span></h2>
+    </div>
+    <div class="border-t border-fog" id="howAcc">
+      <div class="acc-item open border-b border-fog">
+        <button class="acc-head w-full flex items-center gap-20 py-24 cursor-pointer text-left">
+          <span class="text-body font-medium text-slate w-[28px]">01</span>
+          <span class="text-heading-sm font-bold text-obsidian flex-1">Foundations Session</span>
+          <span class="chev text-slate text-[13px]">▼</span>
+        </button>
+        <div class="acc-body"><div class="pb-28 pl-48">
+          <p class="text-body text-slate font-light max-w-[480px] mb-12">A ~90-minute working session. We map the repeatable work eating your week and pick <b class="font-semibold text-ink">the one agent with the highest payback</b>.</p>
+          <span class="bg-fog text-slate text-caption font-medium rounded-xl px-12 py-4 inline-block">A$300 founding · credited toward your install</span>
+        </div></div>
+      </div>
+      <div class="acc-item border-b border-fog">
+        <button class="acc-head w-full flex items-center gap-20 py-24 cursor-pointer text-left">
+          <span class="text-body font-medium text-slate w-[28px]">02</span>
+          <span class="text-heading-sm font-bold text-obsidian flex-1">Scope & spec</span>
+          <span class="chev text-slate text-[13px]">▼</span>
+        </button>
+        <div class="acc-body"><div class="pb-28 pl-48">
+          <p class="text-body text-slate font-light max-w-[480px] mb-12">You get a written spec: inputs, outputs, tools, guardrails, and what "done" means. <b class="font-semibold text-ink">Fixed price agreed before any build.</b></p>
+          <span class="bg-fog text-slate text-caption font-medium rounded-xl px-12 py-4 inline-block">fixed scope · fixed price · no surprises</span>
+        </div></div>
+      </div>
+      <div class="acc-item border-b border-fog">
+        <button class="acc-head w-full flex items-center gap-20 py-24 cursor-pointer text-left">
+          <span class="text-body font-medium text-slate w-[28px]">03</span>
+          <span class="text-heading-sm font-bold text-obsidian flex-1">Build & shadow</span>
+          <span class="chev text-slate text-[13px]">▼</span>
+        </button>
+        <div class="acc-body"><div class="pb-28 pl-48">
+          <p class="text-body text-slate font-light max-w-[480px] mb-12">Built in your accounts with your keys, tested on real historical cases, then run in <b class="font-semibold text-ink">shadow mode</b> — agent drafts, human approves — until it's earned trust.</p>
+          <span class="bg-fog text-slate text-caption font-medium rounded-xl px-12 py-4 inline-block">3–4 weeks · your stack · your data</span>
+        </div></div>
+      </div>
+      <div class="acc-item border-b border-fog">
+        <button class="acc-head w-full flex items-center gap-20 py-24 cursor-pointer text-left">
+          <span class="text-body font-medium text-slate w-[28px]">04</span>
+          <span class="text-heading-sm font-bold text-obsidian flex-1">Go live & keep sharp</span>
+          <span class="chev text-slate text-[13px]">▼</span>
+        </button>
+        <div class="acc-body"><div class="pb-28 pl-48">
+          <p class="text-body text-slate font-light max-w-[480px] mb-12">Handover running, with monitoring and alerts. The retainer keeps it tuned as your process shifts, and <b class="font-semibold text-ink">queues up the next agent</b>.</p>
+          <span class="bg-fog text-slate text-caption font-medium rounded-xl px-12 py-4 inline-block">30 days tuning included with every install</span>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Mid CTA with orbit -->
+<section class="pb-80">
+  <div class="max-w-[1200px] mx-auto px-24 text-center reveal">
+    <h2 class="text-heading md:text-display-sm font-semibold text-obsidian tracking-[-0.02em] max-w-[760px] mx-auto mb-40">Get your <span class="flip" id="flip2"><span class="cur">reporting</span><span class="in">intake</span></span> done<br>without the headache</h2>
+    <span class="relative inline-block">
+      <span class="orbit-ring absolute -inset-x-16 -inset-y-8 border-[1.5px] border-pebble rounded-full pointer-events-none" aria-hidden="true"></span>
+      <a href="https://cal.com/webuildco/intro" target="_blank" rel="noopener" class="inline-flex items-center bg-obsidian text-snow text-[15px] font-medium rounded-3xl-3 px-32 py-16 shadow-subtle hover:brightness-115 hover:-translate-y-px transition cursor-pointer relative">Get started →</a>
+    </span>
+  </div>
+</section>
+
+<!-- Pricing -->
+<section class="pb-80" id="pricing">
+  <div class="max-w-[1200px] mx-auto px-24">
+    <div class="max-w-[660px] mb-48 reveal">
+      <div class="text-caption uppercase tracking-widest text-slate font-medium mb-16 flex items-center gap-8"><span class="w-[22px] h-px bg-pebble"></span>Pricing</div>
+      <h2 class="text-heading md:text-heading-lg font-semibold text-obsidian tracking-[-0.02em]">An offer ladder, <span class="font-light text-slate">not a lock-in.</span></h2>
+    </div>
+    <div class="grid md:grid-cols-3 gap-20">
+      <div class="bg-snow rounded-3xl-3 p-32 flex flex-col shadow-subtle-2 reveal">
+        <div class="text-caption uppercase tracking-widest text-slate font-medium mb-16">Start here</div>
+        <h3 class="text-heading-sm font-bold text-obsidian">Foundations Session</h3>
+        <div class="text-heading font-bold text-obsidian mt-12">A$300 <span class="text-body font-normal text-slate">founding rate</span></div>
+        <p class="text-[13px] text-slate font-light mb-20">Standard A$600–750. Credited toward your first install.</p>
+        <ul class="text-body text-slate font-light space-y-12 mb-28">
+          <li class="flex gap-12"><span class="text-lime-deep font-bold">✓</span>Full audit of your repeatable work</li>
+          <li class="flex gap-12"><span class="text-lime-deep font-bold">✓</span>One agent scoped and specced</li>
+          <li class="flex gap-12"><span class="text-lime-deep font-bold">✓</span>Written plan you keep either way</li>
+        </ul>
+        <a href="https://cal.com/webuildco/intro" target="_blank" rel="noopener" class="mt-auto inline-flex items-center justify-center bg-snow text-graphite border border-graphite rounded-3xl-3 py-12 font-medium hover:text-obsidian transition cursor-pointer">Book a session</a>
+      </div>
+      <div class="bg-obsidian rounded-3xl-3 p-32 flex flex-col md:scale-[1.02] reveal">
+        <div class="text-caption uppercase tracking-widest text-lime font-medium mb-16">Most popular</div>
+        <h3 class="text-heading-sm font-bold text-snow">Agent Install</h3>
+        <div class="text-heading font-bold text-snow mt-12">A$12–18k</div>
+        <p class="text-[13px] text-ash font-light mb-20">Fixed scope · 3–4 weeks · live handover</p>
+        <ul class="text-body text-pebble font-light space-y-12 mb-28">
+          <li class="flex gap-12"><span class="text-lime font-bold">✓</span>One production agent, built end-to-end</li>
+          <li class="flex gap-12"><span class="text-lime font-bold">✓</span>Wired into your stack, your keys</li>
+          <li class="flex gap-12"><span class="text-lime font-bold">✓</span>Shadow mode before go-live</li>
+          <li class="flex gap-12"><span class="text-lime font-bold">✓</span>30 days of tuning included</li>
+        </ul>
+        <a href="https://cal.com/webuildco/intro" target="_blank" rel="noopener" class="mt-auto inline-flex items-center justify-center bg-obsidian text-snow border border-snow/20 rounded-2xl py-14 font-medium hover:bg-ink transition cursor-pointer">Start an install →</a>
+      </div>
+      <div class="bg-snow rounded-3xl-3 p-32 flex flex-col shadow-subtle-2 reveal">
+        <div class="text-caption uppercase tracking-widest text-slate font-medium mb-16">Keep it sharp</div>
+        <h3 class="text-heading-sm font-bold text-obsidian">Maintenance Retainer</h3>
+        <div class="text-heading font-bold text-obsidian mt-12">From A$1.5k <span class="text-body font-normal text-slate">/mo</span></div>
+        <p class="text-[13px] text-slate font-light mb-20">Monitoring, tuning, and your next agent.</p>
+        <ul class="text-body text-slate font-light space-y-12 mb-28">
+          <li class="flex gap-12"><span class="text-lime-deep font-bold">✓</span>Drift monitoring and fixes</li>
+          <li class="flex gap-12"><span class="text-lime-deep font-bold">✓</span>Adjust as your process changes</li>
+          <li class="flex gap-12"><span class="text-lime-deep font-bold">✓</span>Priority on the next build</li>
+        </ul>
+        <a href="https://cal.com/webuildco/intro" target="_blank" rel="noopener" class="mt-auto inline-flex items-center justify-center bg-snow text-graphite border border-graphite rounded-3xl-3 py-12 font-medium hover:text-obsidian transition cursor-pointer">Talk to us</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="pb-80" id="faq">
+  <div class="max-w-[1200px] mx-auto px-24">
+    <div class="grid md:grid-cols-[1fr_1.4fr] gap-48 items-start">
+      <div class="md:sticky md:top-[100px] reveal">
+        <div class="text-caption uppercase tracking-widest text-slate font-medium mb-16 flex items-center gap-8"><span class="w-[22px] h-px bg-pebble"></span>FAQ</div>
+        <h2 class="text-heading md:text-heading-lg font-semibold text-obsidian tracking-[-0.02em]">Questions, <span class="font-light text-slate">answered.</span></h2>
+        <p class="text-body text-slate font-light mt-16 mb-24 max-w-[300px]">Still unsure? Book a 15-minute intro call — no pitch, just a straight answer.</p>
+        <a href="https://cal.com/webuildco/intro" target="_blank" rel="noopener" class="inline-flex items-center bg-obsidian text-snow text-body font-medium rounded-3xl-3 px-20 py-12 shadow-subtle hover:brightness-115 transition cursor-pointer">Book a call →</a>
+        <div class="bg-snow rounded-2xl-2 p-20 mt-24 shadow-subtle-2">
+          <div class="text-[13px] font-semibold text-obsidian mb-12">Or ask an AI to summarise WeBuild</div>
+          <div class="flex flex-wrap gap-8">
+            <span class="inline-flex items-center gap-8 bg-mist border border-fog rounded-xl px-12 py-8 text-caption font-medium text-graphite cursor-pointer hover:border-obsidian transition"><span class="w-12 h-12 rounded-[4px] bg-obsidian"></span>ChatGPT</span>
+            <span class="inline-flex items-center gap-8 bg-mist border border-fog rounded-xl px-12 py-8 text-caption font-medium text-graphite cursor-pointer hover:border-obsidian transition"><span class="w-12 h-12 rounded-[4px] bg-lime"></span>Claude</span>
+            <span class="inline-flex items-center gap-8 bg-mist border border-fog rounded-xl px-12 py-8 text-caption font-medium text-graphite cursor-pointer hover:border-obsidian transition"><span class="w-12 h-12 rounded-[4px] bg-slate"></span>Perplexity</span>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-fog" id="faqAcc">
+        <div class="acc-item open border-b border-fog">
+          <button class="acc-head w-full flex items-center gap-16 py-20 cursor-pointer text-left"><span class="text-body-lg font-semibold text-obsidian flex-1">What exactly is an "agent"?</span><span class="chev text-slate text-[13px]">▼</span></button>
+          <div class="acc-body"><div class="pb-24"><p class="text-body text-slate font-light max-w-[620px]">Software that does a defined job the way a team member would: it reads the incoming work (an email, a lead, a ticket), decides what to do using your rules and your knowledge base, takes the action in your actual tools, and logs what it did. Not a chatbot widget — a worker on a workflow.</p></div></div>
+        </div>
+        <div class="acc-item border-b border-fog">
+          <button class="acc-head w-full flex items-center gap-16 py-20 cursor-pointer text-left"><span class="text-body-lg font-semibold text-obsidian flex-1">How is this different from hiring or a VA?</span><span class="chev text-slate text-[13px]">▼</span></button>
+          <div class="acc-body"><div class="pb-24"><p class="text-body text-slate font-light max-w-[620px]">An agent works 24/7, never resigns, doesn't need onboarding twice, and costs a fraction of a salary for repeatable work. It won't replace judgment-heavy roles — and we'll tell you plainly when a task needs a human, because scoping honestly is the whole model.</p></div></div>
+        </div>
+        <div class="acc-item border-b border-fog">
+          <button class="acc-head w-full flex items-center gap-16 py-20 cursor-pointer text-left"><span class="text-body-lg font-semibold text-obsidian flex-1">What if the agent makes a mistake?</span><span class="chev text-slate text-[13px]">▼</span></button>
+          <div class="acc-body"><div class="pb-24"><p class="text-body text-slate font-light max-w-[620px]">Every agent goes through shadow mode first: it drafts, a human approves, and every miss becomes a fix before go-live. In production it runs with logging, alerts, and a human escape hatch on anything outside its lane. Guardrails are part of the spec, not an afterthought.</p></div></div>
+        </div>
+        <div class="acc-item border-b border-fog">
+          <button class="acc-head w-full flex items-center gap-16 py-20 cursor-pointer text-left"><span class="text-body-lg font-semibold text-obsidian flex-1">Do I own what you build?</span><span class="chev text-slate text-[13px]">▼</span></button>
+          <div class="acc-body"><div class="pb-24"><p class="text-body text-slate font-light max-w-[620px]">Yes. Everything runs in your accounts with your API keys, and the handover includes documentation. If we part ways, it keeps running and you keep it all. No hostage data, no platform lock-in.</p></div></div>
+        </div>
+        <div class="acc-item border-b border-fog">
+          <button class="acc-head w-full flex items-center gap-16 py-20 cursor-pointer text-left"><span class="text-body-lg font-semibold text-obsidian flex-1">What does it cost to run after the install?</span><span class="chev text-slate text-[13px]">▼</span></button>
+          <div class="acc-body"><div class="pb-24"><p class="text-body text-slate font-light max-w-[620px]">Model usage plus any tool subscriptions — for most single-workflow agents that's tens of dollars a month, not hundreds. We spec the expected running cost before the build so there are no surprises on your first invoice.</p></div></div>
+        </div>
+        <div class="acc-item border-b border-fog">
+          <button class="acc-head w-full flex items-center gap-16 py-20 cursor-pointer text-left"><span class="text-body-lg font-semibold text-obsidian flex-1">Is my data safe?</span><span class="chev text-slate text-[13px]">▼</span></button>
+          <div class="acc-body"><div class="pb-24"><p class="text-body text-slate font-light max-w-[620px]">Agents run in your infrastructure with least-privilege access — only the permissions the workflow needs, with approval prompts kept on for anything sensitive. Security posture is part of every spec, and we're happy to walk your IT person through it.</p></div></div>
+        </div>
+        <div class="acc-item border-b border-fog">
+          <button class="acc-head w-full flex items-center gap-16 py-20 cursor-pointer text-left"><span class="text-body-lg font-semibold text-obsidian flex-1">We're not technical. Is that a problem?</span><span class="chev text-slate text-[13px]">▼</span></button>
+          <div class="acc-body"><div class="pb-24"><p class="text-body text-slate font-light max-w-[620px]">That's the point of the model. You describe the work in plain language; we translate it into a spec, build it, and hand it over running. Day-to-day, using the agent looks like reading messages in the tools you already know.</p></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Final CTA -->
+<section class="pb-80">
+  <div class="max-w-[1200px] mx-auto px-24 reveal">
+    <div class="bg-obsidian rounded-full-2 p-48 md:p-80 text-center text-snow relative overflow-hidden">
+      <div class="relative z-10 max-w-[600px] mx-auto">
+        <h2 class="text-heading md:text-display-sm font-semibold tracking-[-0.02em]">You're one session away from your <span class="text-lime">first agent</span></h2>
+        <p class="text-body-lg text-ash font-light mt-20 mb-32 max-w-[420px] mx-auto">Book a demo and we'll show you the one workflow worth automating first — using your actual business.</p>
+        <div class="flex gap-8 bg-snow/5 border border-snow/15 rounded-2xl p-8 max-w-[420px] mx-auto flex-col sm:flex-row">
+          <input type="email" placeholder="you@company.com.au" aria-label="Work email" class="flex-1 bg-transparent border-none outline-none text-body text-snow placeholder-steel px-12 py-8 min-w-0">
+          <a href="https://cal.com/webuildco/intro" target="_blank" rel="noopener" class="inline-flex items-center bg-obsidian text-snow border border-snow/20 rounded-2xl px-20 py-12 text-body font-medium whitespace-nowrap hover:bg-ink transition cursor-pointer">Book a demo →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- Footer -->
+<footer class="pt-64 pb-[130px]">
+  <div class="max-w-[1200px] mx-auto px-24">
+    <div class="grid grid-cols-2 md:grid-cols-[1.6fr_1fr_1fr_1fr] gap-32 pb-40 border-b border-fog">
+      <div class="col-span-2 md:col-span-1">
+        <a href="#" class="flex items-center gap-8 font-bold text-subheading text-obsidian">
+          <span class="w-[26px] h-[26px] rounded-xl bg-obsidian grid place-items-center"><span class="w-[11px] h-[11px] rounded-[3px] bg-lime"></span></span>
+          WeBuild<span class="text-slate font-normal">Co</span>
+        </a>
+        <p class="text-body text-slate font-light mt-16 max-w-[250px]">AI agents for Australian SMBs. Scoped, built, and wired into the tools you already run.</p>
+      </div>
+      <div>
+        <h3 class="text-caption uppercase tracking-widest text-slate font-medium mb-16">Product</h3>
+        <a href="#agents" class="block text-body text-slate hover:text-obsidian transition mb-8">Agents</a>
+        <a href="#how" class="block text-body text-slate hover:text-obsidian transition mb-8">How it works</a>
+        <a href="#pricing" class="block text-body text-slate hover:text-obsidian transition mb-8">Pricing</a>
+        <a href="#faq" class="block text-body text-slate hover:text-obsidian transition">FAQ</a>
+      </div>
+      <div>
+        <h3 class="text-caption uppercase tracking-widest text-slate font-medium mb-16">Company</h3>
+        <a href="#" class="block text-body text-slate hover:text-obsidian transition mb-8">About</a>
+        <a href="#" class="block text-body text-slate hover:text-obsidian transition mb-8">The Hijrah Co</a>
+        <a href="#" class="block text-body text-slate hover:text-obsidian transition mb-8">Build Night KL</a>
+        <a href="#" class="block text-body text-slate hover:text-obsidian transition">Contact</a>
+      </div>
+      <div>
+        <h3 class="text-caption uppercase tracking-widest text-slate font-medium mb-16">Get started</h3>
+        <a href="https://cal.com/webuildco/intro" target="_blank" rel="noopener" class="block text-body text-slate hover:text-obsidian transition mb-8">Foundations Session</a>
+        <a href="https://cal.com/webuildco/intro" target="_blank" rel="noopener" class="block text-body text-slate hover:text-obsidian transition mb-8">Book a demo</a>
+        <a href="#" class="block text-body text-slate hover:text-obsidian transition">Newsletter</a>
+      </div>
+    </div>
+    <div class="flex flex-wrap justify-between items-center pt-24 text-[13px] text-slate gap-12">
+      <span>© 2026 WeBuild Co · Sydney, AU</span>
+      <span class="font-semibold text-obsidian">Hire agents, not headcount.</span>
+      <span><a href="/privacy.html" class="hover:text-obsidian transition-colors">Privacy</a> · <a href="/terms.html" class="hover:text-obsidian transition-colors">Terms</a></span>
+    </div>
+    <div class="font-bold text-fog leading-none text-center mt-48 select-none whitespace-nowrap overflow-hidden text-[clamp(56px,11vw,150px)] tracking-[-0.03em]" aria-hidden="true">WeBuild<span class="text-lime">.</span></div>
+  </div>
+</footer>
+
+<!-- Floating bottom banner -->
+<div class="float-banner fixed left-20 bottom-20 z-[80] w-[330px] max-sm:left-12 max-sm:right-12 max-sm:w-auto bg-obsidian text-snow rounded-3xl p-20 shadow-lg" id="floatBanner" role="complementary" aria-label="Announcement">
+  <button class="absolute top-12 right-12 w-[26px] h-[26px] rounded-full bg-snow/10 text-ash grid place-items-center text-caption hover:bg-snow/20 hover:text-snow transition cursor-pointer" id="fbClose" aria-label="Dismiss">✕</button>
+  <div class="text-caption uppercase tracking-widest text-lime font-medium flex items-center gap-8 mb-8"><span class="w-[6px] h-[6px] rounded-full bg-lime pulse-dot"></span>Now booking</div>
+  <h3 class="text-body-lg font-bold pr-28 mb-4">Build Night KL — monthly AI meetup</h3>
+  <p class="text-caption text-ash font-light mb-12">Live agent builds, Claude tips, and a room full of people shipping. Free to attend.</p>
+  <a class="inline-flex items-center gap-8 bg-lime text-obsidian text-caption font-semibold rounded-full-6 px-16 py-8 hover:brightness-105 transition" href="#">Save your seat →</a>
+</div>
+
+<script>
+const nav=document.getElementById('nav');
+addEventListener('scroll',()=>nav.classList.toggle('border-fog',scrollY>8),{passive:true});
+
+const prefersReduced=matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+// Flip words
+function makeFlip(id,words){
+  const el=document.getElementById(id);if(!el||prefersReduced)return;
+  let i=0;
+  setInterval(()=>{
+    const cur=el.querySelector('.cur'),nxt=el.querySelector('.in');
+    if(!cur||!nxt)return;
+    i=(i+1)%words.length;
+    nxt.textContent=words[i];
+    cur.classList.remove('cur');cur.classList.add('out');
+    nxt.classList.remove('in');nxt.classList.add('cur');
+    setTimeout(()=>{cur.remove();const s=document.createElement('span');s.className='in';el.appendChild(s);},520);
+  },2300);
+}
+makeFlip('flip1',['support','ops','intake','reporting','follow-up','sales']);
+makeFlip('flip2',['intake','follow-up','support','sales','reporting']);
+
+// Count-up
+function countUp(el){
+  const lit=el.dataset.literal;
+  if(lit){el.textContent=lit;return}
+  const target=+el.dataset.count,suf=el.dataset.suffix||'',pre=el.dataset.prefix||'';
+  if(prefersReduced){el.textContent=pre+target+suf;return}
+  const dur=1100,start=performance.now();
+  requestAnimationFrame(function tick(t){
+    const p=Math.min((t-start)/dur,1),v=Math.round(target*(1-Math.pow(1-p,3)));
+    el.textContent=pre+v+suf;
+    if(p<1)requestAnimationFrame(tick);
+  });
+}
+
+// Reveal observer
+const io=new IntersectionObserver(es=>{
+  es.forEach(e=>{
+    if(!e.isIntersecting)return;
+    e.target.classList.add('in');
+    e.target.querySelectorAll('[data-count],[data-literal]').forEach(countUp);
+    e.target.querySelectorAll('.bar-fill').forEach(b=>b.style.width=b.dataset.w);
+    io.unobserve(e.target);
+  });
+},{threshold:.15});
+document.querySelectorAll('.reveal').forEach((el,n)=>{el.style.transitionDelay=(n%4*0.06)+'s';io.observe(el);});
+
+// Accordions (one open at a time per group)
+function wireAccordion(rootId){
+  const root=document.getElementById(rootId);if(!root)return;
+  const items=[...root.querySelectorAll('.acc-item')];
+  function setOpen(item){
+    items.forEach(it=>{
+      const body=it.querySelector('.acc-body');
+      const open=it===item;
+      it.classList.toggle('open',open);
+      body.style.maxHeight=open?body.scrollHeight+'px':0;
     });
-    // Intersection Observer for fade-in
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.16 });
+  }
+  items.forEach(it=>it.querySelector('.acc-head').addEventListener('click',()=>setOpen(it)));
+  setOpen(items[0]);
+}
+wireAccordion('howAcc');
+wireAccordion('faqAcc');
 
-    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-  </script>
+// Rail nav
+const rail=document.getElementById('rail');
+document.getElementById('railPrev').onclick=()=>rail.scrollBy({left:-340,behavior:'smooth'});
+document.getElementById('railNext').onclick=()=>rail.scrollBy({left:340,behavior:'smooth'});
+
+// Floating banner
+const fb=document.getElementById('floatBanner');
+let fbShown=false,fbClosed=false;
+addEventListener('scroll',()=>{
+  if(fbClosed||fbShown)return;
+  if(scrollY>700){fb.classList.add('show');fbShown=true;}
+},{passive:true});
+document.getElementById('fbClose').onclick=()=>{fb.classList.remove('show');fbClosed=true;};
+</script>
 </body>
 </html>
