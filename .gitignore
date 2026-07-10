@@ -1,5 +1,4 @@
 node_modules/
-/app.css
 
 # local scratch / handover docs — not site source
 CLAUDE_CODE_HANDOVER.md
