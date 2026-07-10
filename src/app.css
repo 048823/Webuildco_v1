@@ -19,7 +19,7 @@
   --color-lime-deep: #aacb1f;
 
   /* ===== Typography ===== */
-  --font-cosmica: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-cosmica: 'DM Sans', ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 
   --text-caption: 10px;
   --text-caption--line-height: 1.8;
@@ -121,3 +121,15 @@ body{font-family:var(--font-cosmica);-webkit-font-smoothing:antialiased}
   .float-banner{transform:none}
 }
 :focus-visible{outline:2px solid var(--color-obsidian);outline-offset:2px;border-radius:4px}
+
+/* Organic full-bleed texture — brand equivalent of the design system's moss material */
+.brand-weave{
+  background:
+    radial-gradient(120% 140% at 12% -10%, rgba(200,230,54,.30), transparent 55%),
+    radial-gradient(90% 120% at 105% 115%, rgba(200,230,54,.16), transparent 60%),
+    var(--color-obsidian);
+}
+.brand-weave-text{
+  background:linear-gradient(120deg, var(--color-lime) 0%, var(--color-lime-deep) 60%, var(--color-lime) 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;
+}
