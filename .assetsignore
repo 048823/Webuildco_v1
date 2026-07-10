@@ -1,0 +1,15 @@
+# Files that must NOT be uploaded as public static assets.
+# node_modules is created by `npm install` at build time and contains
+# large binaries (e.g. workerd) that exceed Cloudflare's 25 MiB limit.
+node_modules
+.git
+.wrangler
+src
+audit
+*.md
+package.json
+package-lock.json
+tasks.db
+wrangler.jsonc
+.assetsignore
+.gitignore
