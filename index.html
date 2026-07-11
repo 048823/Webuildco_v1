@@ -3,8 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>WeBuild Co — Hire agents, not headcount</title>
+<title>AI Agents for Australian SMBs — Built, Proven, Owned | WeBuild Co</title>
 <meta name="description" content="AI agents for Australian SMBs. We scope, build and wire AI agents into the tools you already run — live in weeks, owned by you.">
+<link rel="canonical" href="https://www.webuildco.com.au/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="WeBuild Co">
+<meta property="og:title" content="AI Agents for Australian SMBs — Built, Proven, Owned | WeBuild Co">
+<meta property="og:description" content="We scope, build and wire AI agents into the tools you already run — live in weeks, owned by you. Supervised until proven. No lock-in, ever.">
+<meta property="og:url" content="https://www.webuildco.com.au/">
+<meta property="og:image" content="https://www.webuildco.com.au/og.png">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,6 +27,9 @@
 
   gtag('config', 'G-CML7HQ61XR');
 </script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"ProfessionalService","name":"WeBuild Co","url":"https://www.webuildco.com.au/","email":"hello@webuildco.com.au","description":"WeBuild is an Australian AI engineering studio founded by computer engineer Johan Iskandar. It builds AI agents — systems that run the repetitive work inside small and mid-sized businesses — scoped with payback math up front, built at a fixed price, run under human supervision until proven, then handed over completely.","areaServed":"AU","address":{"@type":"PostalAddress","addressLocality":"Sydney","addressCountry":"AU"},"founder":{"@type":"Person","name":"Johan Iskandar","jobTitle":"Founder & Computer Engineer","sameAs":["https://github.com/048823"]},"sameAs":[]}
+</script>
 </head>
 <body class="bg-mist text-ink overflow-x-hidden">
 
@@ -26,55 +37,69 @@
 <div class="max-w-[1200px] mx-auto px-24">
   <div class="bg-obsidian text-snow rounded-full mt-16 px-24 py-12 flex items-center justify-center gap-12 text-body backdrop-blur">
     <span class="w-[7px] h-[7px] rounded-full bg-lime pulse-dot shrink-0"></span>
-    <span class="font-light">New — <b class="font-semibold">AIOS Foundations Sessions</b> open for Q3 intake</span>
+    <span class="font-light">New — <b class="font-semibold">Foundations Sessions</b>: July–September intake open</span>
     <a href="https://cal.com/webuildco/intro" target="_blank" rel="noopener" class="text-ash font-medium hover:text-snow transition-colors">See dates →</a>
   </div>
 </div>
 
 <!-- Nav -->
+<a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-8 focus:left-8 focus:z-[100] bg-obsidian text-snow rounded-xl px-16 py-8 text-body">Skip to content</a>
 <nav id="nav" class="sticky top-0 z-50 bg-mist/75 backdrop-blur-md border-b border-transparent transition-colors">
   <div class="max-w-[1200px] mx-auto px-24 py-16 flex items-center justify-between gap-24">
-    <a href="#" class="flex items-center gap-8 font-bold text-subheading text-obsidian">
+    <a href="/" class="flex items-center gap-8 font-bold text-subheading text-obsidian" aria-label="WeBuild Co home">
       <span class="w-[26px] h-[26px] rounded-xl bg-obsidian grid place-items-center"><span class="w-[11px] h-[11px] rounded-[3px] bg-lime"></span></span>
       WeBuild<span class="text-slate font-normal">Co</span>
     </a>
     <div class="hidden md:flex gap-32 text-body font-medium">
-      <a href="#agents" class="text-slate hover:text-obsidian transition-colors">Agents</a>
-      <a href="#work" class="text-slate hover:text-obsidian transition-colors">Work</a>
-      <a href="#how" class="text-slate hover:text-obsidian transition-colors">How it works</a>
-      <a href="#faq" class="text-slate hover:text-obsidian transition-colors">FAQ</a>
+      <a href="/work/" class="text-slate hover:text-obsidian transition-colors">Work</a>
+      <a href="/industries/" class="text-slate hover:text-obsidian transition-colors">Industries</a>
+      <a href="/method/" class="text-slate hover:text-obsidian transition-colors">Method</a>
+      <a href="/pricing/" class="text-slate hover:text-obsidian transition-colors">Pricing</a>
+      <a href="/about/" class="text-slate hover:text-obsidian transition-colors">About</a>
     </div>
-    <div class="flex items-center gap-16">
-      <a href="#" class="hidden sm:block text-body font-medium text-slate hover:text-obsidian transition-colors">Sign in</a>
-      <a href="https://cal.com/webuildco/intro" target="_blank" rel="noopener" class="inline-flex items-center bg-obsidian text-snow text-body font-medium rounded-full px-20 py-12 shadow-subtle hover:brightness-115 hover:-translate-y-px transition cursor-pointer">Book a demo →</a>
+    <div class="flex items-center gap-12">
+      <a href="https://cal.com/webuildco/intro" target="_blank" rel="noopener" class="hidden sm:inline-flex items-center bg-obsidian text-snow text-body font-medium rounded-full px-20 py-12 shadow-subtle hover:brightness-115 hover:-translate-y-px transition cursor-pointer">Book an intro call →</a>
+      <button id="menuBtn" class="md:hidden w-[44px] h-[44px] rounded-full bg-snow border border-pebble grid place-items-center cursor-pointer shrink-0" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+        <span class="block w-[16px] border-t-2 border-obsidian relative before:content-[''] before:absolute before:left-0 before:-top-[6px] before:w-[16px] before:border-t-2 before:border-obsidian after:content-[''] after:absolute after:left-0 after:top-[4px] after:w-[16px] after:border-t-2 after:border-obsidian"></span>
+      </button>
     </div>
+  </div>
+  <div id="mobileMenu" class="hidden md:hidden bg-mist border-b border-fog px-24 pb-20">
+    <a href="/work/" class="block py-12 text-subheading font-medium text-obsidian border-b border-fog">Work</a>
+    <a href="/industries/" class="block py-12 text-subheading font-medium text-obsidian border-b border-fog">Industries</a>
+    <a href="/method/" class="block py-12 text-subheading font-medium text-obsidian border-b border-fog">Method</a>
+    <a href="/pricing/" class="block py-12 text-subheading font-medium text-obsidian border-b border-fog">Pricing</a>
+    <a href="/about/" class="block py-12 text-subheading font-medium text-obsidian border-b border-fog">About</a>
+    <a href="/faq/" class="block py-12 text-subheading font-medium text-obsidian">FAQ</a>
+    <a href="https://cal.com/webuildco/intro" target="_blank" rel="noopener" class="inline-flex items-center bg-obsidian text-snow text-body font-medium rounded-full px-20 py-12 mt-16">Book an intro call →</a>
   </div>
 </nav>
 
-<main>
+<main id="main">
 <!-- Hero -->
 <header class="pt-64 pb-40 text-center">
   <div class="max-w-[1200px] mx-auto px-24">
     <div class="flex flex-wrap justify-center gap-12 mb-32">
       <span class="inline-flex items-center gap-8 bg-snow border border-fog rounded-xl px-12 py-8 text-[12.5px] font-medium text-slate shadow-md"><span class="w-8 h-8 rounded-full bg-lime"></span>Sydney-built, SMB-focused</span>
-      <span class="inline-flex items-center gap-8 bg-snow border border-fog rounded-xl px-12 py-8 text-[12.5px] font-medium text-slate shadow-md"><span class="text-lime-deep">★</span><b class="text-obsidian">5.0</b> client rating</span>
+      <span class="inline-flex items-center gap-8 bg-snow border border-fog rounded-xl px-12 py-8 text-[12.5px] font-medium text-slate shadow-md"><span class="w-8 h-8 rounded-full bg-lime"></span>Fixed price, scoped first</span>
       <span class="inline-flex items-center gap-8 bg-ember text-obsidian rounded-xl px-12 py-8 text-[12.5px] font-semibold">Founding rate live</span>
     </div>
 
-    <h1 class="font-semibold text-obsidian tracking-[-0.02em] text-[clamp(40px,6.2vw,64px)] leading-[1.04] max-w-[900px] mx-auto">
-      All your <span class="flip" id="flip1"><span class="cur">sales</span><span class="in">support</span></span><br>busywork done by agents
+    <h1 class="font-semibold text-obsidian tracking-[-0.02em] text-[clamp(32px,6.2vw,64px)] leading-[1.04] max-w-[900px] mx-auto">
+      All your <span class="bg-lime rounded-2xl px-[0.18em] whitespace-nowrap">busywork</span><br>done by agents
     </h1>
-    <p class="text-body-lg text-slate max-w-[560px] mx-auto mt-24 mb-32 font-light">Stop hiring for repeatable work. We scope, build and wire AI agents into the tools you already run — live in weeks, owned by <b class="font-semibold text-ink">you</b>.</p>
+    <p class="text-body-lg text-slate max-w-[560px] mx-auto mt-24 mb-32 font-light">Stop renting automation. We scope, build and wire AI agents into the tools you already run — live in weeks, owned by <b class="font-semibold text-ink">you</b>.</p>
 
     <div class="flex flex-wrap justify-center gap-16">
-      <a href="https://cal.com/webuildco/intro" target="_blank" rel="noopener" class="inline-flex items-center bg-obsidian text-snow text-[15px] font-medium rounded-full px-28 py-16 shadow-subtle hover:brightness-115 hover:-translate-y-px transition cursor-pointer">Book a demo →</a>
+      <a href="https://cal.com/webuildco/intro" target="_blank" rel="noopener" class="inline-flex items-center bg-obsidian text-snow text-[15px] font-medium rounded-full px-28 py-16 shadow-subtle hover:brightness-115 hover:-translate-y-px transition cursor-pointer">Book an intro call →</a>
       <a href="#agents" class="inline-flex items-center bg-snow text-graphite text-[15px] font-medium rounded-full px-24 py-16 border border-graphite hover:text-obsidian transition cursor-pointer">See the agents</a>
     </div>
+    <p class="text-caption text-slate mt-16">30 minutes · no pitch · if AI isn't the answer, I'll say so</p>
 
     <!-- Stat blocks -->
     <div class="flex flex-wrap justify-center gap-x-64 gap-y-28 mt-48">
-      <div class="reveal"><div class="text-heading-lg font-bold text-obsidian" data-count="14">0</div><div class="text-[13px] text-slate">agents in production</div></div>
-      <div class="reveal"><div class="text-heading-lg font-bold text-obsidian" data-count="30" data-suffix="+">0</div><div class="text-[13px] text-slate">workflows automated</div></div>
+      <div class="reveal"><div class="text-heading-lg font-bold text-obsidian" data-literal="100%">0</div><div class="text-[13px] text-slate">yours at handover — code, keys, docs</div></div>
+      <div class="reveal"><div class="text-heading-lg font-bold text-obsidian" data-count="30" data-suffix="-day">0</div><div class="text-[13px] text-slate">tuning included with every install</div></div>
       <div class="reveal"><div class="text-heading-lg font-bold text-obsidian" data-literal="24/7">0</div><div class="text-[13px] text-slate">always on, no leave</div></div>
       <div class="reveal"><div class="text-heading-lg font-bold text-obsidian" data-count="3" data-prefix="wk ">0</div><div class="text-[13px] text-slate">typical time to live</div></div>
     </div>
@@ -156,13 +181,13 @@
       </div>
 
       <!-- Lime wash tile: orchid-flash role -->
-      <div class="md:col-span-2 bg-lime rounded-3xl-3 p-28 flex flex-col justify-between cursor-pointer hover:-translate-y-4 transition reveal" role="button" tabindex="0">
-        <div class="w-[48px] h-[48px] rounded-full bg-obsidian text-lime grid place-items-center text-subheading self-end">↗</div>
+      <a href="/contact/" class="md:col-span-2 bg-lime rounded-3xl-3 p-28 flex flex-col justify-between cursor-pointer hover:-translate-y-4 transition reveal">
+        <div class="w-[48px] h-[48px] rounded-full bg-obsidian text-lime grid place-items-center text-subheading self-end" aria-hidden="true">↗</div>
         <div>
           <h3 class="text-heading-sm font-bold text-obsidian mb-4">Build your own →</h3>
           <p class="text-body text-obsidian/70 font-light">Tell us the task that never gets done. We'll scope it in one session.</p>
         </div>
-      </div>
+      </a>
     </div>
   </div>
 </section>
@@ -182,16 +207,17 @@
           </ul>
         </div>
         <div>
-          <div class="bg-snow/5 border border-snow/10 rounded-3xl p-28 backdrop-blur">
+          <a href="/work/waqf-ea-agent/" class="block bg-snow/5 border border-snow/10 rounded-3xl p-28 backdrop-blur hover:border-lime/40 transition">
             <div class="flex items-center gap-12 mb-16">
-              <div class="w-[44px] h-[44px] rounded-2xl bg-lime text-obsidian grid place-items-center font-bold text-subheading">A</div>
-              <div><div class="font-semibold text-body">Operations lead</div><div class="text-caption text-ash">Waqf institution · Sydney</div></div>
+              <div class="w-[44px] h-[44px] rounded-2xl bg-lime text-obsidian grid place-items-center font-bold text-subheading" aria-hidden="true">W</div>
+              <div><div class="font-semibold text-body">Waqf institution · Sydney</div><div class="text-caption text-ash">Live pilot — first Founding Five build</div></div>
             </div>
-            <p class="text-body text-pebble font-light">"The Foundations Session paid for itself in the first week — we finally saw which processes were actually automatable, and which one to build first."</p>
-          </div>
+            <p class="text-body text-pebble font-light">Knowledge base + Telegram EA agent, rolled out in supervised phases. Described honestly, stage by stage — no invented numbers.</p>
+            <span class="text-body text-lime font-medium mt-12 inline-block">Read the case study →</span>
+          </a>
           <div class="grid grid-cols-3 gap-16 mt-20">
-            <div class="bg-snow/5 border border-snow/10 rounded-2xl-2 p-20"><div class="text-heading font-bold text-lime" data-count="70" data-suffix="%">0</div><div class="text-caption text-ash">lower cost vs a junior hire</div></div>
-            <div class="bg-snow/5 border border-snow/10 rounded-2xl-2 p-20"><div class="text-heading font-bold text-lime" data-count="40" data-suffix="%">0</div><div class="text-caption text-ash">faster inbound response</div></div>
+            <div class="bg-snow/5 border border-snow/10 rounded-2xl-2 p-20"><div class="text-heading font-bold text-lime" data-literal="100%">0</div><div class="text-caption text-ash">yours at handover</div></div>
+            <div class="bg-snow/5 border border-snow/10 rounded-2xl-2 p-20"><div class="text-heading font-bold text-lime" data-literal="A$300">0</div><div class="text-caption text-ash">session, credited to install</div></div>
             <div class="bg-snow/5 border border-snow/10 rounded-2xl-2 p-20"><div class="text-heading font-bold text-lime" data-literal="24/7">0</div><div class="text-caption text-ash">coverage, no ramp-up</div></div>
           </div>
         </div>
@@ -248,44 +274,47 @@
         <div class="text-caption uppercase tracking-widest text-slate font-medium mb-16 flex items-center gap-8"><span class="w-[22px] h-px bg-pebble"></span>Recent work</div>
         <h2 class="text-heading md:text-heading-lg font-semibold text-obsidian tracking-[-0.02em]">Ideas that became <span class="font-light text-slate">running agents</span></h2>
       </div>
-      <div class="flex gap-8">
-        <button id="railPrev" aria-label="Previous" class="w-[44px] h-[44px] rounded-full bg-snow border border-pebble grid place-items-center hover:border-obsidian hover:-translate-y-px transition cursor-pointer">←</button>
-        <button id="railNext" aria-label="Next" class="w-[44px] h-[44px] rounded-full bg-snow border border-pebble grid place-items-center hover:border-obsidian hover:-translate-y-px transition cursor-pointer">→</button>
+      <div class="flex items-center gap-16">
+        <a href="/work/" class="text-body font-medium text-slate hover:text-obsidian transition-colors">All work →</a>
+        <div class="flex gap-8">
+          <button id="railPrev" aria-label="Previous" class="w-[44px] h-[44px] rounded-full bg-snow border border-pebble grid place-items-center hover:border-obsidian hover:-translate-y-px transition cursor-pointer">←</button>
+          <button id="railNext" aria-label="Next" class="w-[44px] h-[44px] rounded-full bg-snow border border-pebble grid place-items-center hover:border-obsidian hover:-translate-y-px transition cursor-pointer">→</button>
+        </div>
       </div>
     </div>
     <div class="rail flex gap-20 overflow-x-auto snap-x snap-mandatory pb-8" id="rail">
-      <div class="snap-start shrink-0 w-[320px] bg-snow rounded-3xl-3 overflow-hidden shadow-subtle-2 hover:-translate-y-4 hover:shadow-lg transition reveal">
+      <a href="/work/waqf-ea-agent/" class="block snap-start shrink-0 w-[320px] bg-snow rounded-3xl-3 overflow-hidden shadow-subtle-2 hover:-translate-y-4 hover:shadow-lg transition reveal">
         <svg viewBox="0 0 340 180" class="w-full"><rect width="340" height="180" fill="#09090b"/><text x="22" y="36" font-family="monospace" font-size="10" fill="#c8e636">$ hermes deploy --agent ea</text><rect x="22" y="50" width="200" height="7" rx="3.5" fill="#3f3f46"/><rect x="22" y="64" width="160" height="7" rx="3.5" fill="#27272a"/><rect x="22" y="86" width="118" height="18" rx="9" fill="#c8e636"/><text x="34" y="99" font-family="monospace" font-size="9" fill="#09090b">● agent live</text><text x="22" y="162" font-family="monospace" font-size="9" fill="#52525b">telegram · zoho · knowledge base</text></svg>
         <div class="p-24">
           <h3 class="text-body-lg font-bold text-obsidian mb-4">Waqf institution — EA agent</h3>
           <p class="text-[13px] text-slate font-light mb-12">Knowledge base + Telegram EA agent, phased pilot.</p>
           <div class="flex flex-wrap gap-8"><span class="bg-graphite text-[#fafafa] text-caption font-medium rounded-xl px-8 py-4">Telegram</span><span class="bg-graphite text-[#fafafa] text-caption font-medium rounded-xl px-8 py-4">Zoho</span></div>
         </div>
-      </div>
-      <div class="snap-start shrink-0 w-[320px] bg-snow rounded-3xl-3 overflow-hidden shadow-subtle-2 hover:-translate-y-4 hover:shadow-lg transition reveal">
+      </a>
+      <a href="/work/optora-recruiting/" class="block snap-start shrink-0 w-[320px] bg-snow rounded-3xl-3 overflow-hidden shadow-subtle-2 hover:-translate-y-4 hover:shadow-lg transition reveal">
         <svg viewBox="0 0 340 180" class="w-full"><rect width="340" height="180" fill="#f4f4f5"/><rect x="24" y="20" width="292" height="140" rx="14" fill="#fff" stroke="#ececee"/><rect x="40" y="38" width="110" height="10" rx="5" fill="#09090b"/><rect x="40" y="76" width="80" height="64" rx="10" fill="#f4f4f5" stroke="#ececee"/><rect x="130" y="76" width="80" height="64" rx="10" fill="#f4f4f5" stroke="#c8e636" stroke-width="1.5"/><rect x="220" y="76" width="80" height="64" rx="10" fill="#f4f4f5" stroke="#ececee"/><rect x="140" y="88" width="60" height="8" rx="4" fill="#09090b"/><rect x="140" y="118" width="52" height="12" rx="6" fill="#c8e636"/></svg>
         <div class="p-24">
           <h3 class="text-body-lg font-bold text-obsidian mb-4">Optora — recruiting Command Center</h3>
           <p class="text-[13px] text-slate font-light mb-12">Smart Hands Engineer pipeline: JD Builder + processing.</p>
           <div class="flex flex-wrap gap-8"><span class="bg-graphite text-[#fafafa] text-caption font-medium rounded-xl px-8 py-4">Data centres</span><span class="bg-graphite text-[#fafafa] text-caption font-medium rounded-xl px-8 py-4">Recruiting</span></div>
         </div>
-      </div>
-      <div class="snap-start shrink-0 w-[320px] bg-snow rounded-3xl-3 overflow-hidden shadow-subtle-2 hover:-translate-y-4 hover:shadow-lg transition reveal">
+      </a>
+      <a href="/work/webuild-cmo-agent/" class="block snap-start shrink-0 w-[320px] bg-snow rounded-3xl-3 overflow-hidden shadow-subtle-2 hover:-translate-y-4 hover:shadow-lg transition reveal">
         <svg viewBox="0 0 340 180" class="w-full"><rect width="340" height="180" fill="#101110"/><text x="22" y="32" font-family="monospace" font-size="9" fill="#71717a">SMARTLEAD · CMO AGENT</text><rect x="22" y="46" width="296" height="22" rx="8" fill="#1d1e1d"/><rect x="22" y="76" width="296" height="22" rx="8" fill="#1d1e1d"/><rect x="22" y="106" width="200" height="22" rx="8" fill="#1d1e1d"/><circle cx="38" cy="57" r="4" fill="#c8e636"/><circle cx="38" cy="87" r="4" fill="#c8e636"/><circle cx="38" cy="117" r="4" fill="#3f3f46"/><text x="22" y="162" font-family="monospace" font-size="9" fill="#52525b">research → enrich → sequence</text></svg>
         <div class="p-24">
           <h3 class="text-body-lg font-bold text-obsidian mb-4">WeBuild — BizDev CMO agent</h3>
           <p class="text-[13px] text-slate font-light mb-12">Cold-email research pipeline feeding Smartlead. Our own dog food.</p>
           <div class="flex flex-wrap gap-8"><span class="bg-graphite text-[#fafafa] text-caption font-medium rounded-xl px-8 py-4">Outbound</span><span class="bg-graphite text-[#fafafa] text-caption font-medium rounded-xl px-8 py-4">Smartlead</span></div>
         </div>
-      </div>
-      <div class="snap-start shrink-0 w-[320px] bg-snow rounded-3xl-3 overflow-hidden shadow-subtle-2 hover:-translate-y-4 hover:shadow-lg transition reveal">
+      </a>
+      <a href="/work/" class="block snap-start shrink-0 w-[320px] bg-snow rounded-3xl-3 overflow-hidden shadow-subtle-2 hover:-translate-y-4 hover:shadow-lg transition reveal">
         <svg viewBox="0 0 340 180" class="w-full"><rect width="340" height="180" fill="#09090b"/><text x="22" y="30" font-family="monospace" font-size="9" fill="#c8e636">OPEN BRAIN · shared memory</text><g stroke="#2c2d2c"><path d="M170 95 L80 55 M170 95 L260 55 M170 95 L80 140 M170 95 L260 140"/></g><circle cx="170" cy="95" r="15" fill="#c8e636"/><circle cx="80" cy="55" r="8" fill="#1d1e1d" stroke="#3f3f46"/><circle cx="260" cy="55" r="8" fill="#1d1e1d" stroke="#3f3f46"/><circle cx="80" cy="140" r="8" fill="#1d1e1d" stroke="#3f3f46"/><circle cx="260" cy="140" r="8" fill="#1d1e1d" stroke="#3f3f46"/><text x="22" y="166" font-family="monospace" font-size="9" fill="#52525b">pgvector · supabase · MCP</text></svg>
         <div class="p-24">
           <h3 class="text-body-lg font-bold text-obsidian mb-4">Open Brain — memory layer</h3>
           <p class="text-[13px] text-slate font-light mb-12">A company brain every agent reads from and writes to.</p>
           <div class="flex flex-wrap gap-8"><span class="bg-graphite text-[#fafafa] text-caption font-medium rounded-xl px-8 py-4">RAG</span><span class="bg-graphite text-[#fafafa] text-caption font-medium rounded-xl px-8 py-4">MCP</span></div>
         </div>
-      </div>
+      </a>
     </div>
   </div>
 </section>
@@ -295,7 +324,8 @@
   <div class="max-w-[1200px] mx-auto px-24">
     <div class="max-w-[660px] mb-48 reveal">
       <div class="text-caption uppercase tracking-widest text-slate font-medium mb-16 flex items-center gap-8"><span class="w-[22px] h-px bg-pebble"></span>How it works</div>
-      <h2 class="text-heading md:text-heading-lg font-semibold text-obsidian tracking-[-0.02em]">Skip the hiring pain. <span class="font-light text-slate">Move straight to a working agent.</span></h2>
+      <h2 class="text-heading md:text-heading-lg font-semibold text-obsidian tracking-[-0.02em]">Scoped, built, proven, <span class="font-light text-slate">owned.</span></h2>
+      <p class="text-body text-slate font-light mt-16">The short version below — the full process, handover inventory and comparison table live on <a href="/method/" class="underline decoration-fog hover:text-obsidian font-medium">the Method page</a>.</p>
     </div>
     <div class="border-t border-fog" id="howAcc">
       <div class="acc-item open border-b border-fog">
@@ -349,7 +379,7 @@
 <!-- Mid CTA with orbit -->
 <section class="pb-80">
   <div class="max-w-[1200px] mx-auto px-24 text-center reveal">
-    <h2 class="text-heading md:text-display-sm font-semibold text-obsidian tracking-[-0.02em] max-w-[760px] mx-auto mb-40">Get your <span class="flip" id="flip2"><span class="cur">reporting</span><span class="in">intake</span></span> done<br>without the headache</h2>
+    <h2 class="text-heading md:text-display-sm font-semibold text-obsidian tracking-[-0.02em] max-w-[760px] mx-auto mb-40">Get the <span class="bg-lime rounded-2xl px-[0.18em]">repetitive work</span> done<br>without the headache</h2>
     <span class="relative inline-block">
       <span class="orbit-ring absolute -inset-x-16 -inset-y-8 border-[1.5px] border-pebble rounded-full pointer-events-none" aria-hidden="true"></span>
       <a href="https://cal.com/webuildco/intro" target="_blank" rel="noopener" class="inline-flex items-center bg-obsidian text-snow text-[15px] font-medium rounded-full px-32 py-16 shadow-subtle hover:brightness-115 hover:-translate-y-px transition cursor-pointer relative">Get started →</a>
@@ -365,14 +395,14 @@
       <div class="md:sticky md:top-[100px] reveal">
         <div class="text-caption uppercase tracking-widest text-slate font-medium mb-16 flex items-center gap-8"><span class="w-[22px] h-px bg-pebble"></span>FAQ</div>
         <h2 class="text-heading md:text-heading-lg font-semibold text-obsidian tracking-[-0.02em]">Questions, <span class="font-light text-slate">answered.</span></h2>
-        <p class="text-body text-slate font-light mt-16 mb-24 max-w-[300px]">Still unsure? Book a 15-minute intro call — no pitch, just a straight answer.</p>
+        <p class="text-body text-slate font-light mt-16 mb-24 max-w-[300px]">Still unsure? Book a 15-minute intro call — no pitch, just a straight answer. The <a href="/faq/" class="underline decoration-fog hover:text-obsidian font-medium">full objection library</a> is also public.</p>
         <a href="https://cal.com/webuildco/intro" target="_blank" rel="noopener" class="inline-flex items-center bg-obsidian text-snow text-body font-medium rounded-full px-20 py-12 shadow-subtle hover:brightness-115 transition cursor-pointer">Book a call →</a>
         <div class="bg-snow rounded-2xl-2 p-20 mt-24 shadow-subtle-2">
           <div class="text-[13px] font-semibold text-obsidian mb-12">Or ask an AI to summarise WeBuild</div>
           <div class="flex flex-wrap gap-8">
-            <span class="inline-flex items-center gap-8 bg-mist border border-fog rounded-xl px-12 py-8 text-caption font-medium text-graphite cursor-pointer hover:border-obsidian transition"><span class="w-12 h-12 rounded-[4px] bg-obsidian"></span>ChatGPT</span>
-            <span class="inline-flex items-center gap-8 bg-mist border border-fog rounded-xl px-12 py-8 text-caption font-medium text-graphite cursor-pointer hover:border-obsidian transition"><span class="w-12 h-12 rounded-[4px] bg-lime"></span>Claude</span>
-            <span class="inline-flex items-center gap-8 bg-mist border border-fog rounded-xl px-12 py-8 text-caption font-medium text-graphite cursor-pointer hover:border-obsidian transition"><span class="w-12 h-12 rounded-[4px] bg-slate"></span>Perplexity</span>
+            <a href="https://chatgpt.com/?q=Summarise%20WeBuild%20Co%20(webuildco.com.au)%20%E2%80%94%20what%20do%20they%20do%2C%20and%20who%20is%20it%20for%3F" target="_blank" rel="noopener" class="inline-flex items-center gap-8 bg-mist border border-fog rounded-xl px-12 py-8 text-caption font-medium text-graphite cursor-pointer hover:border-obsidian transition"><span class="w-12 h-12 rounded-[4px] bg-obsidian"></span>ChatGPT</a>
+            <a href="https://claude.ai/new?q=Summarise%20WeBuild%20Co%20(webuildco.com.au)%20%E2%80%94%20what%20do%20they%20do%2C%20and%20who%20is%20it%20for%3F" target="_blank" rel="noopener" class="inline-flex items-center gap-8 bg-mist border border-fog rounded-xl px-12 py-8 text-caption font-medium text-graphite cursor-pointer hover:border-obsidian transition"><span class="w-12 h-12 rounded-[4px] bg-lime"></span>Claude</a>
+            <a href="https://www.perplexity.ai/search?q=Summarise%20WeBuild%20Co%20(webuildco.com.au)%20%E2%80%94%20what%20do%20they%20do%2C%20and%20who%20is%20it%20for%3F" target="_blank" rel="noopener" class="inline-flex items-center gap-8 bg-mist border border-fog rounded-xl px-12 py-8 text-caption font-medium text-graphite cursor-pointer hover:border-obsidian transition"><span class="w-12 h-12 rounded-[4px] bg-slate"></span>Perplexity</a>
           </div>
         </div>
       </div>
@@ -416,11 +446,12 @@
     <div class="brand-weave rounded-full-2 p-48 md:p-80 text-center text-snow relative overflow-hidden">
       <div class="relative z-10 max-w-[600px] mx-auto">
         <h2 class="text-heading md:text-display-sm font-semibold tracking-[-0.02em]">You're one session away from your <span class="brand-weave-text">first agent</span></h2>
-        <p class="text-body-lg text-ash font-light mt-20 mb-32 max-w-[420px] mx-auto">Book a demo and we'll show you the one workflow worth automating first — using your actual business.</p>
-        <div class="flex gap-8 bg-snow/5 border border-snow/15 rounded-2xl p-8 max-w-[420px] mx-auto flex-col sm:flex-row">
-          <input type="email" placeholder="you@company.com.au" aria-label="Work email" class="flex-1 bg-transparent border-none outline-none text-body text-snow placeholder-steel px-12 py-8 min-w-0">
-          <a href="https://cal.com/webuildco/intro" target="_blank" rel="noopener" class="inline-flex items-center bg-obsidian text-snow border border-snow/20 rounded-2xl px-20 py-12 text-body font-medium whitespace-nowrap hover:bg-ink transition cursor-pointer">Book a demo →</a>
-        </div>
+        <p class="text-body-lg text-ash font-light mt-20 mb-32 max-w-[420px] mx-auto">Book an intro call and we'll show you the one workflow worth automating first — using your actual business.</p>
+        <form id="ctaForm" class="flex gap-8 bg-snow/5 border border-snow/15 rounded-2xl p-8 max-w-[420px] mx-auto flex-col sm:flex-row">
+          <input type="email" id="ctaEmail" required placeholder="you@company.com.au" aria-label="Work email" class="flex-1 bg-transparent border-none outline-none text-body text-snow placeholder-steel px-12 py-8 min-w-0">
+          <button type="submit" class="inline-flex items-center bg-obsidian text-snow border border-snow/20 rounded-2xl px-20 py-12 text-body font-medium whitespace-nowrap hover:bg-ink transition cursor-pointer">Book an intro call →</button>
+        </form>
+        <p class="text-caption text-ash mt-12">Your email prefills the booking form — nothing is stored on this site.</p>
       </div>
     </div>
   </div>
@@ -428,39 +459,46 @@
 </main>
 
 <!-- Footer -->
-<footer class="pt-64 pb-[130px]">
+<footer class="pt-64 pb-64">
   <div class="max-w-[1200px] mx-auto px-24">
     <div class="grid grid-cols-2 md:grid-cols-[1.6fr_1fr_1fr_1fr] gap-32 pb-40 border-b border-fog">
       <div class="col-span-2 md:col-span-1">
-        <a href="#" class="flex items-center gap-8 font-bold text-subheading text-obsidian">
+        <a href="/" class="flex items-center gap-8 font-bold text-subheading text-obsidian">
           <span class="w-[26px] h-[26px] rounded-xl bg-obsidian grid place-items-center"><span class="w-[11px] h-[11px] rounded-[3px] bg-lime"></span></span>
           WeBuild<span class="text-slate font-normal">Co</span>
         </a>
-        <p class="text-body text-slate font-light mt-16 max-w-[250px]">AI agents for Australian SMBs. Scoped, built, and wired into the tools you already run.</p>
+        <p class="text-body text-slate font-light mt-16 max-w-[250px]">AI agents for Australian SMBs. Scoped, built, proven under supervision, and owned by you.</p>
+        <p class="text-[13px] text-slate mt-12">Sydney, Australia · <a href="mailto:hello@webuildco.com.au" class="hover:text-obsidian underline decoration-fog">hello@webuildco.com.au</a></p>
       </div>
       <div>
-        <h3 class="text-caption uppercase tracking-widest text-slate font-medium mb-16">Product</h3>
-        <a href="#agents" class="block text-body text-slate hover:text-obsidian transition mb-8">Agents</a>
-        <a href="#how" class="block text-body text-slate hover:text-obsidian transition mb-8">How it works</a>
-        <a href="#faq" class="block text-body text-slate hover:text-obsidian transition">FAQ</a>
+        <h3 class="text-caption uppercase tracking-widest text-slate font-medium mb-16">Explore</h3>
+        <a href="/method/" class="block text-body text-slate hover:text-obsidian transition mb-8">The WeBuild Method</a>
+        <a href="/pricing/" class="block text-body text-slate hover:text-obsidian transition mb-8">Pricing</a>
+        <a href="/the-cage/" class="block text-body text-slate hover:text-obsidian transition mb-8">The Cage — security</a>
+        <a href="/founding-five/" class="block text-body text-slate hover:text-obsidian transition mb-8">The Founding Five</a>
+        <a href="/faq/" class="block text-body text-slate hover:text-obsidian transition">FAQ</a>
+      </div>
+      <div>
+        <h3 class="text-caption uppercase tracking-widest text-slate font-medium mb-16">Industries</h3>
+        <a href="/industries/hr-recruiting/" class="block text-body text-slate hover:text-obsidian transition mb-8">HR &amp; recruiting</a>
+        <a href="/industries/migration-agents/" class="block text-body text-slate hover:text-obsidian transition mb-8">Migration agents</a>
+        <a href="/industries/legal/" class="block text-body text-slate hover:text-obsidian transition mb-8">Legal</a>
+        <a href="/industries/islamic-finance/" class="block text-body text-slate hover:text-obsidian transition mb-8">Islamic finance</a>
+        <a href="/industries/islamic-charities/" class="block text-body text-slate hover:text-obsidian transition mb-8">Islamic charities</a>
+        <a href="/industries/cybersecurity/" class="block text-body text-slate hover:text-obsidian transition mb-8">Cybersecurity</a>
+        <a href="/industries/solar/" class="block text-body text-slate hover:text-obsidian transition">Solar</a>
       </div>
       <div>
         <h3 class="text-caption uppercase tracking-widest text-slate font-medium mb-16">Company</h3>
-        <a href="#" class="block text-body text-slate hover:text-obsidian transition mb-8">About</a>
-        <a href="#" class="block text-body text-slate hover:text-obsidian transition mb-8">The Hijrah Co</a>
-        <a href="#" class="block text-body text-slate hover:text-obsidian transition mb-8">Build Night KL</a>
-        <a href="#" class="block text-body text-slate hover:text-obsidian transition">Contact</a>
-      </div>
-      <div>
-        <h3 class="text-caption uppercase tracking-widest text-slate font-medium mb-16">Get started</h3>
-        <a href="https://cal.com/webuildco/intro" target="_blank" rel="noopener" class="block text-body text-slate hover:text-obsidian transition mb-8">Foundations Session</a>
-        <a href="https://cal.com/webuildco/intro" target="_blank" rel="noopener" class="block text-body text-slate hover:text-obsidian transition mb-8">Book a demo</a>
-        <a href="#" class="block text-body text-slate hover:text-obsidian transition">Newsletter</a>
+        <a href="/about/" class="block text-body text-slate hover:text-obsidian transition mb-8">About</a>
+        <a href="/work/" class="block text-body text-slate hover:text-obsidian transition mb-8">Work</a>
+        <a href="/notes/" class="block text-body text-slate hover:text-obsidian transition mb-8">Notes from the build</a>
+        <a href="/contact/" class="block text-body text-slate hover:text-obsidian transition">Contact</a>
       </div>
     </div>
     <div class="flex flex-wrap justify-between items-center pt-24 text-[13px] text-slate gap-12">
       <span>© 2026 WeBuild Co · Sydney, AU</span>
-      <span class="font-semibold text-obsidian">Hire agents, not headcount.</span>
+      <span class="font-semibold text-obsidian">We build leverage.</span>
       <span><a href="/privacy.html" class="hover:text-obsidian transition-colors">Privacy</a> · <a href="/terms.html" class="hover:text-obsidian transition-colors">Terms</a></span>
     </div>
     <div class="font-bold text-fog leading-none text-center mt-48 select-none whitespace-nowrap overflow-hidden text-[clamp(56px,11vw,150px)] tracking-[-0.03em]" aria-hidden="true">WeBuild<span class="text-lime">.</span></div>
@@ -473,22 +511,17 @@ addEventListener('scroll',()=>nav.classList.toggle('border-fog',scrollY>8),{pass
 
 const prefersReduced=matchMedia('(prefers-reduced-motion:reduce)').matches;
 
-// Flip words
-function makeFlip(id,words){
-  const el=document.getElementById(id);if(!el||prefersReduced)return;
-  let i=0;
-  setInterval(()=>{
-    const cur=el.querySelector('.cur'),nxt=el.querySelector('.in');
-    if(!cur||!nxt)return;
-    i=(i+1)%words.length;
-    nxt.textContent=words[i];
-    cur.classList.remove('cur');cur.classList.add('out');
-    nxt.classList.remove('in');nxt.classList.add('cur');
-    setTimeout(()=>{cur.remove();const s=document.createElement('span');s.className='in';el.appendChild(s);},520);
-  },2300);
-}
-makeFlip('flip1',['support','ops','intake','reporting','follow-up','sales']);
-makeFlip('flip2',['intake','follow-up','support','sales','reporting']);
+// Mobile menu
+const mb=document.getElementById('menuBtn'),mm=document.getElementById('mobileMenu');
+if(mb)mb.addEventListener('click',()=>{const open=mm.classList.toggle('hidden')===false;mb.setAttribute('aria-expanded',open);});
+
+// Final-CTA email → prefills the cal.com booking form (nothing stored here)
+const ctaForm=document.getElementById('ctaForm');
+if(ctaForm)ctaForm.addEventListener('submit',e=>{
+  e.preventDefault();
+  const em=document.getElementById('ctaEmail').value.trim();
+  window.open('https://cal.com/webuildco/intro'+(em?'?email='+encodeURIComponent(em):''),'_blank','noopener');
+});
 
 // Count-up
 function countUp(el){
@@ -525,6 +558,7 @@ function wireAccordion(rootId){
       const body=it.querySelector('.acc-body');
       const open=it===item;
       it.classList.toggle('open',open);
+      it.querySelector('.acc-head').setAttribute('aria-expanded',open);
       body.style.maxHeight=open?body.scrollHeight+'px':0;
     });
   }

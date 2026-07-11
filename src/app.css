@@ -89,6 +89,7 @@ body{font-family:var(--font-cosmica);-webkit-font-smoothing:antialiased}
 /* ===== Custom pieces the utilities can't express ===== */
 @keyframes scrollx{to{transform:translateX(-50%)}}
 .marquee{animation:scrollx 32s linear infinite}
+.marquee:hover{animation-play-state:paused}
 @keyframes pulse-dot{0%,100%{box-shadow:0 0 0 3px rgba(200,230,54,.22)}50%{box-shadow:0 0 0 7px rgba(200,230,54,.06)}}
 .pulse-dot{animation:pulse-dot 2.4s infinite}
 @keyframes spin360{to{transform:rotate(360deg)}}
