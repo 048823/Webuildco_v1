@@ -1,6 +1,6 @@
-// Runnable check for the session-token scheme: node auth.test.mjs
+// Runnable check for the session-token scheme: node worker.test.mjs
 import assert from "node:assert";
-import { makeToken, validToken } from "./[[path]].js";
+import { makeToken, validToken } from "./worker.js";
 
 const secret = "test-secret-please-change";
 const token = await makeToken(secret);

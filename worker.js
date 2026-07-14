@@ -1,17 +1,18 @@
-// Server-side auth gate for /mission-control/* (Cloudflare Pages Function).
-// Single board user. Password + HMAC-signed session cookie. No user store.
+// Cloudflare Worker entry for the WeBuild site.
 //
-// Required env vars (set in Cloudflare Pages project settings, both Production
-// and Preview): MC_PASSWORD (the board login password) and MC_SECRET (a long
-// random string used to sign session cookies). If MC_PASSWORD is unset, login
+// The site is static assets served via the ASSETS binding. This Worker exists
+// only to gate /mission-control/* behind a password + HMAC-signed session
+// cookie. `run_worker_first: ["/mission-control/*"]` in wrangler.jsonc makes
+// the Worker intercept ONLY those paths; every other asset (the whole
+// marketing site) is served directly by the platform, unchanged.
+//
+// Required env vars (Cloudflare project → Settings → Variables, for the
+// deployment env you review/ship): MC_PASSWORD (board login) and MC_SECRET
+// (long random cookie-signing key). If MC_PASSWORD/MC_SECRET are unset, login
 // always fails and nothing under /mission-control/ is served — fail closed.
-//
-// ponytail: single shared password + signed cookie. Add per-user identity only
-// if the board ever needs more than one login — Cloudflare Access is the drop-in
-// upgrade (see PR notes) and needs zero code.
 
 const COOKIE = "mc_session";
-const TTL = 60 * 60 * 12; // 12h session
+const TTL = 60 * 60 * 12; // 12h
 
 const enc = new TextEncoder();
 const b64u = (buf) =>
@@ -22,7 +23,6 @@ async function hmac(secret, msg) {
   return b64u(await crypto.subtle.sign("HMAC", key, enc.encode(msg)));
 }
 
-// Constant-time-ish string compare.
 function safeEqual(a, b) {
   if (a.length !== b.length) return false;
   let out = 0;
@@ -56,14 +56,13 @@ function loginPage(error) {
   });
 }
 
-export async function onRequest(context) {
-  const { request, env, next } = context;
-  const url = new URL(request.url);
+// Returns a Response to short-circuit (login/redirect/logout), or null when the
+// request is authenticated and the caller should serve the asset.
+async function gate(request, env, url) {
   const secret = env.MC_SECRET;
   const password = env.MC_PASSWORD;
 
-  // Handle logout.
-  if (url.pathname.endsWith("/logout")) {
+  if (url.pathname === "/mission-control/logout") {
     return new Response(null, {
       status: 302,
       headers: {
@@ -73,12 +72,10 @@ export async function onRequest(context) {
     });
   }
 
-  // Handle login POST.
-  if (request.method === "POST" && url.pathname.endsWith("/login")) {
-    if (!password || !secret) return loginPage("Auth not configured. Board must set MC_PASSWORD and MC_SECRET.");
+  if (request.method === "POST" && url.pathname === "/mission-control/login") {
+    if (!password || !secret) return loginPage("Auth not configured. Set MC_PASSWORD and MC_SECRET.");
     const form = await request.formData();
-    const given = String(form.get("password") || "");
-    if (!safeEqual(given, password)) return loginPage("Wrong password.");
+    if (!safeEqual(String(form.get("password") || ""), password)) return loginPage("Wrong password.");
     const token = await makeToken(secret);
     return new Response(null, {
       status: 302,
@@ -89,14 +86,21 @@ export async function onRequest(context) {
     });
   }
 
-  // Authenticated? Serve the requested static asset.
-  if (secret && (await validToken(secret, readCookie(request, COOKIE)))) {
-    return next();
-  }
-
-  // Not authenticated → login screen (never serves protected assets).
+  if (secret && (await validToken(secret, readCookie(request, COOKIE)))) return null; // authed
   return loginPage(null);
 }
+
+export default {
+  async fetch(request, env) {
+    const url = new URL(request.url);
+    const gated = url.pathname === "/mission-control" || url.pathname.startsWith("/mission-control/");
+    if (gated) {
+      const resp = await gate(request, env, url);
+      if (resp) return resp;
+    }
+    return env.ASSETS.fetch(request);
+  },
+};
 
 const LOGIN_HTML = `<!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
@@ -104,7 +108,7 @@ const LOGIN_HTML = `<!DOCTYPE html><html lang="en"><head>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
 <style>
-:root{--obsidian:#09090b;--ink:#18181b;--slate:#52525b;--ash:#a1a1aa;--fog:#ececee;--snow:#fff;--lime:#c8e636;--lime-deep:#aacb1f}
+:root{--obsidian:#09090b;--ink:#18181b;--slate:#52525b;--ash:#a1a1aa;--snow:#fff;--lime:#c8e636;--lime-deep:#aacb1f}
 *{box-sizing:border-box}
 body{margin:0;font-family:'DM Sans',system-ui,sans-serif;background:var(--obsidian);color:var(--snow);min-height:100vh;display:grid;place-items:center}
 .card{width:min(92vw,380px);background:var(--ink);border:1px solid #27272a;border-radius:20px;padding:36px}
