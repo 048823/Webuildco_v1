@@ -1,0 +1,47 @@
+{
+  "_note": "SAMPLE / MANUAL DATA — owned by ExecutiveCreativeDirector. Edit this file to update the Creative section. Image tiles accept remote URLs or local paths under /mission-control/assets/. Statuses drive the pills (draft/idea/in production/in review/approved/scheduled).",
+  "updated": "2026-07-14",
+  "boards": [
+    {
+      "title": "Q3 Brand Refresh — 'Hire agents, not headcount'",
+      "direction": "Confident, editorial, high-contrast. Obsidian + lime accent, generous whitespace, DM Sans headlines. Product-as-hero, minimal chrome.",
+      "status": "review",
+      "palette": ["#09090b", "#c8e636", "#ff5a00", "#f4f4f5", "#71717a"],
+      "images": [
+        { "url": "https://picsum.photos/seed/webuild-hero/600/400", "caption": "Hero direction — dark, single accent" },
+        { "url": "https://picsum.photos/seed/webuild-type/600/400", "caption": "Typographic lockup study" },
+        { "url": "https://picsum.photos/seed/webuild-grid/600/400", "caption": "Editorial grid, lots of air" },
+        { "url": "https://picsum.photos/seed/webuild-product/600/400", "caption": "Product screenshot framing" }
+      ]
+    },
+    {
+      "title": "Voice Agent Campaign — Optora",
+      "direction": "Warmer, human. Recruiting context — people + phone motifs. Softer neutrals with lime call-to-action. Motion-first (reels).",
+      "status": "draft",
+      "palette": ["#18181b", "#aacb1f", "#dbeafe", "#fef3c7"],
+      "images": [
+        { "url": "https://picsum.photos/seed/optora-1/600/400", "caption": "Candidate call moment" },
+        { "url": "https://picsum.photos/seed/optora-2/600/400", "caption": "Waveform / voice motif" },
+        { "url": "https://picsum.photos/seed/optora-3/600/400", "caption": "Before / after workflow" }
+      ]
+    }
+  ],
+  "ideas": {
+    "columns": ["Idea", "In production", "In review", "Approved", "Scheduled"],
+    "cards": [
+      { "title": "'What agents cost to run' — LinkedIn carousel", "format": "LinkedIn carousel", "owner": "StudioDesigner", "col": "In production", "thumb": "https://picsum.photos/seed/idea-cost/400/260", "issue": "https://linear.app/webuild" },
+      { "title": "Optora voice-agent demo reel", "format": "Reel", "owner": "MotionDesigner", "col": "In review", "thumb": "https://picsum.photos/seed/idea-reel/400/260", "issue": "https://linear.app/webuild" },
+      { "title": "'Rented vs owned automation' — YT thumbnail", "format": "YT thumbnail", "owner": "StudioDesigner", "col": "Idea", "thumb": "https://picsum.photos/seed/idea-yt/400/260" },
+      { "title": "Founding Five case-study one-pager", "format": "One-pager", "owner": "StudioDesigner", "col": "Approved", "thumb": "https://picsum.photos/seed/idea-case/400/260", "issue": "https://linear.app/webuild" },
+      { "title": "Agent readiness checklist — animated", "format": "Motion graphic", "owner": "MotionDesigner", "col": "Idea", "thumb": "https://picsum.photos/seed/idea-checklist/400/260" },
+      { "title": "Q3 brand refresh key visual", "format": "Key visual", "owner": "StudioDesigner", "col": "Scheduled", "thumb": "https://picsum.photos/seed/idea-kv/400/260", "issue": "https://linear.app/webuild" }
+    ]
+  },
+  "schedule": [
+    { "date": "2026-07-16", "platform": "LinkedIn", "asset": "'What agents cost to run' carousel", "status": "scheduled" },
+    { "date": "2026-07-18", "platform": "Instagram", "asset": "Optora demo reel", "status": "in review" },
+    { "date": "2026-07-21", "platform": "YouTube", "asset": "Rented vs owned — thumbnail + short", "status": "in production" },
+    { "date": "2026-07-24", "platform": "Website", "asset": "Q3 brand refresh hero swap", "status": "draft" },
+    { "date": "2026-07-28", "platform": "LinkedIn", "asset": "Founding Five case-study post", "status": "approved" }
+  ]
+}

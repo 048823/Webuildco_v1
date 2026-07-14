@@ -45,6 +45,7 @@ const SKILLS = {
 const apiBadge = (s) => ({ "connected": '<span class="badge ok">connected</span>', "needs-auth": '<span class="badge warn">needs auth</span>', "not-wired": '<span class="badge bad">not wired</span>' }[s] || "");
 
 let DATA = {};
+let CREATIVE = {}; // data/creative.json — owned by ECD, drives the Creative section
 
 // ---- Section definitions ----
 const SECTIONS = [
@@ -52,6 +53,7 @@ const SECTIONS = [
   { id: "projects", title: "Projects", ic: "▤", desc: "Client pipeline + internal projects", flag: "manual", render: renderProjects },
   { id: "leads", title: "Outbound Leads", ic: "◎", desc: "Instantly & A-leads campaigns", flag: "needs", render: renderLeads },
   { id: "blogs", title: "Upcoming Blogs", ic: "▦", desc: "Blog prep & publish schedule", flag: "manual", render: renderBlogs },
+  { id: "creative", title: "Creative", ic: "✎", desc: "Mood boards, ideas pipeline & production schedule", flag: "manual", render: renderCreative },
   { id: "finance", title: "Finance", ic: "$", desc: "Subscriptions birds-eye view", flag: "manual", render: renderFinance },
   { id: "research", title: "Research", ic: "◈", desc: "Latest trending news", flag: "needs", render: renderResearch },
   { id: "apis", title: "APIs & MCPs", ic: "⌁", desc: "Every API and MCP available to the agents", flag: "live", render: renderApis },
@@ -121,6 +123,76 @@ function renderBlogs() {
     return `<div class="col"><h4>${esc(col)}<span>${items.length}</span></h4>${items.map((c) => `
       <div class="item">${esc(c.title)}${c.meta ? `<div class="m">${esc(c.meta)}</div>` : ""}</div>`).join("")}</div>`;
   }).join("")}</div>`;
+}
+
+// ---- Creative Studio (mood boards + ideas pipeline + schedule) ----
+const CR_STATUS = { draft: "", idea: "", review: "warn", "in review": "warn", "in production": "info", approved: "ok", scheduled: "lime" };
+const statusPill = (s) => `<span class="badge ${CR_STATUS[String(s || "").toLowerCase()] || ""}">${esc(s || "—")}</span>`;
+
+function renderCreative() {
+  const c = CREATIVE;
+  setTimeout(wireCreative, 0);
+  return `
+  <div class="tabs" id="crTabs">
+    <button class="tab active" data-tab="boards">Mood boards</button>
+    <button class="tab" data-tab="ideas">Ideas</button>
+    <button class="tab" data-tab="schedule">Schedule</button>
+  </div>
+  ${c._note ? `<div class="section-note">${esc(c._note)}</div>` : ""}
+  <div class="tabpage active" id="cr-boards">${renderMoodBoards(c.boards || [])}</div>
+  <div class="tabpage" id="cr-ideas">${renderIdeas(c.ideas || {})}</div>
+  <div class="tabpage" id="cr-schedule">${renderSchedule(c.schedule || [])}</div>
+  <div class="lightbox" id="crLightbox"><figure><img alt=""><figcaption></figcaption></figure></div>`;
+}
+
+function renderMoodBoards(boards) {
+  if (!boards.length) return `<div class="card"><p class="muted">No mood boards yet.</p></div>`;
+  return `<div class="grid g2">${boards.map((b) => `
+    <div class="card">
+      <h3>${esc(b.title || "Untitled")} ${statusPill(b.status)}</h3>
+      ${b.direction ? `<p class="muted tiny" style="margin-top:-8px">${esc(b.direction)}</p>` : ""}
+      ${(b.palette || []).length ? `<div class="palette">${b.palette.map((hex) => `<span class="sw" style="background:${esc(hex)}" title="${esc(hex)}"></span>`).join("")}</div>` : ""}
+      <div class="tiles">${(b.images || []).map((im) => `
+        <figure class="tile" data-full="${esc(im.url)}" data-cap="${esc(im.caption || "")}">
+          <img src="${esc(im.url)}" alt="${esc(im.caption || "")}" loading="lazy">
+          ${im.caption ? `<figcaption>${esc(im.caption)}</figcaption>` : ""}
+        </figure>`).join("") || '<p class="muted tiny">No images.</p>'}</div>
+    </div>`).join("")}</div>`;
+}
+
+function renderIdeas(ideas) {
+  const cols = ideas.columns || ["Idea", "In production", "In review", "Approved", "Scheduled"];
+  const cards = ideas.cards || [];
+  return `<div class="kan kan5">${cols.map((col) => {
+    const items = cards.filter((c) => c.col === col);
+    return `<div class="col"><h4>${esc(col)}<span>${items.length}</span></h4>${items.map((c) => `
+      <div class="item">
+        ${c.thumb ? `<img class="cthumb" src="${esc(c.thumb)}" alt="" loading="lazy">` : ""}
+        <div class="t">${esc(c.title || "")}</div>
+        <div class="m">${[c.format, c.owner].filter(Boolean).map(esc).join(" · ")}</div>
+        ${c.issue ? `<a class="ilink" href="${esc(c.issue)}" target="_blank" rel="noopener">issue ↗</a>` : ""}
+      </div>`).join("") || '<p class="muted tiny">—</p>'}</div>`;
+  }).join("")}</div>`;
+}
+
+function renderSchedule(rows) {
+  if (!rows.length) return `<div class="card"><p class="muted">No scheduled slots.</p></div>`;
+  return `<div class="card"><h3>Upcoming creative slots</h3><table><thead><tr><th>Date</th><th>Platform</th><th>Asset</th><th>Status</th></tr></thead><tbody>${rows.map((r) => `
+    <tr><td class="muted">${esc(r.date || "—")}</td><td>${esc(r.platform || "")}</td><td><b>${esc(r.asset || "")}</b></td><td>${statusPill(r.status)}</td></tr>`).join("")}</tbody></table></div>`;
+}
+
+function wireCreative() {
+  const tabs = $("#crTabs"); if (!tabs) return;
+  tabs.onclick = (e) => {
+    const b = e.target.closest(".tab"); if (!b) return;
+    tabs.querySelectorAll(".tab").forEach((t) => t.classList.toggle("active", t === b));
+    document.querySelectorAll(".tabpage").forEach((p) => p.classList.toggle("active", p.id === "cr-" + b.dataset.tab));
+  };
+  const lb = $("#crLightbox");
+  document.querySelectorAll(".tile[data-full]").forEach((t) => {
+    t.onclick = () => { lb.querySelector("img").src = t.dataset.full; lb.querySelector("figcaption").textContent = t.dataset.cap; lb.classList.add("open"); };
+  });
+  lb.onclick = () => lb.classList.remove("open");
 }
 
 function renderFinance() {
@@ -237,6 +309,8 @@ async function boot() {
   buildNav();
   try { DATA = await (await fetch("/mission-control/data/board.json", { cache: "no-store" })).json(); }
   catch { DATA = {}; }
+  try { CREATIVE = await (await fetch("/mission-control/data/creative.json", { cache: "no-store" })).json(); }
+  catch { CREATIVE = {}; }
   $("#upd").textContent = DATA.updated ? "updated " + DATA.updated : "";
   document.addEventListener("click", (e) => {
     const nav = e.target.closest(".nav a"); if (nav) return go(nav.dataset.id);
