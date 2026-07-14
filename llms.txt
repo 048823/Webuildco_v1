@@ -25,3 +25,7 @@ Australian SMBs drowning in manual admin work who want outcomes owned end-to-end
 - Website: https://www.webuildco.com.au
 - Email: hello@webuildco.com.au
 - Location: Sydney, Australia
+
+## Key pages
+- Blog (practical AI automation guides for Australian SMBs): https://www.webuildco.com.au/blog/
+- Free AI Automation ROI Calculator (hours saved, annual savings, payback period): https://www.webuildco.com.au/tools/roi-calculator/

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%276%27 fill=%27%230a0a0a%27/%3E%3Ctext x=%2716%27 y=%2723%27 text-anchor=%27middle%27 font-family=%27system-ui%27 font-weight=%27700%27 font-size=%2722%27 fill=%27%23c8ff00%27%3EW%3C/text%3E%3C/svg%3E">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{TITLE}} — WeBuild Agency</title>
+  <meta name="description" content="{{DESCRIPTION}}" />
+  <link rel="canonical" href="{{CANONICAL}}" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+  <meta name="theme-color" content="#0a0a0c" />
+  <meta name="author" content="{{AUTHOR}}" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="WeBuild Agency" />
+  <meta property="og:title" content="{{TITLE}}" />
+  <meta property="og:description" content="{{DESCRIPTION}}" />
+  <meta property="og:url" content="{{CANONICAL}}" />
+  <meta property="og:locale" content="en_AU" />
+  <meta property="og:image" content="{{OG_IMAGE}}" />
+  <meta property="article:published_time" content="{{DATE_ISO}}" />
+  <meta property="article:modified_time" content="{{UPDATED_ISO}}" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="{{TITLE}}" />
+  <meta name="twitter:description" content="{{DESCRIPTION}}" />
+  <meta name="twitter:image" content="{{OG_IMAGE}}" />
+  <script type="application/ld+json">{{JSONLD}}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/site.css">
+</head>
+<body>
+  <header class="nav">
+    <div class="container nav-inner">
+      <a href="/" class="logo">
+        <div class="logo-main"><span class="w-accent">W</span>eBuild</div>
+        <div class="logo-sub">Agency</div>
+      </a>
+      <nav class="nav-links">
+        <a href="/#services">Services</a>
+        <a href="/blog/">Blog</a>
+        <a href="/tools/roi-calculator/">ROI Calculator</a>
+        <a href="/audit" style="color:var(--accent1);font-weight:600;">AI Audit</a>
+      </nav>
+      <a class="btn btn-primary" href="https://cal.com/webuildai/30min" target="_blank">Book a Call →</a>
+    </div>
+  </header>
+
+  <main class="page">
+    <article class="container prose">
+      <div class="post-meta"><a href="/blog/">← Blog</a> · {{DATE_HUMAN}} · {{AUTHOR}}</div>
+      <h1>{{TITLE}}</h1>
+      {{CONTENT}}
+      <div class="post-tags">{{TAGS_HTML}}</div>
+    </article>
+
+    <div class="container">
+      <div class="cta-box">
+        <h2>Want this working in your business?</h2>
+        <p>We build production AI agents for Australian SMBs — architected, deployed, and monitored. Hire agents, not headcount.</p>
+        <a class="btn btn-primary" href="https://cal.com/webuildai/30min" target="_blank">Book a free intro call →</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div><a href="/privacy.html">Privacy Policy</a><a href="/terms.html">Terms of Service</a></div>
+      <div style="margin-top:8px;">© 2026 WeBuild Agency · Sydney, Australia</div>
+    </div>
+  </footer>
+</body>
+</html>
