@@ -1,0 +1,34 @@
+# WeBuild Co
+
+> Australian AI engineering studio founded by computer engineer Johan Iskandar. We build AI agents — software that runs the repetitive work inside small and mid-sized businesses — scoped with payback math up front, built at a fixed price, run under human supervision until proven, then handed over completely. Owned, not employed. No lock-in, ever.
+
+## What we do
+- AI agents that do a defined job the way a team member would: read the incoming work (an email, a lead, a ticket), decide using your rules and knowledge base, act in your actual tools, and log what they did. Not chatbot widgets — workers on workflows.
+- Every agent goes through a supervised proving run: it drafts, a human approves, and every miss becomes a fix before go-live. Money, VIPs, and bulk actions always keep a human approval gate.
+- Agents run in your infrastructure under your accounts and API keys. Handover includes code, credentials, runbook, and security config — if we part ways, it keeps running and you keep it all.
+
+## How engagements work
+- **Foundations Session** — a working session that maps your workflows and does the payback math with your actual numbers. A$300 at the founding rate (A$600–750 standard), credited toward your install.
+- **Agent install** — fixed price quoted in writing after scoping, 50% to commence, 50% on handover. Typically 3–4 weeks for a single-workflow agent.
+- Running costs after handover: model usage plus tool subscriptions, roughly A$50–300/month for most single-workflow agents — specified before the build.
+
+## Who it's for
+Australian small and mid-sized businesses drowning in repetitive admin — re-typing, chasing, after-hours phone — who want to own the system that fixes it. Industries we know: HR & recruiting, migration agents, legal, Islamic finance, Islamic charities, cybersecurity, solar.
+
+## Key pages
+- Home: https://www.webuildco.com.au/
+- Method (how we scope, build, prove, hand over): https://www.webuildco.com.au/method/
+- Pricing: https://www.webuildco.com.au/pricing/
+- The Cage (guardrails and approval gates): https://www.webuildco.com.au/the-cage/
+- Founding Five (early-client program): https://www.webuildco.com.au/founding-five/
+- FAQ: https://www.webuildco.com.au/faq/
+- Work: https://www.webuildco.com.au/work/
+- Industries: https://www.webuildco.com.au/industries/
+- Notes (plain-language explainers): https://www.webuildco.com.au/notes/
+- About: https://www.webuildco.com.au/about/
+- Contact: https://www.webuildco.com.au/contact/
+
+## Contact
+- Website: https://www.webuildco.com.au
+- Email: hello@webuildco.com.au
+- Location: Sydney, Australia

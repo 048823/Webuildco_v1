@@ -1,0 +1,9 @@
+# Security headers served by Cloudflare Workers static assets.
+# Cache-control for HTML is left at the platform default (max-age=0, must-revalidate)
+# so deploys go live immediately.
+
+/*
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=()
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
