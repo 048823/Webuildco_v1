@@ -3,6 +3,7 @@
 # Default: allow all crawlers full access
 User-agent: *
 Allow: /
+Disallow: /mission-control/
 
 # Explicitly allow AI / LLM crawlers and search agents
 User-agent: GPTBot

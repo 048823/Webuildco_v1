@@ -1,0 +1,73 @@
+{
+  "_note": "SAMPLE / MANUAL DATA — edit this file to update Mission Control. Sections marked 'needs' in the UI are waiting on a live API credential (see the issue result comment). Replace these seed rows with real data or wire the integration.",
+  "updated": "2026-07-14",
+  "todos": [
+    { "text": "Approve Optora voice-agent scope", "owner": "CEO", "done": false },
+    { "text": "Sign off July subscription spend", "owner": "CTO", "done": true },
+    { "text": "Review 3 new outbound sequences", "owner": "CMO", "done": false },
+    { "text": "Ship Mission Control auth to prod", "owner": "CTO", "done": false }
+  ],
+  "briefs": [
+    { "title": "Pipeline health", "body": "2 builds in delivery, 1 in discovery. No red flags. Optora on track for wk-3 handover." },
+    { "title": "Outbound", "body": "Instantly + A-leads running; reply rate ~4%. Waiting on API keys to surface live numbers here." }
+  ],
+  "projects": {
+    "clients": [
+      { "name": "Optora Recruiting", "type": "Voice + lead-qual agent", "stage": "Delivery", "progress": 65, "due": "2026-07-28", "health": "ok" },
+      { "name": "WeBuild CMO Agent", "type": "Content + outbound agent", "stage": "Delivery", "progress": 40, "health": "ok" },
+      { "name": "Harbourline Legal", "type": "Doc-automation agent", "stage": "Discovery", "progress": 10, "health": "warn" }
+    ],
+    "internal": [
+      { "name": "Mission Control", "type": "Internal dashboard", "stage": "Build", "progress": 80, "health": "ok" },
+      { "name": "Website v3", "type": "Marketing site", "stage": "Live", "progress": 100, "health": "ok" }
+    ]
+  },
+  "leads": {
+    "campaigns": [
+      { "tool": "Instantly", "name": "AU SMB — Ops automation", "sent": 0, "opened": 0, "replied": 0, "status": "needs-key" },
+      { "tool": "A-leads", "name": "Recruiting agencies NSW", "sent": 0, "opened": 0, "replied": 0, "status": "needs-key" }
+    ]
+  },
+  "blogs": {
+    "columns": ["Idea", "Drafting", "Review", "Scheduled"],
+    "cards": [
+      { "title": "What agents cost to run", "col": "Scheduled", "meta": "publish 2026-07-16" },
+      { "title": "Supervised until proven", "col": "Review", "meta": "CMO agent draft" },
+      { "title": "Rented vs owned automation", "col": "Drafting", "meta": "" },
+      { "title": "Agent readiness checklist", "col": "Idea", "meta": "from notes/" },
+      { "title": "AI agency vs in-house", "col": "Idea", "meta": "" }
+    ]
+  },
+  "finance": {
+    "currency": "AUD",
+    "note": "Manual snapshot. Hostinger subs can be auto-pulled via the connected Hostinger MCP (billing_getSubscriptionListV1) — wire on request.",
+    "subscriptions": [
+      { "name": "Anthropic (Claude)", "cat": "AI / LLM", "monthly": 320, "cycle": "monthly", "renews": "2026-08-01" },
+      { "name": "Instantly", "cat": "Outbound", "monthly": 97, "cycle": "monthly", "renews": "2026-07-22" },
+      { "name": "Cloudflare Pages", "cat": "Infra", "monthly": 0, "cycle": "monthly", "renews": "-" },
+      { "name": "Cal.com", "cat": "Ops", "monthly": 15, "cycle": "monthly", "renews": "2026-07-30" },
+      { "name": "Hostinger", "cat": "Infra", "monthly": 12, "cycle": "annual", "renews": "2027-02-10" }
+    ]
+  },
+  "research": {
+    "note": "Manual for now. Auto-fill via WebSearch or a news API — see missing-credentials list.",
+    "items": [
+      { "title": "AU SMBs accelerating AI-agent adoption in ops roles", "source": "manual", "tag": "Market", "date": "2026-07-13" },
+      { "title": "Voice agents crossing human-parity on scheduling calls", "source": "manual", "tag": "Tech", "date": "2026-07-11" },
+      { "title": "Outbound deliverability tightening — warm-up matters more", "source": "manual", "tag": "Outbound", "date": "2026-07-09" }
+    ]
+  },
+  "multica": {
+    "note": "Seed data. Live workspace activity needs the Multica API base URL + token exposed to the dashboard (see missing-credentials).",
+    "workspace": "WeBuild Agency",
+    "issues": [
+      { "id": "WEB-85", "title": "Build Mission Control dashboard", "status": "in_progress", "assignee": "CTO" },
+      { "id": "WEB-84", "title": "Board dashboard request", "status": "in_progress", "assignee": "CEO" }
+    ],
+    "agents": [
+      { "name": "CEO", "role": "Strategy / delegation" },
+      { "name": "CTO", "role": "Technical delivery (IC)" },
+      { "name": "CMO", "role": "Content + outbound" }
+    ]
+  }
+}
