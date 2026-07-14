@@ -1,0 +1,248 @@
+/* Mission Control — client renderer. Board data comes from data/board.json;
+   the APIs and Skills sections are real inventory of this workspace's tooling. */
+
+const $ = (s, r = document) => r.querySelector(s);
+const h = (html) => { const t = document.createElement("template"); t.innerHTML = html.trim(); return t.content.firstElementChild; };
+const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const money = (n, c = "AUD") => new Intl.NumberFormat("en-AU", { style: "currency", currency: c, maximumFractionDigits: 0 }).format(n);
+const HEALTH = { ok: "ok", warn: "warn", bad: "bad" };
+
+// ---- Real workspace inventory (APIs / MCPs) ----
+const APIS = [
+  { name: "Ad platforms (Google, Meta, TikTok, LinkedIn, Amazon)", cat: "Marketing", via: "Adspirer MCP", status: "connected" },
+  { name: "Apify (web scraping / actors)", cat: "Data", via: "Apify MCP", status: "connected" },
+  { name: "Hostinger — Hosting", cat: "Infra", via: "hostinger-hosting MCP", status: "connected" },
+  { name: "Hostinger — Domains & DNS", cat: "Infra", via: "hostinger-domains/dns MCP", status: "connected" },
+  { name: "Hostinger — Billing / Subscriptions", cat: "Finance", via: "hostinger-billing MCP", status: "connected" },
+  { name: "Hostinger — VPS", cat: "Infra", via: "hostinger-vps MCP", status: "connected" },
+  { name: "Hostinger — WordPress", cat: "Infra", via: "hostinger-wordpress MCP", status: "connected" },
+  { name: "Hostinger — Reach (email contacts)", cat: "Outbound", via: "hostinger-reach MCP", status: "connected" },
+  { name: "Kie.ai (image / video gen)", cat: "Creative", via: "kie-ai MCP", status: "connected" },
+  { name: "Excalidraw (diagrams)", cat: "Creative", via: "Excalidraw MCP", status: "connected" },
+  { name: "Open-Brain (notes / memory)", cat: "Knowledge", via: "Open-Brain MCP", status: "connected" },
+  { name: "Web Search + Web Fetch", cat: "Data", via: "core tools", status: "connected" },
+  { name: "Gmail", cat: "Comms", via: "claude.ai connector", status: "needs-auth" },
+  { name: "Google Calendar", cat: "Ops", via: "claude.ai connector", status: "needs-auth" },
+  { name: "Google Drive", cat: "Docs", via: "claude.ai connector", status: "needs-auth" },
+  { name: "Granola (meeting notes)", cat: "Comms", via: "claude.ai connector", status: "needs-auth" },
+  { name: "Windsor.ai (marketing data)", cat: "Marketing", via: "claude.ai connector", status: "needs-auth" },
+  { name: "Supabase (database)", cat: "Infra", via: "MCP", status: "needs-auth" },
+  { name: "Instantly (outbound)", cat: "Outbound", via: "REST API", status: "not-wired" },
+  { name: "A-leads (outbound)", cat: "Outbound", via: "REST API", status: "not-wired" },
+];
+
+// ---- Real skill inventory, grouped by area ----
+const SKILLS = {
+  "Design & creative": ["banner-design", "brand", "design", "design-system", "design-taste-frontend", "frontend-design", "ui-styling", "ui-ux-pro-max", "dataviz", "gpt-image-bridge", "media-gen", "scroll-world"],
+  "Docs & decks": ["pdf", "pptx", "pitch-deck", "proposal", "slides"],
+  "Content & growth": ["content-atomizer", "content-ideas", "research-lead", "deep-research"],
+  "Dev & code": ["verify", "code-review", "simplify", "security-review", "review", "run", "init", "graphify", "build-wiki", "claude-api", "skill-creator", "watch"],
+  "Multica ops": ["multica-autopilots", "multica-creating-agents", "multica-mentioning", "multica-projects-and-resources", "multica-runtimes-and-repos", "multica-skill-importing", "multica-squads", "multica-working-on-issues"],
+  "Automation & config": ["loop", "schedule", "update-config", "keybindings-help", "fewer-permission-prompts"],
+  "Style modes": ["caveman", "ponytail", "codex-rescue"],
+};
+
+const apiBadge = (s) => ({ "connected": '<span class="badge ok">connected</span>', "needs-auth": '<span class="badge warn">needs auth</span>', "not-wired": '<span class="badge bad">not wired</span>' }[s] || "");
+
+let DATA = {};
+
+// ---- Section definitions ----
+const SECTIONS = [
+  { id: "overview", title: "Overview", ic: "◫", desc: "Company at a glance — to-dos, briefs, live snapshot", flag: "manual", render: renderOverview },
+  { id: "projects", title: "Projects", ic: "▤", desc: "Client pipeline + internal projects", flag: "manual", render: renderProjects },
+  { id: "leads", title: "Outbound Leads", ic: "◎", desc: "Instantly & A-leads campaigns", flag: "needs", render: renderLeads },
+  { id: "blogs", title: "Upcoming Blogs", ic: "▦", desc: "Blog prep & publish schedule", flag: "manual", render: renderBlogs },
+  { id: "finance", title: "Finance", ic: "$", desc: "Subscriptions birds-eye view", flag: "manual", render: renderFinance },
+  { id: "research", title: "Research", ic: "◈", desc: "Latest trending news", flag: "needs", render: renderResearch },
+  { id: "apis", title: "APIs & MCPs", ic: "⌁", desc: "Every API and MCP available to the agents", flag: "live", render: renderApis },
+  { id: "skills", title: "Skills", ic: "✦", desc: "All installed skills by area", flag: "live", render: renderSkills },
+  { id: "planner", title: "Workflow Planner", ic: "⟐", desc: "Compose a workflow from skills + APIs", flag: "live", render: renderPlanner },
+  { id: "multica", title: "Multica", ic: "◇", desc: "Workspace activity — issues & agents", flag: "needs", render: renderMultica },
+];
+
+const FLAG_LABEL = { live: "Live", manual: "Manual data", needs: "Needs credential" };
+
+// ---- Section renderers ----
+function renderOverview() {
+  const d = DATA;
+  const projCount = (d.projects?.clients?.length || 0) + (d.projects?.internal?.length || 0);
+  const monthly = (d.finance?.subscriptions || []).reduce((s, x) => s + (x.cycle === "annual" ? x.monthly / 12 : x.monthly), 0);
+  const blogCount = (d.blogs?.cards || []).length;
+  const openTodos = (d.todos || []).filter((t) => !t.done).length;
+  return `
+  <div class="grid g4">
+    ${statCard("Active projects", projCount, "clients + internal")}
+    ${statCard("Open to-dos", openTodos, "across the board")}
+    ${statCard("Blogs in pipeline", blogCount, "idea → scheduled")}
+    ${statCard("Monthly subs", money(monthly), "normalised /mo")}
+  </div>
+  <div class="grid g2" style="margin-top:16px">
+    <div class="card"><h3>Daily to-dos</h3>${(d.todos || []).map((t) => `
+      <div class="kv"><span class="k">${t.done ? "✓ " : "○ "}${esc(t.text)}</span><span class="v"><span class="badge">${esc(t.owner)}</span></span></div>`).join("") || '<p class="muted">No to-dos.</p>'}</div>
+    <div class="card"><h3>Briefs</h3>${(d.briefs || []).map((b) => `
+      <div style="padding:10px 0;border-top:1px solid var(--fog)"><div style="font-weight:600">${esc(b.title)}</div><div class="muted tiny" style="margin-top:3px">${esc(b.body)}</div></div>`).join("") || '<p class="muted">No briefs.</p>'}</div>
+  </div>
+  <div class="card" style="margin-top:16px"><h3>Section snapshot</h3>
+    <div class="grid g3">
+      ${snap("Projects", `${d.projects?.clients?.length || 0} client · ${d.projects?.internal?.length || 0} internal`, "projects")}
+      ${snap("Outbound", (d.leads?.campaigns || []).length + " campaigns", "leads")}
+      ${snap("Blogs", blogCount + " cards", "blogs")}
+      ${snap("Finance", money(monthly) + "/mo", "finance")}
+      ${snap("APIs / MCPs", APIS.filter((a) => a.status === "connected").length + " connected", "apis")}
+      ${snap("Skills", Object.values(SKILLS).flat().length + " installed", "skills")}
+    </div>
+  </div>`;
+}
+const statCard = (label, val, sub) => `<div class="card"><div class="muted tiny">${esc(label)}</div><div class="stat" style="margin-top:6px">${val}</div><div class="muted tiny" style="margin-top:4px">${esc(sub)}</div></div>`;
+const snap = (t, v, go) => `<div class="card" style="cursor:pointer;box-shadow:none" data-go="${go}"><div style="font-weight:600">${esc(t)}</div><div class="muted tiny" style="margin-top:4px">${esc(v)} →</div></div>`;
+
+function renderProjects() {
+  const tbl = (rows) => `<table><thead><tr><th>Project</th><th>Type</th><th>Stage</th><th style="width:160px">Progress</th><th>Due</th></tr></thead><tbody>${rows.map((p) => `
+    <tr><td><b>${esc(p.name)}</b></td><td class="muted">${esc(p.type)}</td>
+    <td><span class="badge ${HEALTH[p.health] || ""}">${esc(p.stage)}</span></td>
+    <td><div class="bar"><span style="width:${p.progress}%"></span></div><span class="tiny muted">${p.progress}%</span></td>
+    <td class="muted">${esc(p.due || "—")}</td></tr>`).join("")}</tbody></table>`;
+  return `<div class="card"><h3>Client pipeline</h3>${tbl(DATA.projects?.clients || [])}</div>
+    <div class="card" style="margin-top:16px"><h3>Internal projects</h3>${tbl(DATA.projects?.internal || [])}</div>`;
+}
+
+function renderLeads() {
+  const c = DATA.leads?.campaigns || [];
+  return note("Instantly and A-leads API keys are not wired yet — numbers below are placeholders. Supply keys to go live.") +
+  `<div class="card"><h3>Campaigns</h3><table><thead><tr><th>Tool</th><th>Campaign</th><th>Sent</th><th>Opened</th><th>Replied</th><th>Status</th></tr></thead><tbody>${c.map((x) => `
+    <tr><td><span class="badge dark">${esc(x.tool)}</span></td><td>${esc(x.name)}</td><td>${x.sent}</td><td>${x.opened}</td><td>${x.replied}</td>
+    <td><span class="badge ${x.status === "needs-key" ? "bad" : "ok"}">${esc(x.status)}</span></td></tr>`).join("")}</tbody></table></div>`;
+}
+
+function renderBlogs() {
+  const b = DATA.blogs || { columns: [], cards: [] };
+  return `<div class="kan">${b.columns.map((col) => {
+    const items = b.cards.filter((c) => c.col === col);
+    return `<div class="col"><h4>${esc(col)}<span>${items.length}</span></h4>${items.map((c) => `
+      <div class="item">${esc(c.title)}${c.meta ? `<div class="m">${esc(c.meta)}</div>` : ""}</div>`).join("")}</div>`;
+  }).join("")}</div>`;
+}
+
+function renderFinance() {
+  const f = DATA.finance || { subscriptions: [], currency: "AUD" };
+  const norm = (x) => x.cycle === "annual" ? x.monthly / 12 : x.monthly;
+  const total = f.subscriptions.reduce((s, x) => s + norm(x), 0);
+  const byCat = {};
+  f.subscriptions.forEach((x) => { byCat[x.cat] = (byCat[x.cat] || 0) + norm(x); });
+  return `<div class="grid g3">
+    ${statCard("Monthly total", money(total, f.currency), "all subs, normalised")}
+    ${statCard("Annualised", money(total * 12, f.currency), "run-rate")}
+    ${statCard("Subscriptions", f.subscriptions.length, "tracked")}
+  </div>
+  <div class="grid g2" style="margin-top:16px">
+    <div class="card"><h3>By category (per month)</h3>${Object.entries(byCat).sort((a, b) => b[1] - a[1]).map(([k, v]) => `
+      <div class="kv"><span class="k">${esc(k)}</span><span class="v">${money(v, f.currency)}</span></div>`).join("")}</div>
+    <div class="card"><h3>Subscriptions</h3><table><thead><tr><th>Service</th><th>Category</th><th>Cost</th><th>Renews</th></tr></thead><tbody>${f.subscriptions.map((x) => `
+      <tr><td><b>${esc(x.name)}</b></td><td class="muted">${esc(x.cat)}</td><td>${money(x.monthly, f.currency)}<span class="tiny muted">/${x.cycle === "annual" ? "yr" : "mo"}</span></td><td class="muted">${esc(x.renews)}</td></tr>`).join("")}</tbody></table></div>
+  </div>`;
+}
+
+function renderResearch() {
+  const r = DATA.research || { items: [] };
+  return note("Manual for now — auto-fill via a news API or Web Search on a schedule.") +
+  `<div class="card"><h3>Trending / relevant</h3><div class="rowlist">${r.items.map((x) => `
+    <div class="row"><span class="badge info">${esc(x.tag)}</span><span class="name">${esc(x.title)}</span><span class="meta">${esc(x.source)} · ${esc(x.date)}</span></div>`).join("")}</div></div>`;
+}
+
+function renderApis() {
+  const cats = [...new Set(APIS.map((a) => a.cat))].sort();
+  const conn = APIS.filter((a) => a.status === "connected").length;
+  return `<div class="grid g3">
+    ${statCard("Connected", conn, "ready to use")}
+    ${statCard("Needs auth", APIS.filter((a) => a.status === "needs-auth").length, "one-time connect")}
+    ${statCard("Not wired", APIS.filter((a) => a.status === "not-wired").length, "no integration yet")}
+  </div>
+  ${cats.map((cat) => `<div class="card" style="margin-top:16px"><h3>${esc(cat)}</h3><div class="rowlist">${APIS.filter((a) => a.cat === cat).map((a) => `
+    <div class="row"><span class="name">${esc(a.name)}</span> ${apiBadge(a.status)}<span class="meta">${esc(a.via)}</span></div>`).join("")}</div></div>`).join("")}`;
+}
+
+function renderSkills() {
+  const total = Object.values(SKILLS).flat().length;
+  return `<div class="card"><h3>${total} skills installed <span class="pill live">Live</span></h3><p class="muted tiny" style="margin-top:-6px">Grouped by area. Each is invokable by the agents.</p></div>` +
+  Object.entries(SKILLS).map(([area, list]) => `<div class="card" style="margin-top:16px"><h3>${esc(area)} <span class="badge">${list.length}</span></h3><div class="chips">${list.map((s) => `<span class="chip">${esc(s)}</span>`).join("")}</div></div>`).join("");
+}
+
+function renderPlanner() {
+  const all = [...Object.values(SKILLS).flat().map((s) => ({ t: "skill", n: s })), ...APIS.map((a) => ({ t: "api", n: a.name }))];
+  const saved = JSON.parse(localStorage.getItem("mc_workflow") || "[]");
+  setTimeout(() => wirePlanner(all, saved), 0);
+  return `<div class="section-note">Pick skills and APIs to sketch a workflow, then <b>Save</b> — stored in this browser. Hand a saved sequence to the CTO to build as a real Multica autopilot.</div>
+  <div class="wf">
+    <div class="card"><h3>Available</h3><input id="wfSearch" placeholder="Filter…" style="width:100%;padding:9px 12px;border:1px solid var(--line);border-radius:10px;margin-bottom:10px;font-family:inherit">
+      <div class="rowlist pick" id="wfPick"></div></div>
+    <div class="card"><h3>Your workflow <span class="pill" id="wfCount"></span></h3>
+      <div class="steps" id="wfSteps"></div>
+      <div style="display:flex;gap:8px;margin-top:12px"><button class="btn primary" id="wfSave">Save</button><button class="btn ghost" id="wfClear">Clear</button></div>
+    </div>
+  </div>`;
+}
+function wirePlanner(all, saved) {
+  let steps = saved.slice();
+  const pick = $("#wfPick"), stepsEl = $("#wfSteps"), count = $("#wfCount"), search = $("#wfSearch");
+  const drawPick = (q = "") => {
+    pick.innerHTML = all.filter((x) => x.n.toLowerCase().includes(q.toLowerCase())).map((x, i) => `
+      <div class="row" data-add="${esc(x.n)}" data-t="${x.t}"><span class="badge ${x.t === "skill" ? "lime" : "info"}">${x.t}</span><span class="name">${esc(x.n)}</span></div>`).join("");
+  };
+  const drawSteps = () => {
+    count.textContent = steps.length + " steps";
+    stepsEl.innerHTML = steps.length ? steps.map((s, i) => `<div class="step"><span class="n">${i + 1}</span>${esc(s)}<button data-rm="${i}">×</button></div>`).join("") : '<p class="muted tiny">Empty — add from the left.</p>';
+  };
+  drawPick(); drawSteps();
+  search.oninput = () => drawPick(search.value);
+  pick.onclick = (e) => { const r = e.target.closest("[data-add]"); if (r) { steps.push(r.dataset.add); drawSteps(); } };
+  stepsEl.onclick = (e) => { const b = e.target.closest("[data-rm]"); if (b) { steps.splice(+b.dataset.rm, 1); drawSteps(); } };
+  $("#wfSave").onclick = () => { localStorage.setItem("mc_workflow", JSON.stringify(steps)); $("#wfSave").textContent = "Saved ✓"; setTimeout(() => $("#wfSave").textContent = "Save", 1200); };
+  $("#wfClear").onclick = () => { steps = []; drawSteps(); };
+}
+
+function renderMultica() {
+  const m = DATA.multica || { issues: [], agents: [] };
+  return note("Live workspace activity needs the Multica API base URL + a read token exposed to the dashboard. Seed data shown.") +
+  `<div class="grid g2">
+    <div class="card"><h3>Recent issues · ${esc(m.workspace || "")}</h3><table><thead><tr><th>ID</th><th>Title</th><th>Status</th><th>Owner</th></tr></thead><tbody>${(m.issues || []).map((i) => `
+      <tr><td><b>${esc(i.id)}</b></td><td>${esc(i.title)}</td><td><span class="badge ${i.status === "done" ? "ok" : i.status === "blocked" ? "bad" : "warn"}">${esc(i.status)}</span></td><td class="muted">${esc(i.assignee)}</td></tr>`).join("")}</tbody></table></div>
+    <div class="card"><h3>Agents</h3>${(m.agents || []).map((a) => `<div class="kv"><span class="k"><b>${esc(a.name)}</b></span><span class="v muted" style="font-weight:400">${esc(a.role)}</span></div>`).join("")}</div>
+  </div>`;
+}
+
+const note = (t) => `<div class="section-note"><b>Placeholder:</b> ${esc(t)}</div>`;
+
+// ---- Router / shell ----
+function buildNav() {
+  $("#nav").innerHTML = SECTIONS.map((s) => `<a data-id="${s.id}"><span class="ic">${s.ic}</span>${s.title}</a>`).join("");
+  $("#pages").innerHTML = SECTIONS.map((s) => `<section class="page" id="pg-${s.id}"></section>`).join("");
+}
+function go(id) {
+  const s = SECTIONS.find((x) => x.id === id) || SECTIONS[0];
+  document.querySelectorAll(".nav a").forEach((a) => a.classList.toggle("active", a.dataset.id === s.id));
+  document.querySelectorAll(".page").forEach((p) => p.classList.remove("active"));
+  const pg = $("#pg-" + s.id);
+  pg.innerHTML = s.render();
+  pg.classList.add("active");
+  $("#ptitle").textContent = s.title;
+  $("#pdesc").textContent = s.desc;
+  const flag = $("#pflag");
+  flag.className = "pill " + s.flag;
+  flag.textContent = FLAG_LABEL[s.flag];
+  $("#side").classList.remove("open");
+  location.hash = s.id;
+}
+
+async function boot() {
+  buildNav();
+  try { DATA = await (await fetch("/mission-control/data/board.json", { cache: "no-store" })).json(); }
+  catch { DATA = {}; }
+  $("#upd").textContent = DATA.updated ? "updated " + DATA.updated : "";
+  document.addEventListener("click", (e) => {
+    const nav = e.target.closest(".nav a"); if (nav) return go(nav.dataset.id);
+    const snap = e.target.closest("[data-go]"); if (snap) return go(snap.dataset.go);
+  });
+  $("#hamb").onclick = () => $("#side").classList.toggle("open");
+  go(location.hash.slice(1) || "overview");
+}
+boot();
