@@ -4,3 +4,7 @@ node_modules/
 CLAUDE_CODE_HANDOVER.md
 SCAFFOLD.md
 tasks.db
+
+# receipt-intake local dirs — never commit receipt binaries (WEB-120)
+mission-control/intake/inbox/
+mission-control/intake/archive/
