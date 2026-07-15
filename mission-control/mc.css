@@ -80,6 +80,28 @@ tr:last-child td{border-bottom:none}
 .kan .item{background:var(--snow);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:8px;font-size:13px}
 .kan .item .m{color:var(--slate);font-size:12px;margin-top:4px}
 
+/* Creative Studio */
+.tabs{display:flex;gap:6px;background:var(--fog);padding:4px;border-radius:12px;margin-bottom:18px;width:fit-content;max-width:100%;overflow:auto}
+.tab{border:none;background:none;padding:8px 16px;border-radius:9px;font-family:inherit;font-size:13px;font-weight:600;color:var(--slate);cursor:pointer;white-space:nowrap}
+.tab.active{background:var(--snow);color:var(--ink);box-shadow:var(--shadow)}
+.tabpage{display:none}
+.tabpage.active{display:block}
+.palette{display:flex;gap:6px;margin:6px 0 14px}
+.palette .sw{width:26px;height:26px;border-radius:7px;border:1px solid var(--line)}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.tile{margin:0;cursor:zoom-in;border-radius:10px;overflow:hidden;border:1px solid var(--line);background:var(--mist)}
+.tile img{width:100%;height:104px;object-fit:cover;display:block}
+.tile figcaption{font-size:11px;color:var(--slate);padding:6px 8px}
+.kan5{grid-template-columns:repeat(5,1fr)}
+.kan .item .cthumb{width:100%;height:72px;object-fit:cover;border-radius:8px;margin-bottom:8px;display:block}
+.kan .item .t{font-weight:600}
+.kan .item .ilink{display:inline-block;margin-top:6px;font-size:12px;color:var(--info);font-weight:600}
+.lightbox{display:none;position:fixed;inset:0;z-index:100;background:rgba(9,9,11,.82);place-items:center;padding:24px;cursor:zoom-out}
+.lightbox.open{display:grid}
+.lightbox figure{margin:0;max-width:min(90vw,900px);text-align:center}
+.lightbox img{max-width:100%;max-height:80vh;border-radius:12px}
+.lightbox figcaption{color:var(--snow);margin-top:12px;font-size:14px}
+
 /* Lists / chips */
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chip{font-size:12px;padding:5px 11px;border-radius:999px;background:var(--fog);color:var(--ink);font-weight:500}
@@ -118,5 +140,6 @@ tr:last-child td{border-bottom:none}
   .hamb{display:inline-grid;place-items:center;width:40px;height:40px;border-radius:10px;background:var(--obsidian);color:var(--snow);border:none;cursor:pointer;font-size:18px}
   .g2,.g3,.g4,.wf{grid-template-columns:1fr}
   .kan{grid-template-columns:1fr 1fr}
+  .tiles{grid-template-columns:1fr 1fr}
   .main{padding:20px}
 }
