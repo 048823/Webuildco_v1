@@ -58,6 +58,17 @@
   </div>
 </header>
 
+<section class="pb-48">
+  <div class="max-w-[1200px] mx-auto px-24">
+    <div class="bg-obsidian rounded-3xl-2 overflow-hidden relative">
+      <canvas data-viz="brain" class="block w-full h-[300px] md:h-[420px]" role="img" aria-label="Animated diagram of a company brain — documents, quotes, policies, history and threads linked to a central brain node, with knowledge being retrieved and re-linked by a librarian agent."></canvas>
+      <div class="absolute left-24 bottom-20 right-24 pointer-events-none">
+        <span class="text-caption uppercase tracking-widest text-ash/80 font-medium">Knowledge linked to one brain, kept findable</span>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="pb-64">
   <div class="max-w-[1200px] mx-auto px-24">
     <div class="bg-snow rounded-3xl-2 p-28 md:p-40 shadow-subtle-2 max-w-[860px]">
@@ -175,5 +186,6 @@ addEventListener('scroll',()=>nav.classList.toggle('border-fog',scrollY>8),{pass
 const mb=document.getElementById('menuBtn'),mm=document.getElementById('mobileMenu');
 if(mb)mb.addEventListener('click',()=>{const open=mm.classList.toggle('hidden')===false;mb.setAttribute('aria-expanded',open);});
 </script>
+<script defer src="/build/viz.js"></script>
 </body>
 </html>
