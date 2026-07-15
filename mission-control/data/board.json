@@ -40,13 +40,18 @@
   },
   "finance": {
     "currency": "AUD",
-    "note": "Manual snapshot. Hostinger subs can be auto-pulled via the connected Hostinger MCP (billing_getSubscriptionListV1) — wire on request.",
+    "note": "Manual snapshot. Hostinger subs can be auto-pulled via the connected Hostinger MCP (billing_getSubscriptionListV1). 'expenses' below are SAMPLE rows to show the receipt-log shape — replace with real receipts once intake (email-forward / Hermes / watch-folder) is wired. Each intake path must emit the same expense object shape. amount = GST-inclusive AUD; gst = GST component (0 for overseas/GST-free suppliers).",
+    "last_logged": "2026-07-14",
     "subscriptions": [
       { "name": "Anthropic (Claude)", "cat": "AI / LLM", "monthly": 320, "cycle": "monthly", "renews": "2026-08-01" },
       { "name": "Instantly", "cat": "Outbound", "monthly": 97, "cycle": "monthly", "renews": "2026-07-22" },
       { "name": "Cloudflare Pages", "cat": "Infra", "monthly": 0, "cycle": "monthly", "renews": "-" },
       { "name": "Cal.com", "cat": "Ops", "monthly": 15, "cycle": "monthly", "renews": "2026-07-30" },
       { "name": "Hostinger", "cat": "Infra", "monthly": 12, "cycle": "annual", "renews": "2027-02-10" }
+    ],
+    "expenses": [
+      { "date": "2026-07-14", "supplier": "OpenRouter", "desc": "API credits (SAMPLE — replace)", "amount": 72.00, "gst": 0, "cat": "AI / LLM", "via": "Email" },
+      { "date": "2026-07-10", "supplier": "Officeworks", "desc": "USB-C hub (SAMPLE — replace)", "amount": 49.00, "gst": 4.45, "cat": "Equipment", "via": "Hermes" }
     ]
   },
   "research": {

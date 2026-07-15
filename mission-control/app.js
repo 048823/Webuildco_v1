@@ -54,7 +54,7 @@ const SECTIONS = [
   { id: "leads", title: "Outbound Leads", ic: "◎", desc: "Instantly & A-leads campaigns", flag: "needs", render: renderLeads },
   { id: "blogs", title: "Upcoming Blogs", ic: "▦", desc: "Blog prep & publish schedule", flag: "manual", render: renderBlogs },
   { id: "creative", title: "Creative", ic: "✎", desc: "Mood boards, ideas pipeline & production schedule", flag: "manual", render: renderCreative },
-  { id: "finance", title: "Finance", ic: "$", desc: "Subscriptions birds-eye view", flag: "manual", render: renderFinance },
+  { id: "finance", title: "Finance", ic: "$", desc: "Subscriptions + expense receipts, GST-tracked", flag: "manual", render: renderFinance },
   { id: "research", title: "Research", ic: "◈", desc: "Latest trending news", flag: "needs", render: renderResearch },
   { id: "apis", title: "APIs & MCPs", ic: "⌁", desc: "Every API and MCP available to the agents", flag: "live", render: renderApis },
   { id: "skills", title: "Skills", ic: "✦", desc: "All installed skills by area", flag: "live", render: renderSkills },
@@ -201,17 +201,33 @@ function renderFinance() {
   const total = f.subscriptions.reduce((s, x) => s + norm(x), 0);
   const byCat = {};
   f.subscriptions.forEach((x) => { byCat[x.cat] = (byCat[x.cat] || 0) + norm(x); });
-  return `<div class="grid g3">
+  // Expense receipts — logged via email-forward / Hermes / manual drop (intake wired by CTO, WEB build issue).
+  const ex = f.expenses || [];
+  const exTotal = ex.reduce((s, x) => s + (x.amount || 0), 0);
+  const gstTotal = ex.reduce((s, x) => s + (x.gst || 0), 0);
+  const recent = [...ex].sort((a, b) => String(b.date).localeCompare(String(a.date)));
+  const fresh = f.last_logged
+    ? `<span class="badge ok">up to date</span> last receipt logged ${esc(f.last_logged)}`
+    : `<span class="badge warn">no receipts yet</span> forward a receipt or drop one to Hermes to start the log`;
+  return `<div class="muted tiny" style="margin-bottom:12px">${fresh}</div>
+  <div class="grid g3">
     ${statCard("Monthly total", money(total, f.currency), "all subs, normalised")}
     ${statCard("Annualised", money(total * 12, f.currency), "run-rate")}
     ${statCard("Subscriptions", f.subscriptions.length, "tracked")}
+  </div>
+  <div class="grid g3" style="margin-top:16px">
+    ${statCard("Expenses logged", money(exTotal, f.currency), `${ex.length} receipts, GST-incl`)}
+    ${statCard("GST claimable", money(gstTotal, f.currency), "on logged receipts")}
+    ${statCard("Total run-rate", money(total * 12 + exTotal, f.currency), "annualised subs + expenses")}
   </div>
   <div class="grid g2" style="margin-top:16px">
     <div class="card"><h3>By category (per month)</h3>${Object.entries(byCat).sort((a, b) => b[1] - a[1]).map(([k, v]) => `
       <div class="kv"><span class="k">${esc(k)}</span><span class="v">${money(v, f.currency)}</span></div>`).join("")}</div>
     <div class="card"><h3>Subscriptions</h3><table><thead><tr><th>Service</th><th>Category</th><th>Cost</th><th>Renews</th></tr></thead><tbody>${f.subscriptions.map((x) => `
       <tr><td><b>${esc(x.name)}</b></td><td class="muted">${esc(x.cat)}</td><td>${money(x.monthly, f.currency)}<span class="tiny muted">/${x.cycle === "annual" ? "yr" : "mo"}</span></td><td class="muted">${esc(x.renews)}</td></tr>`).join("")}</tbody></table></div>
-  </div>`;
+  </div>
+  <div class="card" style="margin-top:16px"><h3>Expense receipts</h3>${recent.length ? `<table><thead><tr><th>Date</th><th>Supplier</th><th>Description</th><th>Amount</th><th>GST</th><th>Category</th><th>Via</th></tr></thead><tbody>${recent.map((x) => `
+    <tr><td class="muted">${esc(x.date)}</td><td><b>${esc(x.supplier)}</b></td><td class="muted">${esc(x.desc)}</td><td>${money(x.amount, f.currency)}</td><td class="muted">${money(x.gst || 0, f.currency)}</td><td class="muted">${esc(x.cat)}</td><td class="tiny muted">${esc(x.via || "manual")}</td></tr>`).join("")}</tbody></table>` : `<div class="muted tiny">No receipts logged yet. Drop one via email-forward, watch-folder, or Hermes once intake is wired.</div>`}</div>`;
 }
 
 function renderResearch() {
