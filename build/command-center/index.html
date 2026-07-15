@@ -58,6 +58,63 @@
   </div>
 </header>
 
+<section class="pb-48">
+  <div class="max-w-[1200px] mx-auto px-24">
+    <div id="mc" role="img" aria-label="Sample Command Center dashboard showing live business vitals — pipeline, jobs in flight, cash position and capacity — a leads-per-week trend, and an agent activity feed with an item awaiting approval." class="bg-obsidian rounded-3xl-2 p-20 md:p-28 relative overflow-hidden text-snow">
+      <div class="flex items-center justify-between gap-12 mb-20">
+        <div class="flex items-center gap-8">
+          <span class="w-8 h-8 rounded-full bg-lime inline-block shadow-[0_0_10px_2px_rgba(200,230,54,0.5)]"></span>
+          <span class="text-caption uppercase tracking-widest text-ash font-medium">Command Center · live</span>
+        </div>
+        <span class="text-caption uppercase tracking-widest text-ash/60 font-medium">Sample view</span>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-12 mb-12">
+        <div class="bg-ink/60 rounded-2xl-2 p-16 border border-white/5">
+          <div class="text-caption uppercase tracking-widest text-ash font-medium mb-8">Pipeline</div>
+          <div class="text-heading-sm font-bold text-snow" data-mc="val" data-kind="money" data-base="184000">$184k</div>
+          <div class="text-[12px] text-lime mt-4">▲ open deals</div>
+        </div>
+        <div class="bg-ink/60 rounded-2xl-2 p-16 border border-white/5">
+          <div class="text-caption uppercase tracking-widest text-ash font-medium mb-8">Jobs in flight</div>
+          <div class="text-heading-sm font-bold text-snow" data-mc="val" data-kind="int" data-base="27">27</div>
+          <div class="text-[12px] text-ash mt-4">6 need a human</div>
+        </div>
+        <div class="bg-ink/60 rounded-2xl-2 p-16 border border-white/5">
+          <div class="text-caption uppercase tracking-widest text-ash font-medium mb-8">Cash position</div>
+          <div class="text-heading-sm font-bold text-snow" data-mc="val" data-kind="money" data-base="96000">$96k</div>
+          <div class="text-[12px] text-lime mt-4">▲ this month</div>
+        </div>
+        <div class="bg-ink/60 rounded-2xl-2 p-16 border border-white/5">
+          <div class="text-caption uppercase tracking-widest text-ash font-medium mb-8">Capacity</div>
+          <div class="text-heading-sm font-bold text-snow" data-mc="val" data-kind="pct" data-base="82">82%</div>
+          <div class="text-[12px] text-ash mt-4">booked next 2 wks</div>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-[1.5fr_1fr] gap-12">
+        <div class="bg-ink/60 rounded-2xl-2 p-16 border border-white/5">
+          <div class="flex items-center justify-between">
+            <span class="text-caption uppercase tracking-widest text-ash font-medium">Leads in · per week</span>
+            <span class="text-caption text-ash/70">last 24 wks</span>
+          </div>
+          <svg viewBox="0 0 100 34" preserveAspectRatio="none" class="w-full h-[64px] mt-12" aria-hidden="true">
+            <polyline data-mc="sparkline" fill="none" stroke="#c8e636" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" points="0,20 4.3,18 8.7,21 13,17 17.4,19 21.7,15 26.1,18 30.4,14 34.8,17 39.1,13 43.5,16 47.8,12 52.2,15 56.5,11 60.9,14 65.2,10 69.6,13 73.9,12 78.3,9 82.6,12 87,10 91.3,13 95.7,11 100,9"></polyline>
+          </svg>
+        </div>
+        <div class="bg-ink/60 rounded-2xl-2 p-16 border border-white/5">
+          <div class="text-caption uppercase tracking-widest text-ash font-medium mb-8">Agent activity</div>
+          <div data-mc="feed">
+            <div class="flex items-center gap-8 py-6"><span class="w-6 h-6 rounded-full bg-lime shrink-0"></span><span class="text-body text-ash flex-1 truncate">Approval granted · invoice sent</span><span class="text-[11px] text-slate shrink-0">now</span></div>
+            <div class="flex items-center gap-8 py-6 border-t border-white/5"><span class="w-6 h-6 rounded-full bg-ember shrink-0"></span><span class="text-body text-snow flex-1 truncate">Invoice drafted · awaiting your approval</span><span class="text-[11px] text-slate shrink-0">2m</span></div>
+            <div class="flex items-center gap-8 py-6 border-t border-white/5"><span class="w-6 h-6 rounded-full bg-ash shrink-0"></span><span class="text-body text-ash flex-1 truncate">Lead qualified · intro call booked</span><span class="text-[11px] text-slate shrink-0">4m</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="pb-64">
   <div class="max-w-[1200px] mx-auto px-24">
     <div class="bg-snow rounded-3xl-2 p-28 md:p-40 shadow-subtle-2 max-w-[860px]">
@@ -175,5 +232,6 @@ addEventListener('scroll',()=>nav.classList.toggle('border-fog',scrollY>8),{pass
 const mb=document.getElementById('menuBtn'),mm=document.getElementById('mobileMenu');
 if(mb)mb.addEventListener('click',()=>{const open=mm.classList.toggle('hidden')===false;mb.setAttribute('aria-expanded',open);});
 </script>
+<script defer src="/build/mission-control.js"></script>
 </body>
 </html>
