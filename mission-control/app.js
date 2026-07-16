@@ -4,6 +4,7 @@
 const $ = (s, r = document) => r.querySelector(s);
 const h = (html) => { const t = document.createElement("template"); t.innerHTML = html.trim(); return t.content.firstElementChild; };
 const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const clip = (s, n) => { s = String(s || ""); return s.length > n ? s.slice(0, n - 1) + "…" : s; };
 const money = (n, c = "AUD") => new Intl.NumberFormat("en-AU", { style: "currency", currency: c, maximumFractionDigits: 0 }).format(n);
 const HEALTH = { ok: "ok", warn: "warn", bad: "bad" };
 
@@ -98,13 +99,54 @@ function renderOverview() {
 const statCard = (label, val, sub) => `<div class="card"><div class="muted tiny">${esc(label)}</div><div class="stat" style="margin-top:6px">${val}</div><div class="muted tiny" style="margin-top:4px">${esc(sub)}</div></div>`;
 const snap = (t, v, go) => `<div class="card" style="cursor:pointer;box-shadow:none" data-go="${go}"><div style="font-weight:600">${esc(t)}</div><div class="muted tiny" style="margin-top:4px">${esc(v)} →</div></div>`;
 
+// Radial mind map of DATA.projects — same data as the table below. Rail colour = health
+// (ok/warn = green/amber, planned/other = grey), gauge = progress %.
+function renderProjectMap(proj) {
+  const groups = [
+    { name: "Clients", side: -1, nodes: proj?.clients || [] },
+    { name: "Internal", side: 1, nodes: proj?.internal || [] },
+  ];
+  const CW = 214, CH = 60, cx = 750;
+  const gap = 106;
+  const maxN = Math.max(groups[0].nodes.length, groups[1].nodes.length, 1);
+  const H = Math.max(480, maxN * gap + 110);
+  const cy = H / 2;
+  const HC = { ok: "var(--ok)", warn: "var(--warn)", bad: "var(--bad)" };
+  const link = (x1, y1, x2, y2) => { const mx = (x1 + x2) / 2; return `<path d="M${x1},${y1} C ${mx},${y1} ${mx},${y2} ${x2},${y2}" fill="none" stroke="var(--line)" stroke-width="2"/>`; };
+  const parts = [];
+  groups.forEach((g) => {
+    const dir = g.side, bx = cx + dir * 210, by = cy, n = g.nodes.length;
+    parts.push(link(cx, cy, bx, by));
+    const startY = cy - (n - 1) * gap / 2, nodeCx = bx + dir * (CW / 2 + 138);
+    g.nodes.forEach((p, i) => {
+      const ny = startY + i * gap, left = nodeCx - CW / 2, top = ny - CH / 2;
+      const col = HC[p.health] || "var(--steel)";
+      const gx = left + 14, gy = top + CH - 16, gw = CW - 62, pct = Math.max(0, Math.min(100, +p.progress || 0));
+      parts.push(link(bx + dir * 34, by, nodeCx - dir * CW / 2, ny));
+      parts.push(`<g>
+        <rect x="${left}" y="${top}" rx="12" width="${CW}" height="${CH}" fill="var(--card)" stroke="var(--line)" stroke-width="1.5"/>
+        <rect x="${left}" y="${top}" width="5" height="${CH}" rx="2.5" style="fill:${col}"/>
+        <text x="${left + 16}" y="${top + 22}" font-size="13" font-weight="600" style="fill:var(--ink)">${esc(clip(p.name, 24))}</text>
+        <text x="${left + 16}" y="${top + 37}" font-size="10" style="fill:var(--slate)">${esc(clip(p.stage || "", 26))}</text>
+        <rect x="${gx}" y="${gy}" width="${gw}" height="7" rx="3.5" style="fill:var(--fog)"/>
+        <rect x="${gx}" y="${gy}" width="${gw * pct / 100}" height="7" rx="3.5" style="fill:var(--lime-deep)"/>
+        <text x="${left + CW - 12}" y="${gy + 8}" font-size="11" font-weight="700" text-anchor="end" style="fill:var(--ink)">${pct}%</text>
+      </g>`);
+    });
+    parts.push(`<g><circle cx="${bx}" cy="${by}" r="34" fill="var(--mist)" stroke="var(--line)" stroke-width="2"/><text x="${bx}" y="${by + 4}" font-size="12" font-weight="700" text-anchor="middle" style="fill:var(--ink)">${g.name}</text></g>`);
+  });
+  parts.push(`<g><circle cx="${cx}" cy="${cy}" r="46" style="fill:var(--lime)"/><text x="${cx}" y="${cy + 5}" font-size="16" font-weight="700" text-anchor="middle" style="fill:var(--obsidian)">WeBuild</text></g>`);
+  return `<div class="card"><h3>Projects mind map</h3><div class="mapwrap"><svg viewBox="0 0 1500 ${H}" preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;min-width:680px">${parts.join("")}</svg></div></div>`;
+}
+
 function renderProjects() {
   const tbl = (rows) => `<table><thead><tr><th>Project</th><th>Type</th><th>Stage</th><th style="width:160px">Progress</th><th>Due</th></tr></thead><tbody>${rows.map((p) => `
     <tr><td><b>${esc(p.name)}</b></td><td class="muted">${esc(p.type)}</td>
     <td><span class="badge ${HEALTH[p.health] || ""}">${esc(p.stage)}</span></td>
     <td><div class="bar"><span style="width:${p.progress}%"></span></div><span class="tiny muted">${p.progress}%</span></td>
     <td class="muted">${esc(p.due || "—")}</td></tr>`).join("")}</tbody></table>`;
-  return `<div class="card"><h3>Client pipeline</h3>${tbl(DATA.projects?.clients || [])}</div>
+  return renderProjectMap(DATA.projects) +
+    `<div class="card" style="margin-top:16px"><h3>Client pipeline</h3>${tbl(DATA.projects?.clients || [])}</div>
     <div class="card" style="margin-top:16px"><h3>Internal projects</h3>${tbl(DATA.projects?.internal || [])}</div>`;
 }
 
