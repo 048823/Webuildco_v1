@@ -10,13 +10,22 @@
 // deployment env you review/ship): MC_PASSWORD (board login) and MC_SECRET
 // (long random cookie-signing key). If MC_PASSWORD/MC_SECRET are unset, login
 // always fails and nothing under /mission-control/ is served — fail closed.
+//
+// Optional Multica live data env vars: MULTICA_API_TOKEN (or MULTICA_TOKEN),
+// MULTICA_WORKSPACE_ID, and optionally MULTICA_API_BASE_URL. The token is used
+// only by the Worker; the browser sees normalized status data, never secrets.
 
 const COOKIE = "mc_session";
 const TTL = 60 * 60 * 12; // 12h
+const MULTICA_DEFAULT_BASE = "https://api.multica.ai";
 
 const enc = new TextEncoder();
 const b64u = (buf) =>
   btoa(String.fromCharCode(...new Uint8Array(buf))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+const json = (body, status = 200) => new Response(JSON.stringify(body), {
+  status,
+  headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" },
+});
 
 async function hmac(secret, msg) {
   const key = await crypto.subtle.importKey("raw", enc.encode(secret), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
@@ -90,6 +99,118 @@ async function gate(request, env, url) {
   return loginPage(null);
 }
 
+function multicaConfig(env) {
+  return {
+    baseUrl: String(env.MULTICA_API_BASE_URL || env.MULTICA_SERVER_URL || MULTICA_DEFAULT_BASE).replace(/\/+$/, ""),
+    token: env.MULTICA_API_TOKEN || env.MC_MULTICA_TOKEN || env.MULTICA_TOKEN,
+    workspaceId: env.MULTICA_WORKSPACE_ID || env.MC_WORKSPACE_ID || env.WORKSPACE_ID,
+    workspaceName: env.MULTICA_WORKSPACE_NAME || env.MC_WORKSPACE_NAME || "",
+  };
+}
+
+async function multicaGet(cfg, path) {
+  const res = await fetch(cfg.baseUrl + path, {
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${cfg.token}`,
+      "X-Workspace-ID": cfg.workspaceId,
+    },
+  });
+  if (!res.ok) throw new Error(`Multica API returned ${res.status}`);
+  return res.json();
+}
+
+const listOf = (value, key) => Array.isArray(value) ? value : Array.isArray(value?.[key]) ? value[key] : [];
+const countByStatus = (rows) => rows.reduce((out, row) => {
+  const key = row.status || "unknown";
+  out[key] = (out[key] || 0) + 1;
+  return out;
+}, {});
+
+export function normalizeMultica({ projects, issues, agents, workspaceName = "" }) {
+  const rawProjects = listOf(projects, "projects");
+  const rawIssues = listOf(issues, "issues");
+  const rawAgents = listOf(agents, "agents");
+  const agentsById = new Map(rawAgents.map((a) => [a.id, a.name || "Agent"]));
+  const projectsById = new Map(rawProjects.map((p) => [p.id, p.title || "Untitled project"]));
+
+  const safeProjects = rawProjects.map((p) => {
+    const total = Number(p.issue_count || 0);
+    const done = Number(p.done_count || 0);
+    return {
+      id: p.id,
+      title: p.title || "Untitled project",
+      status: p.status || "unknown",
+      done_count: done,
+      issue_count: total,
+      progress: total ? Math.round((done / total) * 100) : 0,
+      lead: agentsById.get(p.lead_id) || p.lead_type || "Unassigned",
+      updated_at: p.updated_at || p.created_at || null,
+      due_date: p.due_date || null,
+      priority: p.priority || "none",
+    };
+  });
+
+  const safeIssues = rawIssues.map((i) => ({
+    id: i.id,
+    identifier: i.identifier || (i.number ? `#${i.number}` : ""),
+    title: i.title || "Untitled task",
+    status: i.status || "unknown",
+    assignee: agentsById.get(i.assignee_id) || (i.assignee_type ? i.assignee_type : "Unassigned"),
+    project: projectsById.get(i.project_id) || "",
+    updated_at: i.updated_at || i.created_at || null,
+    due_date: i.due_date || null,
+    priority: i.priority || "none",
+  }));
+
+  const safeAgents = rawAgents.map((a) => ({
+    id: a.id,
+    name: a.name || "Agent",
+    role: a.description || a.runtime_mode || "",
+    status: a.status || "unknown",
+  }));
+
+  return {
+    ok: true,
+    live: true,
+    workspace: workspaceName || "Multica",
+    updated: new Date().toISOString(),
+    summary: {
+      projects: safeProjects.length,
+      tasks: Number(issues?.total || safeIssues.length),
+      recent_tasks: safeIssues.length,
+      agents: safeAgents.length,
+      project_status: countByStatus(safeProjects),
+      task_status: countByStatus(safeIssues),
+    },
+    projects: safeProjects,
+    issues: safeIssues,
+    agents: safeAgents,
+  };
+}
+
+async function multicaStatus(request, env) {
+  if (request.method !== "GET") return json({ ok: false, error: "method_not_allowed" }, 405);
+  const cfg = multicaConfig(env);
+  if (!cfg.token || !cfg.workspaceId) {
+    return json({
+      ok: false,
+      error: "missing_config",
+      message: "Set MULTICA_API_TOKEN and MULTICA_WORKSPACE_ID in Cloudflare.",
+    }, 503);
+  }
+  try {
+    const [projects, issues, agents] = await Promise.all([
+      multicaGet(cfg, "/api/projects"),
+      multicaGet(cfg, "/api/issues?limit=30&offset=0&sort=created_at&direction=desc"),
+      multicaGet(cfg, "/api/agents?include_archived=false"),
+    ]);
+    return json(normalizeMultica({ projects, issues, agents, workspaceName: cfg.workspaceName }));
+  } catch (err) {
+    return json({ ok: false, error: "api_error", message: err.message || "Multica API unavailable" }, 502);
+  }
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -97,6 +218,7 @@ export default {
     if (gated) {
       const resp = await gate(request, env, url);
       if (resp) return resp;
+      if (url.pathname === "/mission-control/api/multica") return multicaStatus(request, env);
     }
     return env.ASSETS.fetch(request);
   },
