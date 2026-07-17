@@ -129,6 +129,8 @@ const countByStatus = (rows) => rows.reduce((out, row) => {
 const BLOG_PROJECTS = new Set(["place", "social media growth"]);
 const BLOG_MATCH = /\b(article|blog|seo|geo|publish|publishing|pillar|guide|keyword|educational content|content engine)\b/i;
 const BLOG_COLUMNS = ["Idea", "Drafting", "Review", "Scheduled"];
+const LEAD_MATCH = /\b(outbound|leads?|pipeline|prospects?|prospecting|campaign|cold email|linkedin|smartlead|instantly|a-leads|aleads|sales)\b/i;
+const DONE_STATUSES = new Set(["done", "completed"]);
 
 function blogColumn(status) {
   return ({
@@ -179,6 +181,79 @@ function normalizeBlogs(rows, projectsById, agentsById) {
   };
 }
 
+function isOpenStatus(status) {
+  return !DONE_STATUSES.has(String(status || "").toLowerCase());
+}
+
+function isLeadProject(project) {
+  return LEAD_MATCH.test(`${project.title || ""} ${project.description || ""}`);
+}
+
+function isLeadIssue(issue) {
+  return LEAD_MATCH.test(`${issue.title || ""} ${issue.description || ""}`);
+}
+
+function normalizeLeads(projects, issues, projectsById, agentsById) {
+  const leadProjectIds = new Set(projects.filter(isLeadProject).map((p) => p.id));
+  const leadIssues = issues.filter((issue) => leadProjectIds.has(issue.project_id) || isLeadIssue(issue));
+  leadIssues.forEach((issue) => {
+    if (issue.project_id) leadProjectIds.add(issue.project_id);
+  });
+
+  const tasks = leadIssues
+    .sort((a, b) => String(b.updated_at || b.created_at || "").localeCompare(String(a.updated_at || a.created_at || "")))
+    .map((issue) => ({
+      id: issue.id,
+      identifier: issue.identifier || (issue.number ? `#${issue.number}` : ""),
+      title: issue.title || "Untitled outbound task",
+      status: issue.status || "unknown",
+      assignee: agentsById.get(issue.assignee_id) || (issue.assignee_type ? issue.assignee_type : "Unassigned"),
+      project: projectsById.get(issue.project_id) || "",
+      updated_at: issue.updated_at || issue.created_at || null,
+    }));
+
+  const projectRows = projects.filter((project) => leadProjectIds.has(project.id)).map((project) => {
+    const total = Number(project.issue_count || 0);
+    const done = Number(project.done_count || 0);
+    const related = leadIssues.filter((issue) => issue.project_id === project.id);
+    return {
+      id: project.id,
+      title: project.title || "Untitled outbound project",
+      status: project.status || "unknown",
+      progress: total ? Math.round((done / total) * 100) : 0,
+      done_count: done,
+      issue_count: total,
+      active_tasks: related.length ? related.filter((issue) => isOpenStatus(issue.status)).length : Math.max(total - done, 0),
+      lead: agentsById.get(project.lead_id) || project.lead_type || "Unassigned",
+      updated_at: project.updated_at || project.created_at || null,
+    };
+  }).sort((a, b) => String(b.updated_at || "").localeCompare(String(a.updated_at || "")));
+
+  const statusCounts = countByStatus(tasks);
+  return {
+    live: true,
+    source: "Multica",
+    note: "Sender metrics can be added when Instantly and A-leads APIs are wired.",
+    summary: {
+      projects: projectRows.length,
+      tasks: tasks.length,
+      open_tasks: tasks.filter((task) => isOpenStatus(task.status)).length,
+      blocked: statusCounts.blocked || 0,
+      in_review: statusCounts.in_review || 0,
+    },
+    projects: projectRows,
+    tasks,
+    campaigns: projectRows.map((project) => ({
+      tool: "Multica",
+      name: project.title,
+      sent: project.issue_count,
+      opened: project.done_count,
+      replied: project.active_tasks,
+      status: project.status,
+    })),
+  };
+}
+
 export function normalizeMultica({ projects, issues, agents, blogIssues = [], workspaceName = "" }) {
   const rawProjects = listOf(projects, "projects");
   const rawIssues = listOf(issues, "issues");
@@ -188,6 +263,7 @@ export function normalizeMultica({ projects, issues, agents, blogIssues = [], wo
   const projectsById = new Map(rawProjects.map((p) => [p.id, p.title || "Untitled project"]));
   const blogSourceIssues = [...rawBlogIssues, ...rawIssues.filter(isBlogIssue)];
   const safeBlogs = normalizeBlogs(blogSourceIssues, projectsById, agentsById);
+  const safeLeads = normalizeLeads(rawProjects, rawIssues, projectsById, agentsById);
 
   const safeProjects = rawProjects.map((p) => {
     const total = Number(p.issue_count || 0);
@@ -236,6 +312,7 @@ export function normalizeMultica({ projects, issues, agents, blogIssues = [], wo
       recent_tasks: safeIssues.length,
       agents: safeAgents.length,
       blogs: safeBlogs.cards.length,
+      leads: safeLeads.summary,
       project_status: countByStatus(safeProjects),
       task_status: countByStatus(safeIssues),
     },
@@ -243,6 +320,7 @@ export function normalizeMultica({ projects, issues, agents, blogIssues = [], wo
     issues: safeIssues,
     agents: safeAgents,
     blogs: safeBlogs,
+    leads: safeLeads,
   };
 }
 

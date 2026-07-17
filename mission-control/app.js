@@ -71,6 +71,8 @@ let DATA = {};
 let CREATIVE = {}; // data/creative.json — owned by ECD, drives the Creative section
 const hasLiveBlogs = () => Boolean(DATA.multica?.live && DATA.multica?.blogs?.live);
 const blogsData = () => hasLiveBlogs() ? DATA.multica.blogs : (DATA.blogs || { columns: [], cards: [] });
+const hasLiveLeads = () => Boolean(DATA.multica?.live && DATA.multica?.leads?.live);
+const leadsData = () => hasLiveLeads() ? DATA.multica.leads : (DATA.leads || { campaigns: [] });
 
 // ---- Section definitions ----
 const SECTIONS = [
@@ -95,6 +97,7 @@ function renderOverview() {
   const projCount = (d.projects?.clients?.length || 0) + (d.projects?.internal?.length || 0);
   const monthly = (d.finance?.subscriptions || []).reduce((s, x) => s + (x.cycle === "annual" ? x.monthly / 12 : x.monthly), 0);
   const blogCount = (blogsData().cards || []).length;
+  const outboundCount = hasLiveLeads() ? (leadsData().summary?.projects || 0) : (d.leads?.campaigns || []).length;
   const openTodos = (d.todos || []).filter((t) => !t.done).length;
   return `
   <div class="grid g4">
@@ -112,7 +115,7 @@ function renderOverview() {
   <div class="card" style="margin-top:16px"><h3>Section snapshot</h3>
     <div class="grid g3">
       ${snap("Projects", `${d.projects?.clients?.length || 0} client · ${d.projects?.internal?.length || 0} internal`, "projects")}
-      ${snap("Outbound", (d.leads?.campaigns || []).length + " campaigns", "leads")}
+      ${snap("Outbound", outboundCount + (hasLiveLeads() ? " projects" : " campaigns"), "leads")}
       ${snap("Blogs", blogCount + " cards", "blogs")}
       ${snap("Finance", money(monthly) + "/mo", "finance")}
       ${snap("APIs / MCPs", APIS.filter((a) => a.status === "connected").length + " connected", "apis")}
@@ -175,8 +178,35 @@ function renderProjects() {
 }
 
 function renderLeads() {
-  const c = DATA.leads?.campaigns || [];
-  return note("Instantly and A-leads API keys are not wired yet — numbers below are placeholders. Supply keys to go live.") +
+  const l = leadsData();
+  if (hasLiveLeads()) {
+    const projects = l.projects || [];
+    const tasks = l.tasks || [];
+    const summary = l.summary || {};
+    const badge = (s) => `<span class="badge ${statusCls(s)}">${esc(s || "—")}</span>`;
+    const projectRows = projects.length ? projects.map((p) => `
+      <tr><td><b>${esc(p.title)}</b><div class="tiny muted">${esc(p.lead || "Unassigned")}</div></td>
+      <td>${badge(p.status)}</td>
+      <td><div class="bar"><span style="width:${Math.max(0, Math.min(100, +p.progress || 0))}%"></span></div><span class="tiny muted">${esc(p.done_count || 0)}/${esc(p.issue_count || 0)} done</span></td>
+      <td class="muted">${esc(p.active_tasks || 0)}</td></tr>`).join("") : `<tr><td colspan="4" class="muted">No outbound projects matched.</td></tr>`;
+    const taskRows = tasks.length ? tasks.slice(0, 12).map((t) => `
+      <tr><td><b>${esc(t.identifier || t.id)}</b></td><td>${esc(t.title)}${t.project ? `<div class="tiny muted">${esc(t.project)}</div>` : ""}</td>
+      <td>${badge(t.status)}</td><td class="muted">${esc(t.assignee || "Unassigned")}</td></tr>`).join("") : `<tr><td colspan="4" class="muted">No related outbound tasks returned.</td></tr>`;
+    return `<div class="section-note"><b>Live:</b> Derived from Multica projects. Instantly and A-leads sender metrics can be wired later.</div>
+    <div class="grid g4">
+      ${statCard("Outbound projects", summary.projects ?? projects.length, "from Multica")}
+      ${statCard("Related tasks", summary.tasks ?? tasks.length, "matching outbound")}
+      ${statCard("Open tasks", summary.open_tasks || 0, "not done")}
+      ${statCard("Blocked", summary.blocked || 0, "needs attention")}
+    </div>
+    <div class="grid g2" style="margin-top:16px">
+      <div class="card"><h3>Outbound projects</h3><table><thead><tr><th>Project</th><th>Status</th><th style="width:160px">Progress</th><th>Open</th></tr></thead><tbody>${projectRows}</tbody></table></div>
+      <div class="card"><h3>Related tasks</h3><table><thead><tr><th>ID</th><th>Task</th><th>Status</th><th>Owner</th></tr></thead><tbody>${taskRows}</tbody></table></div>
+    </div>`;
+  }
+
+  const c = l.campaigns || [];
+  return note("Instantly and A-leads API keys are not wired yet — showing seed campaign placeholders.") +
   `<div class="card"><h3>Campaigns</h3><table><thead><tr><th>Tool</th><th>Campaign</th><th>Sent</th><th>Opened</th><th>Replied</th><th>Status</th></tr></thead><tbody>${c.map((x) => `
     <tr><td><span class="badge dark">${esc(x.tool)}</span></td><td>${esc(x.name)}</td><td>${x.sent}</td><td>${x.opened}</td><td>${x.replied}</td>
     <td><span class="badge ${x.status === "needs-key" ? "bad" : "ok"}">${esc(x.status)}</span></td></tr>`).join("")}</tbody></table></div>`;
@@ -393,7 +423,7 @@ function go(id) {
   $("#ptitle").textContent = s.title;
   $("#pdesc").textContent = s.desc;
   const flag = $("#pflag");
-  const pageFlag = (s.id === "multica" && DATA.multica?.live) || (s.id === "blogs" && hasLiveBlogs()) ? "live" : s.flag;
+  const pageFlag = (s.id === "multica" && DATA.multica?.live) || (s.id === "blogs" && hasLiveBlogs()) || (s.id === "leads" && hasLiveLeads()) ? "live" : s.flag;
   flag.className = "pill " + pageFlag;
   flag.textContent = FLAG_LABEL[pageFlag];
   $("#side").classList.remove("open");
