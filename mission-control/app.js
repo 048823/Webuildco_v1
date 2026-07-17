@@ -4,6 +4,7 @@
 const $ = (s, r = document) => r.querySelector(s);
 const h = (html) => { const t = document.createElement("template"); t.innerHTML = html.trim(); return t.content.firstElementChild; };
 const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const clip = (s, n) => { s = String(s || ""); return s.length > n ? s.slice(0, n - 1) + "…" : s; };
 const money = (n, c = "AUD") => new Intl.NumberFormat("en-AU", { style: "currency", currency: c, maximumFractionDigits: 0 }).format(n);
 const HEALTH = { ok: "ok", warn: "warn", bad: "bad" };
 
@@ -20,6 +21,7 @@ const APIS = [
   { name: "Kie.ai (image / video gen)", cat: "Creative", via: "kie-ai MCP", status: "connected" },
   { name: "Excalidraw (diagrams)", cat: "Creative", via: "Excalidraw MCP", status: "connected" },
   { name: "Open-Brain (notes / memory)", cat: "Knowledge", via: "Open-Brain MCP", status: "connected" },
+  { name: "Multica workspace API", cat: "Ops", via: "Worker proxy", status: "connected" },
   { name: "Web Search + Web Fetch", cat: "Data", via: "core tools", status: "connected" },
   { name: "Gmail", cat: "Comms", via: "claude.ai connector", status: "needs-auth" },
   { name: "Google Calendar", cat: "Ops", via: "claude.ai connector", status: "needs-auth" },
@@ -43,9 +45,34 @@ const SKILLS = {
 };
 
 const apiBadge = (s) => ({ "connected": '<span class="badge ok">connected</span>', "needs-auth": '<span class="badge warn">needs auth</span>', "not-wired": '<span class="badge bad">not wired</span>' }[s] || "");
+const statusCls = (s) => ({
+  done: "ok",
+  completed: "ok",
+  idle: "ok",
+  active: "ok",
+  running: "ok",
+  blocked: "bad",
+  cancelled: "bad",
+  failed: "bad",
+  in_progress: "warn",
+  in_review: "warn",
+  todo: "info",
+  planned: "info",
+  backlog: "",
+}[String(s || "").toLowerCase()] || "");
+const fmtDate = (s) => {
+  if (!s) return "—";
+  const d = new Date(s);
+  if (Number.isNaN(d.getTime())) return s;
+  return new Intl.DateTimeFormat("en-AU", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" }).format(d);
+};
 
 let DATA = {};
 let CREATIVE = {}; // data/creative.json — owned by ECD, drives the Creative section
+const hasLiveBlogs = () => Boolean(DATA.multica?.live && DATA.multica?.blogs?.live);
+const blogsData = () => hasLiveBlogs() ? DATA.multica.blogs : (DATA.blogs || { columns: [], cards: [] });
+const hasLiveLeads = () => Boolean(DATA.multica?.live && DATA.multica?.leads?.live);
+const leadsData = () => hasLiveLeads() ? DATA.multica.leads : (DATA.leads || { campaigns: [] });
 
 // ---- Section definitions ----
 const SECTIONS = [
@@ -59,7 +86,7 @@ const SECTIONS = [
   { id: "apis", title: "APIs & MCPs", ic: "⌁", desc: "Every API and MCP available to the agents", flag: "live", render: renderApis },
   { id: "skills", title: "Skills", ic: "✦", desc: "All installed skills by area", flag: "live", render: renderSkills },
   { id: "planner", title: "Workflow Planner", ic: "⟐", desc: "Compose a workflow from skills + APIs", flag: "live", render: renderPlanner },
-  { id: "multica", title: "Multica", ic: "◇", desc: "Workspace activity — issues & agents", flag: "needs", render: renderMultica },
+  { id: "multica", title: "Multica", ic: "◇", desc: "Workspace activity — tasks, projects & agents", flag: "needs", render: renderMultica },
 ];
 
 const FLAG_LABEL = { live: "Live", manual: "Manual data", needs: "Needs credential" };
@@ -69,7 +96,8 @@ function renderOverview() {
   const d = DATA;
   const projCount = (d.projects?.clients?.length || 0) + (d.projects?.internal?.length || 0);
   const monthly = (d.finance?.subscriptions || []).reduce((s, x) => s + (x.cycle === "annual" ? x.monthly / 12 : x.monthly), 0);
-  const blogCount = (d.blogs?.cards || []).length;
+  const blogCount = (blogsData().cards || []).length;
+  const outboundCount = hasLiveLeads() ? (leadsData().summary?.projects || 0) : (d.leads?.campaigns || []).length;
   const openTodos = (d.todos || []).filter((t) => !t.done).length;
   return `
   <div class="grid g4">
@@ -87,7 +115,7 @@ function renderOverview() {
   <div class="card" style="margin-top:16px"><h3>Section snapshot</h3>
     <div class="grid g3">
       ${snap("Projects", `${d.projects?.clients?.length || 0} client · ${d.projects?.internal?.length || 0} internal`, "projects")}
-      ${snap("Outbound", (d.leads?.campaigns || []).length + " campaigns", "leads")}
+      ${snap("Outbound", outboundCount + (hasLiveLeads() ? " projects" : " campaigns"), "leads")}
       ${snap("Blogs", blogCount + " cards", "blogs")}
       ${snap("Finance", money(monthly) + "/mo", "finance")}
       ${snap("APIs / MCPs", APIS.filter((a) => a.status === "connected").length + " connected", "apis")}
@@ -98,27 +126,98 @@ function renderOverview() {
 const statCard = (label, val, sub) => `<div class="card"><div class="muted tiny">${esc(label)}</div><div class="stat" style="margin-top:6px">${val}</div><div class="muted tiny" style="margin-top:4px">${esc(sub)}</div></div>`;
 const snap = (t, v, go) => `<div class="card" style="cursor:pointer;box-shadow:none" data-go="${go}"><div style="font-weight:600">${esc(t)}</div><div class="muted tiny" style="margin-top:4px">${esc(v)} →</div></div>`;
 
+// Radial mind map of DATA.projects — same data as the table below. Rail colour = health
+// (ok/warn = green/amber, planned/other = grey), gauge = progress %.
+function renderProjectMap(proj) {
+  const groups = [
+    { name: "Clients", side: -1, nodes: proj?.clients || [] },
+    { name: "Internal", side: 1, nodes: proj?.internal || [] },
+  ];
+  const CW = 214, CH = 60, cx = 750;
+  const gap = 106;
+  const maxN = Math.max(groups[0].nodes.length, groups[1].nodes.length, 1);
+  const H = Math.max(480, maxN * gap + 110);
+  const cy = H / 2;
+  const HC = { ok: "var(--ok)", warn: "var(--warn)", bad: "var(--bad)" };
+  const link = (x1, y1, x2, y2) => { const mx = (x1 + x2) / 2; return `<path d="M${x1},${y1} C ${mx},${y1} ${mx},${y2} ${x2},${y2}" fill="none" stroke="var(--line)" stroke-width="2"/>`; };
+  const parts = [];
+  groups.forEach((g) => {
+    const dir = g.side, bx = cx + dir * 210, by = cy, n = g.nodes.length;
+    parts.push(link(cx, cy, bx, by));
+    const startY = cy - (n - 1) * gap / 2, nodeCx = bx + dir * (CW / 2 + 138);
+    g.nodes.forEach((p, i) => {
+      const ny = startY + i * gap, left = nodeCx - CW / 2, top = ny - CH / 2;
+      const col = HC[p.health] || "var(--steel)";
+      const gx = left + 14, gy = top + CH - 16, gw = CW - 62, pct = Math.max(0, Math.min(100, +p.progress || 0));
+      parts.push(link(bx + dir * 34, by, nodeCx - dir * CW / 2, ny));
+      parts.push(`<g>
+        <rect x="${left}" y="${top}" rx="12" width="${CW}" height="${CH}" fill="var(--card)" stroke="var(--line)" stroke-width="1.5"/>
+        <rect x="${left}" y="${top}" width="5" height="${CH}" rx="2.5" style="fill:${col}"/>
+        <text x="${left + 16}" y="${top + 22}" font-size="13" font-weight="600" style="fill:var(--ink)">${esc(clip(p.name, 24))}</text>
+        <text x="${left + 16}" y="${top + 37}" font-size="10" style="fill:var(--slate)">${esc(clip(p.stage || "", 26))}</text>
+        <rect x="${gx}" y="${gy}" width="${gw}" height="7" rx="3.5" style="fill:var(--fog)"/>
+        <rect x="${gx}" y="${gy}" width="${gw * pct / 100}" height="7" rx="3.5" style="fill:var(--lime-deep)"/>
+        <text x="${left + CW - 12}" y="${gy + 8}" font-size="11" font-weight="700" text-anchor="end" style="fill:var(--ink)">${pct}%</text>
+      </g>`);
+    });
+    parts.push(`<g><circle cx="${bx}" cy="${by}" r="34" fill="var(--mist)" stroke="var(--line)" stroke-width="2"/><text x="${bx}" y="${by + 4}" font-size="12" font-weight="700" text-anchor="middle" style="fill:var(--ink)">${g.name}</text></g>`);
+  });
+  parts.push(`<g><circle cx="${cx}" cy="${cy}" r="46" style="fill:var(--lime)"/><text x="${cx}" y="${cy + 5}" font-size="16" font-weight="700" text-anchor="middle" style="fill:var(--obsidian)">WeBuild</text></g>`);
+  return `<div class="card"><h3>Projects mind map</h3><div class="mapwrap"><svg viewBox="0 0 1500 ${H}" preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;min-width:680px;font-family:'DM Sans',system-ui,sans-serif">${parts.join("")}</svg></div></div>`;
+}
+
 function renderProjects() {
   const tbl = (rows) => `<table><thead><tr><th>Project</th><th>Type</th><th>Stage</th><th style="width:160px">Progress</th><th>Due</th></tr></thead><tbody>${rows.map((p) => `
     <tr><td><b>${esc(p.name)}</b></td><td class="muted">${esc(p.type)}</td>
     <td><span class="badge ${HEALTH[p.health] || ""}">${esc(p.stage)}</span></td>
     <td><div class="bar"><span style="width:${p.progress}%"></span></div><span class="tiny muted">${p.progress}%</span></td>
     <td class="muted">${esc(p.due || "—")}</td></tr>`).join("")}</tbody></table>`;
-  return `<div class="card"><h3>Client pipeline</h3>${tbl(DATA.projects?.clients || [])}</div>
+  return renderProjectMap(DATA.projects) +
+    `<div class="card" style="margin-top:16px"><h3>Client pipeline</h3>${tbl(DATA.projects?.clients || [])}</div>
     <div class="card" style="margin-top:16px"><h3>Internal projects</h3>${tbl(DATA.projects?.internal || [])}</div>`;
 }
 
 function renderLeads() {
-  const c = DATA.leads?.campaigns || [];
-  return note("Instantly and A-leads API keys are not wired yet — numbers below are placeholders. Supply keys to go live.") +
+  const l = leadsData();
+  if (hasLiveLeads()) {
+    const projects = l.projects || [];
+    const tasks = l.tasks || [];
+    const summary = l.summary || {};
+    const badge = (s) => `<span class="badge ${statusCls(s)}">${esc(s || "—")}</span>`;
+    const projectRows = projects.length ? projects.map((p) => `
+      <tr><td><b>${esc(p.title)}</b><div class="tiny muted">${esc(p.lead || "Unassigned")}</div></td>
+      <td>${badge(p.status)}</td>
+      <td><div class="bar"><span style="width:${Math.max(0, Math.min(100, +p.progress || 0))}%"></span></div><span class="tiny muted">${esc(p.done_count || 0)}/${esc(p.issue_count || 0)} done</span></td>
+      <td class="muted">${esc(p.active_tasks || 0)}</td></tr>`).join("") : `<tr><td colspan="4" class="muted">No outbound projects matched.</td></tr>`;
+    const taskRows = tasks.length ? tasks.slice(0, 12).map((t) => `
+      <tr><td><b>${esc(t.identifier || t.id)}</b></td><td>${esc(t.title)}${t.project ? `<div class="tiny muted">${esc(t.project)}</div>` : ""}</td>
+      <td>${badge(t.status)}</td><td class="muted">${esc(t.assignee || "Unassigned")}</td></tr>`).join("") : `<tr><td colspan="4" class="muted">No related outbound tasks returned.</td></tr>`;
+    return `<div class="section-note"><b>Live:</b> Derived from Multica projects. Instantly and A-leads sender metrics can be wired later.</div>
+    <div class="grid g4">
+      ${statCard("Outbound projects", summary.projects ?? projects.length, "from Multica")}
+      ${statCard("Related tasks", summary.tasks ?? tasks.length, "matching outbound")}
+      ${statCard("Open tasks", summary.open_tasks || 0, "not done")}
+      ${statCard("Blocked", summary.blocked || 0, "needs attention")}
+    </div>
+    <div class="grid g2" style="margin-top:16px">
+      <div class="card"><h3>Outbound projects</h3><table><thead><tr><th>Project</th><th>Status</th><th style="width:160px">Progress</th><th>Open</th></tr></thead><tbody>${projectRows}</tbody></table></div>
+      <div class="card"><h3>Related tasks</h3><table><thead><tr><th>ID</th><th>Task</th><th>Status</th><th>Owner</th></tr></thead><tbody>${taskRows}</tbody></table></div>
+    </div>`;
+  }
+
+  const c = l.campaigns || [];
+  return note("Instantly and A-leads API keys are not wired yet — showing seed campaign placeholders.") +
   `<div class="card"><h3>Campaigns</h3><table><thead><tr><th>Tool</th><th>Campaign</th><th>Sent</th><th>Opened</th><th>Replied</th><th>Status</th></tr></thead><tbody>${c.map((x) => `
     <tr><td><span class="badge dark">${esc(x.tool)}</span></td><td>${esc(x.name)}</td><td>${x.sent}</td><td>${x.opened}</td><td>${x.replied}</td>
     <td><span class="badge ${x.status === "needs-key" ? "bad" : "ok"}">${esc(x.status)}</span></td></tr>`).join("")}</tbody></table></div>`;
 }
 
 function renderBlogs() {
-  const b = DATA.blogs || { columns: [], cards: [] };
-  return `<div class="kan">${b.columns.map((col) => {
+  const b = blogsData();
+  const state = hasLiveBlogs()
+    ? `<div class="section-note"><b>Live:</b> Loaded ${(b.cards || []).length} content tasks from Multica.</div>`
+    : "";
+  return state + `<div class="kan">${b.columns.map((col) => {
     const items = b.cards.filter((c) => c.col === col);
     return `<div class="col"><h4>${esc(col)}<span>${items.length}</span></h4>${items.map((c) => `
       <div class="item">${esc(c.title)}${c.meta ? `<div class="m">${esc(c.meta)}</div>` : ""}</div>`).join("")}</div>`;
@@ -290,12 +389,37 @@ function wirePlanner(all, saved) {
 
 function renderMultica() {
   const m = DATA.multica || { issues: [], agents: [] };
-  return note("Live workspace activity needs the Multica API base URL + a read token exposed to the dashboard. Seed data shown.") +
-  `<div class="grid g2">
-    <div class="card"><h3>Recent issues · ${esc(m.workspace || "")}</h3><table><thead><tr><th>ID</th><th>Title</th><th>Status</th><th>Owner</th></tr></thead><tbody>${(m.issues || []).map((i) => `
-      <tr><td><b>${esc(i.id)}</b></td><td>${esc(i.title)}</td><td><span class="badge ${i.status === "done" ? "ok" : i.status === "blocked" ? "bad" : "warn"}">${esc(i.status)}</span></td><td class="muted">${esc(i.assignee)}</td></tr>`).join("")}</tbody></table></div>
-    <div class="card"><h3>Agents</h3>${(m.agents || []).map((a) => `<div class="kv"><span class="k"><b>${esc(a.name)}</b></span><span class="v muted" style="font-weight:400">${esc(a.role)}</span></div>`).join("")}</div>
-  </div>`;
+  const projects = m.projects || [];
+  const issues = m.issues || [];
+  const agents = m.agents || [];
+  const sum = m.summary || {};
+  const taskStatus = sum.task_status || {};
+  const badge = (s) => `<span class="badge ${statusCls(s)}">${esc(s || "—")}</span>`;
+  const state = m.live
+    ? `<div class="section-note"><b>Live:</b> Multica API refreshed ${esc(fmtDate(m.updated))}. Showing ${esc(sum.recent_tasks || issues.length)} recent tasks.</div>`
+    : `<div class="section-note"><b>Fallback:</b> ${esc(m.error || "Multica API is not configured yet. Seed data shown.")}</div>`;
+  const projectRows = projects.length ? projects.slice(0, 12).map((p) => `
+    <tr><td><b>${esc(p.title)}</b><div class="tiny muted">${esc(p.lead || "Unassigned")}</div></td>
+    <td>${badge(p.status)}</td>
+    <td><div class="bar"><span style="width:${Math.max(0, Math.min(100, +p.progress || 0))}%"></span></div><span class="tiny muted">${esc(p.done_count || 0)}/${esc(p.issue_count || 0)} done</span></td>
+    <td class="muted">${esc(fmtDate(p.updated_at))}</td></tr>`).join("") : `<tr><td colspan="4" class="muted">No live projects returned.</td></tr>`;
+  const issueRows = issues.length ? issues.slice(0, 14).map((i) => `
+    <tr><td><b>${esc(i.identifier || i.id)}</b></td><td>${esc(i.title)}${i.project ? `<div class="tiny muted">${esc(i.project)}</div>` : ""}</td>
+    <td>${badge(i.status)}</td><td class="muted">${esc(i.assignee || "Unassigned")}</td></tr>`).join("") : `<tr><td colspan="4" class="muted">No live tasks returned.</td></tr>`;
+  const agentRows = agents.length ? agents.map((a) => `
+    <div class="kv"><span class="k"><b>${esc(a.name)}</b><span class="tiny muted" style="display:block">${esc(clip(a.role || "", 64))}</span></span><span class="v">${badge(a.status || "listed")}</span></div>`).join("") : '<p class="muted">No agents returned.</p>';
+  return state + `
+  <div class="grid g4">
+    ${statCard("Projects", sum.projects ?? projects.length, "live project rows")}
+    ${statCard("Tasks", sum.tasks ?? issues.length, "workspace total")}
+    ${statCard("Blocked", taskStatus.blocked || 0, "in recent tasks")}
+    ${statCard("Agents", sum.agents ?? agents.length, "workspace agents")}
+  </div>
+  <div class="grid g2" style="margin-top:16px">
+    <div class="card"><h3>Projects · ${esc(m.workspace || "Multica")}</h3><table><thead><tr><th>Project</th><th>Status</th><th style="width:160px">Progress</th><th>Updated</th></tr></thead><tbody>${projectRows}</tbody></table></div>
+    <div class="card"><h3>Recent tasks</h3><table><thead><tr><th>ID</th><th>Task</th><th>Status</th><th>Owner</th></tr></thead><tbody>${issueRows}</tbody></table></div>
+  </div>
+  <div class="card" style="margin-top:16px"><h3>Agents</h3>${agentRows}</div>`;
 }
 
 const note = (t) => `<div class="section-note"><b>Placeholder:</b> ${esc(t)}</div>`;
@@ -315,10 +439,22 @@ function go(id) {
   $("#ptitle").textContent = s.title;
   $("#pdesc").textContent = s.desc;
   const flag = $("#pflag");
-  flag.className = "pill " + s.flag;
-  flag.textContent = FLAG_LABEL[s.flag];
+  const pageFlag = (s.id === "multica" && DATA.multica?.live) || (s.id === "blogs" && hasLiveBlogs()) || (s.id === "leads" && hasLiveLeads()) ? "live" : s.flag;
+  flag.className = "pill " + pageFlag;
+  flag.textContent = FLAG_LABEL[pageFlag];
   $("#side").classList.remove("open");
   location.hash = s.id;
+}
+
+async function loadMultica() {
+  try {
+    const res = await fetch("/mission-control/api/multica", { cache: "no-store" });
+    const live = await res.json();
+    if (!res.ok || live.ok === false) throw new Error(live.message || live.error || "Multica API unavailable");
+    DATA.multica = live;
+  } catch (err) {
+    DATA.multica = { ...(DATA.multica || {}), live: false, error: err.message || "Multica API unavailable" };
+  }
 }
 
 async function boot() {
@@ -327,6 +463,7 @@ async function boot() {
   catch { DATA = {}; }
   try { CREATIVE = await (await fetch("/mission-control/data/creative.json", { cache: "no-store" })).json(); }
   catch { CREATIVE = {}; }
+  await loadMultica();
   $("#upd").textContent = DATA.updated ? "updated " + DATA.updated : "";
   document.addEventListener("click", (e) => {
     const nav = e.target.closest(".nav a"); if (nav) return go(nav.dataset.id);

@@ -73,6 +73,9 @@ tr:last-child td{border-bottom:none}
 .bar{height:7px;border-radius:6px;background:var(--fog);overflow:hidden}
 .bar>span{display:block;height:100%;background:var(--lime-deep);border-radius:6px}
 
+/* Projects mind map */
+.mapwrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+
 /* Kanban */
 .kan{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
 .kan .col{background:var(--fog);border-radius:14px;padding:12px;min-height:120px}

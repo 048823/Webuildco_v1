@@ -1,6 +1,6 @@
 # WeBuild Creative Studio — Workflow (v1)
 
-**One-page pipeline.** Every asset flows: **intake → creative brief → production → BrandGuardian QA → export for Metricool.** Nothing ships without BrandGuardian approval.
+**One-page pipeline.** Every asset flows: **intake → creative brief → production → BrandGuardian QA → export for Buffer.** Nothing ships without BrandGuardian approval.
 
 Source of truth for brand rules: [`/brand/brand-guidelines.md`](./brand-guidelines.md) and the design system. Read them before producing.
 
@@ -14,7 +14,7 @@ Source of truth for brand rules: [`/brand/brand-guidelines.md`](./brand-guidelin
 | Static production (thumbnails, carousels, quote cards, infographics, portraits) | StudioDesigner |
 | Video/motion production (reels, promos, animated cards) | MotionDesigner |
 | QA gate (brand + design) | **BrandGuardian** |
-| Scheduling/publishing | Content team (Metricool) |
+| Scheduling/publishing | Content team (Buffer) |
 
 ---
 
@@ -64,9 +64,9 @@ BrandGuardian reviews every asset on two axes, then gives a clear verdict:
 
 Genuine brand-direction ambiguity → BrandGuardian escalates to ECD.
 
-## 5. Export for Metricool
+## 5. Export for Buffer
 
-Approved assets are exported in Metricool-ready form and handed to the Content team for scheduling:
+Approved assets are exported in Buffer-ready form and handed to the Content team for scheduling:
 
 - **File format** — PNG for static (JPG only if size demands); MP4 (H.264) for video.
 - **Dimensions** — final, per platform, no further cropping needed:
@@ -77,7 +77,7 @@ Approved assets are exported in Metricool-ready form and handed to the Content t
   - Facebook: 1200×630 feed.
 - **Naming** — `platform_topic_variant.ext` (e.g. `linkedin_agents-not-headcount_carousel-01.png`).
 - **Caption/CTA** — final copy from the brief travels with the asset (from Content's approved item).
-- **Delivery** — files attached to the issue + placed in the shared export location; Content team loads them into Metricool and schedules.
+- **Delivery** — files attached to the issue + placed in the shared export location; Content team loads them into Buffer and schedules.
 
 ---
 
@@ -87,6 +87,6 @@ Approved assets are exported in Metricool-ready form and handed to the Content t
 2. ECD writes brief: 1200×1200 slides, template + palette, prompt library entry for carousels, assigns StudioDesigner.
 3. StudioDesigner produces slides to spec, hands to BrandGuardian.
 4. BrandGuardian QA → approved (or rejects with fixes, loop).
-5. Export PNGs at 1200×1200, named, captions attached → Content schedules in Metricool.
+5. Export PNGs at 1200×1200, named, captions attached → Content schedules in Buffer.
 
 No missing step.
