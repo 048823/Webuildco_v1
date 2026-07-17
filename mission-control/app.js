@@ -69,6 +69,8 @@ const fmtDate = (s) => {
 
 let DATA = {};
 let CREATIVE = {}; // data/creative.json — owned by ECD, drives the Creative section
+const hasLiveBlogs = () => Boolean(DATA.multica?.live && DATA.multica?.blogs?.live);
+const blogsData = () => hasLiveBlogs() ? DATA.multica.blogs : (DATA.blogs || { columns: [], cards: [] });
 
 // ---- Section definitions ----
 const SECTIONS = [
@@ -92,7 +94,7 @@ function renderOverview() {
   const d = DATA;
   const projCount = (d.projects?.clients?.length || 0) + (d.projects?.internal?.length || 0);
   const monthly = (d.finance?.subscriptions || []).reduce((s, x) => s + (x.cycle === "annual" ? x.monthly / 12 : x.monthly), 0);
-  const blogCount = (d.blogs?.cards || []).length;
+  const blogCount = (blogsData().cards || []).length;
   const openTodos = (d.todos || []).filter((t) => !t.done).length;
   return `
   <div class="grid g4">
@@ -181,8 +183,11 @@ function renderLeads() {
 }
 
 function renderBlogs() {
-  const b = DATA.blogs || { columns: [], cards: [] };
-  return `<div class="kan">${b.columns.map((col) => {
+  const b = blogsData();
+  const state = hasLiveBlogs()
+    ? `<div class="section-note"><b>Live:</b> Loaded ${(b.cards || []).length} content tasks from Multica.</div>`
+    : "";
+  return state + `<div class="kan">${b.columns.map((col) => {
     const items = b.cards.filter((c) => c.col === col);
     return `<div class="col"><h4>${esc(col)}<span>${items.length}</span></h4>${items.map((c) => `
       <div class="item">${esc(c.title)}${c.meta ? `<div class="m">${esc(c.meta)}</div>` : ""}</div>`).join("")}</div>`;
@@ -388,7 +393,7 @@ function go(id) {
   $("#ptitle").textContent = s.title;
   $("#pdesc").textContent = s.desc;
   const flag = $("#pflag");
-  const pageFlag = s.id === "multica" && DATA.multica?.live ? "live" : s.flag;
+  const pageFlag = (s.id === "multica" && DATA.multica?.live) || (s.id === "blogs" && hasLiveBlogs()) ? "live" : s.flag;
   flag.className = "pill " + pageFlag;
   flag.textContent = FLAG_LABEL[pageFlag];
   $("#side").classList.remove("open");

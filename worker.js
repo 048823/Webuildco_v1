@@ -126,13 +126,68 @@ const countByStatus = (rows) => rows.reduce((out, row) => {
   out[key] = (out[key] || 0) + 1;
   return out;
 }, {});
+const BLOG_PROJECTS = new Set(["place", "social media growth"]);
+const BLOG_MATCH = /\b(article|blog|seo|geo|publish|publishing|pillar|guide|keyword|educational content|content engine)\b/i;
+const BLOG_COLUMNS = ["Idea", "Drafting", "Review", "Scheduled"];
 
-export function normalizeMultica({ projects, issues, agents, workspaceName = "" }) {
+function blogColumn(status) {
+  return ({
+    done: "Scheduled",
+    completed: "Scheduled",
+    in_review: "Review",
+    blocked: "Review",
+    in_progress: "Drafting",
+    running: "Drafting",
+    todo: "Idea",
+    backlog: "Idea",
+    planned: "Idea",
+  }[String(status || "").toLowerCase()] || "Idea");
+}
+
+function isBlogIssue(issue) {
+  const title = issue.title || "";
+  if (/^content ideas\b/i.test(title)) return false;
+  return BLOG_MATCH.test(`${title} ${issue.description || ""}`);
+}
+
+function normalizeBlogs(rows, projectsById, agentsById) {
+  const seen = new Set();
+  const cards = rows.filter(isBlogIssue).filter((issue) => {
+    if (!issue.id || seen.has(issue.id)) return false;
+    seen.add(issue.id);
+    return true;
+  }).sort((a, b) => String(b.updated_at || b.created_at || "").localeCompare(String(a.updated_at || a.created_at || ""))).map((issue) => {
+    const project = projectsById.get(issue.project_id) || "";
+    const status = issue.status || "unknown";
+    return {
+      id: issue.id,
+      identifier: issue.identifier || (issue.number ? `#${issue.number}` : ""),
+      title: issue.title || "Untitled content task",
+      col: blogColumn(status),
+      meta: [issue.identifier, status, project, agentsById.get(issue.assignee_id)].filter(Boolean).join(" · "),
+      status,
+      project,
+      assignee: agentsById.get(issue.assignee_id) || "",
+      updated_at: issue.updated_at || issue.created_at || null,
+    };
+  });
+  return {
+    live: true,
+    source: "Multica",
+    columns: BLOG_COLUMNS,
+    cards,
+  };
+}
+
+export function normalizeMultica({ projects, issues, agents, blogIssues = [], workspaceName = "" }) {
   const rawProjects = listOf(projects, "projects");
   const rawIssues = listOf(issues, "issues");
+  const rawBlogIssues = listOf(blogIssues, "issues");
   const rawAgents = listOf(agents, "agents");
   const agentsById = new Map(rawAgents.map((a) => [a.id, a.name || "Agent"]));
   const projectsById = new Map(rawProjects.map((p) => [p.id, p.title || "Untitled project"]));
+  const blogSourceIssues = [...rawBlogIssues, ...rawIssues.filter(isBlogIssue)];
+  const safeBlogs = normalizeBlogs(blogSourceIssues, projectsById, agentsById);
 
   const safeProjects = rawProjects.map((p) => {
     const total = Number(p.issue_count || 0);
@@ -180,12 +235,14 @@ export function normalizeMultica({ projects, issues, agents, workspaceName = "" 
       tasks: Number(issues?.total || safeIssues.length),
       recent_tasks: safeIssues.length,
       agents: safeAgents.length,
+      blogs: safeBlogs.cards.length,
       project_status: countByStatus(safeProjects),
       task_status: countByStatus(safeIssues),
     },
     projects: safeProjects,
     issues: safeIssues,
     agents: safeAgents,
+    blogs: safeBlogs,
   };
 }
 
@@ -202,10 +259,21 @@ async function multicaStatus(request, env) {
   try {
     const [projects, issues, agents] = await Promise.all([
       multicaGet(cfg, "/api/projects"),
-      multicaGet(cfg, "/api/issues?limit=30&offset=0&sort=created_at&direction=desc"),
+      multicaGet(cfg, "/api/issues?limit=100&offset=0&sort=created_at&direction=desc"),
       multicaGet(cfg, "/api/agents?include_archived=false"),
     ]);
-    return json(normalizeMultica({ projects, issues, agents, workspaceName: cfg.workspaceName }));
+    const blogProjectIds = listOf(projects, "projects")
+      .filter((p) => BLOG_PROJECTS.has(String(p.title || "").toLowerCase()))
+      .map((p) => p.id);
+    const blogIssueSets = await Promise.all(blogProjectIds.map(async (id) => {
+      try {
+        return await multicaGet(cfg, `/api/issues?project=${encodeURIComponent(id)}&limit=60&offset=0&sort=created_at&direction=desc`);
+      } catch {
+        return [];
+      }
+    }));
+    const blogIssues = blogIssueSets.flatMap((set) => listOf(set, "issues"));
+    return json(normalizeMultica({ projects, issues, agents, blogIssues, workspaceName: cfg.workspaceName }));
   } catch (err) {
     return json({ ok: false, error: "api_error", message: err.message || "Multica API unavailable" }, 502);
   }
