@@ -294,12 +294,31 @@ export function normalizeMultica({ projects, issues, agents, blogIssues = [], wo
     priority: i.priority || "none",
   }));
 
-  const safeAgents = rawAgents.map((a) => ({
-    id: a.id,
-    name: a.name || "Agent",
-    role: a.description || a.runtime_mode || "",
-    status: a.status || "unknown",
-  }));
+  const terminalIssueStatuses = new Set(["done", "completed", "cancelled"]);
+  const latestIssueByAgent = new Map();
+  [...rawIssues]
+    .sort((a, b) => String(b.updated_at || b.created_at || "").localeCompare(String(a.updated_at || a.created_at || "")))
+    .forEach((issue) => {
+      if (issue.assignee_id && !latestIssueByAgent.has(issue.assignee_id)) latestIssueByAgent.set(issue.assignee_id, issue);
+    });
+
+  const safeAgents = rawAgents.map((a) => {
+    const current = latestIssueByAgent.get(a.id);
+    return {
+      id: a.id,
+      name: a.name || "Agent",
+      role: a.description || a.runtime_mode || "",
+      model: a.model || "",
+      status: a.status || "unknown",
+      current: current ? {
+        issue_id: current.id,
+        identifier: current.identifier || (current.number ? `#${current.number}` : ""),
+        title: current.title || "Untitled task",
+        issue_status: current.status || "unknown",
+        live: ["working", "running", "active"].includes(String(a.status || "").toLowerCase()) && !terminalIssueStatuses.has(String(current.status || "").toLowerCase()),
+      } : null,
+    };
+  });
 
   return {
     ok: true,

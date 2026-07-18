@@ -27,7 +27,7 @@ const normalized = normalizeMultica({
     { id: "b1", identifier: "WEB-79", title: "Agentic content engine: automated weekly SEO/GEO publishing cadence", status: "in_review", assignee_id: "a1", project_id: "p2", updated_at: "2026-07-17T00:00:00Z" },
     { id: "b2", identifier: "WEB-168", title: "Content ideas — 2026-07-17", status: "in_review", assignee_id: "a1", project_id: "p2", updated_at: "2026-07-17T01:00:00Z" },
   ],
-  agents: [{ id: "a1", name: "CTO", description: "Technical delivery", status: "working" }],
+  agents: [{ id: "a1", name: "CTO", description: "Technical delivery", model: "claude-opus-4-8", status: "working" }],
 });
 
 assert.equal(normalized.workspace, "WeBuild Co");
@@ -38,6 +38,9 @@ assert.equal(normalized.projects[0].lead, "CTO");
 assert.equal(normalized.issues[0].project, "Mission Control");
 assert.equal(normalized.issues[0].assignee, "CTO");
 assert.equal(normalized.agents[0].status, "working");
+assert.equal(normalized.agents[0].model, "claude-opus-4-8");
+assert.equal(normalized.agents[0].current.identifier, "WEB-1");
+assert.equal(normalized.agents[0].current.live, true);
 assert.equal(normalized.summary.blogs, 1);
 assert.equal(normalized.blogs.live, true);
 assert.equal(normalized.blogs.cards[0].title, "Agentic content engine: automated weekly SEO/GEO publishing cadence");

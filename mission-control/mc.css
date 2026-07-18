@@ -76,6 +76,45 @@ tr:last-child td{border-bottom:none}
 /* Projects mind map */
 .mapwrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
 
+/* Agent org chart */
+.org-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.seclabel{font-size:12px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--steel);margin:26px 0 12px}
+.org-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(218px,1fr));gap:14px;align-items:start}
+.org-card{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden;animation:rise .28s ease both}
+.org-card.lead{box-shadow:inset 0 3px 0 var(--lime),var(--shadow)}
+.org-card.exec{box-shadow:inset 0 3px 0 var(--ember),var(--shadow)}
+.org-card:hover{border-color:var(--pebble)}
+.org-head{width:100%;min-height:84px;display:flex;align-items:center;gap:10px;padding:13px 14px;border:0;background:none;text-align:left;font:inherit;color:inherit;cursor:pointer}
+.org-avatar{width:38px;height:38px;border-radius:9px;display:grid;place-items:center;font-weight:700;font-size:12px;flex:0 0 auto;letter-spacing:0}
+.org-avatar.lead{background:var(--obsidian);color:var(--lime)}
+.org-avatar.exec{background:var(--ember);color:var(--snow)}
+.org-avatar.squad{background:var(--lime);color:var(--obsidian)}
+.org-avatar.workspace{background:var(--fog);color:var(--slate)}
+.org-meta{min-width:0;flex:1}
+.org-name{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:14px;font-weight:600;line-height:1.15;white-space:normal}
+.org-role{display:block;color:var(--steel);font-size:11.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:3px}
+.sdot{width:9px;height:9px;border-radius:50%;background:var(--pebble);flex:0 0 auto}
+.sdot.working,.dot{background:var(--ok);animation:pulse 1.6s infinite}
+.dot{width:6px;height:6px;border-radius:50%;display:inline-block}
+.chev{color:var(--steel);font-size:11px;transition:transform .2s;flex:0 0 auto}
+.org-card.open .chev{transform:rotate(90deg)}
+.org-detail{max-height:0;overflow:hidden;transition:max-height .28s ease}
+.org-card.open .org-detail{max-height:360px}
+.org-detail-in{padding:0 14px 14px;border-top:1px solid var(--fog)}
+.drow{display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin:12px 0 0}
+.resp{color:var(--ink);font-size:12.5px;line-height:1.5;margin-top:8px}
+.org-k{font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--steel);margin-top:13px}
+.taskid{font-weight:700;font-size:13px;margin-top:4px}
+.taskid.live{color:var(--ok)}
+.tasktitle{color:var(--slate);font-size:12.5px;margin-top:3px;line-height:1.35}
+.none{color:var(--steel);font-style:italic;font-size:12.5px;margin-top:6px}
+.org-cluster{margin-top:16px}
+.cluster{background:var(--snow);border:1px solid var(--line);border-radius:16px;padding:16px 18px;box-shadow:var(--shadow)}
+.cluster-head{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.cluster-head h3{font-size:15px}
+.cluster-head .lead{font-size:12px;color:var(--slate)}
+.cluster-head .count{margin-left:auto;font-size:11px;font-weight:600;color:var(--slate);background:var(--fog);border-radius:999px;padding:4px 10px}
+
 /* Kanban */
 .kan{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
 .kan .col{background:var(--fog);border-radius:14px;padding:12px;min-height:120px}
@@ -133,6 +172,8 @@ tr:last-child td{border-bottom:none}
 
 .page{display:none}
 .page.active{display:block;animation:fade .3s}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(22,163,74,.5)}70%{box-shadow:0 0 0 7px rgba(22,163,74,0)}100%{box-shadow:0 0 0 0 rgba(22,163,74,0)}}
 @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 
 .hamb{display:none}

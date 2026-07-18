@@ -73,10 +73,61 @@ const hasLiveBlogs = () => Boolean(DATA.multica?.live && DATA.multica?.blogs?.li
 const blogsData = () => hasLiveBlogs() ? DATA.multica.blogs : (DATA.blogs || { columns: [], cards: [] });
 const hasLiveLeads = () => Boolean(DATA.multica?.live && DATA.multica?.leads?.live);
 const leadsData = () => hasLiveLeads() ? DATA.multica.leads : (DATA.leads || { campaigns: [] });
+const doneStatus = (s) => ["done", "completed", "cancelled"].includes(String(s || "").toLowerCase());
+
+const ORG = {
+  ceo: "c1b5d4af-1f5f-48c8-a2ee-566d6491e435",
+  helper: "70a24bfe-5fb1-4e27-bc13-04153d946bc8",
+  csuite: [
+    "412a2923-0b41-4f1b-b91a-b35356ae25ba",
+    "5b7e92ab-c3b2-4af6-8844-a15d13226128",
+    "e440d74d-26e1-425f-a987-b79abb8e24f0",
+    "2d981d36-5721-4014-b36f-5c2c1a7eec82",
+    "dda981ce-081e-44a7-a584-070f8dcf039e",
+    "7c4cc6db-def5-4a65-a8c8-32e38cc40936",
+  ],
+  squads: [
+    {
+      name: "Social Media Growth",
+      leader: "5b7e92ab-c3b2-4af6-8844-a15d13226128",
+      members: ["eea2bdea-f49f-4cdf-b1a9-295ef7919625", "9ecf6baa-33d2-49f0-a613-14f1ee4b0ee7", "858c673a-e2d6-4c48-abfe-3ec24b899f91", "e774e255-f5f2-4f9c-bf50-eec982dd7dfd", "8208c863-1e28-4393-86b8-84cefc58d6c8", "156a6057-4864-4c4d-abc9-0cc27fd41365", "6e930fad-67ce-4323-af82-5d417b57dad1", "e698a23f-beed-4e6c-aa58-1adf0a85023e", "a1a6cdc9-8dcb-482a-bcfb-6c63b4e8768a"],
+    },
+    {
+      name: "Creative Studio",
+      leader: "7c4cc6db-def5-4a65-a8c8-32e38cc40936",
+      members: ["94a9612e-4b36-487e-9005-dc2f3accc3f6", "4ba6ea05-ce7d-4b6a-b0d2-ff6b484b4fb7", "06f3e0f5-2efc-4dc7-8091-c370146b63d8"],
+    },
+  ],
+  monograms: { CEO: "CE", CTO: "CT", CMO: "CM", CRO: "CR", CFO: "CF", CompetitorScout: "CoS", ContentStrategist: "CnS" },
+};
+
+const ORG_SEED = [
+  { id: ORG.helper, name: "Multica Helper", status: "idle", role: "Multica usage assistant. Helps create, view, and configure workspace tasks and agents." },
+  { id: ORG.ceo, name: "CEO", status: "idle", role: "Strategy and delegation. Takes board instructions and spins up specialists to achieve company goals." },
+  { id: "412a2923-0b41-4f1b-b91a-b35356ae25ba", name: "CTO", status: "working", model: "claude-opus-4-8", role: "Head of Engineering. Owns technical delivery, infrastructure, monitoring, security, and code quality." },
+  { id: "5b7e92ab-c3b2-4af6-8844-a15d13226128", name: "CMO", status: "idle", model: "claude-opus-4-8", role: "Head of Growth and Marketing. Owns demand generation, positioning, content, social, and lead pipeline." },
+  { id: "e440d74d-26e1-425f-a987-b79abb8e24f0", name: "UXDesigner", status: "idle", model: "claude-sonnet-5", role: "Head of Design and Client Experience. Owns UX, interaction design, research, and onboarding." },
+  { id: "2d981d36-5721-4014-b36f-5c2c1a7eec82", name: "CRO", status: "working", model: "claude-opus-4-8", role: "Chief Revenue Officer. Owns outbound sales, ICPs, sequences, objections, KPIs, and pipeline growth." },
+  { id: "dda981ce-081e-44a7-a584-070f8dcf039e", name: "CFO", status: "idle", model: "claude-opus-4-8", role: "Chief Financial Officer. Owns accounting, tax compliance tracking, budgeting, cash flow, and pricing." },
+  { id: "7c4cc6db-def5-4a65-a8c8-32e38cc40936", name: "ExecutiveCreativeDirector", status: "idle", model: "claude-opus-4-8", role: "Executive Creative Director. Leads Creative Studio vision, briefs, approvals, and quality." },
+  { id: "eea2bdea-f49f-4cdf-b1a9-295ef7919625", name: "TrendScout", status: "idle", model: "claude-sonnet-5", role: "Trend Intelligence. Monitors AI, business, and tech trends; delivers scored briefings." },
+  { id: "9ecf6baa-33d2-49f0-a613-14f1ee4b0ee7", name: "CompetitorScout", status: "idle", model: "claude-sonnet-5", role: "Competitor Intelligence. Tracks competitors, winning hooks, gaps, and positioning opportunities." },
+  { id: "858c673a-e2d6-4c48-abfe-3ec24b899f91", name: "ContentStrategist", status: "idle", model: "claude-sonnet-5", role: "Content Strategy. Owns weekly plans, editorial calendar, and content pillars." },
+  { id: "e774e255-f5f2-4f9c-bf50-eec982dd7dfd", name: "Brainstormer", status: "idle", model: "claude-sonnet-5", role: "Idea Generation. Turns trends into concrete content ideas across LinkedIn, X, and Instagram." },
+  { id: "8208c863-1e28-4393-86b8-84cefc58d6c8", name: "Copywriter", status: "idle", model: "claude-sonnet-5", role: "Content Writing. Writes ready-to-publish platform-native copy in company and founder voices." },
+  { id: "156a6057-4864-4c4d-abc9-0cc27fd41365", name: "CreativeDirector", status: "idle", model: "claude-sonnet-5", role: "Creative Direction. Produces carousel outlines, image prompts, and graphic briefs." },
+  { id: "6e930fad-67ce-4323-af82-5d417b57dad1", name: "Editor", status: "idle", model: "claude-sonnet-5", role: "Editorial Review. Checks grammar, facts, tone, brand alignment, and platform fit." },
+  { id: "e698a23f-beed-4e6c-aa58-1adf0a85023e", name: "Publisher", status: "idle", model: "claude-sonnet-5", role: "Publishing. Owns the Buffer schedule, posting-time optimization, and cadence management." },
+  { id: "a1a6cdc9-8dcb-482a-bcfb-6c63b4e8768a", name: "Analyst", status: "idle", model: "claude-sonnet-5", role: "Analytics. Collects performance data and produces optimization and growth reports." },
+  { id: "94a9612e-4b36-487e-9005-dc2f3accc3f6", name: "StudioDesigner", status: "idle", model: "claude-sonnet-5", role: "Static visuals, carousels, thumbnails, infographics, banners, and AI image generation." },
+  { id: "4ba6ea05-ce7d-4b6a-b0d2-ff6b484b4fb7", name: "MotionDesigner", status: "idle", model: "claude-sonnet-5", role: "AI video and motion production for promos, reels, shorts, and motion graphics." },
+  { id: "06f3e0f5-2efc-4dc7-8091-c370146b63d8", name: "BrandGuardian", status: "idle", model: "claude-sonnet-5", role: "Brand consistency and design QA gate. Maintains guidelines, system, and prompt library." },
+];
 
 // ---- Section definitions ----
 const SECTIONS = [
   { id: "overview", title: "Overview", ic: "◫", desc: "Company at a glance — to-dos, briefs, live snapshot", flag: "manual", render: renderOverview },
+  { id: "org", title: "Org", ic: "⌬", desc: "Agent hierarchy, live status, and current work", flag: "live", render: renderOrg },
   { id: "projects", title: "Projects", ic: "▤", desc: "Client pipeline + internal projects", flag: "manual", render: renderProjects },
   { id: "leads", title: "Outbound Leads", ic: "◎", desc: "Instantly & A-leads campaigns", flag: "needs", render: renderLeads },
   { id: "blogs", title: "Upcoming Blogs", ic: "▦", desc: "Blog prep & publish schedule", flag: "manual", render: renderBlogs },
@@ -125,6 +176,165 @@ function renderOverview() {
 }
 const statCard = (label, val, sub) => `<div class="card"><div class="muted tiny">${esc(label)}</div><div class="stat" style="margin-top:6px">${val}</div><div class="muted tiny" style="margin-top:4px">${esc(sub)}</div></div>`;
 const snap = (t, v, go) => `<div class="card" style="cursor:pointer;box-shadow:none" data-go="${go}"><div style="font-weight:600">${esc(t)}</div><div class="muted tiny" style="margin-top:4px">${esc(v)} →</div></div>`;
+
+function orgLeaderFor(id) {
+  const squad = ORG.squads.find((s) => s.members.includes(id));
+  if (squad) return squad.leader;
+  if (ORG.csuite.includes(id)) return ORG.ceo;
+  return "";
+}
+
+function orgGroupFor(id) {
+  if (id === ORG.helper) return "workspace";
+  if (id === ORG.ceo) return "lead";
+  if (ORG.csuite.includes(id)) return "exec";
+  if (ORG.squads.some((s) => s.members.includes(id))) return "squad";
+  return "exec";
+}
+
+function orgTaskFor(agent, issues) {
+  if (agent.current) return agent.current;
+  const hit = issues.find((issue) => issue.assignee === agent.name || issue.assignee_id === agent.id);
+  if (!hit) return null;
+  return {
+    identifier: hit.identifier || "",
+    title: hit.title || "",
+    issue_status: hit.status || "",
+    live: String(agent.status || "").toLowerCase() === "working" && !doneStatus(hit.status),
+  };
+}
+
+function orgAgents() {
+  const live = DATA.multica?.live && (DATA.multica.agents || []).length;
+  const source = live ? DATA.multica.agents : ORG_SEED;
+  const seed = new Map(ORG_SEED.map((a) => [a.id, a]));
+  const issues = DATA.multica?.issues || [];
+  return source.map((agent) => {
+    const base = seed.get(agent.id) || {};
+    const name = agent.name || base.name || "Agent";
+    const role = agent.role || agent.description || agent.responsibility || base.role || "";
+    return {
+      ...base,
+      ...agent,
+      name,
+      role,
+      model: agent.model || base.model || "",
+      reports_to: agent.reports_to || orgLeaderFor(agent.id),
+      group: agent.group || orgGroupFor(agent.id),
+      current: orgTaskFor(agent, issues),
+    };
+  });
+}
+
+function orgMonogram(name) {
+  if (ORG.monograms[name]) return ORG.monograms[name];
+  const words = String(name || "").replace(/([a-z])([A-Z])/g, "$1 $2").split(/[\s_-]+/).filter(Boolean);
+  if (!words.length) return "AG";
+  if (words.length === 1) return words[0].slice(0, 2).toUpperCase();
+  return (words[0][0] + words[1][0]).toUpperCase();
+}
+
+function orgCard(agent, byId) {
+  const roleLine = agent.squad_role || (agent.role || "").split(/[.:]/)[0] || "Agent";
+  const status = String(agent.status || "idle").toLowerCase();
+  const working = status === "working" || status === "running" || status === "active";
+  const current = agent.current;
+  const reports = agent.reports_to ? (byId.get(agent.reports_to)?.name || "CEO") : "top level";
+  const model = agent.model ? `<span class="badge">${esc(agent.model.replace("claude-", ""))}</span>` : `<span class="badge">default model</span>`;
+  const currentStatus = current?.issue_status || current?.status || "";
+  const task = current ? `
+    <div class="org-k">${current.live ? "Working now" : "Recent work"}</div>
+    <div class="taskid ${current.live ? "live" : ""}">${esc(current.identifier || "—")} ${current.live ? '<span class="badge ok"><span class="dot"></span>live</span>' : ""}</div>
+    <div class="tasktitle">${esc(current.title || "Untitled task")} <span class="badge ${statusCls(currentStatus)}">${esc(currentStatus || "—")}</span></div>`
+    : `<div class="org-k">Recent work</div><div class="none">No assigned issue in the latest feed.</div>`;
+  return `
+    <div class="org-card ${esc(agent.group)}">
+      <button class="org-head" type="button" aria-expanded="false">
+        <span class="org-avatar ${esc(agent.group)}">${esc(orgMonogram(agent.name))}</span>
+        <span class="org-meta">
+          <span class="org-name">${esc(agent.name)}</span>
+          <span class="org-role" title="${esc(roleLine)}">${esc(roleLine)}</span>
+        </span>
+        <span class="sdot ${working ? "working" : ""}"></span>
+        <span class="chev">▸</span>
+      </button>
+      <div class="org-detail">
+        <div class="org-detail-in">
+          <div class="drow">${model}<span class="badge">↳ ${esc(reports)}</span><span class="badge ${statusCls(status)}">${esc(status || "idle")}</span></div>
+          <div class="resp">${esc(agent.role || "No responsibility set.")}</div>
+          ${task}
+        </div>
+      </div>
+    </div>`;
+}
+
+function orgGrid(list, byId) {
+  return `<div class="org-grid">${list.map((agent) => orgCard(agent, byId)).join("")}</div>`;
+}
+
+function renderOrg() {
+  const agents = orgAgents();
+  const byId = new Map(agents.map((a) => [a.id, a]));
+  const knownIds = new Set([ORG.ceo, ORG.helper, ...ORG.csuite, ...ORG.squads.flatMap((s) => s.members)]);
+  const leadership = [byId.get(ORG.ceo), byId.get(ORG.helper)].filter(Boolean);
+  const execs = [...ORG.csuite.map((id) => byId.get(id)).filter(Boolean), ...agents.filter((a) => !knownIds.has(a.id) && a.group !== "workspace")];
+  const live = DATA.multica?.live;
+  const active = agents.filter((a) => ["working", "running", "active"].includes(String(a.status || "").toLowerCase())).length;
+  const liveTasks = agents.filter((a) => a.current?.live).length;
+  setTimeout(wireOrg, 0);
+  return `
+  <div class="org-tools">
+    <span class="pill ${live ? "live" : "manual"}">${live ? "Live agent data" : "Seed roster"}</span>
+    <button class="btn ghost" id="orgRefresh" type="button">Refresh</button>
+    <button class="btn primary" id="orgToggle" type="button">Expand all</button>
+  </div>
+  <div class="grid g4">
+    ${statCard("Agents", agents.length, "workspace roster")}
+    ${statCard("Working", active, "status from Multica")}
+    ${statCard("Live tasks", liveTasks, "assigned work now")}
+    ${statCard("Squads", ORG.squads.length, "defined teams")}
+  </div>
+  <div class="seclabel">Leadership</div>
+  ${orgGrid(leadership, byId)}
+  <div class="seclabel">C-suite · reports to CEO</div>
+  ${orgGrid(execs, byId)}
+  ${ORG.squads.map((squad) => {
+    const lead = byId.get(squad.leader);
+    const members = squad.members.map((id) => byId.get(id)).filter(Boolean);
+    if (!members.length) return "";
+    return `<div class="cluster org-cluster">
+      <div class="cluster-head"><h3>${esc(squad.name)}</h3><span class="lead">led by ${esc(lead?.name || "—")}</span><span class="count">${members.length} agents</span></div>
+      ${orgGrid(members, byId)}
+    </div>`;
+  }).join("")}`;
+}
+
+function wireOrg() {
+  const root = $("#pg-org");
+  if (!root) return;
+  root.querySelectorAll(".org-head").forEach((button) => {
+    button.onclick = () => {
+      const card = button.closest(".org-card");
+      const open = card.classList.toggle("open");
+      button.setAttribute("aria-expanded", String(open));
+    };
+  });
+  const toggle = $("#orgToggle");
+  if (toggle) toggle.onclick = () => {
+    const open = toggle.textContent === "Expand all";
+    root.querySelectorAll(".org-card").forEach((card) => {
+      card.classList.toggle("open", open);
+      card.querySelector(".org-head")?.setAttribute("aria-expanded", String(open));
+    });
+    toggle.textContent = open ? "Collapse all" : "Expand all";
+  };
+  const refresh = $("#orgRefresh");
+  if (refresh) refresh.onclick = async () => {
+    refresh.textContent = "Refreshing";
+    await loadMultica();
+    go("org");
+  };
+}
 
 // Radial mind map of DATA.projects — same data as the table below. Rail colour = health
 // (ok/warn = green/amber, planned/other = grey), gauge = progress %.
@@ -423,7 +633,8 @@ function go(id) {
   $("#ptitle").textContent = s.title;
   $("#pdesc").textContent = s.desc;
   const flag = $("#pflag");
-  const pageFlag = (s.id === "multica" && DATA.multica?.live) || (s.id === "blogs" && hasLiveBlogs()) || (s.id === "leads" && hasLiveLeads()) ? "live" : s.flag;
+  const pageFlag = s.id === "org" ? (DATA.multica?.live ? "live" : "manual") :
+    (s.id === "multica" && DATA.multica?.live) || (s.id === "blogs" && hasLiveBlogs()) || (s.id === "leads" && hasLiveLeads()) ? "live" : s.flag;
   flag.className = "pill " + pageFlag;
   flag.textContent = FLAG_LABEL[pageFlag];
   $("#side").classList.remove("open");
