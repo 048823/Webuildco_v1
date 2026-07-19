@@ -63,8 +63,39 @@
       <div class="bg-obsidian rounded-3xl-2 p-28 md:p-40">
         <h2 class="text-heading-sm font-bold text-snow mb-8">Book the intro call</h2>
         <p class="text-body text-ash font-light mb-24">15 minutes. Bring the bottleneck — the task that never gets done, the inbox that never empties. You'll get a straight answer on whether an agent can eat it, and what happens next if so.</p>
-        <a href="https://cal.com/webuildco/intro" target="_blank" rel="noopener" class="inline-flex items-center bg-lime text-obsidian text-[15px] font-semibold rounded-full px-28 py-16 hover:brightness-105 hover:-translate-y-px transition cursor-pointer">Book an intro call →</a>
-        <p class="text-caption text-ash mt-16">30 minutes if you'd rather go deep · no pitch · if AI isn't the answer, I'll say so</p>
+        <form id="contactFitForm" class="grid gap-12">
+          <label class="grid gap-4">
+            <span class="text-caption uppercase tracking-widest text-ash font-medium">Work email</span>
+            <input type="email" name="email" required placeholder="you@company.com.au" class="bg-transparent border border-snow/20 rounded-xl outline-none text-body text-snow placeholder-steel px-12 py-10 min-w-0">
+          </label>
+          <label class="grid gap-4">
+            <span class="text-caption uppercase tracking-widest text-ash font-medium">Industry</span>
+            <input type="text" name="industry" placeholder="Solar, recruiting, legal..." class="bg-transparent border border-snow/20 rounded-xl outline-none text-body text-snow placeholder-steel px-12 py-10 min-w-0">
+          </label>
+          <div class="grid sm:grid-cols-2 gap-12">
+            <label class="grid gap-4">
+              <span class="text-caption uppercase tracking-widest text-ash font-medium">Team size</span>
+              <select name="teamSize" class="bg-obsidian border border-snow/20 rounded-xl outline-none text-body text-snow px-12 py-10 min-w-0">
+                <option value="">Pick one</option>
+                <option>1-10</option>
+                <option>11-50</option>
+                <option>51+</option>
+              </select>
+            </label>
+            <label class="grid gap-4">
+              <span class="text-caption uppercase tracking-widest text-ash font-medium">Budget band</span>
+              <select name="budget" class="bg-obsidian border border-snow/20 rounded-xl outline-none text-body text-snow px-12 py-10 min-w-0">
+                <option value="">Pick one</option>
+                <option>A$5k-A$10k</option>
+                <option>A$10k-A$25k</option>
+                <option>A$25k+</option>
+                <option>Not sure yet</option>
+              </select>
+            </label>
+          </div>
+          <button type="submit" class="inline-flex justify-center items-center bg-lime text-obsidian text-[15px] font-semibold rounded-full px-28 py-16 hover:brightness-105 hover:-translate-y-px transition cursor-pointer">Book an intro call →</button>
+        </form>
+        <p class="text-caption text-ash mt-16">If we're not the right fit, we'll say so. 30 minutes if you'd rather go deep · no pitch.</p>
       </div>
       <div class="bg-snow rounded-3xl-2 p-28 md:p-40 shadow-subtle-2">
         <h2 class="text-heading-sm font-bold text-obsidian mb-8">Prefer email?</h2>
@@ -120,6 +151,31 @@ const nav=document.getElementById('nav');
 addEventListener('scroll',()=>nav.classList.toggle('border-fog',scrollY>8),{passive:true});
 const mb=document.getElementById('menuBtn'),mm=document.getElementById('mobileMenu');
 if(mb)mb.addEventListener('click',()=>{const open=mm.classList.toggle('hidden')===false;mb.setAttribute('aria-expanded',open);});
+function bookingUrlFromForm(form){
+  const data=new FormData(form);
+  const params=new URLSearchParams();
+  const email=(data.get('email')||'').trim();
+  const industry=(data.get('industry')||'').trim();
+  const teamSize=(data.get('teamSize')||'').trim();
+  const budget=(data.get('budget')||'').trim();
+  if(email)params.set('email',email);
+  if(industry)params.set('industry',industry);
+  if(teamSize)params.set('team_size',teamSize);
+  if(budget)params.set('budget',budget);
+  const notes=[
+    industry&&`Industry: ${industry}`,
+    teamSize&&`Team size: ${teamSize}`,
+    budget&&`Budget band: ${budget}`
+  ].filter(Boolean).join('\n');
+  if(notes)params.set('notes',notes);
+  const qs=params.toString();
+  return 'https://cal.com/webuildco/intro'+(qs?'?'+qs:'');
+}
+const contactFitForm=document.getElementById('contactFitForm');
+if(contactFitForm)contactFitForm.addEventListener('submit',e=>{
+  e.preventDefault();
+  window.open(bookingUrlFromForm(contactFitForm),'_blank','noopener');
+});
 function wireAccordion(rootId){
   const root=document.getElementById(rootId);if(!root)return;
   const items=[...root.querySelectorAll('.acc-item')];
