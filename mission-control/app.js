@@ -69,6 +69,7 @@ const fmtDate = (s) => {
 
 let DATA = {};
 let CREATIVE = {}; // data/creative.json — owned by ECD, drives the Creative section
+let BRIEFS = []; // data/briefs.json — generated from Board Reports / Daily Logs
 const hasLiveBlogs = () => Boolean(DATA.multica?.live && DATA.multica?.blogs?.live);
 const blogsData = () => hasLiveBlogs() ? DATA.multica.blogs : (DATA.blogs || { columns: [], cards: [] });
 const hasLiveLeads = () => Boolean(DATA.multica?.live && DATA.multica?.leads?.live);
@@ -77,6 +78,7 @@ const leadsData = () => hasLiveLeads() ? DATA.multica.leads : (DATA.leads || { c
 // ---- Section definitions ----
 const SECTIONS = [
   { id: "overview", title: "Overview", ic: "◫", desc: "Company at a glance — to-dos, briefs, live snapshot", flag: "manual", render: renderOverview },
+  { id: "briefs", title: "Briefs", ic: "▥", desc: "Morning, EOD & cadence reports", flag: "manual", render: renderBriefs },
   { id: "projects", title: "Projects", ic: "▤", desc: "Client pipeline + internal projects", flag: "manual", render: renderProjects },
   { id: "leads", title: "Outbound Leads", ic: "◎", desc: "Instantly & A-leads campaigns", flag: "needs", render: renderLeads },
   { id: "blogs", title: "Upcoming Blogs", ic: "▦", desc: "Blog prep & publish schedule", flag: "manual", render: renderBlogs },
@@ -90,6 +92,32 @@ const SECTIONS = [
 ];
 
 const FLAG_LABEL = { live: "Live", manual: "Manual data", needs: "Needs credential" };
+const BRIEF_TYPES = [
+  ["all", "All"],
+  ["morning", "Morning"],
+  ["eod", "EOD"],
+  ["weekly", "Weekly"],
+  ["monthly", "Monthly"],
+  ["quarterly", "Qtr"],
+  ["yearly", "Yr"],
+];
+const BRIEF_META = {
+  morning: { label: "Morning", badge: "lime", wins: "Overnight - what shipped", next: "Top 3 - stay ahead today" },
+  eod: { label: "EOD", badge: "info", wins: "Today - what got done", next: "Top 3 - for tomorrow" },
+  weekly: { label: "Weekly", badge: "ok", wins: "Wins this week", next: "Top 3 - next week" },
+  monthly: { label: "Monthly", badge: "warn", wins: "Wins this month", next: "Top 3 - next month" },
+  quarterly: { label: "Quarterly", badge: "dark", wins: "Wins this quarter", next: "Top 3 - next quarter" },
+  yearly: { label: "Yearly", badge: "dark", wins: "Wins this year", next: "Top 3 - next year" },
+};
+const briefMeta = (type) => BRIEF_META[type] || { label: esc(type || "Brief"), badge: "", wins: "Wins", next: "Top 3" };
+const briefTime = (s, opts = {}) => {
+  if (!s) return "—";
+  const d = new Date(s);
+  if (Number.isNaN(d.getTime())) return s;
+  return new Intl.DateTimeFormat("en-AU", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit", ...opts }).format(d);
+};
+const sortedBriefs = () => [...BRIEFS].sort((a, b) => String(b.generated_at || "").localeCompare(String(a.generated_at || "")));
+const briefPreview = (b) => (b.wins?.[0] || b.next3?.[0] || b.industry_pulse?.[0] || "Open brief");
 
 // ---- Section renderers ----
 function renderOverview() {
@@ -125,6 +153,76 @@ function renderOverview() {
 }
 const statCard = (label, val, sub) => `<div class="card"><div class="muted tiny">${esc(label)}</div><div class="stat" style="margin-top:6px">${val}</div><div class="muted tiny" style="margin-top:4px">${esc(sub)}</div></div>`;
 const snap = (t, v, go) => `<div class="card" style="cursor:pointer;box-shadow:none" data-go="${go}"><div style="font-weight:600">${esc(t)}</div><div class="muted tiny" style="margin-top:4px">${esc(v)} →</div></div>`;
+
+function renderBriefs(route = []) {
+  const id = route[0];
+  if (id) return renderBriefRead(id);
+  const briefs = sortedBriefs();
+  setTimeout(wireBriefs, 0);
+  if (!briefs.length) return `<div class="card"><h3>Briefs</h3><p class="muted">No generated briefs yet.</p></div>`;
+  let lastDay = "";
+  const rows = briefs.map((b) => {
+    const m = briefMeta(b.type);
+    const day = briefTime(b.generated_at, { year: "numeric", hour: undefined, minute: undefined });
+    const divider = day !== lastDay ? `<div class="brief-date">${esc(day)}</div>` : "";
+    lastDay = day;
+    return `${divider}<button class="row brief-row" data-brief-id="${esc(b.id)}" data-type="${esc(b.type)}">
+      <span class="brief-dot ${b.read ? "read" : ""}"></span>
+      <span class="brief-main"><span class="name">${esc(b.period_label || day)}</span><span class="muted tiny">${esc(clip(briefPreview(b), 96))}</span></span>
+      <span class="badge ${m.badge}">${esc(m.label)}</span><span class="meta">›</span>
+    </button>`;
+  }).join("");
+  return `<div class="tabs" id="briefTabs">${BRIEF_TYPES.map(([type, label]) => `<button class="tab ${type === "all" ? "active" : ""}" data-type="${type}">${label}</button>`).join("")}</div>
+  <div class="card"><h3>Briefs <span class="pill">${briefs.length}</span></h3><div class="rowlist">${rows}</div></div>`;
+}
+
+function renderBriefCard(title, items) {
+  return `<div class="card"><h3>${esc(title)}</h3>${(items || []).length
+    ? `<ol>${items.map((item) => `<li>${esc(item)}</li>`).join("")}</ol>`
+    : '<p class="muted">No source items found.</p>'}</div>`;
+}
+
+function renderBriefRead(id) {
+  const briefs = sortedBriefs();
+  const idx = briefs.findIndex((b) => b.id === id);
+  const b = briefs[idx];
+  setTimeout(wireBriefs, 0);
+  if (!b) return `<div class="card"><button class="btn ghost" data-go="briefs">‹ Back</button><p class="muted" style="margin-top:14px">Brief not found.</p></div>`;
+  const m = briefMeta(b.type);
+  const prev = briefs[idx + 1], next = briefs[idx - 1];
+  return `<div class="brief-head">
+    <button class="btn ghost" data-go="briefs">‹ Back</button>
+    <div><span class="badge ${m.badge}">${esc(m.label)}</span><span class="muted tiny" style="margin-left:8px">${esc(briefTime(b.generated_at))}</span></div>
+  </div>
+  <div class="grid" style="gap:14px">
+    ${renderBriefCard(m.wins, b.wins)}
+    ${renderBriefCard(m.next, b.next3)}
+    ${(b.industry_pulse || []).length ? renderBriefCard("Industry pulse", b.industry_pulse) : ""}
+  </div>
+  <div class="briefs-nav">
+    <button class="btn ghost" ${prev ? `data-brief-id="${esc(prev.id)}"` : "disabled"}>‹ Prev brief</button>
+    <span class="muted tiny">${esc(b.period_label || m.label)}</span>
+    <button class="btn ghost" ${next ? `data-brief-id="${esc(next.id)}"` : "disabled"}>Next ›</button>
+  </div>`;
+}
+
+function wireBriefs() {
+  const tabs = $("#briefTabs");
+  if (tabs) tabs.onclick = (e) => {
+    const btn = e.target.closest(".tab"); if (!btn) return;
+    tabs.querySelectorAll(".tab").forEach((t) => t.classList.toggle("active", t === btn));
+    const type = btn.dataset.type;
+    document.querySelectorAll(".brief-row").forEach((r) => r.hidden = type !== "all" && r.dataset.type !== type);
+    document.querySelectorAll(".brief-date").forEach((d) => {
+      let n = d.nextElementSibling, any = false;
+      while (n && !n.classList.contains("brief-date")) { if (!n.hidden) any = true; n = n.nextElementSibling; }
+      d.hidden = !any;
+    });
+  };
+  document.querySelectorAll("[data-brief-id]").forEach((el) => {
+    el.onclick = () => go("briefs/" + el.dataset.briefId);
+  });
+}
 
 // Radial mind map of DATA.projects — same data as the table below. Rail colour = health
 // (ok/warn = green/amber, planned/other = grey), gauge = progress %.
@@ -413,12 +511,14 @@ function buildNav() {
   $("#nav").innerHTML = SECTIONS.map((s) => `<a data-id="${s.id}"><span class="ic">${s.ic}</span>${s.title}</a>`).join("");
   $("#pages").innerHTML = SECTIONS.map((s) => `<section class="page" id="pg-${s.id}"></section>`).join("");
 }
-function go(id) {
+function go(raw = "overview") {
+  const route = String(raw || "overview").replace(/^#?\/?/, "").split("/").filter(Boolean);
+  const id = route[0] || "overview";
   const s = SECTIONS.find((x) => x.id === id) || SECTIONS[0];
   document.querySelectorAll(".nav a").forEach((a) => a.classList.toggle("active", a.dataset.id === s.id));
   document.querySelectorAll(".page").forEach((p) => p.classList.remove("active"));
   const pg = $("#pg-" + s.id);
-  pg.innerHTML = s.render();
+  pg.innerHTML = s.render(s.id === id ? route.slice(1) : []);
   pg.classList.add("active");
   $("#ptitle").textContent = s.title;
   $("#pdesc").textContent = s.desc;
@@ -427,7 +527,8 @@ function go(id) {
   flag.className = "pill " + pageFlag;
   flag.textContent = FLAG_LABEL[pageFlag];
   $("#side").classList.remove("open");
-  location.hash = s.id;
+  const nextHash = "/" + [s.id, ...(s.id === id ? route.slice(1) : [])].join("/");
+  if (location.hash !== "#" + nextHash) location.hash = nextHash;
 }
 
 async function loadMultica() {
@@ -447,6 +548,8 @@ async function boot() {
   catch { DATA = {}; }
   try { CREATIVE = await (await fetch("/mission-control/data/creative.json", { cache: "no-store" })).json(); }
   catch { CREATIVE = {}; }
+  try { BRIEFS = await (await fetch("/mission-control/data/briefs.json", { cache: "no-store" })).json(); if (!Array.isArray(BRIEFS)) BRIEFS = []; }
+  catch { BRIEFS = []; }
   await loadMultica();
   $("#upd").textContent = DATA.updated ? "updated " + DATA.updated : "";
   document.addEventListener("click", (e) => {
@@ -454,6 +557,7 @@ async function boot() {
     const snap = e.target.closest("[data-go]"); if (snap) return go(snap.dataset.go);
   });
   $("#hamb").onclick = () => $("#side").classList.toggle("open");
+  window.addEventListener("hashchange", () => go(location.hash.slice(1) || "overview"));
   go(location.hash.slice(1) || "overview");
 }
 boot();
