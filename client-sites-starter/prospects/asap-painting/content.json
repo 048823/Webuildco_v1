@@ -1,0 +1,61 @@
+{
+  "_note": "Draft content for WEB-220. Matches client-sites-starter/content.example.json tokens, with source notes added for the builder.",
+  "_prospect_slug": "asap-painting",
+  "_business_url": "https://www.asappainting.com.au/",
+  "_google_maps_note": "Google Maps surfaced the business listing and phone, but individual Google review text was not fetchable in this runtime.",
+  "_review_source_note": "Review copy below is paraphrased from testimonials on the business site, not Google review bodies.",
+  "_photo_notes": "The current site exposes usable owned service images and project/review graphics under wp-content/uploads.",
+  "_call_opener": "I had your old .htm Manly page open; the work looks solid, but the page feels like it belongs to an older web, especially on mobile. I built a cleaner mobile-first version around Scott, fast quotes and your best testimonials.",
+  "_source_urls": [
+    "https://www.asappainting.com.au/",
+    "https://www.asappainting.com.au/contact/"
+  ],
+
+  "BUSINESS_NAME": "ASAP Painting Northern Beaches",
+  "TAGLINE": "Northern Beaches house, strata and commercial painters",
+  "META_DESCRIPTION": "ASAP Painting Northern Beaches provides house painting, strata painting, commercial painting, roof painting, house washing and pressure cleaning across Manly and Northern Sydney.",
+  "FAVICON_EMOJI": "A",
+
+  "BRAND_COLOR": "#2f6f4e",
+  "BRAND_COLOR_DARK": "#1f4732",
+
+  "PHONE_RAW": "+61404087227",
+  "PHONE_DISPLAY": "0404 087 227",
+  "EMAIL": "scott@asappainting.com.au",
+  "ADDRESS": "Manly and the Northern Beaches, NSW",
+  "HOURS": "Not listed - urgent jobs often accommodated",
+  "SERVICE_AREA": "Manly, Northern Beaches, North Shore and Northern Sydney",
+  "RATING": "Google listing found; review text not fetchable",
+
+  "HERO_EYEBROW": "25+ years experience",
+  "HERO_HEADLINE": "Fast, clean painting for homes, strata and commercial jobs.",
+  "HERO_SUBTEXT": "Scott Duncan and the ASAP team handle small touch-ups, urgent turnarounds, difficult access work and larger painting projects across the Northern Beaches.",
+  "HERO_CTA": "Call Scott",
+  "HERO_TRUST_LINE": "Residential | Strata | Commercial | Roof painting | Pressure cleaning",
+  "HERO_IMAGE": "https://www.asappainting.com.au/wp-content/uploads/2018/11/sydney-house-painters-northern-beaches.jpg",
+
+  "TRUST_BADGE_1": "25+ years experience",
+  "TRUST_BADGE_2": "Fast turnaround",
+
+  "SERVICES_HEADING": "Painting work without the mess",
+  "SERVICES_SUBTEXT": "A broad painting and maintenance offer for homes, unit blocks and business properties.",
+  "SERVICE_1_ICON": "HSE", "SERVICE_1_TITLE": "House painting", "SERVICE_1_TEXT": "Interior and exterior repainting, touch-ups, fences, retaining walls and detailed residential work.",
+  "SERVICE_2_ICON": "STR", "SERVICE_2_TITLE": "Strata and commercial painting", "SERVICE_2_TEXT": "Unit blocks, offices, commercial properties, maintenance programs and larger project work.",
+  "SERVICE_3_ICON": "ROF", "SERVICE_3_TITLE": "Roof painting and cleaning", "SERVICE_3_TEXT": "Roof painting, roof restorations, house washing and high-pressure cleaning services.",
+
+  "ABOUT_HEADING": "A practical painter for urgent and awkward jobs",
+  "ABOUT_TEXT": "ASAP Painting presents as a Northern Beaches painting company led by Scott Duncan, covering jobs from simple repaints to large strata and commercial projects.",
+  "ABOUT_POINT_1": "Small residential work through large unit blocks",
+  "ABOUT_POINT_2": "Difficult access, stairs and cathedral ceilings",
+  "ABOUT_POINT_3": "Painting, maintenance, washing and pressure cleaning",
+  "ABOUT_IMAGE": "https://www.asappainting.com.au/wp-content/uploads/2018/12/northern-beaches-painting-company.jpg",
+
+  "REVIEW_1_TEXT": "Sarah said the external painting was flexible, professional, fairly priced and transformed the house.", "REVIEW_1_NAME": "Sarah Silver",
+  "REVIEW_2_TEXT": "Sanjay said the wall repairs and painting were handled efficiently, beautifully and by a tradesman he could trust.", "REVIEW_2_NAME": "Sanjay",
+  "REVIEW_3_TEXT": "Tim said Scott quoted the same day, finished ahead of schedule and was friendly and thorough.", "REVIEW_3_NAME": "Tim Donnelly",
+
+  "CTA_HEADLINE": "Need a fast painting quote?",
+  "CTA_SUBTEXT": "Call or email Scott for a practical quote and timing.",
+
+  "PHONE_placeholder_ordering_note": "PHONE_RAW is used in tel: links (no spaces, +61...); PHONE_DISPLAY is what humans see."
+}
