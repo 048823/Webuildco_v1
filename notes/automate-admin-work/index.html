@@ -3,16 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Notes from the Build — WeBuild Co</title>
-<meta name="description" content="Working notes from an Australian AI engineering studio: what agents are, what they cost to run, how they earn autonomy, and why ownership beats renting.">
-<link rel="canonical" href="https://www.webuildco.com.au/notes/">
-<meta property="og:type" content="website">
+<title>How to Automate Admin Work in Australia: A Triage Method | WeBuild Co</title>
+<meta name="description" content="Automate admin work in Australia with a triage method, not a tool list: score each task on three tests, rank by payback, automate the top one supervised.">
+<link rel="canonical" href="https://www.webuildco.com.au/notes/automate-admin-work/">
+<meta property="og:type" content="article">
 <meta property="og:site_name" content="WeBuild Co">
-<meta property="og:title" content="Notes from the Build — WeBuild Co">
-<meta property="og:description" content="Working notes from an Australian AI engineering studio: what agents are, what they cost to run, how they earn autonomy, and why ownership beats renting.">
-<meta property="og:url" content="https://www.webuildco.com.au/notes/">
+<meta property="og:title" content="How to Automate Admin Work in Australia: A Triage Method | WeBuild Co">
+<meta property="og:description" content="Automate admin work in Australia with a triage method, not a tool list: score each task on three tests, rank by payback, automate the top one supervised.">
+<meta property="og:url" content="https://www.webuildco.com.au/notes/automate-admin-work/">
 <meta property="og:image" content="https://www.webuildco.com.au/og.png">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/app.css">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,11 +30,12 @@
   gtag('js', new Date());
   gtag('config', 'G-CML7HQ61XR');
 </script>
-<script type="application/ld+json">[{"@context": "https://schema.org", "@type": "Blog", "name": "Notes from the build — WeBuild Co", "url": "https://www.webuildco.com.au/notes/", "author": {"@type": "Person", "name": "Johan Iskandar"}}, {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.webuildco.com.au/"}, {"@type": "ListItem", "position": 2, "name": "Notes", "item": "https://www.webuildco.com.au/notes/"}]}]</script>
+<script type="application/ld+json">[{"@context": "https://schema.org", "@type": "Article", "headline": "How to automate admin work in Australia: a triage method for AU SMBs", "description": "Automate admin work in Australia with a triage method, not a tool list: score each task on three tests, rank by payback, automate the top one supervised.", "datePublished": "2026-07-20", "dateModified": "2026-07-20", "author": {"@type": "Person", "name": "Johan Iskandar", "url": "https://www.webuildco.com.au/about/"}, "publisher": {"@type": "Organization", "name": "WeBuild Co", "url": "https://www.webuildco.com.au"}}, {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.webuildco.com.au/"}, {"@type": "ListItem", "position": 2, "name": "Notes", "item": "https://www.webuildco.com.au/notes/"}, {"@type": "ListItem", "position": 3, "name": "How to automate admin work in Australia: a triage method, not a tool list", "item": "https://www.webuildco.com.au/notes/automate-admin-work/"}]}, {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How do I decide which admin tasks to automate first?", "acceptedAnswer": {"@type": "Answer", "text": "Rank the automatable tasks by volume times the loaded cost of the time they consume, and start with the highest-payback one. The task that annoys you most isn't always the one with the fastest payback."}}, {"@type": "Question", "name": "What admin work can't be automated?", "acceptedAnswer": {"@type": "Answer", "text": "Anything that needs judgement on novel situations, relationships, or inputs too messy to read reliably &mdash; if the input isn't readable, the rules aren't statable, or the action isn't loggable, it stays with a human."}}, {"@type": "Question", "name": "Do I need to buy software to automate admin work?", "acceptedAnswer": {"@type": "Answer", "text": "Not first. Sort your tasks with the three-question test and rank them by payback before choosing any tool &mdash; leading with a platform is how businesses end up paying for automation that doesn't fit."}}, {"@type": "Question", "name": "How much does it cost to automate an admin workflow in Australia?", "acceptedAnswer": {"@type": "Answer", "text": "A fixed build price quoted in writing after a scoping session, then roughly A$50&ndash;300 a month to run for most single-workflow agents (market figures; your spec carries your number)."}}, {"@type": "Question", "name": "Can I automate admin work without replacing staff?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, and it's the common case. Automating the repeatable slice of a role frees the people you already employ for the judgement work &mdash; sometimes it defers a hire, sometimes it turns one planned hire into none."}}]}]</script>
 </head>
 <body class="bg-mist text-ink overflow-x-hidden">
 <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-8 focus:left-8 focus:z-[100] bg-obsidian text-snow rounded-xl px-16 py-8 text-body">Skip to content</a>
 
+<nav id="nav" class="sticky top-0 z-50 bg-mist/75 backdrop-blur-md border-b border-transparent transition-colors">
 <nav id="nav" class="sticky top-0 z-50 bg-mist/75 backdrop-blur-md border-b border-transparent transition-colors">
   <div class="max-w-[1200px] mx-auto px-24 py-16 flex items-center justify-between gap-24">
     <a href="/" class="flex items-center gap-8 font-bold text-subheading text-obsidian" aria-label="WeBuild Co home">
@@ -46,80 +52,66 @@
   </div>
   <div id="mobileMenu" class="hidden md:hidden bg-mist border-b border-fog px-24 pb-20"><div class="border-b border-fog py-6"><a href="/build/" class="block pt-12 pb-4 text-subheading font-medium text-obsidian">Build</a><div class="pl-16 pb-8"><a href="/build/multi-agent-orchestration/" class="block py-8 text-body text-slate hover:text-obsidian transition-colors">Multi-Agent Orchestration</a><a href="/build/command-center/" class="block py-8 text-body text-slate hover:text-obsidian transition-colors">Command Center</a><a href="/build/company-brain/" class="block py-8 text-body text-slate hover:text-obsidian transition-colors">Company Brain</a><a href="/build/messaging-integration/" class="block py-8 text-body text-slate hover:text-obsidian transition-colors">Messaging Integration</a><a href="/build/premium-websites/" class="block py-8 text-body text-slate hover:text-obsidian transition-colors">Premium Websites</a></div></div><div class="border-b border-fog py-6"><a href="/work/" class="block pt-12 pb-4 text-subheading font-medium text-obsidian">Work</a><div class="pl-16 pb-8"><a href="/work/webuild-cmo-agent/" class="block py-8 text-body text-slate hover:text-obsidian transition-colors">WeBuild CMO Agent</a><a href="/work/optora-recruiting/" class="block py-8 text-body text-slate hover:text-obsidian transition-colors">Optora Recruiting</a></div></div><div class="border-b border-fog py-6"><a href="/industries/" class="block pt-12 pb-4 text-subheading font-medium text-obsidian">Industries</a><div class="pl-16 pb-8"><a href="/industries/hr-recruiting/" class="block py-8 text-body text-slate hover:text-obsidian transition-colors">HR & recruiting</a><a href="/industries/migration-agents/" class="block py-8 text-body text-slate hover:text-obsidian transition-colors">Migration agents</a><a href="/industries/legal/" class="block py-8 text-body text-slate hover:text-obsidian transition-colors">Legal</a><a href="/industries/islamic-finance/" class="block py-8 text-body text-slate hover:text-obsidian transition-colors">Islamic finance</a><a href="/industries/islamic-charities/" class="block py-8 text-body text-slate hover:text-obsidian transition-colors">Islamic charities</a><a href="/industries/cybersecurity/" class="block py-8 text-body text-slate hover:text-obsidian transition-colors">Cybersecurity</a><a href="/industries/solar/" class="block py-8 text-body text-slate hover:text-obsidian transition-colors">Solar</a></div></div><a href="/method/" class="block py-12 text-subheading font-medium text-obsidian border-b border-fog">Method</a><a href="/pricing/" class="block py-12 text-subheading font-medium text-obsidian border-b border-fog">Pricing</a><a href="/about/" class="block py-12 text-subheading font-medium text-obsidian border-b border-fog">About</a><a href="https://cal.com/webuildco/intro" target="_blank" rel="noopener" class="inline-flex items-center bg-obsidian text-snow text-body font-medium rounded-full px-20 py-12 mt-16">Book an intro call →</a></div>
 </nav>
+</nav>
 <main id="main">
 
-<header class="pt-64 pb-48">
+<header class="pt-64 pb-40">
   <div class="max-w-[1200px] mx-auto px-24">
-    <div class="max-w-[760px]">
+    <div class="max-w-[720px]">
       <div class="text-caption uppercase tracking-widest text-slate font-medium mb-16 flex items-center gap-8"><span class="w-[22px] h-px bg-pebble"></span>Notes from the build</div>
-      <h1 class="text-heading-lg md:text-display-sm font-semibold text-obsidian tracking-[-0.02em]">What's being built, honestly.</h1>
-      <p class="text-body-lg text-slate font-light mt-20 max-w-[620px]">Working notes from an AI engineering studio — definitions without hype, costs without asterisks, process without promises. New notes as the work produces them. No newsletter funnel yet; bookmark it.</p>
+      <h1 class="text-heading-lg md:text-display-sm font-semibold text-obsidian tracking-[-0.02em]">How to automate admin work in Australia: a triage method, not a tool list</h1>
+      <p class="text-body-lg text-slate font-light mt-20">Most automation advice hands you a tool. This hands you a sorting method &mdash; the three-question test that tells you which admin tasks are worth automating, in what order, and which to leave with a human.</p>
+      <p class="text-[13px] text-slate mt-16">Johan Iskandar &middot; 20 July 2026</p>
     </div>
   </div>
 </header>
-<section class="pb-64">
+<section class="pb-48">
   <div class="max-w-[1200px] mx-auto px-24">
-    <div class="max-w-[820px]"><a href="/notes/automate-admin-work/" class="block bg-snow rounded-3xl-2 p-28 shadow-subtle-2 hover:-translate-y-px hover:shadow-lg transition mb-16">
-      <div class="flex flex-wrap items-baseline justify-between gap-12">
-        <h2 class="text-heading-sm font-bold text-obsidian">How to automate admin work: a triage method, not a tool list</h2>
-        <span class="text-caption text-slate">20 July 2026</span>
-      </div>
-      <p class="text-body text-slate font-light mt-8 max-w-[620px]">Sort before you shop — the three-question test that decides which admin tasks are worth automating, and in what order.</p>
-    </a><a href="/notes/ai-receptionist-australia/" class="block bg-snow rounded-3xl-2 p-28 shadow-subtle-2 hover:-translate-y-px hover:shadow-lg transition mb-16">
-      <div class="flex flex-wrap items-baseline justify-between gap-12">
-        <h2 class="text-heading-sm font-bold text-obsidian">AI receptionist for Australian SMBs: what it is, what it costs</h2>
-        <span class="text-caption text-slate">20 July 2026</span>
-      </div>
-      <p class="text-body text-slate font-light mt-8 max-w-[620px]">Answers every call, books the job, logs the lead — 24/7. What it does, the AUD cost, and where a human still wins.</p>
-    </a><a href="/notes/what-a-missed-call-costs/" class="block bg-snow rounded-3xl-2 p-28 shadow-subtle-2 hover:-translate-y-px hover:shadow-lg transition mb-16">
-      <div class="flex flex-wrap items-baseline justify-between gap-12">
-        <h2 class="text-heading-sm font-bold text-obsidian">What a missed call costs an AU service business</h2>
-        <span class="text-caption text-slate">20 July 2026</span>
-      </div>
-      <p class="text-body text-slate font-light mt-8 max-w-[620px]">The most expensive calls are the ones you never knew you missed — the payback math, and where a voice agent changes it.</p>
-    </a><a href="/notes/ai-agency-vs-hiring-in-house/" class="block bg-snow rounded-3xl-2 p-28 shadow-subtle-2 hover:-translate-y-px hover:shadow-lg transition mb-16">
-      <div class="flex flex-wrap items-baseline justify-between gap-12">
-        <h2 class="text-heading-sm font-bold text-obsidian">AI agency vs hiring in-house: the 2026 AUD cost comparison</h2>
-        <span class="text-caption text-slate">14 July 2026</span>
-      </div>
-      <p class="text-body text-slate font-light mt-8 max-w-[620px]">The fully loaded cost of an admin hire vs an owned agent — in AUD, assumptions labelled, honesty included.</p>
-    </a><a href="/notes/ai-agent-vs-virtual-assistant/" class="block bg-snow rounded-3xl-2 p-28 shadow-subtle-2 hover:-translate-y-px hover:shadow-lg transition mb-16">
-      <div class="flex flex-wrap items-baseline justify-between gap-12">
-        <h2 class="text-heading-sm font-bold text-obsidian">AI agent vs virtual assistant: which do you actually need?</h2>
-        <span class="text-caption text-slate">14 July 2026</span>
-      </div>
-      <p class="text-body text-slate font-light mt-8 max-w-[620px]">Hourly person or owned system — what each is genuinely good at, and the hybrid most SMBs end up with.</p>
-    </a><a href="/notes/agent-readiness-checklist/" class="block bg-snow rounded-3xl-2 p-28 shadow-subtle-2 hover:-translate-y-px hover:shadow-lg transition mb-16">
-      <div class="flex flex-wrap items-baseline justify-between gap-12">
-        <h2 class="text-heading-sm font-bold text-obsidian">The agent-readiness checklist</h2>
-        <span class="text-caption text-slate">12 July 2026</span>
-      </div>
-      <p class="text-body text-slate font-light mt-8 max-w-[620px]">Ten questions that tell you whether a task is ready for an agent — no email gate, print and keep.</p>
-    </a><a href="/notes/what-is-an-ai-agent/" class="block bg-snow rounded-3xl-2 p-28 shadow-subtle-2 hover:-translate-y-px hover:shadow-lg transition mb-16">
-      <div class="flex flex-wrap items-baseline justify-between gap-12">
-        <h2 class="text-heading-sm font-bold text-obsidian">What an AI agent actually is (and what it isn't)</h2>
-        <span class="text-caption text-slate">12 July 2026</span>
-      </div>
-      <p class="text-body text-slate font-light mt-8 max-w-[620px]">Read, decide, act, log — the operator's definition, and the test that matters.</p>
-    </a><a href="/notes/supervised-until-proven/" class="block bg-snow rounded-3xl-2 p-28 shadow-subtle-2 hover:-translate-y-px hover:shadow-lg transition mb-16">
-      <div class="flex flex-wrap items-baseline justify-between gap-12">
-        <h2 class="text-heading-sm font-bold text-obsidian">Supervised until proven: how an agent earns autonomy</h2>
-        <span class="text-caption text-slate">12 July 2026</span>
-      </div>
-      <p class="text-body text-slate font-light mt-8 max-w-[620px]">The answer to 'what if it makes a mistake?' isn't a promise. It's a process.</p>
-    </a><a href="/notes/what-agents-cost-to-run/" class="block bg-snow rounded-3xl-2 p-28 shadow-subtle-2 hover:-translate-y-px hover:shadow-lg transition mb-16">
-      <div class="flex flex-wrap items-baseline justify-between gap-12">
-        <h2 class="text-heading-sm font-bold text-obsidian">What an AI agent actually costs to run</h2>
-        <span class="text-caption text-slate">12 July 2026</span>
-      </div>
-      <p class="text-body text-slate font-light mt-8 max-w-[620px]">Roughly A$50–300 a month for most single-workflow agents — and the lock-in cost nobody itemises.</p>
-    </a><a href="/notes/rented-vs-owned-automation/" class="block bg-snow rounded-3xl-2 p-28 shadow-subtle-2 hover:-translate-y-px hover:shadow-lg transition mb-16">
-      <div class="flex flex-wrap items-baseline justify-between gap-12">
-        <h2 class="text-heading-sm font-bold text-obsidian">Stop renting automation: the ownership argument</h2>
-        <span class="text-caption text-slate">12 July 2026</span>
-      </div>
-      <p class="text-body text-slate font-light mt-8 max-w-[620px]">Own the system layer, rent the model layer like electricity, stay free to leave.</p>
-    </a></div>
+    <div class="max-w-[720px]">
+      <p class="text-body-lg text-slate font-light mb-20 leading-[1.7]">To automate admin work in Australia, don't start with a tool &mdash; start by sorting the work. The method is a triage: list every recurring admin task, score each against three tests (is the input <b class='font-semibold text-ink'>readable</b>, are the rules <b class='font-semibold text-ink'>statable</b>, is the action <b class='font-semibold text-ink'>loggable</b>), automate the tasks that pass all three, and leave the rest with a human. Tool selection comes last, and for most SMBs it barely matters.</p>
+<p class="text-body-lg text-slate font-light mb-20 leading-[1.7]">The reason to lead with triage is that the expensive mistakes happen the other way round: a business buys a shiny platform, then bends its work to fit it. Six months later the subscription is running and the admin pile hasn't moved. Sort first, buy last.</p>
+<h2 class="text-heading-sm font-bold text-obsidian mt-40 mb-16">Step 1: write the whole list, not the annoying bits</h2>
+<p class="text-body-lg text-slate font-light mb-20 leading-[1.7]">Spend twenty minutes writing down every task that repeats &mdash; daily, weekly, monthly. Inbox replies, quote follow-ups, invoice chasing, appointment reminders, data entry between two systems, report assembly, intake forms. Include the small stuff. The tasks that feel too minor to mention are often the ones that eat an hour a day in five-minute slices.</p>
+<h2 class="text-heading-sm font-bold text-obsidian mt-40 mb-16">Step 2: score each task on three questions</h2>
+<p class="text-body-lg text-slate font-light mb-20 leading-[1.7]">Every task gets three yes/no answers. <b class='font-semibold text-ink'>Is the input readable?</b> &mdash; does the work arrive as text, a form, an email, or a call that can be transcribed, rather than a judgement in someone's head. <b class='font-semibold text-ink'>Are the rules statable?</b> &mdash; could you write the decision as an if-this-then-that a new hire could follow. <b class='font-semibold text-ink'>Is the action loggable?</b> &mdash; does the task end in a concrete action (send, book, file, update) you could check afterward. Three yeses and real volume: automation candidate. Any no: it stays human, and no honest agency will tell you otherwise. The full version of this test is the <a href='/notes/agent-readiness-checklist/' class='underline decoration-fog hover:text-obsidian'>agent-readiness checklist</a>.</p>
+<h2 class="text-heading-sm font-bold text-obsidian mt-40 mb-16">Step 3: rank the candidates by payback, not by pain</h2>
+<p class="text-body-lg text-slate font-light mb-20 leading-[1.7]">The task that annoys you most is not always the one to automate first. Rank the survivors by <b class='font-semibold text-ink'>volume &times; loaded cost of the time</b>. A five-minute task done eighty times a week beats a one-hour task done fortnightly. Market framing, not a performance claim: if a task consumes a day a week of admin time, that slice is worth roughly A$17,000&ndash;23,000 a year in loaded wages (market figures &mdash; check current award rates for your state). That number is the budget you're freeing, and the honest denominator for whether a build is worth it.</p>
+<h2 class="text-heading-sm font-bold text-obsidian mt-40 mb-16">Step 4: automate the top one, supervised, before touching the rest</h2>
+<p class="text-body-lg text-slate font-light mb-20 leading-[1.7]">Automate the single highest-payback task first and run it supervised &mdash; the agent drafts, a human approves, autonomy is earned once the logs prove it. Don't automate five things at once; you won't be able to tell which one broke. Once the first workflow has earned trust, move down the ranked list. This is also where owning the build matters: rented 'AI employee' subscriptions leave the workflow behind when you leave the platform, whereas an owned agent runs in your own accounts &mdash; the trade-off is laid out in <a href='/notes/ai-agency-vs-hiring-in-house/' class='underline decoration-fog hover:text-obsidian'>the cost comparison against hiring</a>.</p>
+<h2 class="text-heading-sm font-bold text-obsidian mt-40 mb-16">What this looks like priced</h2>
+<p class="text-body-lg text-slate font-light mb-20 leading-[1.7]">A WeBuild engagement follows the same order: a Foundations Session maps and ranks your admin workflows and produces the payback math in writing, then a fixed build quote before any work starts &mdash; the structure is on the <a href='/pricing/' class='underline decoration-fog hover:text-obsidian'>pricing page</a>. After handover most single-workflow agents run at roughly A$50&ndash;300 a month (market figures; your spec carries your number). If the triage says a task isn't ready, or a A$30/month template already covers it, an honest session says so and stops there.</p>
+<p class="text-body-lg text-slate font-light mb-20 leading-[1.7]">The short version: automating admin work is a sorting problem before it's a software problem. Run the three-question test across your task list, rank by payback, and automate the top candidate under supervision. A <a href='https://cal.com/webuildco/intro' class='underline decoration-fog hover:text-obsidian'>Foundations Session</a> does that triage on your actual workflows in 30 minutes.</p>
+    </div>
+  </div>
+</section>
+
+<section class="pb-48">
+  <div class="max-w-[1200px] mx-auto px-24">
+    <div class="max-w-[720px]">
+      <h2 class="text-heading-sm font-bold text-obsidian mt-8 mb-16">Questions people actually ask</h2>
+      <div id="pageAcc">
+<div class="acc-item open border-b border-fog">
+  <button class="acc-head w-full flex items-center gap-16 py-20 cursor-pointer text-left" aria-expanded="true"><span class="text-body-lg font-semibold text-obsidian flex-1">How do I decide which admin tasks to automate first?</span><span class="chev text-slate text-[13px]" aria-hidden="true">&#9660;</span></button>
+  <div class="acc-body"><div class="pb-24"><p class="text-body text-slate font-light max-w-[620px]">Rank the automatable tasks by volume times the loaded cost of the time they consume, and start with the highest-payback one. The task that annoys you most isn't always the one with the fastest payback.</p></div></div>
+</div>
+<div class="acc-item border-b border-fog">
+  <button class="acc-head w-full flex items-center gap-16 py-20 cursor-pointer text-left" aria-expanded="false"><span class="text-body-lg font-semibold text-obsidian flex-1">What admin work can't be automated?</span><span class="chev text-slate text-[13px]" aria-hidden="true">&#9660;</span></button>
+  <div class="acc-body"><div class="pb-24"><p class="text-body text-slate font-light max-w-[620px]">Anything that needs judgement on novel situations, relationships, or inputs too messy to read reliably &mdash; if the input isn't readable, the rules aren't statable, or the action isn't loggable, it stays with a human.</p></div></div>
+</div>
+<div class="acc-item border-b border-fog">
+  <button class="acc-head w-full flex items-center gap-16 py-20 cursor-pointer text-left" aria-expanded="false"><span class="text-body-lg font-semibold text-obsidian flex-1">Do I need to buy software to automate admin work?</span><span class="chev text-slate text-[13px]" aria-hidden="true">&#9660;</span></button>
+  <div class="acc-body"><div class="pb-24"><p class="text-body text-slate font-light max-w-[620px]">Not first. Sort your tasks with the three-question test and rank them by payback before choosing any tool &mdash; leading with a platform is how businesses end up paying for automation that doesn't fit.</p></div></div>
+</div>
+<div class="acc-item border-b border-fog">
+  <button class="acc-head w-full flex items-center gap-16 py-20 cursor-pointer text-left" aria-expanded="false"><span class="text-body-lg font-semibold text-obsidian flex-1">How much does it cost to automate an admin workflow in Australia?</span><span class="chev text-slate text-[13px]" aria-hidden="true">&#9660;</span></button>
+  <div class="acc-body"><div class="pb-24"><p class="text-body text-slate font-light max-w-[620px]">A fixed build price quoted in writing after a scoping session, then roughly A$50&ndash;300 a month to run for most single-workflow agents (market figures; your spec carries your number).</p></div></div>
+</div>
+<div class="acc-item border-b border-fog">
+  <button class="acc-head w-full flex items-center gap-16 py-20 cursor-pointer text-left" aria-expanded="false"><span class="text-body-lg font-semibold text-obsidian flex-1">Can I automate admin work without replacing staff?</span><span class="chev text-slate text-[13px]" aria-hidden="true">&#9660;</span></button>
+  <div class="acc-body"><div class="pb-24"><p class="text-body text-slate font-light max-w-[620px]">Yes, and it's the common case. Automating the repeatable slice of a role frees the people you already employ for the judgement work &mdash; sometimes it defers a hire, sometimes it turns one planned hire into none.</p></div></div>
+</div>
+</div>
+    </div>
   </div>
 </section>
 
@@ -127,16 +119,17 @@
   <div class="max-w-[1200px] mx-auto px-24">
     <div class="brand-weave rounded-full-2 p-48 md:p-80 text-center text-snow relative overflow-hidden">
       <div class="relative z-10 max-w-[600px] mx-auto">
-        <h2 class="text-heading md:text-display-sm font-semibold tracking-[-0.02em]">Reading done. Building next?</h2>
-        <p class="text-body-lg text-ash font-light mt-20 mb-32 max-w-[440px] mx-auto">A Foundations Session turns the theory into a ranked plan for your actual business.</p>
-        <a href="https://cal.com/webuildco/intro" target="_blank" rel="noopener" class="inline-flex items-center bg-lime text-obsidian text-[15px] font-semibold rounded-full px-32 py-16 hover:brightness-105 hover:-translate-y-px transition cursor-pointer">Book a Foundations Session →</a>
-        <p class="text-caption text-ash mt-16">30 minutes · no pitch · if AI isn't the answer, I'll say so</p>
+        <h2 class="text-heading md:text-display-sm font-semibold tracking-[-0.02em]">Put it to work</h2>
+        <p class="text-body-lg text-ash font-light mt-20 mb-32 max-w-[440px] mx-auto">One session maps where an agent pays back fastest in your business &mdash; the plan is yours to keep.</p>
+        <a href="https://cal.com/webuildco/intro" target="_blank" rel="noopener" class="inline-flex items-center bg-lime text-obsidian text-[15px] font-semibold rounded-full px-32 py-16 hover:brightness-105 hover:-translate-y-px transition cursor-pointer">Book a Foundations Session &rarr;</a>
+        <p class="text-caption text-ash mt-16">30 minutes &middot; no pitch &middot; if AI isn't the answer, I'll say so</p>
       </div>
     </div>
   </div>
 </section>
 
 </main>
+<footer class="pt-64 pb-64">
 <footer class="pt-64 pb-64">
   <div class="max-w-[1200px] mx-auto px-24">
     <div class="grid grid-cols-2 md:grid-cols-[1.6fr_1fr_1fr_1fr] gap-32 pb-40 border-b border-fog">
@@ -174,6 +167,7 @@
       <span><a href="/privacy.html" class="hover:text-obsidian transition-colors">Privacy</a> · <a href="/terms.html" class="hover:text-obsidian transition-colors">Terms</a></span>
     </div>
   </div>
+</footer>
 </footer>
 <script>
 const nav=document.getElementById('nav');
