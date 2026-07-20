@@ -5,10 +5,11 @@
   "_google_maps_note": "Google Maps surfaced the business listing and phone, but individual Google review text was not fetchable in this runtime.",
   "_review_source_note": "Review copy below is paraphrased from testimonials on the business site, not Google review bodies.",
   "_photo_notes": "The current site exposes usable owned service images and project/review graphics under wp-content/uploads.",
-  "_call_opener": "I had your old .htm Manly page open; the work looks solid, but the page feels like it belongs to an older web, especially on mobile. I built a cleaner mobile-first version around Scott, fast quotes and your best testimonials.",
+  "_site_audit_note": "Live re-check on 2026-07-20 found a modern responsive WordPress site with call, SMS and online quote CTAs. Do not pitch this as an old-site rebuild lead.",
+  "_call_opener": "Re-audit flag: your current WordPress site is already modern and has call, SMS and online quote paths. Unless a genuine speed, SEO or booking gap is confirmed before dialling, de-prioritize ASAP rather than pitch a rebuild.",
   "_source_urls": [
     "https://www.asappainting.com.au/",
-    "https://www.asappainting.com.au/contact/"
+    "https://www.asappainting.com.au/northern-beaches-house-painting/"
   ],
 
   "BUSINESS_NAME": "ASAP Painting Northern Beaches",
