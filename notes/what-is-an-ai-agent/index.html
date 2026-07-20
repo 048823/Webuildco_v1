@@ -70,7 +70,7 @@
   <div class="max-w-[1200px] mx-auto px-24">
     <div class="max-w-[720px]">
       <h2 class="text-heading-sm font-bold text-obsidian mt-8 mb-16">Questions people actually ask</h2>
-      <div id="pageAcc">
+      <div id="pageAccPrimary">
 <div class="acc-item open border-b border-fog">
   <button class="acc-head w-full flex items-center gap-16 py-20 cursor-pointer text-left" aria-expanded="true"><span class="text-body-lg font-semibold text-obsidian flex-1">What is an AI agent in simple terms?</span><span class="chev text-slate text-[13px]" aria-hidden="true">▼</span></button>
   <div class="acc-body"><div class="pb-24"><p class="text-body text-slate font-light max-w-[620px]">An AI agent is software that does a defined job the way a team member would: it reads incoming work, decides what to do using your rules, acts in your actual tools, and logs what it did. If it can't do all four, it's not an agent.</p></div></div>
@@ -120,7 +120,7 @@
   <div class="max-w-[1200px] mx-auto px-24">
     <div class="max-w-[720px]">
       <h2 class="text-heading-sm font-bold text-obsidian mt-8 mb-16">Questions people actually ask</h2>
-      <div id="pageAcc">
+      <div id="pageAccSecondary">
 <div class="acc-item open border-b border-fog">
   <button class="acc-head w-full flex items-center gap-16 py-20 cursor-pointer text-left" aria-expanded="true"><span class="text-body-lg font-semibold text-obsidian flex-1">What is an AI agent in simple terms?</span><span class="chev text-slate text-[13px]" aria-hidden="true">▼</span></button>
   <div class="acc-body"><div class="pb-24"><p class="text-body text-slate font-light max-w-[620px]">An AI agent is software that does a defined job the way a team member would: it reads incoming work, decides what to do using your rules, acts in your actual tools, and logs what it did. If it can't do all four, it's not an agent.</p></div></div>
@@ -214,7 +214,7 @@
     <div class="flex flex-wrap justify-between items-center pt-24 text-[13px] text-slate gap-12">
       <span>© 2026 WeBuild Co · Sydney, AU</span>
       <span class="font-semibold text-obsidian">We build leverage.</span>
-      <span><a href="/privacy.html" class="hover:text-obsidian transition-colors">Privacy</a> · <a href="/terms.html" class="hover:text-obsidian transition-colors">Terms</a></span>
+      <span><a href="/privacy" class="hover:text-obsidian transition-colors">Privacy</a> · <a href="/terms" class="hover:text-obsidian transition-colors">Terms</a></span>
     </div>
   </div>
 </footer>
@@ -238,7 +238,8 @@ function wireAccordion(rootId){
   items.forEach(it=>it.querySelector('.acc-head').addEventListener('click',()=>setOpen(it)));
   setOpen(items[0]);
 }
-wireAccordion('pageAcc');
+wireAccordion('pageAccPrimary');
+wireAccordion('pageAccSecondary');
 </script>
 </body>
 </html>

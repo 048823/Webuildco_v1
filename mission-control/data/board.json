@@ -66,7 +66,7 @@
   },
   "multica": {
     "note": "Seed data. Live workspace activity needs the Multica API base URL + token exposed to the dashboard (see missing-credentials).",
-    "workspace": "WeBuild Agency",
+    "workspace": "WeBuild Co",
     "issues": [
       { "id": "WEB-85", "title": "Build Mission Control dashboard", "status": "in_progress", "assignee": "CTO" },
       { "id": "WEB-84", "title": "Board dashboard request", "status": "in_progress", "assignee": "CEO" }

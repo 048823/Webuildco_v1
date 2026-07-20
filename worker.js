@@ -400,5 +400,5 @@ button:hover{background:var(--lime-deep)}
 <input id="pw" name="password" type="password" autocomplete="current-password" autofocus required>
 <button type="submit">Sign in</button>
 {{ERROR}}
-<div class="foot">WeBuild Agency · internal</div>
+<div class="foot">WeBuild Co · internal</div>
 </form></body></html>`;
