@@ -54,8 +54,15 @@ const statusCls = (s) => ({
   blocked: "bad",
   cancelled: "bad",
   failed: "bad",
+  escalation_flagged: "bad",
   in_progress: "warn",
   in_review: "warn",
+  waiting_on_client: "warn",
+  waiting_on_candidate: "warn",
+  document_received_partial: "warn",
+  drafted_email: "info",
+  drafted_whatsapp: "info",
+  ready_for_review: "ok",
   todo: "info",
   planned: "info",
   backlog: "",
@@ -66,10 +73,18 @@ const fmtDate = (s) => {
   if (Number.isNaN(d.getTime())) return s;
   return new Intl.DateTimeFormat("en-AU", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" }).format(d);
 };
+const fmtDay = (s) => {
+  if (!s) return "—";
+  const d = new Date(String(s).includes("T") ? s : `${s}T00:00:00.000Z`);
+  if (Number.isNaN(d.getTime())) return s;
+  return new Intl.DateTimeFormat("en-AU", { day: "2-digit", month: "short" }).format(d);
+};
 
 let DATA = {};
 let CREATIVE = {}; // data/creative.json — owned by ECD, drives the Creative section
 let BRIEFS = []; // data/briefs.json — generated from Board Reports / Daily Logs
+let DOC_AGENT_STATE = null;
+const DOC_AGENT_KEY = "mc_doc_agent_state_v1";
 const hasLiveBlogs = () => Boolean(DATA.multica?.live && DATA.multica?.blogs?.live);
 const blogsData = () => hasLiveBlogs() ? DATA.multica.blogs : (DATA.blogs || { columns: [], cards: [] });
 const hasLiveLeads = () => Boolean(DATA.multica?.live && DATA.multica?.leads?.live);
@@ -80,6 +95,7 @@ const SECTIONS = [
   { id: "overview", title: "Overview", ic: "◫", desc: "Company at a glance — to-dos, briefs, live snapshot", flag: "manual", render: renderOverview },
   { id: "briefs", title: "Briefs", ic: "▥", desc: "Morning, EOD & cadence reports", flag: "manual", render: renderBriefs },
   { id: "projects", title: "Projects", ic: "▤", desc: "Client pipeline + internal projects", flag: "manual", render: renderProjects },
+  { id: "doc-chaser", title: "Doc Chaser", ic: "□", desc: "Draft-only follow-ups, deadline flags, audit trail", flag: "manual", render: renderDocChaser },
   { id: "leads", title: "Outbound Leads", ic: "◎", desc: "Instantly & A-leads campaigns", flag: "needs", render: renderLeads },
   { id: "blogs", title: "Upcoming Blogs", ic: "▦", desc: "Blog prep & publish schedule", flag: "manual", render: renderBlogs },
   { id: "creative", title: "Creative", ic: "✎", desc: "Mood boards, ideas pipeline & production schedule", flag: "manual", render: renderCreative },
@@ -273,6 +289,135 @@ function renderProjects() {
   return renderProjectMap(DATA.projects) +
     `<div class="card" style="margin-top:16px"><h3>Client pipeline</h3>${tbl(DATA.projects?.clients || [])}</div>
     <div class="card" style="margin-top:16px"><h3>Internal projects</h3>${tbl(DATA.projects?.internal || [])}</div>`;
+}
+
+function docAgent() {
+  return window.DocumentAgent;
+}
+
+function loadDocAgentState() {
+  const api = docAgent();
+  if (!api) return { cases: [] };
+  try {
+    const saved = JSON.parse(localStorage.getItem(DOC_AGENT_KEY) || "null");
+    if (saved?.cases?.length) return saved;
+  } catch {}
+  return api.seedDocumentChaserState();
+}
+
+function saveDocAgentState() {
+  try { localStorage.setItem(DOC_AGENT_KEY, JSON.stringify(DOC_AGENT_STATE)); } catch {}
+}
+
+function currentDocAgentState() {
+  if (!DOC_AGENT_STATE) DOC_AGENT_STATE = loadDocAgentState();
+  return DOC_AGENT_STATE;
+}
+
+function setDocAgentState(next) {
+  DOC_AGENT_STATE = next;
+  saveDocAgentState();
+}
+
+function renderDocChaser() {
+  const api = docAgent();
+  if (!api) return `<div class="card"><p class="muted">Document simulator unavailable.</p></div>`;
+  const state = currentDocAgentState();
+  const cases = state.cases || [];
+  const active = cases.find((item) => item.id === state.activeCaseId) || cases[0];
+  if (!active) return `<div class="card"><p class="muted">No demo cases loaded.</p></div>`;
+
+  const missing = api.missingDocuments(active);
+  const action = active.lastAction || api.decideNextAction(active, { now: state.now, channel: active.preferredChannel });
+  const firstMissing = missing[0];
+  const totalMissing = cases.reduce((sum, item) => sum + api.missingDocuments(item).length, 0);
+  const flagged = cases.filter((item) => item.status === "escalation_flagged" || item.lastAction?.type === "escalate").length + (action.type === "escalate" && active.status !== "escalation_flagged" ? 1 : 0);
+  const events = [...(active.auditEvents || [])].reverse();
+
+  return `<div class="section-note"><b>Draft-only:</b> Email and WhatsApp adapters create internal drafts. No external sends or production credentials are used.</div>
+  <div class="grid g4">
+    ${statCard("Demo files", cases.length, "synthetic tenants")}
+    ${statCard("Missing docs", totalMissing, "required items")}
+    ${statCard("Escalations", flagged, "deadline or repeat chase")}
+    ${statCard("Provider mode", "Stub", "draft only")}
+  </div>
+  <div class="doc-shell" style="margin-top:16px">
+    <div class="card">
+      <h3>Cases</h3>
+      <div class="case-list">${cases.map((item) => {
+        const count = api.missingDocuments(item).length;
+        return `<button class="case-btn ${item.id === active.id ? "active" : ""}" data-doc-agent="select" data-case-id="${esc(item.id)}">
+          <span><b>${esc(item.title)}</b><span>${esc(item.ownerName)} · ${esc(item.vertical === "hr" ? "HR" : "Migration")}</span></span>
+          <span class="badge ${count ? "warn" : "ok"}">${count ? `${count} missing` : "clear"}</span>
+        </button>`;
+      }).join("")}</div>
+      <button class="btn ghost full" data-doc-agent="reset" style="margin-top:12px">Reset demo</button>
+    </div>
+    <div class="doc-main">
+      <div class="card">
+        <h3>${esc(active.title)} <span class="badge ${statusCls(active.status)}">${esc(active.status.replace(/_/g, " "))}</span></h3>
+        <div class="doc-meta">
+          <span>Tenant: ${esc(active.tenantId)}</span>
+          <span>Deadline: ${esc(fmtDay(active.deadline))}</span>
+          <span>Last contact: ${esc(fmtDate(active.lastContactAt))}</span>
+        </div>
+        <div class="doc-list">${active.documents.map((doc) => {
+          const dueIn = api.daysUntil(doc.dueDate, state.now);
+          const cls = doc.status === "received" ? "ok" : dueIn <= 3 ? "bad" : "warn";
+          return `<div class="doc-row">
+            <span><b>${esc(doc.label)}</b><span>Due ${esc(fmtDay(doc.dueDate))} · ${doc.followUpCount || 0} previous follow-up${(doc.followUpCount || 0) === 1 ? "" : "s"}</span></span>
+            <span class="badge ${cls}">${esc(doc.status.replace(/_/g, " "))}</span>
+          </div>`;
+        }).join("")}</div>
+      </div>
+      <div class="grid g2" style="margin-top:16px">
+        <div class="card">
+          <h3>Next action <span class="badge ${action.severity}">${esc(action.headline)}</span></h3>
+          <div class="doc-actions">
+            <button class="btn primary" data-doc-agent="draft" data-case-id="${esc(active.id)}" data-channel="email">Draft email</button>
+            <button class="btn ghost" data-doc-agent="draft" data-case-id="${esc(active.id)}" data-channel="whatsapp">Draft WhatsApp</button>
+            <button class="btn ghost" data-doc-agent="reply" data-case-id="${esc(active.id)}" ${firstMissing ? `data-doc-id="${esc(firstMissing.id)}"` : "disabled"}>Mock reply</button>
+          </div>
+          <p class="muted tiny">${esc(action.auditEvent.reason)}</p>
+          ${renderDraft(action)}
+        </div>
+        <div class="card">
+          <h3>Audit trail <span class="pill">${events.length}</span></h3>
+          <div class="audit-list">${events.map((event) => `
+            <div class="audit-row">
+              <span class="badge ${event.type === "escalate" ? "bad" : event.type === "mock_reply_received" ? "ok" : "info"}">${esc(event.type.replace(/_/g, " "))}</span>
+              <div><b>${esc(event.decision)}</b><span>${esc(event.reason)}</span><em>${esc(fmtDate(event.createdAt))} · external send: ${event.sentExternally ? "yes" : "no"}</em></div>
+            </div>`).join("")}</div>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderDraft(action) {
+  if (!action.draft) return `<div class="draft-box muted">No draft created for this decision.</div>`;
+  return `<div class="draft-box">
+    <div class="draft-head"><span class="badge info">${esc(action.channel)}</span><span class="badge warn">${esc(action.draft.providerMode.replace(/_/g, " "))}</span></div>
+    ${action.draft.subject ? `<b>${esc(action.draft.subject)}</b>` : ""}
+    <pre>${esc(action.draft.body)}</pre>
+  </div>`;
+}
+
+function handleDocAgent(target) {
+  const api = docAgent();
+  if (!api) return;
+  const state = currentDocAgentState();
+  const action = target.dataset.docAgent;
+  if (action === "select") {
+    setDocAgentState({ ...state, activeCaseId: target.dataset.caseId });
+  } else if (action === "draft") {
+    setDocAgentState(api.runAgent(state, target.dataset.caseId, { channel: target.dataset.channel }));
+  } else if (action === "reply") {
+    setDocAgentState(api.applyMockReply(state, target.dataset.caseId, target.dataset.docId));
+  } else if (action === "reset") {
+    setDocAgentState(api.seedDocumentChaserState());
+  }
+  go("doc-chaser");
 }
 
 function renderLeads() {
@@ -550,9 +695,11 @@ async function boot() {
   catch { CREATIVE = {}; }
   try { BRIEFS = await (await fetch("/mission-control/data/briefs.json", { cache: "no-store" })).json(); if (!Array.isArray(BRIEFS)) BRIEFS = []; }
   catch { BRIEFS = []; }
+  DOC_AGENT_STATE = loadDocAgentState();
   await loadMultica();
   $("#upd").textContent = DATA.updated ? "updated " + DATA.updated : "";
   document.addEventListener("click", (e) => {
+    const agentControl = e.target.closest("[data-doc-agent]"); if (agentControl) return handleDocAgent(agentControl);
     const nav = e.target.closest(".nav a"); if (nav) return go(nav.dataset.id);
     const snap = e.target.closest("[data-go]"); if (snap) return go(snap.dataset.go);
   });
