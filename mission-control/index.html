@@ -35,6 +35,11 @@
     <div id="pages"></div>
   </main>
 </div>
+<script type="module">
+import * as BackOfficeModel from "/mission-control/back-office/model.mjs";
+import { demoBackOfficeData } from "/mission-control/back-office/demo-data.mjs";
+window.BackOffice = { ...BackOfficeModel, demoBackOfficeData };
+</script>
 <script src="/mission-control/document-agent.js"></script>
 <script src="/mission-control/app.js"></script>
 </body>

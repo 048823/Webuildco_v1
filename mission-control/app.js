@@ -93,6 +93,7 @@ const leadsData = () => hasLiveLeads() ? DATA.multica.leads : (DATA.leads || { c
 // ---- Section definitions ----
 const SECTIONS = [
   { id: "overview", title: "Overview", ic: "◫", desc: "Company at a glance — to-dos, briefs, live snapshot", flag: "manual", render: renderOverview },
+  { id: "back-office", title: "Back Office", ic: "▣", desc: "Case pipeline, documents & deadlines — Migration + Optora HR", flag: "manual", render: renderBackOffice },
   { id: "briefs", title: "Briefs", ic: "▥", desc: "Morning, EOD & cadence reports", flag: "manual", render: renderBriefs },
   { id: "projects", title: "Projects", ic: "▤", desc: "Client pipeline + internal projects", flag: "manual", render: renderProjects },
   { id: "doc-chaser", title: "Doc Chaser", ic: "□", desc: "Draft-only follow-ups, deadline flags, audit trail", flag: "manual", render: renderDocChaser },
@@ -169,6 +170,127 @@ function renderOverview() {
 }
 const statCard = (label, val, sub) => `<div class="card"><div class="muted tiny">${esc(label)}</div><div class="stat" style="margin-top:6px">${val}</div><div class="muted tiny" style="margin-top:4px">${esc(sub)}</div></div>`;
 const snap = (t, v, go) => `<div class="card" style="cursor:pointer;box-shadow:none" data-go="${go}"><div style="font-weight:600">${esc(t)}</div><div class="muted tiny" style="margin-top:4px">${esc(v)} →</div></div>`;
+
+// ---- Back Office dashboard (Migration + Optora/HR shared model) ----
+const backOfficeApi = () => window.BackOffice;
+let BO_VERTICAL = "migration";
+let BO_CASE_ID = null;
+const DOC_STATUS_CLS = { missing: "bad", requested: "warn", received: "ok", review_required: "info", expired: "bad", waived: "" };
+const DEADLINE_STATUS_CLS = { overdue: "bad", at_risk: "warn", on_track: "ok", met: "ok" };
+const THREAD_STATUS_CLS = { escalated: "bad", waiting: "warn", draft_due: "warn", closed: "" };
+const roleLabel = (s) => esc(String(s || "").replace(/_/g, " "));
+
+function boCaseState(unit, scoped, config) {
+  const deadlines = scoped.deadlines.filter((d) => d.case_id === unit.id);
+  const documents = scoped.document_requests.filter((d) => d.case_id === unit.id);
+  const thread = scoped.follow_up_threads.find((t) => t.case_id === unit.id && t.status !== "closed");
+  if (unit.pipeline_state === "ready_outcome") return { key: "ready", cls: "lime", label: config.readyLabel };
+  if (deadlines.some((d) => d.status === "overdue")) return { key: "overdue", cls: "bad", label: "Overdue" };
+  if (thread && (thread.status === "waiting" || thread.status === "draft_due" || thread.status === "escalated")) {
+    return { key: "waiting", cls: thread.status === "escalated" ? "bad" : "warn", label: `Waiting on ${roleLabel(config.people.primary)}` };
+  }
+  if (documents.some((d) => d.status === "review_required")) return { key: "review", cls: "info", label: "Ready for review" };
+  return { key: "on_track", cls: "ok", label: "On track" };
+}
+
+function renderBackOffice() {
+  const api = backOfficeApi();
+  if (!api) return `<div class="card"><p class="muted">Back-office model unavailable.</p></div>`;
+  const verticals = Object.values(api.VERTICAL_CONFIGS);
+  const config = api.verticalConfig(BO_VERTICAL);
+  const scoped = api.recordsForVertical(api.demoBackOfficeData, BO_VERTICAL);
+  const tenant = scoped.tenants[0];
+  const cases = scoped.cases;
+  if (!cases.some((c) => c.id === BO_CASE_ID)) {
+    BO_CASE_ID = (cases.find((c) => boCaseState(c, scoped, config).key === "overdue")
+      || cases.find((c) => boCaseState(c, scoped, config).key === "waiting")
+      || cases[0])?.id || null;
+  }
+  const active = cases.find((c) => c.id === BO_CASE_ID);
+  const states = cases.map((c) => boCaseState(c, scoped, config));
+  const overdue = states.filter((s) => s.key === "overdue").length;
+  const waiting = states.filter((s) => s.key === "waiting").length;
+  const ready = states.filter((s) => s.key === "ready").length;
+
+  const tabs = `<div class="tabs">${verticals.map((v) => `<button class="tab ${v.id === BO_VERTICAL ? "active" : ""}" data-bo-vertical="${v.id}">${esc(v.name)}</button>`).join("")}</div>`;
+  const stats = `<div class="grid g4" style="margin-bottom:16px">
+    ${statCard(`${config.unit.plural} in flight`, cases.length, tenant?.name || "")}
+    ${statCard("Overdue", overdue, "flagged by agent, not chased manually")}
+    ${statCard(`Waiting on ${roleLabel(config.people.primary)}`, waiting, "auto-drafted follow-up sent")}
+    ${statCard(config.readyLabel, ready, "no human chasing needed")}
+  </div>`;
+  const list = `<div class="case-list">${cases.map((c) => {
+    const st = boCaseState(c, scoped, config);
+    const subject = scoped.people.find((p) => p.id === c.subject_person_id);
+    return `<button class="case-btn ${c.id === BO_CASE_ID ? "active" : ""}" data-bo-case="${c.id}">
+      <span><b>${esc(c.reference)}</b><span>${esc(subject?.display_name || "")} · ${esc(config.pipelineLabels[c.pipeline_state])}</span></span>
+      <span class="badge ${st.cls}">${esc(st.label)}</span>
+    </button>`;
+  }).join("")}</div>`;
+  const detail = active ? renderBoCaseDetail(active, scoped, config, api) : `<div class="card"><p class="muted">No ${config.unit.plural} yet.</p></div>`;
+
+  return `
+  <div class="doc-meta"><span>Tenant: ${esc(tenant?.name || "—")}</span><span>Data: synthetic PII only</span><span>${cases.length} ${esc(config.unit.plural)}</span></div>
+  ${tabs}
+  ${stats}
+  <div class="doc-shell">
+    <div>${list}</div>
+    <div class="doc-main">${detail}</div>
+  </div>`;
+}
+
+function renderBoCaseDetail(unit, scoped, config, api) {
+  const subject = scoped.people.find((p) => p.id === unit.subject_person_id);
+  const secondary = scoped.people.find((p) => p.id === unit.secondary_person_id);
+  const owner = scoped.people.find((p) => p.id === unit.owner_person_id);
+  const documents = scoped.document_requests.filter((d) => d.case_id === unit.id);
+  const deadlines = scoped.deadlines.filter((d) => d.case_id === unit.id);
+  const thread = scoped.follow_up_threads.find((t) => t.case_id === unit.id);
+  const audits = [...scoped.audit_events.filter((e) => e.case_id === unit.id)].sort((a, b) => b.created_at.localeCompare(a.created_at));
+
+  const curIdx = api.PIPELINE_STATES.findIndex((s) => s.id === unit.pipeline_state);
+  const stepper = `<div class="bo-stages">${api.PIPELINE_STATES.map((s, i) => `
+    <span class="bo-stage ${i <= curIdx ? "done" : ""} ${i === curIdx ? "current" : ""}"><span class="dot"></span>${esc(config.pipelineLabels[s.id])}</span>`).join("")}</div>`;
+
+  const checklist = config.checklist.map((item) => {
+    const doc = documents.find((d) => d.checklist_key === item.key);
+    const status = doc?.status || "missing";
+    return `<div class="doc-row"><span><b>${esc(item.label)}</b><span>${roleLabel(item.role)} · due ${fmtDay(doc?.due_on)}</span></span><span class="badge ${DOC_STATUS_CLS[status] || ""}">${roleLabel(status)}</span></div>`;
+  }).join("");
+
+  const deadlineRows = deadlines.map((d) => `
+    <div class="kv"><span class="k">${esc(d.label)}</span><span class="v"><span class="badge ${DEADLINE_STATUS_CLS[d.status] || ""}">${roleLabel(d.status)}</span> ${fmtDay(d.due_on)}</span></div>`).join("")
+    || '<p class="muted tiny">No deadlines tracked.</p>';
+
+  const nextAction = thread ? `<div class="draft-box">
+    <div class="draft-head"><span class="badge ${THREAD_STATUS_CLS[thread.status] || ""}">${roleLabel(thread.status)}</span><span class="tiny muted">${esc(thread.channel)} · ${fmtDate(thread.last_contact_at)}</span></div>
+    <p style="margin:0">${esc(thread.next_action || "No action required — thread closed.")}</p>
+  </div>` : '<p class="muted tiny">No open thread.</p>';
+
+  const auditHtml = audits.length ? `<div class="audit-list">${audits.slice(0, 4).map((e) => `
+    <div class="audit-row"><span class="badge">${roleLabel(e.action)}</span><div><span>${esc(e.reason)}</span><em>${fmtDate(e.created_at)} · agent, draft-only</em></div></div>`).join("")}</div>`
+    : '<p class="muted tiny">No audit events yet.</p>';
+
+  return `
+  <div class="card">
+    <h3>${esc(unit.reference)} — ${esc(unit.title)}</h3>
+    <div class="doc-meta">
+      <span>${roleLabel(config.people.primary)}: ${esc(subject?.display_name || "—")}</span>
+      ${secondary ? `<span>${roleLabel(config.people.secondary)}: ${esc(secondary.display_name)}</span>` : ""}
+      <span>Owner: ${esc(owner?.display_name || "—")}</span>
+      <span>Opened ${fmtDay(unit.opened_on)}</span>
+    </div>
+    ${stepper}
+  </div>
+  <div class="grid g2" style="margin-top:16px">
+    <div class="card"><h3>Document checklist</h3><div class="doc-list">${checklist}</div></div>
+    <div class="card"><h3>Deadlines &amp; compliance</h3>${deadlineRows}</div>
+  </div>
+  <div class="grid g2" style="margin-top:16px">
+    <div class="card"><h3>Agent next action</h3>${nextAction}</div>
+    <div class="card"><h3>Audit trail</h3>${auditHtml}</div>
+  </div>`;
+}
 
 function renderBriefs(route = []) {
   const id = route[0];
@@ -700,6 +822,8 @@ async function boot() {
   $("#upd").textContent = DATA.updated ? "updated " + DATA.updated : "";
   document.addEventListener("click", (e) => {
     const agentControl = e.target.closest("[data-doc-agent]"); if (agentControl) return handleDocAgent(agentControl);
+    const boVertical = e.target.closest("[data-bo-vertical]"); if (boVertical) { BO_VERTICAL = boVertical.dataset.boVertical; BO_CASE_ID = null; return go("back-office"); }
+    const boCase = e.target.closest("[data-bo-case]"); if (boCase) { BO_CASE_ID = boCase.dataset.boCase; return go("back-office"); }
     const nav = e.target.closest(".nav a"); if (nav) return go(nav.dataset.id);
     const snap = e.target.closest("[data-go]"); if (snap) return go(snap.dataset.go);
   });
