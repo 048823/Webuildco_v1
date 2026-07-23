@@ -7,7 +7,7 @@
     "build:css": "npx @tailwindcss/cli -i src/app.css -o app.css --minify",
     "watch:css": "npx @tailwindcss/cli -i src/app.css -o app.css --watch",
     "build": "npm run build:css",
-    "test": "node worker.test.mjs && node mission-control/intake/log-expense.test.mjs && node mission-control/briefs/build-briefs.test.mjs",
+    "test": "node worker.test.mjs && node mission-control/intake/log-expense.test.mjs && node mission-control/briefs/build-briefs.test.mjs && node mission-control/back-office/model.test.mjs && node mission-control/document-agent.test.mjs",
     "briefs:build": "node mission-control/briefs/build-briefs.mjs",
     "briefs:deliver": "node mission-control/briefs/deliver-briefs.mjs",
     "serve": "python3 -m http.server 8000"
