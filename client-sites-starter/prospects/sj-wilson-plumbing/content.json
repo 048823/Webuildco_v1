@@ -1,0 +1,62 @@
+{
+  "_note": "Draft content for WEB-220. Matches client-sites-starter/content.example.json tokens, with source notes added for the builder.",
+  "_prospect_slug": "sj-wilson-plumbing",
+  "_business_url": "https://www.sjwilsonplumbing.com.au/",
+  "_google_maps_note": "A reliable Google review text source was not found for this exact business during research.",
+  "_review_source_note": "Review copy below is paraphrased from S.J. Wilson Plumbing's own testimonials page, not Google review bodies.",
+  "_photo_notes": "The current site exposes usable owned imagery including header_img.jpg and trade association logos.",
+  "_call_opener": "I had your site open and it still looks like a 2010 brochure, with no proper mobile experience. I built a cleaner mobile-first version around Stuart, licence proof and the testimonials.",
+  "_source_urls": [
+    "https://www.sjwilsonplumbing.com.au/",
+    "https://www.sjwilsonplumbing.com.au/plumbing_services.html",
+    "https://www.sjwilsonplumbing.com.au/testimonials.html"
+  ],
+
+  "BUSINESS_NAME": "S.J. Wilson Plumbing",
+  "TAGLINE": "Licensed plumbing, gas and hot water services",
+  "META_DESCRIPTION": "S.J. Wilson Plumbing provides licensed plumbing, gas fitting, hot water, blocked drain, rainwater tank and maintenance services across the Sutherland Shire.",
+  "FAVICON_EMOJI": "P",
+
+  "BRAND_COLOR": "#0d6b5f",
+  "BRAND_COLOR_DARK": "#06463f",
+
+  "PHONE_RAW": "+61418862848",
+  "PHONE_DISPLAY": "0418 862 848",
+  "EMAIL": "",
+  "ADDRESS": "Sutherland Shire, NSW",
+  "HOURS": "Not listed - call Stuart to confirm",
+  "SERVICE_AREA": "Miranda, Gymea Bay, Caringbah, Sylvania, Menai, Cronulla, Taren Point and the Sutherland Shire",
+  "RATING": "Source-site testimonials available; Google review text not found",
+
+  "HERO_EYEBROW": "Licence #35630C",
+  "HERO_HEADLINE": "Sutherland Shire plumbing from a licensed local team.",
+  "HERO_SUBTEXT": "Call Stuart Wilson for plumbing repairs, gas fitting, hot water, drains and rainwater tank plumbing across the Shire.",
+  "HERO_CTA": "Call Stuart",
+  "HERO_TRUST_LINE": "Licensed Master Plumbers | 25+ years combined experience | Local Sutherland Shire service",
+  "HERO_IMAGE": "https://www.sjwilsonplumbing.com.au/images/header_img.jpg",
+
+  "TRUST_BADGE_1": "Licence #35630C",
+  "TRUST_BADGE_2": "Master Plumbers",
+
+  "SERVICES_HEADING": "Plumbing services",
+  "SERVICES_SUBTEXT": "A practical local service list for repairs, maintenance, installations and emergency plumbing issues.",
+  "SERVICE_1_ICON": "DRN", "SERVICE_1_TITLE": "Blocked drains and pipe repairs", "SERVICE_1_TEXT": "Drain clearing, blocked-pipe repairs, CCTV inspections, line location and jet blasting.",
+  "SERVICE_2_ICON": "GAS", "SERVICE_2_TITLE": "Gas fitting and hot water", "SERVICE_2_TEXT": "Gas plumbing, hot water service repairs and installation support for homes and small businesses.",
+  "SERVICE_3_ICON": "REN", "SERVICE_3_TITLE": "Renovations and maintenance", "SERVICE_3_TEXT": "Bathroom renovations, new home plumbing, toilet repairs, rainwater tanks, backflow systems and general maintenance.",
+
+  "ABOUT_HEADING": "Show-up service with licence proof",
+  "ABOUT_TEXT": "S.J. Wilson Plumbing presents as a Sutherland Shire licensed plumbing business with practical experience across homes, commercial jobs, renovations, drainage and gas work.",
+  "ABOUT_POINT_1": "Residential and commercial plumbing",
+  "ABOUT_POINT_2": "Emergency repairs and scheduled maintenance",
+  "ABOUT_POINT_3": "Gas, hot water, drains and rainwater tank plumbing",
+  "ABOUT_IMAGE": "https://www.sjwilsonplumbing.com.au/images/logo1.jpg",
+
+  "REVIEW_1_TEXT": "Col in Sylvania said the LPG cooktop job was painless, prompt and handled with extra effort.", "REVIEW_1_NAME": "Col Irwin, Sylvania",
+  "REVIEW_2_TEXT": "Terry praised the team for finding a gas leak, fixing a cistern and being professional and friendly.", "REVIEW_2_NAME": "Terry",
+  "REVIEW_3_TEXT": "Dianne described the service as prompt, friendly, efficient and fairly priced.", "REVIEW_3_NAME": "Dianne Stollery",
+
+  "CTA_HEADLINE": "Need a licensed plumber in the Shire?",
+  "CTA_SUBTEXT": "Call Stuart for a direct answer and a practical next step.",
+
+  "PHONE_placeholder_ordering_note": "PHONE_RAW is used in tel: links (no spaces, +61...); PHONE_DISPLAY is what humans see."
+}

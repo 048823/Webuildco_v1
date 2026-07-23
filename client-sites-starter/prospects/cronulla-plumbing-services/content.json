@@ -1,0 +1,61 @@
+{
+  "_note": "Draft content for WEB-220. Matches client-sites-starter/content.example.json tokens, with source notes added for the builder.",
+  "_prospect_slug": "cronulla-plumbing-services",
+  "_business_url": "https://www.cronullaplumbingservices.com.au/",
+  "_google_maps_note": "Public Google/Maps-adjacent data showed the business listing and 5.0 rating across 3 reviews, but individual review text was not fetchable in this runtime.",
+  "_review_source_note": "Do not present the review slots below as customer quotes until a human copies verified Google review text from the live listing.",
+  "_photo_notes": "Owned site has only brand/logo imagery and a Master Plumbers badge. Google Maps exposed a Street View thumbnail, but no usable owned job photos were found.",
+  "_call_opener": "I had your site open and it looks hacked - Google is seeing Viagra/pharma spam on a plumbing site. I built a clean mobile version so customers see Cronulla Plumbing, not spam.",
+  "_source_urls": [
+    "https://www.cronullaplumbingservices.com.au/",
+    "https://www.starworks.com.au/score/na%3Af62892a4f1ce601b"
+  ],
+
+  "BUSINESS_NAME": "Cronulla Plumbing Services",
+  "TAGLINE": "Local Sutherland Shire plumbers",
+  "META_DESCRIPTION": "Cronulla Plumbing Services provides plumbing, gas fitting, hot water repairs, roofing, renovations and backflow services across the Sutherland Shire.",
+  "FAVICON_EMOJI": "P",
+
+  "BRAND_COLOR": "#0f6ea8",
+  "BRAND_COLOR_DARK": "#084b75",
+
+  "PHONE_RAW": "+61412525748",
+  "PHONE_DISPLAY": "0412 525 748",
+  "EMAIL": "",
+  "ADDRESS": "Unit 14/8 Wurrook Circuit, Caringbah NSW 2229",
+  "HOURS": "Not listed - call to confirm",
+  "SERVICE_AREA": "Cronulla, Caringbah, Miranda and the Sutherland Shire",
+  "RATING": "5.0 Google rating (3 reviews; text not fetchable)",
+
+  "HERO_EYEBROW": "Sutherland Shire plumbing",
+  "HERO_HEADLINE": "Reliable plumbers for repairs, hot water and renovations.",
+  "HERO_SUBTEXT": "Warren, Darren and the team handle residential, commercial and industrial plumbing across the Shire with straightforward local service.",
+  "HERO_CTA": "Call Warren now",
+  "HERO_TRUST_LINE": "20+ years experience | Master Plumbers Association NSW | Local Shire team",
+  "HERO_IMAGE": "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=xuugADIp9US_pREKViRyvw&cb_client=search.gws-prod.gps&w=408&h=240&yaw=142.839&pitch=0&thumbfov=100",
+
+  "TRUST_BADGE_1": "20+ years experience",
+  "TRUST_BADGE_2": "Master Plumbers NSW",
+
+  "SERVICES_HEADING": "Plumbing work handled properly",
+  "SERVICES_SUBTEXT": "From urgent repairs to fit outs and renovations, the same local team covers the core jobs Shire customers search for.",
+  "SERVICE_1_ICON": "GAS", "SERVICE_1_TITLE": "Gas fitting", "SERVICE_1_TEXT": "Gas fitting, appliance connections and related plumbing work for homes and businesses.",
+  "SERVICE_2_ICON": "H2O", "SERVICE_2_TITLE": "Hot water, taps and toilets", "SERVICE_2_TEXT": "Repairs, supply and installation for hot water systems, taps, toilets and everyday plumbing faults.",
+  "SERVICE_3_ICON": "REN", "SERVICE_3_TITLE": "Renovations and roof plumbing", "SERVICE_3_TEXT": "Bathroom, kitchen and laundry renovations plus metal roofing, gutters, downpipes and backflow prevention.",
+
+  "ABOUT_HEADING": "A local team customers can actually recognise",
+  "ABOUT_TEXT": "Cronulla Plumbing Services presents itself as a reliable, friendly and honest Sutherland Shire plumbing company with more than 20 years in residential, commercial, industrial and domestic work.",
+  "ABOUT_POINT_1": "Residential, commercial and industrial plumbing",
+  "ABOUT_POINT_2": "Broken water, waste and stormwater pipe repairs",
+  "ABOUT_POINT_3": "New homes, units, developments and renovations",
+  "ABOUT_IMAGE": "https://www.cronullaplumbingservices.com.au/images/master-plumbers.gif",
+
+  "REVIEW_1_TEXT": "Google profile shows a 5.0 rating across 3 reviews; individual review text was not available from accessible public sources in this runtime.", "REVIEW_1_NAME": "Google Business listing",
+  "REVIEW_2_TEXT": "Use this slot for a verified Google review once a human copies it from the live Google Business panel.", "REVIEW_2_NAME": "Content QA",
+  "REVIEW_3_TEXT": "No source-site customer testimonial text was found, so this draft avoids inventing customer quotes.", "REVIEW_3_NAME": "Source note",
+
+  "CTA_HEADLINE": "Need a local Shire plumber?",
+  "CTA_SUBTEXT": "Call Warren for a direct quote and a practical next step.",
+
+  "PHONE_placeholder_ordering_note": "PHONE_RAW is used in tel: links (no spaces, +61...); PHONE_DISPLAY is what humans see."
+}
