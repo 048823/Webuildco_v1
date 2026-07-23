@@ -17,21 +17,29 @@
     email: { id: "email", label: "Email", mode: "draft_only" },
     whatsapp: { id: "whatsapp", label: "WhatsApp", mode: "draft_only" },
   };
+  const DEFAULT_NOW = "2026-07-23T02:00:00.000Z";
+  const CHASE_STATUSES = new Set(["missing", "requested", "expired"]);
 
   const clone = (value) => JSON.parse(JSON.stringify(value));
   const parseDate = (value) => new Date(String(value).includes("T") ? value : `${value}T00:00:00.000Z`);
   const daysUntil = (date, now) => Math.ceil((parseDate(date) - parseDate(now)) / DAY);
   const daysSince = (date, now) => Math.max(0, Math.floor((parseDate(now) - parseDate(date)) / DAY));
-  const missingDocuments = (item) => (item.documents || []).filter((doc) => doc.required && doc.status !== "received");
-  const receivedDocuments = (item) => (item.documents || []).filter((doc) => doc.status === "received");
+  const missingDocuments = (item) => (item.documents || []).filter((doc) => doc.required && CHASE_STATUSES.has(doc.status));
+  const receivedDocuments = (item) => (item.documents || []).filter((doc) => doc.status === "received" || doc.status === "review_required");
   const dueText = (date) => new Intl.DateTimeFormat("en-AU", { day: "2-digit", month: "short" }).format(parseDate(date));
   const itemLabel = (item) => item.vertical === "hr" ? "candidate" : "client";
   const ownerLabel = (item) => item.vertical === "hr" ? "recruiter" : "adviser";
   const syntheticId = (prefix, parts) => `${prefix}-${parts.filter(Boolean).join("-")}`.toLowerCase().replace(/[^a-z0-9-]+/g, "-");
 
-  function seedDocumentChaserState() {
+  function seedDocumentChaserState(data, options = {}) {
+    if (data?.cases?.length) return seedFromBackOfficeData(data, options);
+    return fallbackDocumentChaserState(options.now || DEFAULT_NOW);
+  }
+
+  function fallbackDocumentChaserState(now = DEFAULT_NOW) {
     return {
-      now: "2026-07-23T02:00:00.000Z",
+      now,
+      activeVertical: "migration",
       activeCaseId: "mig-001",
       cases: [
         {
@@ -83,6 +91,96 @@
     };
   }
 
+  function seedFromBackOfficeData(data, options = {}) {
+    const now = options.now || DEFAULT_NOW;
+    const verticalConfigs = options.verticalConfigs || {};
+    const people = new Map((data.people || []).map((person) => [person.id, person]));
+    const threads = data.follow_up_threads || [];
+    const deadlines = data.deadlines || [];
+    const auditEvents = data.audit_events || [];
+    const cases = (data.cases || []).map((unit) => {
+      const config = verticalConfigs[unit.vertical] || {};
+      const checklist = new Map((config.checklist || []).map((row) => [row.key, row]));
+      const subject = people.get(unit.subject_person_id);
+      const owner = people.get(unit.owner_person_id);
+      const thread = threads.find((row) => row.case_id === unit.id && row.status !== "closed") || threads.find((row) => row.case_id === unit.id);
+      const unitDeadlines = deadlines.filter((row) => row.case_id === unit.id).map((row) => ({
+        id: row.id,
+        tenantId: row.tenant_id,
+        caseId: row.case_id,
+        label: row.label,
+        dueDate: row.due_on,
+        status: row.status,
+        severity: row.severity || (row.status === "overdue" ? "high" : row.status === "at_risk" ? "medium" : "low"),
+      }));
+      const openDeadline = [...unitDeadlines].filter((row) => row.status !== "met").sort((a, b) => parseDate(a.dueDate) - parseDate(b.dueDate))[0] || unitDeadlines[0];
+      const documents = (data.document_requests || []).filter((doc) => doc.case_id === unit.id).map((doc) => {
+        const item = checklist.get(doc.checklist_key);
+        return {
+          id: doc.id,
+          tenantId: doc.tenant_id,
+          caseId: doc.case_id,
+          label: item?.label || doc.checklist_key,
+          required: doc.status !== "waived",
+          status: doc.status,
+          dueDate: doc.due_on,
+          receivedAt: doc.received_at,
+          lastRequestedAt: doc.last_requested_at,
+          followUpCount: followUpCount(thread),
+        };
+      });
+      const item = {
+        id: unit.id,
+        tenantId: unit.tenant_id,
+        vertical: unit.vertical,
+        reference: unit.reference,
+        title: `${subject?.display_name || unit.reference} - ${unit.title || config.unit?.singular || "file"}`,
+        personName: subject?.display_name || unit.reference,
+        ownerName: owner?.display_name || "Demo owner",
+        pipelineState: unit.pipeline_state,
+        pipelineLabel: config.pipelineLabels?.[unit.pipeline_state] || unit.pipeline_state,
+        readyLabel: config.readyLabel || "Ready for review",
+        deadline: openDeadline?.dueDate || unit.opened_on,
+        deadlines: unitDeadlines,
+        lastContactAt: thread?.last_contact_at || (unit.opened_on ? `${unit.opened_on}T00:00:00.000Z` : now),
+        preferredChannel: PROVIDERS[thread?.channel] ? thread.channel : "email",
+        followUpCount: followUpCount(thread),
+        documents,
+        auditEvents: auditEvents.filter((event) => event.case_id === unit.id).map((event) => ({
+          id: event.id,
+          tenantId: event.tenant_id,
+          caseId: event.case_id,
+          actor: event.actor,
+          type: event.action,
+          decision: event.action.replace(/_/g, " "),
+          reason: event.reason,
+          createdAt: event.created_at,
+          sentExternally: false,
+        })),
+      };
+      item.status = initialStatus(item, thread);
+      if (!item.auditEvents.length) {
+        item.auditEvents = [audit(item.tenantId, item.id, "seeded_case", "Synthetic demo record loaded", "Shared back-office fixture; no external data used.", now)];
+      }
+      return item;
+    });
+    const active = cases.find((item) => missingDocuments(item).length) || cases[0];
+    return { now, activeVertical: active?.vertical || "migration", activeCaseId: active?.id, cases };
+  }
+
+  function followUpCount(thread) {
+    if (!thread) return 0;
+    if (thread.status === "escalated") return 2;
+    if (thread.status === "waiting") return 1;
+    return 0;
+  }
+
+  function initialStatus(item, thread) {
+    if (!missingDocuments(item).length) return "ready_for_review";
+    if (thread?.status === "escalated" || (item.deadlines || []).some((row) => row.status === "overdue")) return "escalation_flagged";
+    return item.vertical === "hr" ? "waiting_on_candidate" : "waiting_on_client";
+  }
+
   function audit(tenantId, caseId, type, decision, reason, createdAt, extra = {}) {
     return {
       id: syntheticId("audit", [caseId, type, createdAt || new Date().toISOString()]),
@@ -102,7 +200,8 @@
     const nearestDue = Math.min(...missing.map((doc) => daysUntil(doc.dueDate, now)));
     const highestFollowUps = Math.max(...missing.map((doc) => doc.followUpCount || 0), item.followUpCount || 0);
     const reasons = [];
-    if (nearestDue <= 3) reasons.push(`nearest missing document is due in ${nearestDue} day${nearestDue === 1 ? "" : "s"}`);
+    if (nearestDue < 0) reasons.push(`nearest missing document is ${Math.abs(nearestDue)} day${nearestDue === -1 ? "" : "s"} overdue`);
+    else if (nearestDue <= 3) reasons.push(`nearest missing document is due in ${nearestDue} day${nearestDue === 1 ? "" : "s"}`);
     if (highestFollowUps >= 2) reasons.push(`${highestFollowUps} previous follow-up${highestFollowUps === 1 ? "" : "s"}`);
     return reasons;
   }
@@ -114,6 +213,8 @@
     const received = receivedDocuments(item);
 
     if (!missing.length) {
+      const reviewCount = (item.documents || []).filter((doc) => doc.status === "review_required").length;
+      const headline = reviewCount ? "Ready for review" : item.readyLabel;
       return {
         id: syntheticId("action", [item.id, "ready", now]),
         tenantId: item.tenantId,
@@ -122,11 +223,11 @@
         status: "ready_for_review",
         channel,
         severity: "ok",
-        headline: item.readyLabel,
+        headline,
         missing,
         received,
         draft: null,
-        auditEvent: audit(item.tenantId, item.id, "ready_for_review", item.readyLabel, "All required documents are marked received.", now),
+        auditEvent: audit(item.tenantId, item.id, "ready_for_review", headline, reviewCount ? `${reviewCount} document${reviewCount === 1 ? "" : "s"} need human review before outcome.` : "All required documents are marked received.", now),
       };
     }
 
@@ -235,6 +336,7 @@
     return (state.cases || []).every((item) =>
       Boolean(item.tenantId) &&
       (item.documents || []).every((doc) => doc.tenantId === item.tenantId && doc.caseId === item.id) &&
+      (item.deadlines || []).every((deadline) => deadline.tenantId === item.tenantId && deadline.caseId === item.id) &&
       (item.auditEvents || []).every((event) => event.tenantId === item.tenantId && event.caseId === item.id && event.sentExternally === false)
     );
   }

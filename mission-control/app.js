@@ -1,3 +1,6 @@
+import { demoBackOfficeData } from "./back-office/demo-data.mjs";
+import { PIPELINE_STATES, VERTICAL_CONFIGS, summarizeVertical } from "./back-office/model.mjs";
+
 /* Mission Control — client renderer. Board data comes from data/board.json;
    the APIs and Skills sections are real inventory of this workspace's tooling. */
 
@@ -55,18 +58,32 @@ const statusCls = (s) => ({
   cancelled: "bad",
   failed: "bad",
   escalation_flagged: "bad",
+  expired: "bad",
+  overdue: "bad",
   in_progress: "warn",
   in_review: "warn",
   waiting_on_client: "warn",
   waiting_on_candidate: "warn",
   document_received_partial: "warn",
+  missing: "warn",
+  requested: "warn",
+  review_required: "warn",
+  at_risk: "warn",
   drafted_email: "info",
   drafted_whatsapp: "info",
+  intake: "info",
+  document_collection: "info",
+  compliance_check: "info",
+  on_track: "info",
   ready_for_review: "ok",
+  ready_outcome: "ok",
+  received: "ok",
+  met: "ok",
   todo: "info",
   planned: "info",
   backlog: "",
 }[String(s || "").toLowerCase()] || "");
+const labelize = (s) => String(s || "").replace(/_/g, " ");
 const fmtDate = (s) => {
   if (!s) return "—";
   const d = new Date(s);
@@ -84,7 +101,12 @@ let DATA = {};
 let CREATIVE = {}; // data/creative.json — owned by ECD, drives the Creative section
 let BRIEFS = []; // data/briefs.json — generated from Board Reports / Daily Logs
 let DOC_AGENT_STATE = null;
-const DOC_AGENT_KEY = "mc_doc_agent_state_v1";
+const DOC_AGENT_KEY = "mc_doc_agent_state_v2";
+const DOC_AGENT_SOURCE = "shared_back_office_demo_v1";
+const BACK_OFFICE_VERTICALS = Object.values(VERTICAL_CONFIGS);
+const BACK_OFFICE_SUMMARIES = new Map(
+  BACK_OFFICE_VERTICALS.flatMap((vertical) => summarizeVertical(demoBackOfficeData, vertical.id).map((row) => [row.id, row]))
+);
 const hasLiveBlogs = () => Boolean(DATA.multica?.live && DATA.multica?.blogs?.live);
 const blogsData = () => hasLiveBlogs() ? DATA.multica.blogs : (DATA.blogs || { columns: [], cards: [] });
 const hasLiveLeads = () => Boolean(DATA.multica?.live && DATA.multica?.leads?.live);
@@ -300,9 +322,9 @@ function loadDocAgentState() {
   if (!api) return { cases: [] };
   try {
     const saved = JSON.parse(localStorage.getItem(DOC_AGENT_KEY) || "null");
-    if (saved?.cases?.length) return saved;
+    if (saved?.source === DOC_AGENT_SOURCE && saved?.cases?.length === demoBackOfficeData.cases.length) return saved;
   } catch {}
-  return api.seedDocumentChaserState();
+  return { source: DOC_AGENT_SOURCE, ...api.seedDocumentChaserState(demoBackOfficeData, { verticalConfigs: VERTICAL_CONFIGS }) };
 }
 
 function saveDocAgentState() {
@@ -319,35 +341,49 @@ function setDocAgentState(next) {
   saveDocAgentState();
 }
 
+function docContext(state) {
+  const allCases = state.cases || [];
+  const selected = allCases.find((item) => item.id === state.activeCaseId);
+  const vertical = state.activeVertical || selected?.vertical || BACK_OFFICE_VERTICALS[0]?.id || "migration";
+  const visibleCases = allCases.filter((item) => item.vertical === vertical);
+  const active = visibleCases.find((item) => item.id === state.activeCaseId) || visibleCases[0] || allCases[0];
+  return { allCases, visibleCases, active, vertical, config: VERTICAL_CONFIGS[active?.vertical || vertical] || {} };
+}
+
 function renderDocChaser() {
   const api = docAgent();
   if (!api) return `<div class="card"><p class="muted">Document simulator unavailable.</p></div>`;
   const state = currentDocAgentState();
-  const cases = state.cases || [];
-  const active = cases.find((item) => item.id === state.activeCaseId) || cases[0];
+  const { allCases, visibleCases, active, vertical, config } = docContext(state);
   if (!active) return `<div class="card"><p class="muted">No demo cases loaded.</p></div>`;
 
   const missing = api.missingDocuments(active);
   const action = active.lastAction || api.decideNextAction(active, { now: state.now, channel: active.preferredChannel });
   const firstMissing = missing[0];
-  const totalMissing = cases.reduce((sum, item) => sum + api.missingDocuments(item).length, 0);
-  const flagged = cases.filter((item) => item.status === "escalation_flagged" || item.lastAction?.type === "escalate").length + (action.type === "escalate" && active.status !== "escalation_flagged" ? 1 : 0);
+  const totalMissing = allCases.reduce((sum, item) => sum + api.missingDocuments(item).length, 0);
+  const ready = allCases.filter((item) => !api.missingDocuments(item).length).length;
+  const flagged = new Set(allCases.filter((item) => item.status === "escalation_flagged" || item.lastAction?.type === "escalate" || api.decideNextAction(item, { now: state.now, channel: item.preferredChannel }).type === "escalate").map((item) => item.id)).size;
   const events = [...(active.auditEvents || [])].reverse();
+  const summary = BACK_OFFICE_SUMMARIES.get(active.id);
 
-  return `<div class="section-note"><b>Draft-only:</b> Email and WhatsApp adapters create internal drafts. No external sends or production credentials are used.</div>
+  return `<div class="section-note"><b>Demo data:</b> Shared synthetic fixtures only. Email and WhatsApp providers stay in draft-only stub mode.</div>
+  <div class="tabs">${BACK_OFFICE_VERTICALS.map((item) => `
+    <button class="tab ${item.id === vertical ? "active" : ""}" data-doc-agent="vertical" data-vertical="${esc(item.id)}">${esc(item.name)}</button>
+  `).join("")}</div>
   <div class="grid g4">
-    ${statCard("Demo files", cases.length, "synthetic tenants")}
+    ${statCard("Demo files", allCases.length, "6 shared records")}
     ${statCard("Missing docs", totalMissing, "required items")}
     ${statCard("Escalations", flagged, "deadline or repeat chase")}
-    ${statCard("Provider mode", "Stub", "draft only")}
+    ${statCard("Ready files", ready, "review or outcome")}
   </div>
   <div class="doc-shell" style="margin-top:16px">
     <div class="card">
-      <h3>Cases</h3>
-      <div class="case-list">${cases.map((item) => {
+      <h3>${esc(config.name || "Demo records")} <span class="pill">${visibleCases.length}</span></h3>
+      <div class="case-list">${visibleCases.map((item) => {
         const count = api.missingDocuments(item).length;
+        const itemSummary = BACK_OFFICE_SUMMARIES.get(item.id);
         return `<button class="case-btn ${item.id === active.id ? "active" : ""}" data-doc-agent="select" data-case-id="${esc(item.id)}">
-          <span><b>${esc(item.title)}</b><span>${esc(item.ownerName)} · ${esc(item.vertical === "hr" ? "HR" : "Migration")}</span></span>
+          <span><b>${esc(item.personName)}</b><span>${esc(item.reference)} · ${esc(itemSummary?.pipeline_label || item.pipelineLabel)}</span></span>
           <span class="badge ${count ? "warn" : "ok"}">${count ? `${count} missing` : "clear"}</span>
         </button>`;
       }).join("")}</div>
@@ -355,18 +391,21 @@ function renderDocChaser() {
     </div>
     <div class="doc-main">
       <div class="card">
-        <h3>${esc(active.title)} <span class="badge ${statusCls(active.status)}">${esc(active.status.replace(/_/g, " "))}</span></h3>
+        <h3>${esc(active.reference)} · ${esc(active.personName)} <span class="badge ${statusCls(active.status)}">${esc(labelize(active.status))}</span></h3>
         <div class="doc-meta">
           <span>Tenant: ${esc(active.tenantId)}</span>
+          <span>Owner: ${esc(active.ownerName)}</span>
+          <span>${esc(config.unit?.reference || "Reference")}: ${esc(active.reference)}</span>
           <span>Deadline: ${esc(fmtDay(active.deadline))}</span>
           <span>Last contact: ${esc(fmtDate(active.lastContactAt))}</span>
         </div>
+        ${renderDocPipeline(active, config)}
         <div class="doc-list">${active.documents.map((doc) => {
           const dueIn = api.daysUntil(doc.dueDate, state.now);
           const cls = doc.status === "received" ? "ok" : dueIn <= 3 ? "bad" : "warn";
           return `<div class="doc-row">
             <span><b>${esc(doc.label)}</b><span>Due ${esc(fmtDay(doc.dueDate))} · ${doc.followUpCount || 0} previous follow-up${(doc.followUpCount || 0) === 1 ? "" : "s"}</span></span>
-            <span class="badge ${cls}">${esc(doc.status.replace(/_/g, " "))}</span>
+            <span class="badge ${statusCls(doc.status) || cls}">${esc(labelize(doc.status))}</span>
           </div>`;
         }).join("")}</div>
       </div>
@@ -382,16 +421,44 @@ function renderDocChaser() {
           ${renderDraft(action)}
         </div>
         <div class="card">
-          <h3>Audit trail <span class="pill">${events.length}</span></h3>
-          <div class="audit-list">${events.map((event) => `
-            <div class="audit-row">
-              <span class="badge ${event.type === "escalate" ? "bad" : event.type === "mock_reply_received" ? "ok" : "info"}">${esc(event.type.replace(/_/g, " "))}</span>
-              <div><b>${esc(event.decision)}</b><span>${esc(event.reason)}</span><em>${esc(fmtDate(event.createdAt))} · external send: ${event.sentExternally ? "yes" : "no"}</em></div>
-            </div>`).join("")}</div>
+          <h3>Deadline / compliance</h3>
+          ${renderDeadlinePanel(active, config, summary)}
         </div>
+      </div>
+      <div class="card" style="margin-top:16px">
+        <h3>Audit trail <span class="pill">${events.length}</span></h3>
+        <div class="audit-list">${events.map((event) => `
+          <div class="audit-row">
+            <span class="badge ${event.type === "escalate" ? "bad" : event.type === "mock_reply_received" ? "ok" : "info"}">${esc(labelize(event.type))}</span>
+            <div><b>${esc(labelize(event.decision))}</b><span>${esc(event.reason)}</span><em>${esc(fmtDate(event.createdAt))} · external send: ${event.sentExternally ? "yes" : "no"}</em></div>
+          </div>`).join("")}</div>
       </div>
     </div>
   </div>`;
+}
+
+function renderDocPipeline(active, config) {
+  const labels = config.pipelineLabels || {};
+  return `<div class="pipeline-steps">${PIPELINE_STATES.map((step) => {
+    const done = PIPELINE_STATES.findIndex((row) => row.id === step.id) < PIPELINE_STATES.findIndex((row) => row.id === active.pipelineState);
+    const current = step.id === active.pipelineState;
+    return `<span class="${done ? "done" : ""} ${current ? "current" : ""}">${esc(labels[step.id] || step.label)}</span>`;
+  }).join("")}</div>`;
+}
+
+function renderDeadlinePanel(active, config, summary) {
+  const deadlines = active.deadlines || [];
+  const rows = deadlines.length ? deadlines.map((deadline) => `
+    <div class="deadline-row">
+      <span><b>${esc(deadline.label)}</b><span>${esc(fmtDay(deadline.dueDate))}</span></span>
+      <span class="badge ${statusCls(deadline.status)}">${esc(labelize(deadline.status))}</span>
+    </div>`).join("") : `<p class="muted tiny">No open deadlines.</p>`;
+  const constraints = (config.agentConstraints || []).map((item) => `<li>${esc(item)}</li>`).join("");
+  return `${rows}
+    <div class="compliance-box">
+      <div><b>${esc(summary?.ready_label || active.readyLabel)}</b><span>${esc(summary?.pipeline_label || active.pipelineLabel)}</span></div>
+      ${constraints ? `<ul>${constraints}</ul>` : ""}
+    </div>`;
 }
 
 function renderDraft(action) {
@@ -409,13 +476,18 @@ function handleDocAgent(target) {
   const state = currentDocAgentState();
   const action = target.dataset.docAgent;
   if (action === "select") {
-    setDocAgentState({ ...state, activeCaseId: target.dataset.caseId });
+    const item = (state.cases || []).find((row) => row.id === target.dataset.caseId);
+    setDocAgentState({ ...state, activeCaseId: target.dataset.caseId, activeVertical: item?.vertical || state.activeVertical });
+  } else if (action === "vertical") {
+    const activeVertical = target.dataset.vertical;
+    const active = (state.cases || []).find((row) => row.vertical === activeVertical);
+    setDocAgentState({ ...state, activeVertical, activeCaseId: active?.id || state.activeCaseId });
   } else if (action === "draft") {
     setDocAgentState(api.runAgent(state, target.dataset.caseId, { channel: target.dataset.channel }));
   } else if (action === "reply") {
     setDocAgentState(api.applyMockReply(state, target.dataset.caseId, target.dataset.docId));
   } else if (action === "reset") {
-    setDocAgentState(api.seedDocumentChaserState());
+    setDocAgentState({ source: DOC_AGENT_SOURCE, ...api.seedDocumentChaserState(demoBackOfficeData, { verticalConfigs: VERTICAL_CONFIGS }) });
   }
   go("doc-chaser");
 }
@@ -677,6 +749,11 @@ function go(raw = "overview") {
 }
 
 async function loadMultica() {
+  const localStatic = ["localhost", "127.0.0.1", "::1"].includes(location.hostname) && location.port === "8000";
+  if (localStatic) {
+    DATA.multica = { ...(DATA.multica || {}), live: false, error: "Local static preview; live Multica data loads through the Worker." };
+    return;
+  }
   try {
     const res = await fetch("/mission-control/api/multica", { cache: "no-store" });
     const live = await res.json();
