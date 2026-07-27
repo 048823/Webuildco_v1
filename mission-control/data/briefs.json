@@ -1,5 +1,146 @@
 [
   {
+    "id": "morning-2026-07-28",
+    "type": "morning",
+    "period_label": "Tue, 28 Jul",
+    "generated_at": "2026-07-27T22:07:45Z",
+    "wins": [
+      "Launch chain verified green end-to-end. After you pressed launch at 17:21, CRO root-caused your 20:49 greeting bug by 21:42 — Instantly doesn't process single-brace spintax {a|b} — fixed all 6 variants across 3 steps via API, re-verified 0 braces, and",
+      "Pre-send gate PASSED at 03:15 (live API checks): Active · 40/day · Mon–Fri 08:00–15:00 · stop-on-reply ON · tracking OFF · 641 leads · all 16 inboxes at warmup score 100",
+      "06:00 icebreaker run delivered: 40 best-fit PRIMARY leads personalized (each traced to a real URL, no fabrication), ~601 ride the strong fallback opener. One discovery: yesterday's icebreaker pushes were wiped when the leads were re-uploaded, so this was",
+      "5/5 overnight runs completed — second consecutive clean night (runtime stayed awake): send-monitoring runbook + reply-conversion playbook (WEB-281), runtime loss ledger rebased (WEB-196), CI deploy-workflow spec (WEB-123), morning-chain pre-flight that",
+      "Optora: the A$9,000 + A$900/mo pricing pack was in your hands for the D-Day meeting. No outcome posted on WEB-45 yet — the follow-up pack skipped five times overnight per spec and is now staged (WEB-324)",
+      "Failed/incomplete: the Kimi K3 hook died at the publish gate (forecast, ratified by silence) — the one plainly stated miss. Content cadence still gated. WEB-196 nod still pending; yesterday it cost 5 of 14 first-shift slots including your bug-report window"
+    ],
+    "next3": [
+      "First live send window verified clean (WEB-325 — started)",
+      "Optora outcome → follow-up pack (WEB-324 staged)",
+      "Reliability nods: WEB-196 migration + reply-sweep"
+    ]
+  },
+  {
+    "id": "morning-2026-07-27",
+    "type": "morning",
+    "period_label": "Mon, 27 Jul",
+    "generated_at": "2026-07-27T18:08:52Z",
+    "wins": [
+      "Campaign is verified send-ready. Live API checks at 03:15: Active, 40/day, Mon–Fri 08:00–15:00, stop-on-reply ON, tracking OFF, 0 spintax braces across all 6 variants, all 16 inboxes ≥90 warmup. The 20:49 greeting bug is fixed and re-verified; broken",
+      "Expectations for today: 40 sends spread across 08:00–15:00. Normal day 1 = 0–2 replies, 0–1 bounces, zero complaints. Real replies arrive days 2–7. The runbook's PAUSE triggers (≥3 bounces, any complaint, any render defect, warmup drop on 3+ inboxes) are",
+      "Reply speed is the conversion lever — <5 min response = 21× more likely to qualify; 78% of buyers pick the first responder. Playbook with copy-paste skeletons is on WEB-281; interested replies deserve a phone answer in <15 min over a polished one at 5 pm",
+      "Reliability math got sharper: 37% of all scheduled slots lost since 16-Jul to one failure class (host sleep). Yesterday it cost 5/14 first-shift slots including your 20:49 bug-report window. Today it guards live sends"
+    ],
+    "next3": [
+      "08:30 first-send verification (runbook): confirm sends firing, pull 2–3 SENT messages, greeting renders clean, 0 bounces",
+      "Optora — chase the outcome; a live deal beats 641 cold leads",
+      "WEB-196 + reply-sweep nods — two words, both reliability-critical"
+    ],
+    "industry_pulse": [
+      "Host sleep 06:00–08:00 would silently kill the icebreaker run and the re-verify — while Instantly sends at 08:00 regardless (external). No agent-side mitigation exists without the WEB-196 migration. This is the single highest-leverage nod on the board",
+      "Reply detection has no scheduled owner (found 04:00). Day 1–2 fallback: your Instantly Unibox on mobile. Cheap permanent fix below",
+      "Residual, accepted: ~5 h drift window between the 03:15 gate check and 08:00 — agents are locked out of campaign state, so drift probability is low"
+    ]
+  },
+  {
+    "id": "morning-2026-07-26",
+    "type": "morning",
+    "period_label": "Sun, 26 Jul",
+    "generated_at": "2026-07-26T18:11:37Z",
+    "wins": [],
+    "next3": [
+      "Review current blockers",
+      "Pick the highest-leverage next action",
+      "Update Mission Control after execution"
+    ],
+    "industry_pulse": [
+      "Launch-morning thundering herd (material): 9 scheduled runs hit 07:00–09:00 today on the still-unfixed WEB-196 host. One host sleep in that window kills the standup, the content verify, and the board-card cycle — on the day the CSV gate closes at 14:00",
+      "Calendar, not agents: every agent-side task is done. The only things that can now slip Monday are board inputs (CSV by 14:00; silence = Migration slips Tue 28-Jul, ratified)",
+      "Minor: legacy \"[AI SDR]\" Instantly campaign reads accounts_unhealthy — not sending, not blocking; CRO to archive post-launch"
+    ]
+  },
+  {
+    "id": "morning-2026-07-25",
+    "type": "morning",
+    "period_label": "Sat, 25 Jul",
+    "generated_at": "2026-07-24T22:08:36Z",
+    "wins": [
+      "Monday activation runbook (WEB-281 b9d70a72, linked from WEB-141): CSV drop → clean → test batch → read-back → GO → activation → week-1 ramp, with abort criteria at every step. Two gaps closed: GO-without-billing-confirm = no activation; day-1 kill",
+      "Fallback lead sources (WEB-281): no existing workspace list is email-viable — the real zero-spend fallback is compiling from public registers. Ranked: #1 OMARA (Migration, verified live), #2 RCSA (HR, manual-paced), #3 Seek advertisers. Real bottleneck is",
+      "Run-ledger audit (WEB-196 1ffc7ab6): Thursday's 21:00 slot confirmed lost (skipped — scheduler fired, runtime didn't answer; host-sleep class). Verified loss corrected to 53/170 slots = 31% since 16-Jul (supersedes the \"≥47 since 1-Jul\" figure; ledgers",
+      "Idea 2 truthful reframes (WEB-274): Option A \"missed-call maths\" (411 Locals study) and Option B \"87% deployed, 12% satisfied\" (AssemblyAI) — both citation-gated, zero fabricated data. Two circular vendor stats added to the strike list",
+      "Weekend coverage verified: all four CEO loops cron-fire 7 days/week (Sydney tz) — but the whole weekend rides on the WEB-196 host staying awake",
+      "Yesterday's EOD (WEB-285) posted on time; second shift ran 5/5 slots and delivered all four overnight research requests"
+    ],
+    "next3": [
+      "WEB-196 nod → CTO installs keep-awake fix before the weekend",
+      "A-leads CSV chase — Friday drop = comfortable branch",
+      "Idea 2 reframe pick + ONE ranked content queue (WEB-289, fires now)"
+    ]
+  },
+  {
+    "id": "morning-2026-07-24",
+    "type": "morning",
+    "period_label": "Fri, 24 Jul",
+    "generated_at": "2026-07-24T18:04:17Z",
+    "wins": [],
+    "next3": [
+      "WEB-196 nod → CTO same-day install (weekend de-risk)",
+      "CSV chase with the Sun-18:00 comfortable-branch deadline stated plainly",
+      "Idea 2 reframe pick (CMO, today)"
+    ],
+    "industry_pulse": [
+      "Weekend host-sleep window (new, actionable): CSV landing Sat/Sun needs the runtime awake — both the hourly loop and the CRO's mention-triggered run die silently if the host sleeps. 31% verified loss rate; weekends likely worse (machine unattended). WEB-196",
+      "CSV timing compounds: every day without the CSV pushes the clean/test-batch work toward the compressed Monday-14:00 branch. Fallback compile (OMARA) is manual-paced — it needs a Sunday-evening decision, not a Monday-morning one",
+      "Content cadence broken: #5/#6 still unpublished; Idea 2 unblocks only if CMO picks a reframe today"
+    ]
+  },
+  {
+    "id": "morning-2026-07-22",
+    "type": "morning",
+    "period_label": "Wed, 22 Jul",
+    "generated_at": "2026-07-22T18:07:21Z",
+    "wins": [
+      "WEB-141 (P0): No-GO re-plan memo pre-written and staged on WEB-141 — activates only if GO B stays silent past today 18:00 AEST. Core finding: all three re-plan options terminate in the same constraint — a Johan action. The board answers tooling asks",
+      "Finance (P1): ABR public record: WeBuild Co Pty Ltd GST-registered from 01-Jul-2026 → the 28-Jul BAS deadline is NOT live (no Q4 registration; first BAS due 28-Oct). Pressure off. New live obligation found instead: invoices since 1-Jul must charge GST —",
+      "Call sheet (P1): 20 domains re-verified live on WEB-221 — 15 fresh (incl. row 1's hacked-site opener, spam links still live), 5 must not be dialled on the recorded defect (rebuilds/fixed sites; 3 of those re-angled to stronger pitches, e.g. Big Sky's WP",
+      "Optora (P2): Day-22 revival package on WEB-45 — no negative signals, silence is ours not theirs; their footprint grew (22 cities listed vs the June brief's stats — brief flagged outdated); no careers page = contractor-bench thesis confirmed. 3-line",
+      "Citation pack (P2): Posted on WEB-244 — 3–5 vintage-labelled citations per launch-week post + #5/#6 mapping. Caught two factual errors before publication: the \"5% fully enabled\" stat was misattributed to NAB (it's Deloitte Nov-2025); the Salesforce 9k→5k"
+    ],
+    "next3": [
+      "Lead with the GO B countdown — expires 18:00 today. Both branches are now fully staged: GO → WEB-163 build night + dial-ready call sheet; no-GO → the WEB-141 memo rules at 24-Jul standup, zero nights lost",
+      "Verify the first daily content run on the fixed CONTENT_HOME config (WEB-251 fix meets production this morning) and triage today's WEB-247/248-successor drops",
+      "Push #5/#6 approval — with the citation pack, approval-to-final-copy is now same-hour, not same-day"
+    ],
+    "industry_pulse": [
+      "Pipeline QA gap: a misattributed stat survived TrendScout → CEO triage → CMO fold-in without source verification. One community-note on a launch post would cost more than the whole content engine has earned. Fix: make citation verification explicit in",
+      "Runtime: 5/5 tonight is luck, not cure — yesterday cost 12 dead slots. WEB-196 remains a one-nod fix",
+      "Copy risk: Posts A/B carry the WEB-247 brand flag (leverage framing, tagline stays out pending WEB-195 #3)"
+    ]
+  },
+  {
+    "id": "morning-2026-07-23",
+    "type": "morning",
+    "period_label": "Thu, 23 Jul",
+    "generated_at": "2026-07-22T18:07:19Z",
+    "wins": [],
+    "next3": [
+      "Review current blockers",
+      "Pick the highest-leverage next action",
+      "Update Mission Control after execution"
+    ]
+  },
+  {
+    "id": "morning-2026-07-21",
+    "type": "morning",
+    "period_label": "Tue, 21 Jul",
+    "generated_at": "2026-07-20T18:06:56Z",
+    "wins": [],
+    "next3": [
+      "Review current blockers",
+      "Pick the highest-leverage next action",
+      "Update Mission Control after execution"
+    ]
+  },
+  {
     "id": "weekly-2026-07-20",
     "type": "weekly",
     "period_label": "Week of Mon, 20 Jul",
