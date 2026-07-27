@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Notes from the Build — WeBuild Co</title>
-<meta name="description" content="Working notes from an Australian AI engineering studio: what agents are, what they cost to run, how they earn autonomy, and why ownership beats renting.">
-<link rel="canonical" href="https://www.webuildco.com.au/notes/">
-<meta property="og:type" content="website">
+<title>What a Missed Call Costs an AU Service Business (Payback Math) | WeBuild Co</title>
+<meta name="description" content="A missed call usually costs a whole job, because callers don't leave voicemail — they call the next business. The payback math, and when a voice agent is worth it.">
+<link rel="canonical" href="https://www.webuildco.com.au/notes/missed-call-cost/">
+<meta property="og:type" content="article">
 <meta property="og:site_name" content="WeBuild Co">
-<meta property="og:title" content="Notes from the Build — WeBuild Co">
-<meta property="og:description" content="Working notes from an Australian AI engineering studio: what agents are, what they cost to run, how they earn autonomy, and why ownership beats renting.">
-<meta property="og:url" content="https://www.webuildco.com.au/notes/">
+<meta property="og:title" content="What a Missed Call Costs an AU Service Business (Payback Math) | WeBuild Co">
+<meta property="og:description" content="A missed call usually costs a whole job, because callers don't leave voicemail — they call the next business. The payback math, and when a voice agent is worth it.">
+<meta property="og:url" content="https://www.webuildco.com.au/notes/missed-call-cost/">
 <meta property="og:image" content="https://www.webuildco.com.au/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -25,7 +25,7 @@
   gtag('js', new Date());
   gtag('config', 'G-CML7HQ61XR');
 </script>
-<script type="application/ld+json">[{"@context": "https://schema.org", "@type": "Blog", "name": "Notes from the build — WeBuild Co", "url": "https://www.webuildco.com.au/notes/", "author": {"@type": "Person", "name": "Johan Iskandar"}}, {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.webuildco.com.au/"}, {"@type": "ListItem", "position": 2, "name": "Notes", "item": "https://www.webuildco.com.au/notes/"}]}]</script>
+<script type="application/ld+json">[{"@context": "https://schema.org", "@type": "Article", "headline": "What a missed call costs an Australian service business", "description": "A missed call usually costs a whole job, because callers don't leave voicemail — they call the next business. The payback math, and when a voice agent is worth it.", "datePublished": "2026-07-27", "dateModified": "2026-07-27", "author": {"@type": "Person", "name": "Johan Iskandar", "url": "https://www.webuildco.com.au/about/"}, "publisher": {"@type": "Organization", "name": "WeBuild Co", "url": "https://www.webuildco.com.au"}}, {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.webuildco.com.au/"}, {"@type": "ListItem", "position": 2, "name": "Notes", "item": "https://www.webuildco.com.au/notes/"}, {"@type": "ListItem", "position": 3, "name": "What a missed call costs an Australian service business", "item": "https://www.webuildco.com.au/notes/missed-call-cost/"}]}, {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How much does a missed call cost a business?", "acceptedAnswer": {"@type": "Answer", "text": "Usually the value of a job, because most callers don't leave a voicemail — they dial the next business. Estimate it as missed calls per week × share that are real enquiries × your close rate × average job value × 52. For many service businesses that lands in the tens of thousands a year."}}, {"@type": "Question", "name": "Do people leave a voicemail when a business doesn't answer?", "acceptedAnswer": {"@type": "Answer", "text": "Mostly no. Everyday behaviour and research both point the same way: callers treat voicemail as a dead end and move on to the next result, especially after hours when many service enquiries happen."}}, {"@type": "Question", "name": "How do I calculate the cost of my missed calls?", "acceptedAnswer": {"@type": "Answer", "text": "Pull four numbers: missed calls per week (from your phone logs), the share that are genuine new enquiries, your close rate on live enquiries, and your average first-job value. Multiply them and annualise by 52 for a conservative yearly figure."}}, {"@type": "Question", "name": "Is an AI voice agent worth it for missed calls?", "acceptedAnswer": {"@type": "Answer", "text": "If your annual missed-call figure is well above the running cost — a fixed build plus roughly A$50–300 a month (market figures) — then usually yes. If you only miss a couple of calls a month, it isn't; the math is the filter."}}, {"@type": "Question", "name": "What is an AI voice agent for business?", "acceptedAnswer": {"@type": "Answer", "text": "A voice agent answers calls automatically, handles routine questions and bookings, captures the caller's details and job, and routes anything complex to a person — around the clock. It's the tool most often used to stop missed-call revenue leaking after hours."}}, {"@type": "Question", "name": "Can I stop missing calls without hiring a receptionist?", "acceptedAnswer": {"@type": "Answer", "text": "Yes — a voice agent answers every call 24/7 for a fraction of a front-desk wage, and a hybrid (agent for the routine, person for the complex) is common. Whether it's worth it comes down to your own missed-call math, not a slogan."}}]}]</script>
 </head>
 <body class="bg-mist text-ink overflow-x-hidden">
 <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-8 focus:left-8 focus:z-[100] bg-obsidian text-snow rounded-xl px-16 py-8 text-body">Skip to content</a>
@@ -48,78 +48,55 @@
 </nav>
 <main id="main">
 
-<header class="pt-64 pb-48">
+<header class="pt-64 pb-40">
   <div class="max-w-[1200px] mx-auto px-24">
-    <div class="max-w-[760px]">
+    <div class="max-w-[720px]">
       <div class="text-caption uppercase tracking-widest text-slate font-medium mb-16 flex items-center gap-8"><span class="w-[22px] h-px bg-pebble"></span>Notes from the build</div>
-      <h1 class="text-heading-lg md:text-display-sm font-semibold text-obsidian tracking-[-0.02em]">What's being built, honestly.</h1>
-      <p class="text-body-lg text-slate font-light mt-20 max-w-[620px]">Working notes from an AI engineering studio — definitions without hype, costs without asterisks, process without promises. New notes as the work produces them. No newsletter funnel yet; bookmark it.</p>
+      <h1 class="text-heading-lg md:text-display-sm font-semibold text-obsidian tracking-[-0.02em]">What a missed call actually costs an Australian service business</h1>
+      <p class="text-body-lg text-slate font-light mt-20">Most missed calls don't come back — they go to the next number in the search results. Here's the four-number payback math, and how to tell whether the leak is big enough to fix.</p>
+      <p class="text-[13px] text-slate mt-16">Johan Iskandar · 27 July 2026</p>
     </div>
   </div>
 </header>
-<section class="pb-64">
+<section class="pb-48">
   <div class="max-w-[1200px] mx-auto px-24">
-    <div class="max-w-[820px]"><a href="/notes/how-to-automate-admin-work/" class="block bg-snow rounded-3xl-2 p-28 shadow-subtle-2 hover:-translate-y-px hover:shadow-lg transition mb-16">
-      <div class="flex flex-wrap items-baseline justify-between gap-12">
-        <h2 class="text-heading-sm font-bold text-obsidian">How to automate admin work (a method, not a tool list)</h2>
-        <span class="text-caption text-slate">27 July 2026</span>
-      </div>
-      <p class="text-body text-slate font-light mt-8 max-w-[620px]">Sort the work, test each task against three questions, then build the smallest thing that clears the biggest pile.</p>
-    </a><a href="/notes/ai-receptionist-australia/" class="block bg-snow rounded-3xl-2 p-28 shadow-subtle-2 hover:-translate-y-px hover:shadow-lg transition mb-16">
-      <div class="flex flex-wrap items-baseline justify-between gap-12">
-        <h2 class="text-heading-sm font-bold text-obsidian">AI receptionist for Australian SMBs: what it is, what it costs</h2>
-        <span class="text-caption text-slate">27 July 2026</span>
-      </div>
-      <p class="text-body text-slate font-light mt-8 max-w-[620px]">A voice agent that answers every call, books the routine ones, and hands off the rest — the three pricing models, in AUD.</p>
-    </a><a href="/notes/missed-call-cost/" class="block bg-snow rounded-3xl-2 p-28 shadow-subtle-2 hover:-translate-y-px hover:shadow-lg transition mb-16">
-      <div class="flex flex-wrap items-baseline justify-between gap-12">
-        <h2 class="text-heading-sm font-bold text-obsidian">What a missed call actually costs an AU service business</h2>
-        <span class="text-caption text-slate">27 July 2026</span>
-      </div>
-      <p class="text-body text-slate font-light mt-8 max-w-[620px]">Most missed calls don't come back — the four-number payback math, and when a voice agent is worth it.</p>
-    </a><a href="/notes/ai-agency-vs-hiring-in-house/" class="block bg-snow rounded-3xl-2 p-28 shadow-subtle-2 hover:-translate-y-px hover:shadow-lg transition mb-16">
-      <div class="flex flex-wrap items-baseline justify-between gap-12">
-        <h2 class="text-heading-sm font-bold text-obsidian">AI agency vs hiring in-house: the 2026 AUD cost comparison</h2>
-        <span class="text-caption text-slate">14 July 2026</span>
-      </div>
-      <p class="text-body text-slate font-light mt-8 max-w-[620px]">The fully loaded cost of an admin hire vs an owned agent — in AUD, assumptions labelled, honesty included.</p>
-    </a><a href="/notes/ai-agent-vs-virtual-assistant/" class="block bg-snow rounded-3xl-2 p-28 shadow-subtle-2 hover:-translate-y-px hover:shadow-lg transition mb-16">
-      <div class="flex flex-wrap items-baseline justify-between gap-12">
-        <h2 class="text-heading-sm font-bold text-obsidian">AI agent vs virtual assistant: which do you actually need?</h2>
-        <span class="text-caption text-slate">14 July 2026</span>
-      </div>
-      <p class="text-body text-slate font-light mt-8 max-w-[620px]">Hourly person or owned system — what each is genuinely good at, and the hybrid most SMBs end up with.</p>
-    </a><a href="/notes/agent-readiness-checklist/" class="block bg-snow rounded-3xl-2 p-28 shadow-subtle-2 hover:-translate-y-px hover:shadow-lg transition mb-16">
-      <div class="flex flex-wrap items-baseline justify-between gap-12">
-        <h2 class="text-heading-sm font-bold text-obsidian">The agent-readiness checklist</h2>
-        <span class="text-caption text-slate">12 July 2026</span>
-      </div>
-      <p class="text-body text-slate font-light mt-8 max-w-[620px]">Ten questions that tell you whether a task is ready for an agent — no email gate, print and keep.</p>
-    </a><a href="/notes/what-is-an-ai-agent/" class="block bg-snow rounded-3xl-2 p-28 shadow-subtle-2 hover:-translate-y-px hover:shadow-lg transition mb-16">
-      <div class="flex flex-wrap items-baseline justify-between gap-12">
-        <h2 class="text-heading-sm font-bold text-obsidian">What an AI agent actually is (and what it isn't)</h2>
-        <span class="text-caption text-slate">12 July 2026</span>
-      </div>
-      <p class="text-body text-slate font-light mt-8 max-w-[620px]">Read, decide, act, log — the operator's definition, and the test that matters.</p>
-    </a><a href="/notes/supervised-until-proven/" class="block bg-snow rounded-3xl-2 p-28 shadow-subtle-2 hover:-translate-y-px hover:shadow-lg transition mb-16">
-      <div class="flex flex-wrap items-baseline justify-between gap-12">
-        <h2 class="text-heading-sm font-bold text-obsidian">Supervised until proven: how an agent earns autonomy</h2>
-        <span class="text-caption text-slate">12 July 2026</span>
-      </div>
-      <p class="text-body text-slate font-light mt-8 max-w-[620px]">The answer to 'what if it makes a mistake?' isn't a promise. It's a process.</p>
-    </a><a href="/notes/what-agents-cost-to-run/" class="block bg-snow rounded-3xl-2 p-28 shadow-subtle-2 hover:-translate-y-px hover:shadow-lg transition mb-16">
-      <div class="flex flex-wrap items-baseline justify-between gap-12">
-        <h2 class="text-heading-sm font-bold text-obsidian">What an AI agent actually costs to run</h2>
-        <span class="text-caption text-slate">12 July 2026</span>
-      </div>
-      <p class="text-body text-slate font-light mt-8 max-w-[620px]">Roughly A$50–300 a month for most single-workflow agents — and the lock-in cost nobody itemises.</p>
-    </a><a href="/notes/rented-vs-owned-automation/" class="block bg-snow rounded-3xl-2 p-28 shadow-subtle-2 hover:-translate-y-px hover:shadow-lg transition mb-16">
-      <div class="flex flex-wrap items-baseline justify-between gap-12">
-        <h2 class="text-heading-sm font-bold text-obsidian">Stop renting automation: the ownership argument</h2>
-        <span class="text-caption text-slate">12 July 2026</span>
-      </div>
-      <p class="text-body text-slate font-light mt-8 max-w-[620px]">Own the system layer, rent the model layer like electricity, stay free to leave.</p>
-    </a></div>
+    <div class="max-w-[720px]">
+      <p class="text-body-lg text-slate font-light mb-20 leading-[1.7]">A missed call at an Australian service business typically costs the value of a job, because most callers don't leave a voicemail — they call the next business on the list. If your average job is worth A$300 and you miss five callable enquiries a week, that's roughly <b class='font-semibold text-ink'>A$78,000 a year</b> walking out the door before you count referrals and repeat work (illustrative market math — plug in your own numbers below).</p><p class="text-body-lg text-slate font-light mb-20 leading-[1.7]">That's the payback case for answering every call, and it's why a voice agent is one of the fastest-return automations for trades, clinics, and home services. Not because AI is exciting — because the leak is large, invisible on your P&L, and fixable.</p><h2 class="text-heading-sm font-bold text-obsidian mt-40 mb-16">The math, step by step</h2><p class="text-body-lg text-slate font-light mb-20 leading-[1.7]">Four numbers turn "we miss a few calls" into a figure you can act on:</p><ul class="text-body-lg text-slate font-light mb-20 leading-[1.7] list-disc pl-24 space-y-8"><li><b class='font-semibold text-ink'>Missed calls per week</b> — check your phone logs, not your memory. Most owners underestimate this by half.</li><li><b class='font-semibold text-ink'>Share that were real enquiries</b> — strip out spam and existing customers; call it 60–70% for most service businesses.</li><li><b class='font-semibold text-ink'>Your close rate</b> on a live enquiry — the ones you do answer, how many book?</li><li><b class='font-semibold text-ink'>Average job value</b> — first job only, to stay conservative.</li></ul><p class="text-body-lg text-slate font-light mb-20 leading-[1.7]">Multiply them out and annualise: <span class='font-mono'>missed × enquiry-share × close-rate × job-value × 52</span>. The number is almost always bigger than the entire cost of fixing it. This is the same pain × volume ranking from the <a href='/notes/how-to-automate-admin-work/' class='underline decoration-fog hover:text-obsidian'>admin-work triage method</a> — missed calls just tend to win it outright for service businesses.</p><h2 class="text-heading-sm font-bold text-obsidian mt-40 mb-16">Why voicemail isn't the safety net you think</h2><p class="text-body-lg text-slate font-light mb-20 leading-[1.7]">The assumption that a missed call "comes back" is where the money hides. Modern callers treat voicemail as a dead end: research and everyday behaviour both point the same way — most people hang up on a machine and dial the next result. After hours is worse, and after-hours is exactly when a lot of service enquiries happen. A call that goes unanswered at 7pm on a Sunday isn't deferred; it's gone.</p><h2 class="text-heading-sm font-bold text-obsidian mt-40 mb-16">What closing the leak actually costs</h2><p class="text-body-lg text-slate font-light mb-20 leading-[1.7]">An <a href='/notes/ai-receptionist-australia/' class='underline decoration-fog hover:text-obsidian'>AI receptionist or voice agent</a> answers on the first ring, at any hour, captures the job, and books or routes it — for a fixed build plus roughly A$50–300 a month to run (market figures). Set that against the annual figure you just calculated. For most service businesses the running cost is a rounding error next to a single month's recovered jobs; our full structure, quoted before any build, is on the <a href='/pricing/' class='underline decoration-fog hover:text-obsidian'>pricing page</a>.</p><p class="text-body-lg text-slate font-light mb-20 leading-[1.7]">This isn't universal. If you miss two calls a month, don't build anything — the leak is too small to bother. The math is the filter: it tells trades, clinics, and <a href='/industries/solar/' class='underline decoration-fog hover:text-obsidian'>solar and home-service</a> businesses with real call volume whether the phone is quietly costing them a hire's worth of revenue, or whether they're fine as they are. Run your own numbers first; build only if they're ugly.</p>
+    </div>
+  </div>
+</section>
+
+<section class="pb-48">
+  <div class="max-w-[1200px] mx-auto px-24">
+    <div class="max-w-[720px]">
+      <h2 class="text-heading-sm font-bold text-obsidian mt-8 mb-16">Questions people actually ask</h2>
+      <div id="pageAcc">
+<div class="acc-item open border-b border-fog">
+  <button class="acc-head w-full flex items-center gap-16 py-20 cursor-pointer text-left" aria-expanded="true"><span class="text-body-lg font-semibold text-obsidian flex-1">How much does a missed call cost a business?</span><span class="chev text-slate text-[13px]" aria-hidden="true">▼</span></button>
+  <div class="acc-body"><div class="pb-24"><p class="text-body text-slate font-light max-w-[620px]">Usually the value of a job, because most callers don't leave a voicemail — they dial the next business. Estimate it as missed calls per week × share that are real enquiries × your close rate × average job value × 52. For many service businesses that lands in the tens of thousands a year.</p></div></div>
+</div>
+<div class="acc-item border-b border-fog">
+  <button class="acc-head w-full flex items-center gap-16 py-20 cursor-pointer text-left" aria-expanded="false"><span class="text-body-lg font-semibold text-obsidian flex-1">Do people leave a voicemail when a business doesn't answer?</span><span class="chev text-slate text-[13px]" aria-hidden="true">▼</span></button>
+  <div class="acc-body"><div class="pb-24"><p class="text-body text-slate font-light max-w-[620px]">Mostly no. Everyday behaviour and research both point the same way: callers treat voicemail as a dead end and move on to the next result, especially after hours when many service enquiries happen.</p></div></div>
+</div>
+<div class="acc-item border-b border-fog">
+  <button class="acc-head w-full flex items-center gap-16 py-20 cursor-pointer text-left" aria-expanded="false"><span class="text-body-lg font-semibold text-obsidian flex-1">How do I calculate the cost of my missed calls?</span><span class="chev text-slate text-[13px]" aria-hidden="true">▼</span></button>
+  <div class="acc-body"><div class="pb-24"><p class="text-body text-slate font-light max-w-[620px]">Pull four numbers: missed calls per week (from your phone logs), the share that are genuine new enquiries, your close rate on live enquiries, and your average first-job value. Multiply them and annualise by 52 for a conservative yearly figure.</p></div></div>
+</div>
+<div class="acc-item border-b border-fog">
+  <button class="acc-head w-full flex items-center gap-16 py-20 cursor-pointer text-left" aria-expanded="false"><span class="text-body-lg font-semibold text-obsidian flex-1">Is an AI voice agent worth it for missed calls?</span><span class="chev text-slate text-[13px]" aria-hidden="true">▼</span></button>
+  <div class="acc-body"><div class="pb-24"><p class="text-body text-slate font-light max-w-[620px]">If your annual missed-call figure is well above the running cost — a fixed build plus roughly A$50–300 a month (market figures) — then usually yes. If you only miss a couple of calls a month, it isn't; the math is the filter.</p></div></div>
+</div>
+<div class="acc-item border-b border-fog">
+  <button class="acc-head w-full flex items-center gap-16 py-20 cursor-pointer text-left" aria-expanded="false"><span class="text-body-lg font-semibold text-obsidian flex-1">What is an AI voice agent for business?</span><span class="chev text-slate text-[13px]" aria-hidden="true">▼</span></button>
+  <div class="acc-body"><div class="pb-24"><p class="text-body text-slate font-light max-w-[620px]">A voice agent answers calls automatically, handles routine questions and bookings, captures the caller's details and job, and routes anything complex to a person — around the clock. It's the tool most often used to stop missed-call revenue leaking after hours.</p></div></div>
+</div>
+<div class="acc-item border-b border-fog">
+  <button class="acc-head w-full flex items-center gap-16 py-20 cursor-pointer text-left" aria-expanded="false"><span class="text-body-lg font-semibold text-obsidian flex-1">Can I stop missing calls without hiring a receptionist?</span><span class="chev text-slate text-[13px]" aria-hidden="true">▼</span></button>
+  <div class="acc-body"><div class="pb-24"><p class="text-body text-slate font-light max-w-[620px]">Yes — a voice agent answers every call 24/7 for a fraction of a front-desk wage, and a hybrid (agent for the routine, person for the complex) is common. Whether it's worth it comes down to your own missed-call math, not a slogan.</p></div></div>
+</div>
+</div>
+    </div>
   </div>
 </section>
 
@@ -127,8 +104,8 @@
   <div class="max-w-[1200px] mx-auto px-24">
     <div class="brand-weave rounded-full-2 p-48 md:p-80 text-center text-snow relative overflow-hidden">
       <div class="relative z-10 max-w-[600px] mx-auto">
-        <h2 class="text-heading md:text-display-sm font-semibold tracking-[-0.02em]">Reading done. Building next?</h2>
-        <p class="text-body-lg text-ash font-light mt-20 mb-32 max-w-[440px] mx-auto">A Foundations Session turns the theory into a ranked plan for your actual business.</p>
+        <h2 class="text-heading md:text-display-sm font-semibold tracking-[-0.02em]">Put it to work</h2>
+        <p class="text-body-lg text-ash font-light mt-20 mb-32 max-w-[440px] mx-auto">One session maps where an agent pays back fastest in your business — the plan is yours to keep.</p>
         <a href="https://cal.com/webuildco/intro" target="_blank" rel="noopener" class="inline-flex items-center bg-lime text-obsidian text-[15px] font-semibold rounded-full px-32 py-16 hover:brightness-105 hover:-translate-y-px transition cursor-pointer">Book a Foundations Session →</a>
         <p class="text-caption text-ash mt-16">30 minutes · no pitch · if AI isn't the answer, I'll say so</p>
       </div>
