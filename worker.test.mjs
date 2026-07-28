@@ -1,6 +1,6 @@
 // Runnable check for the session-token scheme: node worker.test.mjs
 import assert from "node:assert";
-import { makeToken, normalizeMultica, validToken } from "./worker.js";
+import worker, { makeToken, normalizeMultica, validToken } from "./worker.js";
 
 const secret = "test-secret-please-change";
 const token = await makeToken(secret);
@@ -49,5 +49,38 @@ assert.equal(normalized.leads.live, true);
 assert.equal(normalized.leads.projects[0].title, "Leads Pipeline");
 assert.equal(normalized.leads.tasks[0].title, "Outbound playbooks for Priority 1 industries");
 assert.equal(normalized.leads.tasks[0].project, "Leads Pipeline");
+
+const shell = `<!doctype html><title>Mission Control · WeBuild</title><script src="/mission-control/app.js"></script>`;
+const briefs = JSON.stringify([{ id: "eod-2026-07-28", type: "eod" }]);
+const env = {
+  MC_SECRET: secret,
+  MC_PASSWORD: "password",
+  ASSETS: {
+    fetch(req) {
+      const path = new URL(req.url).pathname;
+      if (path === "/mission-control/" || path === "/mission-control") return new Response(shell);
+      if (path === "/mission-control/app.js") return new Response("go('briefs')");
+      if (path === "/mission-control/data/briefs.json") return new Response(briefs, { headers: { "Content-Type": "application/json" } });
+      return new Response("missing", { status: 404 });
+    },
+  },
+};
+
+let res = await worker.fetch(new Request("https://webuild.example/mission-control/api/deploy-health?brief=eod-2026-07-28"), env);
+assert.equal(res.status, 200);
+let body = await res.json();
+assert.equal(body.ok, true);
+assert.equal(body.app_shell, true);
+assert.equal(body.briefs_json, true);
+assert.equal(body.brief.present, true);
+
+res = await worker.fetch(new Request("https://webuild.example/mission-control/api/deploy-health?brief=eod-2026-07-29"), env);
+assert.equal(res.status, 503);
+body = await res.json();
+assert.deepEqual(body.errors, ["brief_missing"]);
+
+res = await worker.fetch(new Request("https://webuild.example/mission-control/data/briefs.json"), env);
+assert.equal(res.headers.get("Content-Type"), "text/html; charset=utf-8");
+assert(await res.text().then((text) => text.includes("Mission Control — Sign in")));
 
 console.log("ok: worker auth + multica normalization");

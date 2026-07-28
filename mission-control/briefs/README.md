@@ -58,15 +58,20 @@ without failing the build.
 
 WEB-328 is wired live through Multica run-only autopilots assigned to the CTO
 agent. Each run checks out this repo, updates from `main`, runs tests, builds
-the matching brief, commits/pushes `mission-control/data/briefs.json` when it
-changes, renders configured delivery channels, deploys the Worker with
-`npx wrangler deploy --keep-vars`, then verifies the production JSON and Briefs
-page.
+the matching brief, commits/pushes `mission-control/data/briefs.json` to
+`origin/main` when it changes, renders configured delivery channels, deploys the
+Worker with `npx wrangler deploy --keep-vars`, then runs
+`npm run briefs:verify -- --type morning|eod` for daily briefs against the
+non-sensitive production deploy health endpoint. Periodic briefs can use
+`npm run briefs:verify -- --brief <brief-id>` if they need the same check. The
+health endpoint verifies the Mission Control app shell and requested brief
+presence without returning gated board data or requiring `MC_PASSWORD` in the
+runner.
 
 | Cadence | Autopilot ID | Cron | Command |
 | --- | --- | --- | --- |
-| Morning | `c579224e-9dea-4c7e-9b02-ec10142fe474` | `5 8 * * *` | `GIT_PUSH=1 npm run briefs:build -- --type morning && npm run briefs:deliver morning && npx wrangler deploy --keep-vars` |
-| End of day | `19b4507b-580c-43d0-b509-5829520118fb` | `35 21 * * *` | `GIT_PUSH=1 npm run briefs:build -- --type eod && npm run briefs:deliver eod && npx wrangler deploy --keep-vars` |
+| Morning | `c579224e-9dea-4c7e-9b02-ec10142fe474` | `5 8 * * *` | `GIT_PUSH=1 npm run briefs:build -- --type morning && npm run briefs:deliver morning && npx wrangler deploy --keep-vars && npm run briefs:verify -- --type morning` |
+| End of day | `19b4507b-580c-43d0-b509-5829520118fb` | `35 21 * * *` | `GIT_PUSH=1 npm run briefs:build -- --type eod && npm run briefs:deliver eod && npx wrangler deploy --keep-vars && npm run briefs:verify -- --type eod` |
 | Weekly | `407a9e0d-80e7-42f5-85d8-e71b4717a026` | `10 7 * * 1` | `BRIEF_PERIOD=previous GIT_PUSH=1 npm run briefs:build -- --type weekly && npm run briefs:deliver weekly && npx wrangler deploy --keep-vars` |
 | Monthly | `9edff78c-2332-4dbd-abdb-3b3894c18a72` | `15 7 1 * *` | `BRIEF_PERIOD=previous GIT_PUSH=1 npm run briefs:build -- --type monthly && npm run briefs:deliver monthly && npx wrangler deploy --keep-vars` |
 | Quarterly | `249ba4d9-0062-49ac-9140-58557979a607` | `20 7 1 1,4,7,10 *` | `BRIEF_PERIOD=previous GIT_PUSH=1 npm run briefs:build -- --type quarterly && npm run briefs:deliver quarterly && npx wrangler deploy --keep-vars` |
@@ -80,8 +85,8 @@ Use `CRON_TZ=Australia/Sydney` so the cadence follows Johan's operating day.
 CRON_TZ=Australia/Sydney
 
 # Daily reports
-5 8 * * * cd /srv/webuild/Webuildco_v1 && git pull --ff-only origin main && npm test && GIT_PUSH=1 npm run briefs:build -- --type morning && npm run briefs:deliver morning && npx wrangler deploy --keep-vars >> /var/log/webuild-briefs.log 2>&1
-35 21 * * * cd /srv/webuild/Webuildco_v1 && git pull --ff-only origin main && npm test && GIT_PUSH=1 npm run briefs:build -- --type eod && npm run briefs:deliver eod && npx wrangler deploy --keep-vars >> /var/log/webuild-briefs.log 2>&1
+5 8 * * * cd /srv/webuild/Webuildco_v1 && git pull --ff-only origin main && npm test && GIT_PUSH=1 npm run briefs:build -- --type morning && npm run briefs:deliver morning && npx wrangler deploy --keep-vars && npm run briefs:verify -- --type morning >> /var/log/webuild-briefs.log 2>&1
+35 21 * * * cd /srv/webuild/Webuildco_v1 && git pull --ff-only origin main && npm test && GIT_PUSH=1 npm run briefs:build -- --type eod && npm run briefs:deliver eod && npx wrangler deploy --keep-vars && npm run briefs:verify -- --type eod >> /var/log/webuild-briefs.log 2>&1
 
 # Longer cadence reports, same pipeline
 10 7 * * 1 cd /srv/webuild/Webuildco_v1 && git pull --ff-only origin main && npm test && BRIEF_PERIOD=previous GIT_PUSH=1 npm run briefs:build -- --type weekly && npm run briefs:deliver weekly && npx wrangler deploy --keep-vars >> /var/log/webuild-briefs.log 2>&1

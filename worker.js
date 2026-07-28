@@ -18,6 +18,7 @@
 const COOKIE = "mc_session";
 const TTL = 60 * 60 * 12; // 12h
 const MULTICA_DEFAULT_BASE = "https://api.multica.ai";
+const DEPLOY_HEALTH_PATH = "/mission-control/api/deploy-health";
 
 const enc = new TextEncoder();
 const b64u = (buf) =>
@@ -357,11 +358,50 @@ async function multicaStatus(request, env) {
   }
 }
 
+async function readAsset(env, url, path) {
+  const res = await env.ASSETS.fetch(new Request(new URL(path, url.origin).toString()));
+  return { ok: res.ok, text: await res.text() };
+}
+
+async function deployHealth(request, env, url) {
+  if (request.method !== "GET") return json({ ok: false, error: "method_not_allowed" }, 405);
+
+  const errors = [];
+  const requestedBrief = url.searchParams.get("brief") || "";
+  const app = await readAsset(env, url, "/mission-control/");
+  const script = await readAsset(env, url, "/mission-control/app.js");
+  const appShell = app.ok && script.ok && app.text.includes("Mission Control · WeBuild") && app.text.includes("/mission-control/app.js");
+  if (!appShell) errors.push("app_shell_missing");
+
+  let briefsJson = false;
+  let briefPresent = false;
+  try {
+    const asset = await readAsset(env, url, "/mission-control/data/briefs.json");
+    const briefs = JSON.parse(asset.text);
+    briefsJson = asset.ok && Array.isArray(briefs);
+    briefPresent = requestedBrief ? briefsJson && briefs.some((brief) => brief?.id === requestedBrief) : true;
+  } catch {
+    briefsJson = false;
+  }
+  if (!briefsJson) errors.push("briefs_json_invalid");
+  if (requestedBrief && !briefPresent) errors.push("brief_missing");
+
+  const ok = appShell && briefsJson && briefPresent;
+  return json({
+    ok,
+    app_shell: appShell,
+    briefs_json: briefsJson,
+    brief: requestedBrief ? { id: requestedBrief, present: briefPresent } : undefined,
+    errors,
+  }, ok ? 200 : 503);
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     const gated = url.pathname === "/mission-control" || url.pathname.startsWith("/mission-control/");
     if (gated) {
+      if (url.pathname === DEPLOY_HEALTH_PATH) return deployHealth(request, env, url);
       const resp = await gate(request, env, url);
       if (resp) return resp;
       if (url.pathname === "/mission-control/api/multica") return multicaStatus(request, env);

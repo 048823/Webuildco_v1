@@ -281,7 +281,7 @@ function maybeCommit() {
     return;
   } catch {
     git("commit", "-m", "chore(mission-control): update briefs [skip ci]");
-    if (process.env.GIT_PUSH === "1") git("push");
+    if (process.env.GIT_PUSH === "1") git("push", "origin", "HEAD:main");
     console.log(process.env.GIT_PUSH === "1" ? "briefs.json committed and pushed" : "briefs.json committed; GIT_PUSH!=1 so not pushed");
   }
 }
