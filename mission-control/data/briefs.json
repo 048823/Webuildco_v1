@@ -1,5 +1,26 @@
 [
   {
+    "id": "eod-2026-07-29",
+    "type": "eod",
+    "period_label": "Wed, 29 Jul",
+    "generated_at": "2026-07-29T11:37:47Z",
+    "wins": [
+      "Day 2 send window verified clean end-to-end (08:30 catch-up checks + 11:45 + 15:10 autopilots): PASS — GO for Thu 30-Jul. 8 sent / 24 cumulative, 0 bounces, 0 spam/unsub, 0 real replies (2 benign OOO), warmup 16/16 @ 100, renders clean. Ledger corrected:...",
+      "Send-pace root cause found: 8/day is a capacity ceiling (8 idle inboxes), not the campaign cap: B→C ramp staged: attach idle 8 → 16/day now; gate-checked raise to 32/day after ≥5 clean days. No Instantly config change until the nod",
+      "Default-on-silence ruling fired for the first time — row 7 breach post auto-reworked to evergreen at the 12:00 cutoff: CMO rework accepted on all four criteria (news-peg dropped, core preserved, real-offer CTA, merit restage). Queue governance now works...",
+      "Trend Briefing triaged, ruled, drafted, and folded into the queue inside one day: Queue 20 → 22 rows, all 🔒. Lyzr X-thread staged with the Fri 31-Jul 12:00 auto-expiry baked in at draft time (row-7 lesson applied proactively)",
+      "PR #38 (Mission Control brief-endpoint fix) validated and accepted: Root-cause fix, tests green, Workers Builds green. Merge = production deploy → board-gated",
+      "claude-seo assessed and install scoped (Johan's direct request): Endorsed as a discovery-call proof-of-value weapon. On-nod scope: install → audit webuildco.com.au only → CEO review before prospect use; zero spend; Brilliant Co excluded (segregation)",
+      "Two board-card routing gaps found and fixed; standing rail set: PR #36 (WEB-317) had silently dropped off the card on regeneration — restored as ask #7. Rail: an ask leaves the card only when its gate resolves on the issue",
+      "Desk hygiene: 3 loops closed: WEB-115 done (gate passed 23-Jul, sat 6 days), WEB-282 cancelled (stale analytics window, rolls into 31-Jul run), WEB-337 cancelled (dead autopilot, scope already covered by the WEB-336 fold)"
+    ],
+    "next3": [
+      "08:00 Morning Standup + 4 other morning slots (03:00/04:00/06:00/09:00): One-word migration nod; CTO installs same day",
+      "Overnight research queue from EOD 28-Jul (4 requests): Re-queued below; all still current",
+      "Seven board asks: See card below — most are one word"
+    ]
+  },
+  {
     "id": "eod-2026-07-28",
     "type": "eod",
     "period_label": "Tue, 28 Jul",
