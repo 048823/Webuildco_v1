@@ -357,11 +357,40 @@ async function multicaStatus(request, env) {
   }
 }
 
+async function verifyBrief(request, env, url) {
+  if (request.method !== "GET") return json({ ok: false, error: "method_not_allowed" }, 405);
+  const id = String(url.searchParams.get("id") || "").trim();
+  if (!id) return json({ ok: false, error: "missing_id", message: "Pass ?id=eod-YYYY-MM-DD." }, 400);
+
+  let briefs;
+  try {
+    const assetUrl = new URL("/mission-control/data/briefs.json", url);
+    const res = await env.ASSETS.fetch(new Request(assetUrl, { headers: { Accept: "application/json" } }));
+    if (!res.ok) return json({ ok: false, error: "briefs_unavailable", status: res.status }, 502);
+    briefs = await res.json();
+  } catch {
+    return json({ ok: false, error: "briefs_unavailable" }, 502);
+  }
+
+  if (!Array.isArray(briefs)) return json({ ok: false, error: "invalid_briefs" }, 502);
+  const brief = briefs.find((b) => b && b.id === id);
+  if (!brief) return json({ ok: false, present: false, id, total: briefs.length }, 404);
+  return json({
+    ok: true,
+    present: true,
+    id: brief.id,
+    type: brief.type || "",
+    generated_at: brief.generated_at || "",
+    total: briefs.length,
+  });
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     const gated = url.pathname === "/mission-control" || url.pathname.startsWith("/mission-control/");
     if (gated) {
+      if (url.pathname === "/mission-control/api/briefs/verify") return verifyBrief(request, env, url);
       const resp = await gate(request, env, url);
       if (resp) return resp;
       if (url.pathname === "/mission-control/api/multica") return multicaStatus(request, env);

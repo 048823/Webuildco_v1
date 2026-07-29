@@ -10,6 +10,7 @@
     "test": "node worker.test.mjs && node mission-control/intake/log-expense.test.mjs && node mission-control/briefs/build-briefs.test.mjs",
     "briefs:build": "node mission-control/briefs/build-briefs.mjs",
     "briefs:deliver": "node mission-control/briefs/deliver-briefs.mjs",
+    "briefs:verify": "node mission-control/briefs/verify-live.mjs",
     "serve": "python3 -m http.server 8000"
   },
   "devDependencies": {

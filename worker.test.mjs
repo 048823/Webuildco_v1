@@ -1,6 +1,6 @@
 // Runnable check for the session-token scheme: node worker.test.mjs
 import assert from "node:assert";
-import { makeToken, normalizeMultica, validToken } from "./worker.js";
+import worker, { makeToken, normalizeMultica, validToken } from "./worker.js";
 
 const secret = "test-secret-please-change";
 const token = await makeToken(secret);
@@ -49,5 +49,34 @@ assert.equal(normalized.leads.live, true);
 assert.equal(normalized.leads.projects[0].title, "Leads Pipeline");
 assert.equal(normalized.leads.tasks[0].title, "Outbound playbooks for Priority 1 industries");
 assert.equal(normalized.leads.tasks[0].project, "Leads Pipeline");
+
+const briefEnv = {
+  ASSETS: {
+    fetch(req) {
+      assert.equal(new URL(req.url).pathname, "/mission-control/data/briefs.json");
+      return new Response(JSON.stringify([
+        { id: "eod-2026-07-29", type: "eod", generated_at: "2026-07-29T11:37:47Z", wins: ["private"], next3: ["private"] },
+      ]), { headers: { "Content-Type": "application/json" } });
+    },
+  },
+};
+
+const verifyRes = await worker.fetch(new Request("https://example.com/mission-control/api/briefs/verify?id=eod-2026-07-29"), briefEnv);
+assert.equal(verifyRes.status, 200);
+assert.deepEqual(await verifyRes.json(), {
+  ok: true,
+  present: true,
+  id: "eod-2026-07-29",
+  type: "eod",
+  generated_at: "2026-07-29T11:37:47Z",
+  total: 1,
+});
+
+const missingBriefRes = await worker.fetch(new Request("https://example.com/mission-control/api/briefs/verify?id=eod-2026-07-30"), briefEnv);
+assert.equal(missingBriefRes.status, 404);
+assert.deepEqual(await missingBriefRes.json(), { ok: false, present: false, id: "eod-2026-07-30", total: 1 });
+
+const rawDataRes = await worker.fetch(new Request("https://example.com/mission-control/data/briefs.json"), briefEnv);
+assert.equal(rawDataRes.headers.get("Content-Type"), "text/html; charset=utf-8");
 
 console.log("ok: worker auth + multica normalization");
