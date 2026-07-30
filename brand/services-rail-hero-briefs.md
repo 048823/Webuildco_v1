@@ -1,4 +1,4 @@
-# Services rail — hero art direction (Stage 2/3 generation brief)
+# Services rail — hero art direction (Stage 2 generation brief)
 
 For `#services` in `index.html`. Three heroes need generated art: cards 1, 3, 8. Cards 2/4/5 are real product UI (no generation, see index.html). Cards 6/7 are pure CSS, no hero.
 
@@ -50,16 +50,16 @@ Real product UI card — not part of this brief. If Stage 2/3 ever revisits this
 
 ---
 
-## Card 8 — Agents at work (motion, Stage 3)
+## Card 8 — Shadow mode
 
-**Subject:** This is a video card with a play affordance already in the static frame (CSS-drawn), so the poster frame should read as a stopped moment of real activity — agents (abstracted, per card 1's language) mid-task across a shared surface. Suggest a "day in the life" — multiple small actions happening in parallel across a workspace-like plane.
+**Subject:** Agents (abstracted, per card 1's language) mid-task across a shared workspace plane — busy but calm, competence not chaos. One element sits slightly apart from the rest, watching rather than acting, to carry "supervised." No play affordance, no poster-frame thinking — this is a still, not a paused frame of footage.
 
-**Composition:** Wide-ish mid-shot so there's room for implied motion across the frame; keep the exact bottom-30% clear for the title, same as other cards. The centered play-button UI is CSS, not part of the image — don't compose around a fake button.
+**Composition:** Portrait 3:4, recomposed properly for vertical — do not crop a landscape frame down. Keep the bottom 30% clear/dark for the title, same as other cards.
 
-**Camera/lighting:** Slightly elevated angle, as if looking down over a desk/workspace at dusk — practical light sources (screen glow, desk lamp) rather than flat studio light, to sell "this is footage" over "this is a render."
+**Camera/lighting:** Slightly elevated angle, as if looking down over a desk/workspace at dusk — practical light sources (screen glow, desk lamp) rather than flat studio light.
 
-**Mood:** Busy but calm — competence, not chaos.
+**Mood:** Busy but calm — competence, not chaos. A quiet sense of being observed.
 
 **Colour behaviour:** Obsidian base with warm practical highlights (screen-glow whites/ambers); lime appears once as a single accent light or indicator, not a wash.
 
-**Avoid:** literal humanoid robots at desks (undercuts "software, not staff" positioning), any readable on-screen text (would compete with real UI cards), frantic/glitch effects.
+**Avoid:** literal humanoid robots at desks (undercuts "software, not staff" positioning), any readable on-screen text (would compete with real UI cards), frantic/glitch effects, anything implying video/motion (no play button, no film-frame framing, no motion blur).
