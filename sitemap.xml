@@ -118,7 +118,7 @@
   </url>
   <url>
     <loc>https://www.webuildco.com.au/build/</loc>
-    <lastmod>2026-07-14</lastmod>
+    <lastmod>2026-07-30</lastmod>
   </url>
   <url>
     <loc>https://www.webuildco.com.au/build/multi-agent-orchestration/</loc>
@@ -139,5 +139,9 @@
   <url>
     <loc>https://www.webuildco.com.au/build/premium-websites/</loc>
     <lastmod>2026-07-14</lastmod>
+  </url>
+  <url>
+    <loc>https://www.webuildco.com.au/build/website-gallery/</loc>
+    <lastmod>2026-07-30</lastmod>
   </url>
 </urlset>

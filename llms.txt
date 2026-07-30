@@ -22,6 +22,7 @@ Australian small and mid-sized businesses drowning in repetitive admin — re-ty
 - Company Brain — company-wide knowledge intelligence plus a librarian agent that keeps knowledge linked and current: https://www.webuildco.com.au/build/company-brain/
 - Messaging Integration — agents on iMessage, WhatsApp, and Telegram so clients and staff use the apps they already have: https://www.webuildco.com.au/build/messaging-integration/
 - Premium Websites — top Google page-speed scores with SEO and GEO built in, owned by the client: https://www.webuildco.com.au/build/premium-websites/
+- Website Gallery — prompt-built website template concepts used as inspiration pieces, not real client work: https://www.webuildco.com.au/build/website-gallery/
 
 ## Key pages
 - Home: https://www.webuildco.com.au/
