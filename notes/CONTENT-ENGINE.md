@@ -71,6 +71,5 @@ Images: none required for v1 (og.png is the site-wide share image). If a piece n
 | 17 | HR & recruiting: candidate screening agents that don't ghost people | lead/candidate qualification + industry | MOFU | 6 |
 | 18 | Legal intake automation: first-touch without the risk | AI intake legal Australia | MOFU | 7 |
 | 19 | The AI automation ROI calculator, explained (companion to /tools/ page) | AI automation ROI calculator | MOFU | 7 |
-| 20 | Islamic finance back-office automation (compliance-aware) | automation Islamic finance Australia | MOFU | 8 |
 
-Weeks 6–8 industry pieces reuse the /industries/ pages as the money-page link. Queue refills from WEB-22 research (r/keyword tables) as weeks complete.
+Weeks 6–7 company pieces reuse the /industries/ pages as the money-page link. Queue refills from WEB-22 research (r/keyword tables) as weeks complete.
