@@ -23,6 +23,24 @@
     ]
   },
   {
+    "id": "morning-2026-07-31",
+    "type": "morning",
+    "period_label": "Fri, 31 Jul",
+    "generated_at": "2026-07-31T18:07:00Z",
+    "wins": [],
+    "next3": [
+      "Correct WEB-386. Close #1, demote #4, attach run 3's staging amendment to #2, attach run 5's ranking to #3. Add no new items",
+      "Sequencing rule for the ramp — say it once, plainly: before ramping, fix what the ramp will be spent on. Consent audit (action 2) and step-1 capacity reservation (action 5) both come before the nod executes, not after",
+      "Land the WEB-342 checklist amendment (action 4) before anything else touches the campaign. It is pre-staged to run same-hour on approval"
+    ],
+    "industry_pulse": [
+      "s.16 consent basis for the 641 leads is undocumented. Cold B2B outbound rests on inferred consent under Spam Act Sch 2 cl 4, which requires the address be conspicuously published, reasonably assumed published with agreement, and tied to a particular",
+      "B2 would contravene on any B1 opt-out. stop_on_reply is campaign-scoped; the Act is account-scoped, with a 5-business-day clock. No workspace-wide suppression list exists. This gates any B2 launch",
+      "Accrued GST liability on invoices raised since 01 Jul 2026. Registration is live from 1 July. Any invoice raised on or after that date owes 1/11th to the ATO whether or not GST was charged. If invoices went out without it, the liability already exists and",
+      "The ramp is a 100% single-day volume step at the level that is actually scored. Reputation is measured per domain, not per mailbox. All 16 inboxes sit on 4 domains, so 8→16 doubles per-domain cold volume 2→4/day in one step. WEB-342's \"free 2× with zero"
+    ]
+  },
+  {
     "id": "eod-2026-07-31",
     "type": "eod",
     "period_label": "Fri, 31 Jul",
@@ -41,6 +59,18 @@
       "WEB-383 unsubscribe fix: Reply approved on WEB-383 or WEB-281",
       "RAMP 8/day → 16/day (WEB-342): One word on WEB-386 #2",
       "WEB-384 pricing build: Three string edits once #3 and #4 land. CTO has an explicit Monday-morning out"
+    ]
+  },
+  {
+    "id": "morning-2026-07-29",
+    "type": "morning",
+    "period_label": "Wed, 29 Jul",
+    "generated_at": "2026-07-29T17:07:16Z",
+    "wins": [],
+    "next3": [
+      "Review current blockers",
+      "Pick the highest-leverage next action",
+      "Update Mission Control after execution"
     ]
   },
   {
