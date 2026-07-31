@@ -1,5 +1,28 @@
 [
   {
+    "id": "monthly-2026-07-31",
+    "type": "monthly",
+    "period_label": "July 2026",
+    "generated_at": "2026-07-31T21:19:15.217Z",
+    "wins": [
+      "Day 4 send window verified end-to-end: 8 sent 10:00:55 (all step 2), 0 replies, 0 bounces, 0 unsubscribes, 16/16 warm-up at 100. Window closed clean 15:00",
+      "Spam Act unsubscribe defect found, diagnosed, staged: Steps 2/3 carry no visible unsubscribe; insert_unsubscribe_header is header-only and the campaign is text_only. CRO staged byte-exact replacement copy for all four step-2 variants at 14:08. Campaign",
+      "Execution gate on WEB-383 un-jammed: I had written \"approve on this issue\" while raising the ask on WEB-281 — making myself the relay on the one item with a hard cutoff. Now: approval on either issue is sufficient and final, CRO executes on sight, weekend",
+      "Pricing page Stage 3 spec approved: UXDesigner's 154-line spec read in full and approved without changes; mobile column-seam collapse and the who-runs-it axis both verified",
+      "Pricing page built to spec: CTO delivered in 20 min. pricingPageData is a genuine single source for every name/price/unit/note/CTA; card order Starter > Takeoff > Operate > Scale holds; pending copy tokenized; escapeHtml unasked-for good practice",
+      "Pricing packaging + who-runs-it axis settled: Axis confirmed by default at 12:00 after 41h board silence. Ladder: Starter · Takeoff · Operate · Scale. Johan's names won over mine and CRO's; \"Start Pty. Ltd.\" refused as a SKU (~54 founder-hours one-off vs",
+      "Board-card v2 defaults fired: Fired 11:15 (09:00 slot was dead — late, not skipped). Publish nods closed as expired (WEB-332); claude-seo approved with a prove-it-first Brilliant Co exclusion gate (WEB-381); PR #37 remove recorded as CEO-decided (WEB-318)",
+      "Weekend board decision card staged early: Eight decisions on one page, ordered by cutoff and cost of delay, each with what it costs if Monday 08:00 passes unanswered. Built at 20:00 rather than left to this 21:30 run — the run that died last night",
+      "Day 2 send window verified clean end-to-end (08:30 catch-up checks + 11:45 + 15:10 autopilots): PASS — GO for Thu 30-Jul. 8 sent / 24 cumulative, 0 bounces, 0 spam/unsub, 0 real replies (2 benign OOO), warmup 16/16 @ 100, renders clean. Ledger corrected",
+      "Send-pace root cause found: 8/day is a capacity ceiling (8 idle inboxes), not the campaign cap: B→C ramp staged: attach idle 8 → 16/day now; gate-checked raise to 32/day after ≥5 clean days. No Instantly config change until the nod"
+    ],
+    "next3": [
+      "WEB-383 unsubscribe fix: Reply approved on WEB-383 or WEB-281",
+      "RAMP 8/day → 16/day (WEB-342): One word on WEB-386 #2",
+      "WEB-384 pricing build: Three string edits once #3 and #4 land. CTO has an explicit Monday-morning out"
+    ]
+  },
+  {
     "id": "eod-2026-07-31",
     "type": "eod",
     "period_label": "Fri, 31 Jul",
@@ -335,29 +358,6 @@
       "GO-day readiness is better than reported (02:00). Two \"gaps\" in the contingency list were false — the cold-call playbook (WEB-143) and Stripe test-mode runbook (WEB-144) already exist, approved. Three promotion-ready backlog sub-issues staged in 3 Leads",
       "Analytics path ruled (03:00). Metricool NO-GO at any tier (free excludes LinkedIn/X; API needs ~€43/mo; still requires OAuth hand-over). GO on a $0 native-export file-drop loop — unblocks WEB-171's Friday recurrence",
       "In_review triage batch 2 done, with a correction (04:00). PR #6 and #11 were merged on 07-14 — the \"stuck green PRs\" alarm in three consecutive reports was stale data. 36 close-ready issues identified (queue 69 → 33); the real merge queue is 5 open green"
-    ],
-    "next3": [
-      "Check WEB-141 for a board answer; on GO, promote WEB-163 + the 3 staged sub-issues immediately",
-      "Execute the 36 triage closes (Group A+B, 04:00 entry) — copy WEB-194's top-5 drafts into today's content chain first",
-      "Fire the 07-20 content chain (trend briefing + ideas); post #3 is now 4 days unpublished"
-    ]
-  },
-  {
-    "id": "monthly-2026-07-31",
-    "type": "monthly",
-    "period_label": "July 2026",
-    "generated_at": "2026-07-19T22:30:22.968Z",
-    "wins": [
-      "The all-day blackout was daemon-death, not host-death (00:00). The MacBook was awake the whole time; the Multica daemon is a child of the desktop app and nothing relaunches it after a reboot — 20h32m daemon gap in daemon.log until Johan opened the app at",
-      "Production has already ruled on the tagline (01:00). \"Hire agents, not headcount\" appears on 0 of 36 live pages; \"We build leverage.\" on 34. Cost of confirming retirement (option B): near zero — 2 C1 statics regen, already in the planned pass. Cost of",
-      "GO-day readiness is better than reported (02:00). Two \"gaps\" in the contingency list were false — the cold-call playbook (WEB-143) and Stripe test-mode runbook (WEB-144) already exist, approved. Three promotion-ready backlog sub-issues staged in 3 Leads",
-      "Analytics path ruled (03:00). Metricool NO-GO at any tier (free excludes LinkedIn/X; API needs ~€43/mo; still requires OAuth hand-over). GO on a $0 native-export file-drop loop — unblocks WEB-171's Friday recurrence",
-      "In_review triage batch 2 done, with a correction (04:00). PR #6 and #11 were merged on 07-14 — the \"stuck green PRs\" alarm in three consecutive reports was stale data. 36 close-ready issues identified (queue 69 → 33); the real merge queue is 5 open green",
-      "Bounce preview URL delivered (overnight priority #1, closed 00:45 AEST): CTO posted the working preview: https://agent-motiondesigner-362919a.bounce-inc-redesign.pages.dev — verified in headless Chromium (hero loop, scroll-scrub scenes working); CTO also",
-      "07-18 runtime failure root-caused + codex fixed (00:00 Second-Shift): Verified on-host: the 16:00–20:00 gap was a reboot at 16:18 AEST, not sleep — pmset keep-awake would NOT have prevented it. Post-reboot the codex CLI wedged in the dynamic linker",
-      "Day-4 contingency list produced (01:00 Second-Shift): Ranked list of board-approval-free revenue-adjacent actions (internal drafting/prep only), ready for 08:00 pickup",
-      "Review graveyard cleared — all 23 items from the 03:00 triage dispositioned: 19 closed (17 cancelled, 2 done), phantom PR blocker corrected, final 4 reviewed/delegated; in_review ~79 → ~58",
-      "Phantom blocker retracted, real merge queue tabled: PRs #6/#11 were already merged 07-14 and live; real queue = 5 green PRs (#13, #15, #17, #20, #21) awaiting one \"merge all\""
     ],
     "next3": [
       "Check WEB-141 for a board answer; on GO, promote WEB-163 + the 3 staged sub-issues immediately",
