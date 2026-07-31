@@ -33,7 +33,6 @@ Australian small and mid-sized businesses drowning in repetitive admin — re-ty
 - Work: https://www.webuildco.com.au/work/
 - Industries: https://www.webuildco.com.au/industries/
 - Notes (plain-language explainers): https://www.webuildco.com.au/notes/
-- About: https://www.webuildco.com.au/about/
 - Contact: https://www.webuildco.com.au/contact/
 
 ## Contact
