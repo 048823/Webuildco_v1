@@ -135,6 +135,19 @@ body{font-family:var(--font-cosmica);-webkit-font-smoothing:antialiased}
   -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;
 }
 
+@keyframes live-card-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.live-site-wall{isolation:isolate}
+.live-site-card{position:relative;overflow:hidden;border-radius:var(--radius-2xl-2);border:1px solid var(--color-fog);background:var(--color-snow);box-shadow:var(--shadow-subtle-2);transition:transform .28s ease,border-color .28s ease,box-shadow .28s ease}
+.live-site-card:hover,.live-site-card:focus-within{z-index:2;transform:translateY(-6px);border-color:rgba(9,9,11,.22);box-shadow:var(--shadow-lg)}
+.live-site-card>a:focus-visible{outline:2px solid var(--color-obsidian);outline-offset:-4px;border-radius:var(--radius-2xl-2)}
+.live-site-wall:hover .live-site-card:not(:hover):not(:focus-within),.live-site-wall:focus-within .live-site-card:not(:hover):not(:focus-within){animation:live-card-float 5.6s ease-in-out infinite;animation-delay:var(--delay,0s)}
+.live-site-preview{position:relative;display:block;aspect-ratio:16/10;overflow:hidden;background:linear-gradient(135deg,var(--color-obsidian),var(--color-graphite));border-bottom:1px solid var(--color-fog)}
+.live-site-preview::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(135deg,rgba(255,255,255,.14) 0 1px,transparent 1px 18px);opacity:.18}
+.live-site-preview iframe{position:absolute;top:0;left:0;width:400%;height:400%;border:0;transform:scale(.25);transform-origin:top left;pointer-events:none;opacity:.88;filter:saturate(.72) contrast(.92);transition:opacity .28s ease,filter .28s ease}
+.live-site-card:hover iframe,.live-site-card:focus-within iframe{opacity:1;filter:none}
+.live-site-open{display:inline-flex;align-items:center;border-radius:999px;background:var(--color-obsidian);color:var(--color-snow);font-size:11px;font-weight:700;line-height:1;padding:7px 10px;white-space:nowrap;transition:background .2s ease,color .2s ease}
+.live-site-card:hover .live-site-open,.live-site-card:focus-within .live-site-open{background:var(--color-lime);color:var(--color-obsidian)}
+
 /* Website gallery concept previews. Static browser-frame mockups keep the page
    fast and avoid implying these are real client screenshots. */
 .template-shot{position:relative;min-height:260px;border-radius:var(--radius-2xl-2);overflow:hidden;padding:14px;border:1px solid rgba(9,9,11,.08);background:#09090b;box-shadow:var(--shadow-subtle-2)}
