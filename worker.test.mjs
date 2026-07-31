@@ -1,6 +1,6 @@
 // Runnable check for the session-token scheme: node worker.test.mjs
 import assert from "node:assert";
-import { makeToken, normalizeMultica, validToken } from "./worker.js";
+import worker, { makeToken, normalizeMultica, validToken } from "./worker.js";
 
 const secret = "test-secret-please-change";
 const token = await makeToken(secret);
@@ -11,6 +11,34 @@ assert(!(await validToken(secret, token.slice(0, -2) + "xx")), "tampered signatu
 assert(!(await validToken(secret, "9999999999.deadbeef")), "forged signature must fail");
 assert(!(await validToken(secret, "0.anything")), "expired token must fail");
 assert(!(await validToken(secret, "")), "empty token must fail");
+
+const briefsAsset = JSON.stringify([{ id: "eod-2026-07-31", type: "eod" }]);
+const mockEnv = {
+  MC_SECRET: secret,
+  MC_PASSWORD: "test-password",
+  MC_VERIFY_TOKEN: "verify-token",
+  ASSETS: {
+    fetch: async () => new Response(briefsAsset, {
+      headers: { "Content-Type": "application/json; charset=utf-8" },
+    }),
+  },
+};
+
+let res = await worker.fetch(new Request("https://example.test/mission-control/data/briefs.json"), mockEnv);
+assert.equal(res.headers.get("Content-Type"), "text/html; charset=utf-8");
+assert((await res.text()).includes("Mission Control"), "unauthenticated briefs JSON must stay gated");
+
+res = await worker.fetch(new Request("https://example.test/mission-control/data/briefs.json", {
+  headers: { "X-Mission-Control-Verify": "verify-token" },
+}), mockEnv);
+assert.equal(res.headers.get("Content-Type"), "application/json; charset=utf-8");
+assert.equal((await res.json())[0].id, "eod-2026-07-31");
+
+res = await worker.fetch(new Request("https://example.test/mission-control/", {
+  headers: { "X-Mission-Control-Verify": "verify-token" },
+}), mockEnv);
+assert.equal(res.headers.get("Content-Type"), "text/html; charset=utf-8");
+assert((await res.text()).includes("Board access only."), "verification token must not unlock the UI");
 
 const normalized = normalizeMultica({
   workspaceName: "WeBuild Co",

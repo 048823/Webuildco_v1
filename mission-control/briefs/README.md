@@ -14,6 +14,7 @@ WEB-138 outputs:
 npm run briefs:build              # rebuild all brief types into data/briefs.json
 npm run briefs:build -- --type morning
 npm run briefs:deliver morning    # send/render latest generated Morning Brief
+npm run briefs:verify -- morning  # verify latest generated Morning Brief in production
 ```
 
 `briefs:build` uses the authenticated `multica` CLI on Hermes and writes the
@@ -53,6 +54,23 @@ Email delivery works in two modes:
 Telegram delivery posts a text digest when `TELEGRAM_BOT_TOKEN` and
 `TELEGRAM_CHAT_ID` are set. If a channel is not configured, the runner skips it
 without failing the build.
+
+## Production verification
+
+Mission Control stays password-gated. Scheduled jobs verify the deployed
+`briefs.json` asset with a scoped Worker secret instead of board credentials:
+
+```bash
+MC_VERIFY_TOKEN="$(node -e 'console.log(crypto.randomUUID()+crypto.randomUUID())')"
+printf '%s' "$MC_VERIFY_TOKEN" | npx wrangler secret put MC_VERIFY_TOKEN
+npx wrangler deploy --keep-vars
+MC_VERIFY_TOKEN="$MC_VERIFY_TOKEN" npm run briefs:verify -- eod
+unset MC_VERIFY_TOKEN
+```
+
+The token header unlocks only `/mission-control/data/briefs.json`. The UI route
+continues to return the sign-in page unless `MC_PASSWORD` is also configured in
+the runtime for an authenticated shell check.
 
 ## Live schedule (Australia/Sydney)
 
