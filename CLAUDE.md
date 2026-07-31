@@ -2,7 +2,7 @@
 
 ## What this is
 Live website for webuildco.com.au.
-Static site hosted on GitHub (repo: 048823/Webuildco_v1) -> auto-deployed to Cloudflare Pages on push to main.
+Static site hosted on GitHub (repo: Webuildco_v1) -> auto-deployed to Cloudflare Pages on push to main.
 
 ## Deploy pipeline
 GitHub main branch -> Cloudflare Pages (Git integration).

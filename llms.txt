@@ -30,10 +30,8 @@ Australian small and mid-sized businesses drowning in repetitive admin — re-ty
 - The Cage (guardrails and approval gates): https://www.webuildco.com.au/the-cage/
 - Founding Five (early-client program): https://www.webuildco.com.au/founding-five/
 - FAQ: https://www.webuildco.com.au/faq/
-- Work: https://www.webuildco.com.au/work/
 - Companies: https://www.webuildco.com.au/industries/
 - Notes (plain-language explainers): https://www.webuildco.com.au/notes/
-- About: https://www.webuildco.com.au/about/
 - Contact: https://www.webuildco.com.au/contact/
 
 ## Contact
