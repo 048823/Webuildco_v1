@@ -19,16 +19,25 @@ const dataUrl = `${ORIGIN}/mission-control/data/briefs.json`;
 const verifyHeaders = { Accept: "application/json", "Cache-Control": "no-cache" };
 if (process.env.MC_VERIFY_TOKEN) verifyHeaders["X-Mission-Control-Verify"] = process.env.MC_VERIFY_TOKEN;
 
-const dataRes = await fetch(dataUrl, { headers: verifyHeaders, cache: "no-store" });
-const text = await dataRes.text();
-if (!dataRes.ok) throw new Error(`${dataUrl} returned ${dataRes.status}`);
-
-let remote;
-try {
-  remote = JSON.parse(text);
-} catch (err) {
-  throw new Error(`${dataUrl} did not return JSON (${dataRes.headers.get("content-type") || "no content-type"}): ${err.message}`);
+async function productionBriefs() {
+  let lastError;
+  for (let attempt = 1; attempt <= 6; attempt++) {
+    const dataRes = await fetch(dataUrl, { headers: verifyHeaders, cache: "no-store" });
+    const text = await dataRes.text();
+    if (!dataRes.ok) lastError = new Error(`${dataUrl} returned ${dataRes.status}`);
+    else {
+      try {
+        return JSON.parse(text);
+      } catch (err) {
+        lastError = new Error(`${dataUrl} did not return JSON (${dataRes.headers.get("content-type") || "no content-type"}): ${err.message}`);
+      }
+    }
+    if (attempt < 6) await new Promise((resolve) => setTimeout(resolve, 5000));
+  }
+  throw lastError;
 }
+
+const remote = await productionBriefs();
 
 const brief = Array.isArray(remote) && remote.find((item) => item.id === local.id && item.type === type);
 if (!brief) throw new Error(`${local.id} missing from production briefs JSON`);
