@@ -44,7 +44,7 @@ Images: none required for v1 (og.png is the site-wide share image). If a piece n
 
 1. Every note links to **exactly one money page** (/method/ or /pricing/) in body copy, plus the standard CTA block.
 2. Every note links to **1–2 sibling notes** with descriptive anchors (no "click here").
-3. Link to **one /industries/ page** when the example genuinely fits; skip otherwise.
+3. Link to **one /companies/ page** when the example genuinely fits; skip otherwise.
 4. Every **new** note gets ≥2 inbound links in the same PR: its /notes/ index card + one contextual link added to the most-related existing note.
 5. Ceiling: ~5 internal links per 1,000 words. Never link the same target twice in one body.
 
@@ -72,4 +72,4 @@ Images: none required for v1 (og.png is the site-wide share image). If a piece n
 | 18 | Legal intake automation: first-touch without the risk | AI intake legal Australia | MOFU | 7 |
 | 19 | The AI automation ROI calculator, explained (companion to /tools/ page) | AI automation ROI calculator | MOFU | 7 |
 
-Weeks 6–7 company pieces reuse the /industries/ pages as the money-page link. Queue refills from WEB-22 research (r/keyword tables) as weeks complete.
+Weeks 6–7 company pieces reuse the /companies/ pages as the money-page link. Queue refills from WEB-22 research (r/keyword tables) as weeks complete.
