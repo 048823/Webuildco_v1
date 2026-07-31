@@ -1,0 +1,16 @@
+{
+  "env": {
+    "CLAUDE_SEO_PYTHON": "/opt/homebrew/bin/python3"
+  },
+  "enabledPlugins": {
+    "claude-seo@agricidaniel-claude-seo": true
+  },
+  "extraKnownMarketplaces": {
+    "agricidaniel-claude-seo": {
+      "source": {
+        "source": "github",
+        "repo": "AgriciDaniel/claude-seo"
+      }
+    }
+  }
+}
