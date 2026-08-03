@@ -5,21 +5,39 @@ import process from 'node:process';
 import { classifyAddress, stemInContext } from './lib/classify.mjs';
 import { readCsv, writeCsv } from './lib/csv.mjs';
 import { emailDomain, hashRecord, normalizeDomain, normalizeUrlForFetch, safeFileKey, sameDomain } from './lib/domain.mjs';
+import {
+  buildCl42eToGMapping,
+  EVIDENCE_RECORD_VERSION,
+  normalizeInputSourceClass,
+  resolvePublicationSourceClass,
+} from './lib/evidence.mjs';
 import { extractLinks, extractPublishedEmails, hasRestrictionText, htmlToVisibleText, looksUnrendered } from './lib/html.mjs';
 import { RobotsCache } from './lib/robots.mjs';
 
 const USER_AGENT = 'WeBuildCo-PublicationCrawler/1.0 (+https://webuildco.com.au)';
-const VERSION = '2026-08-03.web442';
+const VERSION = EVIDENCE_RECORD_VERSION;
 const OUTPUT_COLUMNS = [
   'domain',
   'company_name',
   'email',
   'address_class',
+  'source_class',
+  'source_class_basis',
+  'input_source_class',
   'publication_url',
+  'source_url',
+  'source_capture_timestamp',
   'publication_evidence',
+  'published_context',
   'evidence_context',
   'evidence_method',
   'evidence_visibility',
+  'anti_spam_statement_present',
+  'anti_spam_statement_basis',
+  'cl_4_2_e_to_g_mapping',
+  'evidence_screenshot_ref',
+  'evidence_screenshot_sha256',
+  'evidence_record_version',
   'stem_in_context',
   'cl_4_2_d_verdict',
   'cl_4_2_d_basis',
@@ -32,8 +50,23 @@ const DROPPED_COLUMNS = [
   'company_name',
   'email',
   'address_class',
+  'source_class',
+  'source_class_basis',
+  'input_source_class',
   'publication_url',
+  'source_url',
+  'source_capture_timestamp',
   'publication_evidence',
+  'published_context',
+  'evidence_context',
+  'evidence_method',
+  'evidence_visibility',
+  'anti_spam_statement_present',
+  'anti_spam_statement_basis',
+  'cl_4_2_e_to_g_mapping',
+  'evidence_screenshot_ref',
+  'evidence_screenshot_sha256',
+  'evidence_record_version',
   'drop_reason',
   'cl_4_2_d_verdict',
   'cl_4_2_d_basis',
@@ -193,20 +226,37 @@ async function crawlDomain(inputRow, context) {
   }
 
   for (const page of pages) {
+    const antiSpamStatementPresent = hasRestrictionText(htmlToVisibleText(page.html));
     for (const found of extractPublishedEmails(page.html, page.final_url)) {
       if (!sameDomain(emailDomain(found.email), inputRow.domain)) continue;
       const addressClass = classifyAddress(found.email);
+      const stemInContextValue = stemInContext(found.email, found.evidence_context);
+      const sourceClass = resolvePublicationSourceClass(inputRow, found.publication_url);
       const row = {
         domain: inputRow.domain,
         company_name: inputRow.company_name,
         email: found.email,
         address_class: addressClass,
+        source_class: sourceClass.source_class,
+        source_class_basis: sourceClass.source_class_basis,
+        input_source_class: normalizeInputSourceClass(inputRow),
         publication_url: found.publication_url,
+        source_url: found.publication_url,
+        source_capture_timestamp: page.fetched_at,
         publication_evidence: found.publication_evidence,
+        published_context: found.evidence_context,
         evidence_context: found.evidence_context,
         evidence_method: found.evidence_method,
         evidence_visibility: found.evidence_visibility,
-        stem_in_context: stemInContext(found.email, found.evidence_context),
+        anti_spam_statement_present: antiSpamStatementPresent ? 'yes' : 'no',
+        anti_spam_statement_basis: antiSpamStatementPresent
+          ? `restriction text detected on publication page: ${page.final_url}`
+          : 'no restriction text detected on publication page',
+        cl_4_2_e_to_g_mapping: buildCl42eToGMapping({ addressClass, stemInContextValue }),
+        evidence_screenshot_ref: '',
+        evidence_screenshot_sha256: '',
+        evidence_record_version: EVIDENCE_RECORD_VERSION,
+        stem_in_context: stemInContextValue,
         cl_4_2_d_verdict: '',
         cl_4_2_d_basis: '',
         crawled_at: new Date().toISOString(),
@@ -398,6 +448,8 @@ function scoreTermsPath(pathname) {
 
 async function fetchAndRecord(fetcher, url, fetches) {
   const result = await fetcher(url);
+  const fetchedAt = new Date().toISOString();
+  const page = { ...result, fetched_at: fetchedAt };
   fetches.push({
     url,
     final_url: result.final_url,
@@ -405,8 +457,9 @@ async function fetchAndRecord(fetcher, url, fetches) {
     ok: result.ok,
     failure_reason: result.failure_reason,
     bytes: result.bytes,
+    fetched_at: fetchedAt,
   });
-  return result;
+  return page;
 }
 
 function createPageFetcher({ robots, timeoutMs, maxBytes }) {
@@ -527,8 +580,23 @@ function toDroppedRow(row, dropReason) {
     company_name: row.company_name,
     email: row.email,
     address_class: row.address_class,
+    source_class: row.source_class,
+    source_class_basis: row.source_class_basis,
+    input_source_class: row.input_source_class,
     publication_url: row.publication_url,
+    source_url: row.source_url,
+    source_capture_timestamp: row.source_capture_timestamp,
     publication_evidence: row.publication_evidence,
+    published_context: row.published_context,
+    evidence_context: row.evidence_context,
+    evidence_method: row.evidence_method,
+    evidence_visibility: row.evidence_visibility,
+    anti_spam_statement_present: row.anti_spam_statement_present,
+    anti_spam_statement_basis: row.anti_spam_statement_basis,
+    cl_4_2_e_to_g_mapping: row.cl_4_2_e_to_g_mapping,
+    evidence_screenshot_ref: row.evidence_screenshot_ref,
+    evidence_screenshot_sha256: row.evidence_screenshot_sha256,
+    evidence_record_version: row.evidence_record_version,
     drop_reason: dropReason,
     cl_4_2_d_verdict: row.cl_4_2_d_verdict,
     cl_4_2_d_basis: row.cl_4_2_d_basis,
