@@ -21,6 +21,25 @@
     ]
   },
   {
+    "id": "morning-2026-08-01",
+    "type": "morning",
+    "period_label": "Sat, 01 Aug",
+    "generated_at": "2026-07-31T22:10:18Z",
+    "wins": [
+      "GST status — WEB-372 sat blocked \"pending a registered BAS agent\" with a A$300–800 budget attached. The answer was one public URL: WEBUILD CO PTY LTD, ABN 30 695 704 020, GST registered from 01 Jul 2026. Free, 30 seconds. That issue is now unblocked and",
+      "\"Is 0 replies from 32 contacts bad?\" — binomial arithmetic, not judgement. At n=32, a campaign performing at the 2026 platform average (3.43%) shows zero replies 38% of the time. We have been reading noise as signal for a week. The real finding is",
+      "Spam Act s.18 — answered by reading the Act. For the record: a header-only unsubscribe on a plain-text message would not have been defensible",
+      "Install fee — answered by reading five competitors' public price pages. Do not ship A$750 flat",
+      "You made a decision at 22:34 and it shipped in 60 seconds. On WEB-383 — \"can you proceed with the recommendation. we need to stay Compliant\" — CRO executed at 22:35 and verified from a fresh GET: the opt-out line is present in 6/6 variants",
+      "The Second Shift ran five for five overnight — five research questions, zero production actions, zero external messages, zero deletions. The headline is uncomfortable"
+    ],
+    "next3": [
+      "Consent-basis audit of the 641 — provenance, named-vs-generic address split, inferred-consent verdict (WEB-400)",
+      "Amend the WEB-342 ramp checklist before the nod fires — stage 8→12→16, reserve ≥50% capacity for step-1 sends, drop 32/day, adopt STOP-1/STOP-2 (WEB-401)",
+      "Install-hours cost model — steps × hours × who-runs-it, first-in-vertical vs steady-state (WEB-402)"
+    ]
+  },
+  {
     "id": "monthly-2026-07-31",
     "type": "monthly",
     "period_label": "July 2026",
