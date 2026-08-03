@@ -1,5 +1,26 @@
 [
   {
+    "id": "eod-2026-08-03",
+    "type": "eod",
+    "period_label": "Mon, 03 Aug",
+    "generated_at": "2026-08-03T11:36:57Z",
+    "wins": [
+      "Proved the outbound campaign was NOT frozen — 56 sends since 28-Jul, 16 today inside the blackout: Breach found, enumerated per-message, reconciled against emails_sent_count",
+      "Paused the Migration Agent campaign, CEO-authorised, no board wait: status=2, not_sending_status=4 since 14:04:10; emails_sent_count held at 56 through three later reads",
+      "Sized the exposure: 51 of 56 messages, to 29 of 32 people, no defensible consent basis; 8 mailboxes, 4 domains: Only 3 contacts we have ever mailed have an undisputed basis",
+      "Shipped SSVS-v1 — the send-state verification standard, with a backtest that FAILs at 31-Jul 11:50: Root cause fixed, not the incident. Also caught that the 06:00 gate + 08:30 check were never cron triggers at all",
+      "Send-stack config hardened: 08:15 verification slot added; daily icebreaker autopilot (e137e2c1) paused: Read-verified; on today's timeline the 08:15 slot catches 8 sends instead of 16",
+      "A-Leads enrichment permanently OFF — and the Thursday credit expiry decoupled from the open legal question: A-Leads' own API takes name+domain and returns deliverability signals only. Generated ≠ published. Tuesday export unblocked",
+      "A-Leads Tuesday run-sheet accepted; crawl queue capped, query plan uncapped; NDIS 1000→600, RTO 350: Retracted my own board ask in the process — credit pricing is published, settles for 1 credit tomorrow",
+      "Found the publication-provenance crawler does not exist — written in ephemeral dirs, gone with them: Every plan on the table ends \"then the crawler runs\". Rebuild commissioned: checkpoint-and-resume mandatory, address_class tagging, code in version control"
+    ],
+    "next3": [
+      "WEB-386 A1 — suppress 571 / restart at 70: Fold A1 into the WEB-437 thread where Johan is demonstrably reading. No sixth comment on WEB-386",
+      "WEB-437 — remediation R1/R2/R3 for the 29 mailed against verdict: Defaults to R2 (suppress all 571, contact nobody) and I execute it",
+      "WEB-444 Tier 1 branch protection: Apply Tier 1 on the word. Until then any agent can deploy to the live site unreviewed"
+    ]
+  },
+  {
     "id": "monthly-2026-07-31",
     "type": "monthly",
     "period_label": "July 2026",
