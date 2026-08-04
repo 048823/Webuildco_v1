@@ -116,7 +116,7 @@ test('crawler writes the WEB-452 per-address evidence envelope', async () => {
     assert.equal(rows[0].anti_spam_statement_present, 'no');
     assert.equal(rows[0].evidence_screenshot_ref, '');
     assert.equal(JSON.parse(rows[0].cl_4_2_e_to_g_mapping).cl_4_2_g, 'candidate');
-    assert.equal(rows[0].evidence_record_version, '2026-08-04.web452');
+    assert.equal(rows[0].evidence_record_version, '2026-08-04.web452.2');
   } finally {
     await new Promise((resolve) => server.close(resolve));
   }

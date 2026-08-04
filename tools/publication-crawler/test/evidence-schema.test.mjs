@@ -9,17 +9,19 @@ import {
   SOURCE_CLASSES,
 } from '../lib/evidence.mjs';
 
-test('source class taxonomy normalizes the four permitted publication classes', () => {
+test('source class taxonomy normalizes the permitted publication classes', () => {
   assert.deepEqual(SOURCE_CLASSES, [
     'organisation_own_site',
     'public_register',
     'third_party_directory',
     'aggregated_list',
+    'unclassified',
   ]);
   assert.equal(normalizeSourceClass("organisation's own site"), 'organisation_own_site');
   assert.equal(normalizeSourceClass('Public Register'), 'public_register');
   assert.equal(normalizeSourceClass('third-party directory'), 'third_party_directory');
   assert.equal(normalizeSourceClass('vendor_list'), 'aggregated_list');
+  assert.equal(normalizeSourceClass('unknown'), 'unclassified');
 });
 
 test('publication source class is row-level and separate from input domain provenance', () => {
@@ -35,6 +37,12 @@ test('publication source class is row-level and separate from input domain prove
     'https://register.example.gov.au/record/123',
   );
   assert.equal(registerPage.source_class, 'public_register');
+
+  const unknownOffDomain = resolvePublicationSourceClass(
+    { domain: 'example.com' },
+    'https://directory.example.net/record/123',
+  );
+  assert.equal(unknownOffDomain.source_class, 'unclassified');
 });
 
 test('cl 4(2)(e)-(g) mapping records candidates without deciding campaign relevance', () => {
@@ -52,5 +60,5 @@ test('cl 4(2)(e)-(g) mapping records candidates without deciding campaign releva
   }));
   assert.equal(namedMapping.cl_4_2_e, 'candidate');
   assert.equal(namedMapping.role_or_function_signal.includes('local-part stem appears'), true);
-  assert.equal(EVIDENCE_RECORD_VERSION, '2026-08-04.web452');
+  assert.equal(EVIDENCE_RECORD_VERSION, '2026-08-04.web452.2');
 });

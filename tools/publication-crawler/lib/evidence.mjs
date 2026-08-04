@@ -1,12 +1,13 @@
 import { sameDomain } from './domain.mjs';
 
-export const EVIDENCE_RECORD_VERSION = '2026-08-04.web452';
+export const EVIDENCE_RECORD_VERSION = '2026-08-04.web452.2';
 
 export const SOURCE_CLASSES = Object.freeze([
   'organisation_own_site',
   'public_register',
   'third_party_directory',
   'aggregated_list',
+  'unclassified',
 ]);
 
 const SOURCE_CLASS_ALIASES = new Map([
@@ -24,6 +25,8 @@ const SOURCE_CLASS_ALIASES = new Map([
   ['aggregated list', 'aggregated_list'],
   ['vendor list', 'aggregated_list'],
   ['list', 'aggregated_list'],
+  ['unclassified', 'unclassified'],
+  ['unknown', 'unclassified'],
 ]);
 
 export function normalizeSourceClass(value) {
@@ -76,8 +79,8 @@ export function resolvePublicationSourceClass(inputRow, sourceUrl) {
   }
 
   return {
-    source_class: 'aggregated_list',
-    source_class_basis: 'off-domain source URL without explicit publication_source_class; hold for manual classification before export',
+    source_class: 'unclassified',
+    source_class_basis: 'off-domain source URL without explicit publication_source_class; dropped until manually classified',
   };
 }
 
