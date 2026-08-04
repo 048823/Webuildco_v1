@@ -1,4 +1,6 @@
 node_modules/
+runs/
+WEB-*.csv
 
 # local scratch / handover docs — not site source
 CLAUDE_CODE_HANDOVER.md

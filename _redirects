@@ -1,6 +1,3 @@
-/about / 301
-/about/ / 301
-/about/* / 301
 /work/webuild-cmo-agent /build/ 301
 /work/webuild-cmo-agent/ /build/ 301
 /work /build/ 301

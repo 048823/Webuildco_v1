@@ -55,9 +55,9 @@ Images: none required for v1 (og.png is the site-wide share image). If a piece n
 | 1 | AI automation agency vs hiring in-house: 2026 AUD cost comparison | AI automation ROI Australia, hire AI agent vs employee | MOFU | 1 ✅ |
 | 2 | What is an AI agent? (expanded, FAQ + schema) | what is an AI agent, AI agent examples | TOFU | 1 ✅ |
 | 3 | AI agent vs virtual assistant: which does an AU SMB actually need? | AI agent vs virtual assistant Australia | MOFU | 1 ✅ |
-| 4 | How to automate admin work (a triage method, not a tool list) | automate admin work Australia | BOFU | 2 |
-| 5 | AI receptionist for Australian SMBs: what it is, what it costs | AI receptionist Australia | BOFU | 2 |
-| 6 | What a missed call costs an AU service business (payback math) | missed call cost, AI voice agent for business | MOFU | 2 |
+| 4 | How to automate admin work (a triage method, not a tool list) | automate admin work Australia | BOFU | 2 ✅ |
+| 5 | AI receptionist for Australian SMBs: what it is, what it costs | AI receptionist Australia | BOFU | 2 ✅ |
+| 6 | What a missed call costs an AU service business (payback math) | missed call cost, AI voice agent for business | MOFU | 2 ✅ |
 | 7 | AI voice agent Australia: the buyer's guide | AI voice agent Australia | BOFU | 3 |
 | 8 | Lead qualification automation: from enquiry to booked call | lead qualification automation Australia | BOFU | 3 |
 | 9 | How to hire an AI agent (the process, start to handover) | how to hire an AI agent, hire AI agent Australia | BOFU | 3 |

@@ -1,6 +1,6 @@
 # WeBuild Co
 
-> Australian AI engineering studio founded by computer engineer Johan Iskandar. We build AI agents — software that runs the repetitive work inside small and mid-sized businesses — scoped with payback math up front, built at a fixed price, run under human supervision until proven, then handed over completely. Owned, not employed. No lock-in, ever.
+> Australian AI studio founded by Johan Iskandar, whose background is business and marketing. We build AI agents — software that runs the repetitive work inside small and mid-sized businesses — scoped with payback math up front, built at a fixed price, run under human supervision until proven, then handed over completely. Owned, not employed. No lock-in, ever.
 
 ## What we do
 - AI agents that do a defined job the way a team member would: read the incoming work (an email, a lead, a ticket), decide using your rules and knowledge base, act in your actual tools, and log what they did. Not chatbot widgets — workers on workflows.
@@ -32,6 +32,7 @@ Australian small and mid-sized businesses drowning in repetitive admin — re-ty
 - FAQ: https://www.webuildco.com.au/faq/
 - Companies: https://www.webuildco.com.au/companies/
 - Notes (plain-language explainers): https://www.webuildco.com.au/notes/
+- About: https://www.webuildco.com.au/about/
 - Contact: https://www.webuildco.com.au/contact/
 
 ## Contact
