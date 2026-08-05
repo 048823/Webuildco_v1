@@ -13,6 +13,7 @@ WEB-138 outputs:
 ```bash
 npm run briefs:build              # rebuild all brief types into data/briefs.json
 npm run briefs:build -- --type morning
+npm run briefs:publish-pr -- --type eod  # commit generated data, open PR, merge if allowed
 npm run briefs:deliver morning    # send/render latest generated Morning Brief
 npm run briefs:verify -- morning  # verify latest generated Morning Brief in production
 ```
@@ -76,19 +77,20 @@ the runtime for an authenticated shell check.
 
 WEB-328 is wired live through Multica run-only autopilots assigned to the CTO
 agent. Each run checks out this repo, updates from `main`, runs tests, builds
-the matching brief, commits/pushes `mission-control/data/briefs.json` when it
-changes, renders configured delivery channels, deploys the Worker with
-`npx wrangler deploy --keep-vars`, then verifies the production JSON and Briefs
-page.
+the matching brief, commits `mission-control/data/briefs.json` to the run
+branch when it changes, opens/merges a PR for protected `main`, renders
+configured delivery channels, deploys the Worker with `npx wrangler deploy
+--keep-vars` from the generated branch, then verifies the production JSON and
+Briefs page.
 
 | Cadence | Autopilot ID | Cron | Command |
 | --- | --- | --- | --- |
-| Morning | `c579224e-9dea-4c7e-9b02-ec10142fe474` | `5 8 * * *` | `GIT_PUSH=1 npm run briefs:build -- --type morning && npm run briefs:deliver morning && npx wrangler deploy --keep-vars` |
-| End of day | `19b4507b-580c-43d0-b509-5829520118fb` | `35 21 * * *` | `GIT_PUSH=1 npm run briefs:build -- --type eod && npm run briefs:deliver eod && npx wrangler deploy --keep-vars` |
-| Weekly | `407a9e0d-80e7-42f5-85d8-e71b4717a026` | `10 7 * * 1` | `BRIEF_PERIOD=previous GIT_PUSH=1 npm run briefs:build -- --type weekly && npm run briefs:deliver weekly && npx wrangler deploy --keep-vars` |
-| Monthly | `9edff78c-2332-4dbd-abdb-3b3894c18a72` | `15 7 1 * *` | `BRIEF_PERIOD=previous GIT_PUSH=1 npm run briefs:build -- --type monthly && npm run briefs:deliver monthly && npx wrangler deploy --keep-vars` |
-| Quarterly | `249ba4d9-0062-49ac-9140-58557979a607` | `20 7 1 1,4,7,10 *` | `BRIEF_PERIOD=previous GIT_PUSH=1 npm run briefs:build -- --type quarterly && npm run briefs:deliver quarterly && npx wrangler deploy --keep-vars` |
-| Yearly | `dfbdae9d-d912-4729-ba51-ce2e8d5318ee` | `25 7 1 1 *` | `BRIEF_PERIOD=previous GIT_PUSH=1 npm run briefs:build -- --type yearly && npm run briefs:deliver yearly && npx wrangler deploy --keep-vars` |
+| Morning | `c579224e-9dea-4c7e-9b02-ec10142fe474` | `5 8 * * *` | `npm run briefs:publish-pr -- --type morning && npm run briefs:deliver morning && npx wrangler deploy --keep-vars` |
+| End of day | `19b4507b-580c-43d0-b509-5829520118fb` | `35 21 * * *` | `npm run briefs:publish-pr -- --type eod && npm run briefs:deliver eod && npx wrangler deploy --keep-vars` |
+| Weekly | `407a9e0d-80e7-42f5-85d8-e71b4717a026` | `10 7 * * 1` | `BRIEF_PERIOD=previous npm run briefs:publish-pr -- --type weekly && npm run briefs:deliver weekly && npx wrangler deploy --keep-vars` |
+| Monthly | `9edff78c-2332-4dbd-abdb-3b3894c18a72` | `15 7 1 * *` | `BRIEF_PERIOD=previous npm run briefs:publish-pr -- --type monthly && npm run briefs:deliver monthly && npx wrangler deploy --keep-vars` |
+| Quarterly | `249ba4d9-0062-49ac-9140-58557979a607` | `20 7 1 1,4,7,10 *` | `BRIEF_PERIOD=previous npm run briefs:publish-pr -- --type quarterly && npm run briefs:deliver quarterly && npx wrangler deploy --keep-vars` |
+| Yearly | `dfbdae9d-d912-4729-ba51-ce2e8d5318ee` | `25 7 1 1 *` | `BRIEF_PERIOD=previous npm run briefs:publish-pr -- --type yearly && npm run briefs:deliver yearly && npx wrangler deploy --keep-vars` |
 
 ## Hermes cron fallback
 
@@ -98,12 +100,12 @@ Use `CRON_TZ=Australia/Sydney` so the cadence follows Johan's operating day.
 CRON_TZ=Australia/Sydney
 
 # Daily reports
-5 8 * * * cd /srv/webuild/Webuildco_v1 && git pull --ff-only origin main && npm test && GIT_PUSH=1 npm run briefs:build -- --type morning && npm run briefs:deliver morning && npx wrangler deploy --keep-vars >> /var/log/webuild-briefs.log 2>&1
-35 21 * * * cd /srv/webuild/Webuildco_v1 && git pull --ff-only origin main && npm test && GIT_PUSH=1 npm run briefs:build -- --type eod && npm run briefs:deliver eod && npx wrangler deploy --keep-vars >> /var/log/webuild-briefs.log 2>&1
+5 8 * * * cd /srv/webuild/Webuildco_v1 && git pull --ff-only origin main && npm test && npm run briefs:publish-pr -- --type morning && npm run briefs:deliver morning && npx wrangler deploy --keep-vars >> /var/log/webuild-briefs.log 2>&1
+35 21 * * * cd /srv/webuild/Webuildco_v1 && git pull --ff-only origin main && npm test && npm run briefs:publish-pr -- --type eod && npm run briefs:deliver eod && npx wrangler deploy --keep-vars >> /var/log/webuild-briefs.log 2>&1
 
 # Longer cadence reports, same pipeline
-10 7 * * 1 cd /srv/webuild/Webuildco_v1 && git pull --ff-only origin main && npm test && BRIEF_PERIOD=previous GIT_PUSH=1 npm run briefs:build -- --type weekly && npm run briefs:deliver weekly && npx wrangler deploy --keep-vars >> /var/log/webuild-briefs.log 2>&1
-15 7 1 * * cd /srv/webuild/Webuildco_v1 && git pull --ff-only origin main && npm test && BRIEF_PERIOD=previous GIT_PUSH=1 npm run briefs:build -- --type monthly && npm run briefs:deliver monthly && npx wrangler deploy --keep-vars >> /var/log/webuild-briefs.log 2>&1
-20 7 1 1,4,7,10 * cd /srv/webuild/Webuildco_v1 && git pull --ff-only origin main && npm test && BRIEF_PERIOD=previous GIT_PUSH=1 npm run briefs:build -- --type quarterly && npm run briefs:deliver quarterly && npx wrangler deploy --keep-vars >> /var/log/webuild-briefs.log 2>&1
-25 7 1 1 * cd /srv/webuild/Webuildco_v1 && git pull --ff-only origin main && npm test && BRIEF_PERIOD=previous GIT_PUSH=1 npm run briefs:build -- --type yearly && npm run briefs:deliver yearly && npx wrangler deploy --keep-vars >> /var/log/webuild-briefs.log 2>&1
+10 7 * * 1 cd /srv/webuild/Webuildco_v1 && git pull --ff-only origin main && npm test && BRIEF_PERIOD=previous npm run briefs:publish-pr -- --type weekly && npm run briefs:deliver weekly && npx wrangler deploy --keep-vars >> /var/log/webuild-briefs.log 2>&1
+15 7 1 * * cd /srv/webuild/Webuildco_v1 && git pull --ff-only origin main && npm test && BRIEF_PERIOD=previous npm run briefs:publish-pr -- --type monthly && npm run briefs:deliver monthly && npx wrangler deploy --keep-vars >> /var/log/webuild-briefs.log 2>&1
+20 7 1 1,4,7,10 * cd /srv/webuild/Webuildco_v1 && git pull --ff-only origin main && npm test && BRIEF_PERIOD=previous npm run briefs:publish-pr -- --type quarterly && npm run briefs:deliver quarterly && npx wrangler deploy --keep-vars >> /var/log/webuild-briefs.log 2>&1
+25 7 1 1 * cd /srv/webuild/Webuildco_v1 && git pull --ff-only origin main && npm test && BRIEF_PERIOD=previous npm run briefs:publish-pr -- --type yearly && npm run briefs:deliver yearly && npx wrangler deploy --keep-vars >> /var/log/webuild-briefs.log 2>&1
 ```

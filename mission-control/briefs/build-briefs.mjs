@@ -273,6 +273,26 @@ function git(...args) {
   return execFileSync("git", args, { cwd: join(HERE, "..", ".."), encoding: "utf8", stdio: "pipe" }).trim();
 }
 
+function currentBranch() {
+  return git("branch", "--show-current");
+}
+
+function upstreamBranch() {
+  try {
+    return git("rev-parse", "--abbrev-ref", "@{upstream}");
+  } catch {
+    return "";
+  }
+}
+
+function assertPushTargetAllowed() {
+  const branch = currentBranch();
+  const upstream = upstreamBranch();
+  if (branch === "main" || upstream === "origin/main") {
+    throw new Error("GIT_PUSH=1 would push brief data to protected main; use `npm run briefs:publish-pr -- --type <type>` instead");
+  }
+}
+
 function maybeCommit() {
   git("add", BRIEFS_PATH);
   try {
@@ -280,8 +300,9 @@ function maybeCommit() {
     console.log("briefs.json unchanged");
     return;
   } catch {
+    if (process.env.GIT_PUSH === "1") assertPushTargetAllowed();
     git("commit", "-m", "chore(mission-control): update briefs [skip ci]");
-    if (process.env.GIT_PUSH === "1") git("push");
+    if (process.env.GIT_PUSH === "1") git("push", "-u", "origin", `HEAD:${currentBranch()}`);
     console.log(process.env.GIT_PUSH === "1" ? "briefs.json committed and pushed" : "briefs.json committed; GIT_PUSH!=1 so not pushed");
   }
 }
