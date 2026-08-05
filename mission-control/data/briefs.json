@@ -1,5 +1,47 @@
 [
   {
+    "id": "eod-2026-08-05",
+    "type": "eod",
+    "period_label": "Wed, 05 Aug",
+    "generated_at": "2026-08-05T11:33:46Z",
+    "wins": [
+      "Kuala Lumpur / travel references removed from the About page: Shipped live. Held on wording approval since 01-Aug; Johan's 14:47 comment cleared it and it deployed six minutes later",
+      "The 31-Jul board instruction is finally live: /companies/ and all six children return 200; every /industries/ path 301s; sitemap and llms.txt clean",
+      "25 stuck PRs triaged and ruled in one pass: 7 MERGE, 10 CLOSE, 6 mechanical-check, 2 HOLD. One standing merge rule set instead of 25 questions. Tagline ruled — unblocked PR #23, stuck 16 days on a question already answered",
+      "Root cause of the runtime blackout identified: Not Hermes. Every CEO scheduling loop is bound to Johan's MacBook. When it sleeps the platform creates no task at all, so the slot is unrecoverable — not merely delayed",
+      "Catch-up watchdog shipped: Backfills missed slots after wake, so it does not need the host awake at dispatch. Fire-once idempotency, fail-closed, max 3/hr, external-send allowlist excluded",
+      "The live-campaign breach found and escalated: Campaign 4fbd93ea active, unbroken 8/business-day sends since 27-Jul. Suppression scope widened 571 → 827 and pre-authorised to execute on key arrival",
+      "\"56 sends, 0 replies proves the copy is broken\" struck from the record: 0 replies in 32 contacts is the most likely outcome of a campaign performing at benchmark; 95% upper bound on our true reply rate is 9.4%. Three copy defects survive on their own...",
+      "Two-minute proof asset verified, not accepted on description: ffprobe: 118.24s, no audio track — \"two minutes, no sound\" exact. Frames show the real app with live state changes, draft only badges, nothing sendable fired. One overclaim caught and corrected"
+    ],
+    "next3": [
+      "WEB-460 item 0 — pause the live campaign: One button in Instantly. 8 more contraventions fire if it is not pressed",
+      "WEB-460 item 0b — write-scoped Instantly key: Generate, vault it. Never paste it to me",
+      "WEB-468 — suppress 827 addresses: Pre-authorised: executes the moment a key lands, no second round trip. Re-read /emails at 08:15 and post the count"
+    ]
+  },
+  {
+    "id": "eod-2026-08-04",
+    "type": "eod",
+    "period_label": "Tue, 04 Aug",
+    "generated_at": "2026-08-04T11:50:37Z",
+    "wins": [
+      "Vendor-provenance question answered, and it flipped the remediation default: All 641 records, all 29 mailed leads, one paid vendor (A-Leads). The mirror case is dead. R2a (suppress all 571, blocklist not delete) fires 08:00 Wed. R2b (\"contact nobody\")...",
+      "Pin cite corrected before a paid lawyer read it: s 6D(4)(c), not (4)(d). Paragraph (d) is Commonwealth contracted service providers — would have burned the first ten minutes of a paid opinion",
+      "Lawyer brief written and ready to send: Q1 = APP 5 / s 6D(4)(c) over 641 people. Q2 = role-address cl 4(2), worth ~350 vs ~1,800 contacts. Sits behind one number from the board",
+      "Runtime cutover gate answered from artifacts, not marketing: Multica runs headless on Linux — confirmed. multica-cli-0.4.17-linux-amd64/-arm64 shipping, multica daemon start --foreground in the installed CLI's own help. The Mac mini column is closed...",
+      "Declined a board spend rather than ask for it uninformed: Hermes is KVM1 (1 vCPU / 4 GB / 50 GB), under-spec by my own rule. I did not ask the board to buy RAM on a box nobody can log into — 2.78 GB resident and 28.75 GB disk consumed, and no one has ever...",
+      "Board asks consolidated from three cards into one: Three asks, asked serially across three days on three issues, none landed. The routing was broken, not the asking. One card, three items, ~3 minutes total, each with a stated default",
+      "Crawler provenance schema v2 shipped, including the refusal gate I rejected at 12:00: Stale checkpoints excluded/counted/non-zero, unknown off-domain sources become unclassified and drop, regression test added, npm test passes. The control now refuses...",
+      "Two board instructions from 31-Jul verified genuinely live: /work/ and /work/webuild-cmo-agent/ both 301, Work gone from nav, control path 404s so the redirect is real not a fallback. GitHub links confirmed gone from homepage and /about/"
+    ],
+    "next3": [
+      "A-Leads export, provenance-tagged (WEB-450, morning priority #1): /mcp in an interactive Claude Code session, authorise a-leads. Default if unanswered: 1,500 paid credits written off, WEB-450 closes cancelled — asset expired unused, and the write-off is...",
+      "Merge PR #47 and triage 26 stuck PRs (WEB-462): Part 1: merge PR #47, prove live with status codes not a claim. Part 2: all 26 open PRs into MERGE / CLOSE / DECIDE, one table, no merging past #47 until I rule",
+      "R2b — whether to contact the 641 (WEB-437): Reply with a number, or \"yes ~A$1,400\", or \"no\". Default: no advice by 17:00 Fri 07-Aug → R2b returns to the board as a forced decision. I will not rule it and no agent will"
+    ]
+  },
+  {
     "id": "eod-2026-08-03",
     "type": "eod",
     "period_label": "Mon, 03 Aug",
@@ -572,7 +614,7 @@
     "generated_at": "2026-07-17T11:33:23Z",
     "wins": [
       "Mission Control live Multica data shipped to production: PR #18 (API + secrets) and PR #19 (Upcoming Blogs + Outbound Leads tabs) reviewed, merged, deployed; Johan set secrets same evening",
-      "Hijrah discovery call kit finished and approved: CRO delivered pre-sale validation block (Q13–16, scoring, logging template) after CEO re-trigger; approved — Johan can start the 10 discovery calls",
+      "Hijrah discovery call kit finished and approved: CRO delivered pre-sale validation block (Q13–16, scoring, logging template) after CEO re-trigger; approved — Johan can start the 10 KL calls",
       "Content chain ran end-to-end for the first time: Trend briefing approved → ideas delivered 14:21 → Johan picked #3 → post + thumbnail done 14:31; awaiting publish",
       "Inbound leads triaged out of pipeline: Penang City Council + Perlis Tourism both reviewed and PARKED (procurement walls, no 2-week fit) — pipeline stays focused on Goal #1 AU SMBs",
       "Review-queue clearing: WEB-174 (MC tickets → project, verified 14/14) and WEB-120 (receipt intake, core merged in PR #14) closed",
