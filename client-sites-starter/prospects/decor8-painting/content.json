@@ -1,0 +1,66 @@
+{
+  "_note": "Draft content for WEB-241. Matches client-sites-starter/content.example.json tokens, with source notes added for the builder.",
+  "_prospect_slug": "decor8-painting",
+  "_business_url": "https://decor8.net.au/",
+  "_google_maps_note": "Own-site fetch only for WEB-241. The source site embeds Google/Trustindex review text, but the live Google Business listing was not fetched in this runtime.",
+  "_reviews_note": "Review slots intentionally left out of this draft. Do not write, paraphrase or place-hold a customer quote. Before the preview URL goes to the prospect, a human either pastes verbatim review text copied from their live Google listing (with the reviewer name as it appears there), or deletes the entire reviews section from index.html.",
+  "_photo_notes": "The rendered site defect from WEB-163 is broken/blank image placeholders. Direct owned media URLs below were status-checked as working 200 responses and are usable for the spec build.",
+  "_site_audit_note": "WEB-163 live audit on 2026-07-21 found the call angle: many rendered site images came up as blank placeholders, hiding Decor8's actual work. Current source HTML also exposes working owned gallery/service images.",
+  "_call_opener": "John? I was on decor8.net.au - you've got 30 years and Master Painters awards, but nearly every photo on the site is coming up as a blank grey box, so none of your actual work shows. I build sites for tradies and I've already mocked up what yours could look like - can I text you the link?",
+  "_source_urls": [
+    "https://decor8.net.au/",
+    "https://decor8.net.au/about-us/",
+    "https://decor8.net.au/services/",
+    "https://decor8.net.au/services/professional-house-painting-services-blue-mountains-western-sydney/",
+    "https://decor8.net.au/services/professional-house-interior-painting-services/",
+    "https://decor8.net.au/services/professional-house-exterior-painting-services/",
+    "https://decor8.net.au/testimonials/",
+    "https://decor8.net.au/contact-us/",
+    "https://decor8.net.au/gallery/"
+  ],
+
+  "BUSINESS_NAME": "Decor8 Painting & Decorating",
+  "TAGLINE": "Owner-operated house painting across the Blue Mountains and Western Sydney",
+  "META_DESCRIPTION": "Decor8 Painting & Decorating provides residential house painting, interior painting and exterior painting across the Blue Mountains, Western Sydney and the Hills District.",
+  "FAVICON_EMOJI": "D",
+
+  "BRAND_COLOR": "#7ca536",
+  "BRAND_COLOR_DARK": "#465f22",
+
+  "PHONE_RAW": "+61404842708",
+  "PHONE_DISPLAY": "0404 842 708",
+  "EMAIL": "john@decor8.net.au",
+  "ADDRESS": "Penrith and Blue Mountains, NSW",
+  "HOURS": "Mon-Sat 7am-6pm; Sun closed",
+  "SERVICE_AREA": "Blue Mountains, Penrith, Western Sydney and Hills District suburbs",
+  "RATING": "Excellent based on 9 Google reviews embedded on the source site",
+
+  "HERO_EYEBROW": "30+ years experience",
+  "HERO_HEADLINE": "Owner-operated painting with the finish handled by John.",
+  "HERO_SUBTEXT": "Decor8 helps local homeowners refresh interiors, protect exteriors and plan full residential repaints with direct service from John Berben.",
+  "HERO_CTA": "Call John",
+  "HERO_TRUST_LINE": "Fully licensed and insured | Master Painter Australia member | ABN 20 710 237 339",
+  "HERO_IMAGE": "https://decor8.net.au/wp-content/uploads/2024/02/blue-mountains-painter.jpg",
+
+  "TRUST_BADGE_1": "Master Painter member",
+  "TRUST_BADGE_2": "Owner operated",
+
+  "SERVICES_HEADING": "Residential painting services",
+  "SERVICES_SUBTEXT": "Focused painting work for homes across the Blue Mountains, Western Sydney and nearby Hills suburbs.",
+  "SERVICE_1_ICON": "HSE", "SERVICE_1_TITLE": "House painting", "SERVICE_1_TEXT": "Residential painting for houses, townhouses, granny flats, apartments and units, with John managing the details.",
+  "SERVICE_2_ICON": "INT", "SERVICE_2_TITLE": "Interior painting", "SERVICE_2_TEXT": "Interior painting and wallcovering for living areas, bedrooms, kitchens, bathrooms and detailed trim work.",
+  "SERVICE_3_ICON": "EXT", "SERVICE_3_TITLE": "Exterior painting", "SERVICE_3_TEXT": "Exterior repainting, preparation, staining, refinishing, fences and decks using durable finishes for local conditions.",
+
+  "ABOUT_HEADING": "A local painter customers deal with directly",
+  "ABOUT_TEXT": "Decor8 is led by John Berben, an owner-operator with more than 30 years in the trade, taught by his father Peter and focused on personalised residential painting service.",
+  "ABOUT_POINT_1": "John is the direct owner/operator contact on projects",
+  "ABOUT_POINT_2": "Fully licensed, insured and a Master Painter Australia member",
+  "ABOUT_POINT_3": "ABN 20 710 237 339 listed on the source site",
+  "ABOUT_IMAGE": "https://decor8.net.au/wp-content/uploads/2022/06/home-painter-western-sydney.jpg",
+
+
+  "CTA_HEADLINE": "Ready to refresh your home?",
+  "CTA_SUBTEXT": "Call John for a free onsite quote and practical advice before the painting starts.",
+
+  "PHONE_placeholder_ordering_note": "PHONE_RAW is used in tel: links (no spaces, +61...); PHONE_DISPLAY is what humans see."
+}

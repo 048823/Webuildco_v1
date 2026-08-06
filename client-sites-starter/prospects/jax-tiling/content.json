@@ -1,0 +1,58 @@
+{
+  "_note": "Draft content for WEB-220. Matches client-sites-starter/content.example.json tokens, with source notes added for the builder.",
+  "_prospect_slug": "jax-tiling",
+  "_business_url": "https://www.jaxtiling.com.au/",
+  "_google_maps_note": "Google Maps surfaced the business listing, phone and 5.0 rating. The site itself embeds Google-linked customer testimonials.",
+  "_reviews_note": "Review slots intentionally left out of this draft. Do not write, paraphrase or place-hold a customer quote. Before the preview URL goes to the prospect, a human either pastes verbatim review text copied from their live Google listing (with the reviewer name as it appears there), or deletes the entire reviews section from index.html.",
+  "_photo_notes": "The Wix site exposes usable tiling/job imagery from static.wixstatic.com. Replace with self-hosted copies before a sold handover.",
+  "_call_opener": "I had your site open - the reviews and photos are strong, but the 2013 Wix layout buries them on mobile. I built a cleaner page that puts your proof and tiling photos first.",
+  "_source_urls": [
+    "https://www.jaxtiling.com.au/",
+    "https://www.jaxtiling.com.au/contact"
+  ],
+
+  "BUSINESS_NAME": "Jax Tiling",
+  "TAGLINE": "Licensed tiling and waterproofing across Sydney",
+  "META_DESCRIPTION": "Jax Tiling provides bathroom tiling, kitchen tiling, wall and floor tiling, waterproofing, outdoor tiling and pool tiling across Parramatta and Sydney.",
+  "FAVICON_EMOJI": "T",
+
+  "BRAND_COLOR": "#315f72",
+  "BRAND_COLOR_DARK": "#203f4d",
+
+  "PHONE_RAW": "+61411546712",
+  "PHONE_DISPLAY": "0411 546 712",
+  "EMAIL": "",
+  "ADDRESS": "Isabela Street, North Parramatta NSW 2151",
+  "HOURS": "Not listed - call to confirm",
+  "SERVICE_AREA": "Parramatta, North Parramatta, Westmead, Blacktown and greater Sydney",
+  "RATING": "5.0 Google rating; Google-linked testimonials on source site",
+
+  "HERO_EYEBROW": "25+ years experience",
+  "HERO_HEADLINE": "Detailed tiling and waterproofing without shortcuts.",
+  "HERO_SUBTEXT": "Jax handles bathrooms, kitchens, floors, walls, pools and commercial tiling with licensed workmanship and no subcontractors.",
+  "HERO_CTA": "Call Jax",
+  "HERO_TRUST_LINE": "Licensed tiler | No subcontractors | Australian Standards | Residential and commercial",
+  "HERO_IMAGE": "https://static.wixstatic.com/media/27d943_e7786dc372c54feba926e24877d7a7da%7Emv2.jpg/v1/fit/w_2500,h_1330,al_c/27d943_e7786dc372c54feba926e24877d7a7da%7Emv2.jpg",
+
+  "TRUST_BADGE_1": "Licensed tiler",
+  "TRUST_BADGE_2": "No subcontractors",
+
+  "SERVICES_HEADING": "Tiling services",
+  "SERVICES_SUBTEXT": "A clean service offer for renovations, new builds and commercial tiling jobs.",
+  "SERVICE_1_ICON": "BTH", "SERVICE_1_TITLE": "Bathroom tiling", "SERVICE_1_TEXT": "Bathroom floor and wall tiling, wet-area waterproofing and detailed renovation work.",
+  "SERVICE_2_ICON": "KIT", "SERVICE_2_TITLE": "Kitchen and floor tiling", "SERVICE_2_TEXT": "Kitchen splashbacks, floor tiling, wall tiling and practical advice before quoting.",
+  "SERVICE_3_ICON": "OUT", "SERVICE_3_TITLE": "Outdoor, pool and commercial tiling", "SERVICE_3_TEXT": "Outdoor areas, swimming pools, commercial spaces and larger tiling projects across Sydney.",
+
+  "ABOUT_HEADING": "A cleaner page for already-strong proof",
+  "ABOUT_TEXT": "Jax Tiling presents itself as a licensed Parramatta tiler with more than 25 years of experience, no subcontractors, clean work habits and a no-shortcuts approach.",
+  "ABOUT_POINT_1": "Bathroom, kitchen, wall, floor, pool and outdoor tiling",
+  "ABOUT_POINT_2": "Waterproofing completed to Australian Standards",
+  "ABOUT_POINT_3": "Written quotes after viewing the project",
+  "ABOUT_IMAGE": "https://static.wixstatic.com/media/27d943_8b1c68caaa5b4669a4a6d77f0b128a67~mv2.jpg/v1/fill/w_231,h_220,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Jax%20Complete%20Tiling.jpg",
+
+
+  "CTA_HEADLINE": "Ready to tile it properly?",
+  "CTA_SUBTEXT": "Call Jax for a written quote after the project is inspected.",
+
+  "PHONE_placeholder_ordering_note": "PHONE_RAW is used in tel: links (no spaces, +61...); PHONE_DISPLAY is what humans see."
+}
