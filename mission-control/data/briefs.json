@@ -1,5 +1,23 @@
 [
   {
+    "id": "morning-2026-08-06",
+    "type": "morning",
+    "period_label": "Thu, 06 Aug",
+    "generated_at": "2026-08-06T17:08:00Z",
+    "wins": [],
+    "next3": [
+      "Review current blockers",
+      "Pick the highest-leverage next action",
+      "Update Mission Control after execution"
+    ],
+    "industry_pulse": [
+      "Every \"unresponsive agent\" judgement this week is suspect. We have twice concluded an agent was idle, dark, or ignoring us when the message never reached it. Before anyone diagnoses an agent again, check whether a run was ever created",
+      "The rule cuts both ways and nobody has tested the other side. If a human comment always fires the assignee, then Johan replying \"ok\" or \"keep\" on an agent-assigned issue starts a real run. WEB-455 confirms it: a one-word \"keep\" from Johan enqueued a run",
+      "Unverified assumption, flagged: my sample holds only 4 human plain comments. The human→fires direction is 4/4 but thin. The agent→never-fires direction is 32/32 and solid. If anything overturns tonight's verdict it will be the human side",
+      "Carried from 02:00, unresolved: two second-shift runs collided at 01:0x and spent a board-hour twice on the same question. Same observability family as this — we cannot see our own dispatch state. Belongs in WEB-486"
+    ]
+  },
+  {
     "id": "eod-2026-08-06",
     "type": "eod",
     "period_label": "Thu, 06 Aug",
@@ -42,6 +60,27 @@
     ]
   },
   {
+    "id": "morning-2026-08-05",
+    "type": "morning",
+    "period_label": "Wed, 05 Aug",
+    "generated_at": "2026-08-04T22:52:42Z",
+    "wins": [
+      "The A-Leads deadline is gone. Three published A-Leads sources agree: unused credits never expire, unlimited rollover, as long as the subscription stays active. The Alva Intelligence ToS contains no expiry clause at all. The 1,500 credits are safe; the",
+      "A non-interactive A-Leads auth path exists. The MCP connector genuinely cannot be automated — its OAuth metadata offers only authorization_code and refresh_token, no client_credentials. But A-Leads ships a separate REST API on a static x-api-key header",
+      "R2a is delegated and firing. WEB-468 created 08:03, urgent, with the CRO: suppress all 571 Migration Agents addresses, blocklist not delete, contact nobody. The board default on WEB-437 fired at 08:00 unopposed",
+      "WEB-460 rewritten — item 1 changed from an OAuth session to a 60-second key generation, and the urgency came off it",
+      "Yesterday's End-of-Day report was delivered (21:50, WEB-463) — its issue status was just never flipped. Closed now, along with the 04-Aug Daily Log",
+      "Six of ten overnight slots died. Only the 01:00 Second Shift run posted; 00:00 died with runtime went offline. Six of the eight research questions queued last night were never attempted, including two now on their third unattempted night",
+      "WEB-462 never started. Created 04-Aug 20:33, assigned to the CTO, zero comments, still todo twelve hours later. The CTO agent is idle. Restarted this morning with an explicit mention",
+      "The 08:00 run of this standup itself partially died — it created WEB-468 and revised WEB-450 and WEB-460, then stopped before posting a report. This is the third consecutive day with a partial-run failure"
+    ],
+    "next3": [
+      "Merge PR #47 and prove it live, then triage the 26 stuck PRs",
+      "Execute R2a — suppress all 571, blocklist not delete",
+      "Build and dry-run the A-Leads REST export"
+    ]
+  },
+  {
     "id": "eod-2026-08-04",
     "type": "eod",
     "period_label": "Tue, 04 Aug",
@@ -60,6 +99,27 @@
       "A-Leads export, provenance-tagged (WEB-450, morning priority #1): /mcp in an interactive Claude Code session, authorise a-leads. Default if unanswered: 1,500 paid credits written off, WEB-450 closes cancelled — asset expired unused, and the write-off is...",
       "Merge PR #47 and triage 26 stuck PRs (WEB-462): Part 1: merge PR #47, prove live with status codes not a claim. Part 2: all 26 open PRs into MERGE / CLOSE / DECIDE, one table, no merging past #47 until I rule",
       "R2b — whether to contact the 641 (WEB-437): Reply with a number, or \"yes ~A$1,400\", or \"no\". Default: no advice by 17:00 Fri 07-Aug → R2b returns to the board as a forced decision. I will not rule it and no agent will"
+    ]
+  },
+  {
+    "id": "morning-2026-08-04",
+    "type": "morning",
+    "period_label": "Tue, 04 Aug",
+    "generated_at": "2026-08-03T22:08:17Z",
+    "wins": [
+      "ACMA has never penalised a small business for tens of messages in 2019–2026. Lowest volume ever to draw a formal warning: 5 messages, no penalty, complaint-triggered. Lowest to draw a fine: 119 messages, financial-services sender",
+      "Since Jan 2021 the spam register contains no small businesses at all. Banks, telcos, retailers, gambling operators, fintechs only",
+      "Detection funnel: ~2,800 complaints and ~1,400 compliance alerts in a quarter produced 3 investigations. ~0.2% conversion. No documented instance in seven years of an investigation opening at small scale absent a complaint or self-report",
+      "Every remediation ACMA has imposed is inward-facing. Luxottica, Lululemon, Kalkine, Webull undertakings read in full: consultant review, training, reporting. Zero recipient-notification clauses. R3's contact limb has no regulatory precedent",
+      "R3 could manufacture breaches 52–80. No \"unsubscribe confirmation\" carve-out exists in the Spam Act. A branded apology on the marketing ESP is a live candidate for 29 fresh, deliberate, documented contraventions",
+      "Sch 2 cl 4(2)(a)(vi)–(vii) exist specifically for role mailboxes. info@, sales@, accounts@ are inside the statute; the agreement to be assumed is the organisation's. Last night's \"~350 vs ~1,800 sendable\" framing was a false binary and I will not repeat it",
+      "The limb that actually bites is cl 4(2)(c) — reasonable to assume publication occurred with the organisation's agreement. Source matters more than address shape: a company's own Contact page passes; a third-party directory is much weaker on identical facts",
+      "Relevance is a continuing condition (\"so long as\"), assessed message-by-message. That governs the whole follow-up sequence, not just email 1. Our sequence design has never been tested against it"
+    ],
+    "next3": [
+      "Execute the A-Leads export, every row provenance-tagged",
+      "Answer the vendor-provenance question that gates the R2 default",
+      "Correct the crawler spec before the build hardens around it"
     ]
   },
   {
