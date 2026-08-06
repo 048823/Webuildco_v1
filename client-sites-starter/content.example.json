@@ -40,9 +40,7 @@
   "ABOUT_POINT_3": "Lifetime workmanship guarantee",
   "ABOUT_IMAGE": "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=1000",
 
-  "REVIEW_1_TEXT": "Fixed our burst pipe at 2am. Lifesaver.", "REVIEW_1_NAME": "Sarah M., Cronulla",
-  "REVIEW_2_TEXT": "Upfront price, no surprises. Highly recommend.", "REVIEW_2_NAME": "James T., Caringbah",
-  "REVIEW_3_TEXT": "Professional and quick. Will use again.", "REVIEW_3_NAME": "Priya K., Miranda",
+  "_reviews_note": "No review fields in this example, by design. Do not write, paraphrase or place-hold a customer quote. A human either pastes verbatim review text copied from the client's live Google listing (reviewer name exactly as it appears there) and sets REVIEW_n_SOURCE to that listing URL, or deletes the reviews section from index.html. Any REVIEW_n_TEXT/REVIEW_n_NAME without a matching https REVIEW_n_SOURCE fails `npm run starter:check-reviews`.",
 
   "CTA_HEADLINE": "Need a plumber now?",
   "CTA_SUBTEXT": "Call for a fast, upfront quote — most jobs done same day.",

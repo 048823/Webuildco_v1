@@ -114,24 +114,30 @@
   </div>
 </section>
 
-<!-- ===== REVIEWS ===== -->
+<!-- ===== REVIEWS =====
+     RULE: never write, paraphrase or place-hold a customer quote here.
+     A human either pastes verbatim review text copied from the client's live Google
+     listing (with the reviewer name as it appears there, and REVIEW_n_SOURCE set to
+     the listing URL in the JSON), or DELETES this whole section plus its nav link.
+     Quote characters, if any, come from the pasted review text — not from this markup.
+     See README → "Reviews: verbatim or nothing". Gate: npm run starter:check-reviews -->
 <section id="reviews" class="max-w-6xl mx-auto px-5 py-20">
   <h2 class="text-3xl font-extrabold tracking-tight text-slate-900 text-center">What customers say</h2>
   <div class="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
     <figure class="rounded-2xl border border-slate-100 p-6">
       <div class="text-brand">★★★★★</div>
-      <blockquote class="mt-3 text-slate-700">"{{REVIEW_1_TEXT}}"</blockquote>
-      <figcaption class="mt-4 text-sm font-semibold text-slate-500">— {{REVIEW_1_NAME}}</figcaption>
+      <blockquote class="mt-3 text-slate-700">{{REVIEW_1_TEXT}}</blockquote>
+      <figcaption class="mt-4 text-sm font-semibold text-slate-500">{{REVIEW_1_NAME}}</figcaption>
     </figure>
     <figure class="rounded-2xl border border-slate-100 p-6">
       <div class="text-brand">★★★★★</div>
-      <blockquote class="mt-3 text-slate-700">"{{REVIEW_2_TEXT}}"</blockquote>
-      <figcaption class="mt-4 text-sm font-semibold text-slate-500">— {{REVIEW_2_NAME}}</figcaption>
+      <blockquote class="mt-3 text-slate-700">{{REVIEW_2_TEXT}}</blockquote>
+      <figcaption class="mt-4 text-sm font-semibold text-slate-500">{{REVIEW_2_NAME}}</figcaption>
     </figure>
     <figure class="rounded-2xl border border-slate-100 p-6">
       <div class="text-brand">★★★★★</div>
-      <blockquote class="mt-3 text-slate-700">"{{REVIEW_3_TEXT}}"</blockquote>
-      <figcaption class="mt-4 text-sm font-semibold text-slate-500">— {{REVIEW_3_NAME}}</figcaption>
+      <blockquote class="mt-3 text-slate-700">{{REVIEW_3_TEXT}}</blockquote>
+      <figcaption class="mt-4 text-sm font-semibold text-slate-500">{{REVIEW_3_NAME}}</figcaption>
     </figure>
   </div>
 </section>
