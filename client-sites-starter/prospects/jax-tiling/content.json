@@ -3,7 +3,7 @@
   "_prospect_slug": "jax-tiling",
   "_business_url": "https://www.jaxtiling.com.au/",
   "_google_maps_note": "Google Maps surfaced the business listing, phone and 5.0 rating. The site itself embeds Google-linked customer testimonials.",
-  "_review_source_note": "Review copy below is paraphrased from testimonials on the business site; two were linked from the page to Google.",
+  "_reviews_note": "Review slots intentionally left out of this draft. Do not write, paraphrase or place-hold a customer quote. Before the preview URL goes to the prospect, a human either pastes verbatim review text copied from their live Google listing (with the reviewer name as it appears there), or deletes the entire reviews section from index.html.",
   "_photo_notes": "The Wix site exposes usable tiling/job imagery from static.wixstatic.com. Replace with self-hosted copies before a sold handover.",
   "_call_opener": "I had your site open - the reviews and photos are strong, but the 2013 Wix layout buries them on mobile. I built a cleaner page that puts your proof and tiling photos first.",
   "_source_urls": [
@@ -50,9 +50,6 @@
   "ABOUT_POINT_3": "Written quotes after viewing the project",
   "ABOUT_IMAGE": "https://static.wixstatic.com/media/27d943_8b1c68caaa5b4669a4a6d77f0b128a67~mv2.jpg/v1/fill/w_231,h_220,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Jax%20Complete%20Tiling.jpg",
 
-  "REVIEW_1_TEXT": "Magda said the work was punctual, professional, detailed, honest and finished to an impeccable standard.", "REVIEW_1_NAME": "Magda Joe Daidone",
-  "REVIEW_2_TEXT": "Matilda said she has used Jax multiple times since 2012 and keeps coming back for reliable, detailed work.", "REVIEW_2_NAME": "Matilda Wong",
-  "REVIEW_3_TEXT": "Kate praised the herringbone mosaic work, punctuality, reliability, tidy work and faultless finish.", "REVIEW_3_NAME": "Kate Lochrin",
 
   "CTA_HEADLINE": "Ready to tile it properly?",
   "CTA_SUBTEXT": "Call Jax for a written quote after the project is inspected.",

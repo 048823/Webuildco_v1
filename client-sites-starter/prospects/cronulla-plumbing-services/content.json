@@ -3,7 +3,7 @@
   "_prospect_slug": "cronulla-plumbing-services",
   "_business_url": "https://www.cronullaplumbingservices.com.au/",
   "_google_maps_note": "Public Google/Maps-adjacent data showed the business listing and 5.0 rating across 3 reviews, but individual review text was not fetchable in this runtime.",
-  "_review_source_note": "Do not present the review slots below as customer quotes until a human copies verified Google review text from the live listing.",
+  "_reviews_note": "Review slots intentionally left out of this draft. Do not write, paraphrase or place-hold a customer quote. Before the preview URL goes to the prospect, a human either pastes verbatim review text copied from their live Google listing (with the reviewer name as it appears there), or deletes the entire reviews section from index.html.",
   "_photo_notes": "Owned site has only brand/logo imagery and a Master Plumbers badge. Google Maps exposed a Street View thumbnail, but no usable owned job photos were found.",
   "_call_opener": "I had your site open and it looks hacked - Google is seeing Viagra/pharma spam on a plumbing site. I built a clean mobile version so customers see Cronulla Plumbing, not spam.",
   "_source_urls": [
@@ -50,9 +50,6 @@
   "ABOUT_POINT_3": "New homes, units, developments and renovations",
   "ABOUT_IMAGE": "https://www.cronullaplumbingservices.com.au/images/master-plumbers.gif",
 
-  "REVIEW_1_TEXT": "Google profile shows a 5.0 rating across 3 reviews; individual review text was not available from accessible public sources in this runtime.", "REVIEW_1_NAME": "Google Business listing",
-  "REVIEW_2_TEXT": "Use this slot for a verified Google review once a human copies it from the live Google Business panel.", "REVIEW_2_NAME": "Content QA",
-  "REVIEW_3_TEXT": "No source-site customer testimonial text was found, so this draft avoids inventing customer quotes.", "REVIEW_3_NAME": "Source note",
 
   "CTA_HEADLINE": "Need a local Shire plumber?",
   "CTA_SUBTEXT": "Call Warren for a direct quote and a practical next step.",
