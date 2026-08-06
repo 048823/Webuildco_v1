@@ -73,3 +73,35 @@ Images: none required for v1 (og.png is the site-wide share image). If a piece n
 | 19 | The AI automation ROI calculator, explained (companion to /tools/ page) | AI automation ROI calculator | MOFU | 7 |
 
 Weeks 6–7 company pieces reuse the /companies/ pages as the money-page link. Queue refills from WEB-22 research (r/keyword tables) as weeks complete.
+
+## GEO question bank (answer-engine layer) — added 15 July 2026
+
+The queue above is topic-shaped. This layer is **question-shaped**: each title is the exact doubt an AU SMB owner types (or asks an LLM). Answer-first format is mandatory — a **direct 40–60 word answer in the first paragraph** LLMs can lift verbatim, then the argument. FAQPage + Article schema on every one.
+
+### Sourcing method (how the bank stays fed — CMO owns)
+
+1. **Real sales objections** — the questions Johan hears on intro/discovery calls. Highest-converting, bottom-funnel. *Gap: need Johan's top 5–10 (see below); routed straight to BOFU.*
+2. **Google PAA + autocomplete** for our core terms (AI agent, AI automation, AI receptionist, automate admin).
+3. **Reddit / AU forums** — r/smallbusiness, r/AusFinance, AU business FB groups. Mine the doubt, not the keyword.
+4. **LLM-cited-source check** — ask ChatGPT/Perplexity our target queries, log who they cite, beat that page.
+
+### First BOFU batch — objection-crushers (draft-ready, question-titled)
+
+Each answers a purchase-blocking doubt, uses AUD figures, ends on the real offer (Foundations Session A$300 / fixed written quote before build / no lock-in). Tied to the ROI calculator where math applies.
+
+| # | Question-shaped title (H1) | The objection it kills | Money link |
+|---|---|---|---|
+| B1 | Is an AI agent actually worth it for a small business? | "Sounds like big-company tech, not for a 5–50 person shop." | ROI calc + /pricing/ |
+| B2 | What does an AI agent cost to run per month in Australia? | "Hidden ongoing costs will eat the saving." | /pricing/ |
+| B3 | What happens when the AI agent gets it wrong? | "It'll make a mistake with a customer and I'll wear it." | /method/ (supervised-until-proven) |
+| B4 | Do I need to be technical to run an AI agent? | "I can't code and I don't have IT staff." | /method/ |
+| B5 | Will an AI agent replace my staff — or fight them? | "My team will resist it / I don't want to fire anyone." | /method/ |
+| B6 | How long before an AI agent pays for itself? | "Payback is too far out to justify now." | ROI calc + /pricing/ |
+| B7 | Is my business data safe with an AI agent? | "It'll leak customer data or breach privacy law." | /method/ |
+| B8 | What if I want to stop — am I locked in? | "I'll be trapped in a contract / can't get my data out." | /pricing/ (no lock-in) |
+| B9 | AI agent vs hiring another admin: which is cheaper in 2026? | "A part-timer is the safer, known cost." | ROI calc (companion to note #1) |
+| B10 | Can a small AU business trust AI agents yet, or is it too early? | "The tech isn't mature; I'll get burned being early." | /method/ |
+
+**Sequencing:** B1, B2, B3 first (highest-intent doubts, closest to a yes). Slot into Week 2–3 alongside the existing BOFU rows; they don't replace the queue, they sharpen its titles. Where a batch item overlaps an existing row (e.g. B2 ≈ what-agents-cost-to-run, B9 ≈ note #1), retitle to the question form rather than double-publish — one URL per question, no cannibalization.
+
+**Blocked on Johan:** the top 5–10 intro-call objections. Those outrank anything a keyword tool surfaces because they're already qualified buyers' words. Once supplied, they jump the queue as B11+.
