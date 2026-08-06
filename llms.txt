@@ -1,6 +1,6 @@
 # WeBuild Co
 
-> Australian AI engineering studio founded by computer engineer Johan Iskandar. We build AI agents — software that runs the repetitive work inside small and mid-sized businesses — scoped with payback math up front, built at a fixed price, run under human supervision until proven, then handed over completely. Owned, not employed. No lock-in, ever.
+> Australian AI studio founded by Johan Iskandar, whose background is business and marketing. We build AI agents — software that runs the repetitive work inside small and mid-sized businesses — scoped with payback math up front, built at a fixed price, run under human supervision until proven, then handed over completely. Owned, not employed. No lock-in, ever.
 
 ## What we do
 - AI agents that do a defined job the way a team member would: read the incoming work (an email, a lead, a ticket), decide using your rules and knowledge base, act in your actual tools, and log what they did. Not chatbot widgets — workers on workflows.
@@ -13,7 +13,7 @@
 - Running costs after handover: model usage plus tool subscriptions, roughly A$50–300/month for most single-workflow agents — specified before the build.
 
 ## Who it's for
-Australian small and mid-sized businesses drowning in repetitive admin — re-typing, chasing, after-hours phone — who want to own the system that fixes it. Industries we know: HR & recruiting, migration agents, legal, Islamic finance, Islamic charities, cybersecurity, solar.
+Australian small and mid-sized businesses drowning in repetitive admin — re-typing, chasing, after-hours phone — who want to own the system that fixes it. Companies we serve: HR & recruiting, migration agents, legal, cybersecurity, solar.
 
 ## What we build
 - What we build (overview): https://www.webuildco.com.au/build/
@@ -30,8 +30,7 @@ Australian small and mid-sized businesses drowning in repetitive admin — re-ty
 - The Cage (guardrails and approval gates): https://www.webuildco.com.au/the-cage/
 - Founding Five (early-client program): https://www.webuildco.com.au/founding-five/
 - FAQ: https://www.webuildco.com.au/faq/
-- Work: https://www.webuildco.com.au/work/
-- Industries: https://www.webuildco.com.au/industries/
+- Companies: https://www.webuildco.com.au/companies/
 - Notes (plain-language explainers): https://www.webuildco.com.au/notes/
 - About: https://www.webuildco.com.au/about/
 - Contact: https://www.webuildco.com.au/contact/

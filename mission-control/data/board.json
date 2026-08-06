@@ -1,25 +1,32 @@
 {
   "_note": "SAMPLE / MANUAL DATA — edit this file to update Mission Control. Sections marked 'needs' in the UI are waiting on a live API credential (see the issue result comment). Replace these seed rows with real data or wire the integration.",
-  "updated": "2026-07-14",
+  "updated": "2026-07-16",
   "todos": [
-    { "text": "Approve Optora voice-agent scope", "owner": "CEO", "done": false },
+    { "text": "Approve recruiting voice-agent scope", "owner": "CEO", "done": false },
     { "text": "Sign off July subscription spend", "owner": "CTO", "done": true },
     { "text": "Review 3 new outbound sequences", "owner": "CMO", "done": false },
     { "text": "Ship Mission Control auth to prod", "owner": "CTO", "done": false }
   ],
   "briefs": [
-    { "title": "Pipeline health", "body": "2 builds in delivery, 1 in discovery. No red flags. Optora on track for wk-3 handover." },
+    { "title": "Pipeline health", "body": "2 builds in delivery, 1 in discovery. No red flags on current handovers." },
     { "title": "Outbound", "body": "Instantly + A-leads running; reply rate ~4%. Waiting on API keys to surface live numbers here." }
   ],
+  "_projects_note": "Progress % are estimates inferred from the project brief, not live milestone data. Edit each row to make them exact — the mind map and tables both read from here.",
   "projects": {
     "clients": [
-      { "name": "Optora Recruiting", "type": "Voice + lead-qual agent", "stage": "Delivery", "progress": 65, "due": "2026-07-28", "health": "ok" },
-      { "name": "WeBuild CMO Agent", "type": "Content + outbound agent", "stage": "Delivery", "progress": 40, "health": "ok" },
-      { "name": "Harbourline Legal", "type": "Doc-automation agent", "stage": "Discovery", "progress": 10, "health": "warn" }
+      { "name": "Recruiting prospect", "type": "Discovery — scope TBD", "stage": "Scoping", "progress": 40, "due": "2026-07-27", "health": "ok" },
+      { "name": "Everflow", "type": "Website rebuild + new projects", "stage": "Delivery", "progress": 55, "health": "ok" },
+      { "name": "Awqaf", "type": "Re-scope — smaller", "stage": "Stalled at pricing", "progress": 20, "health": "warn" },
+      { "name": "Hijra Co", "type": "Muslim migration platform", "stage": "Planned", "progress": 10, "health": "planned" },
+      { "name": "Tijara", "type": "Investing + Shariah Telegram updates", "stage": "Planned", "progress": 10, "health": "planned" },
+      { "name": "Mizan", "type": "Muslim expense manager", "stage": "Planned", "progress": 10, "health": "planned" }
     ],
     "internal": [
-      { "name": "Mission Control", "type": "Internal dashboard", "stage": "Build", "progress": 80, "health": "ok" },
-      { "name": "Website v3", "type": "Marketing site", "stage": "Live", "progress": 100, "health": "ok" }
+      { "name": "Website Factory", "type": "Site generation pipeline", "stage": "Build", "progress": 40, "health": "ok" },
+      { "name": "Fable Brain", "type": "Knowledge / memory system", "stage": "Build", "progress": 40, "health": "ok" },
+      { "name": "Social Media Factory", "type": "Content pipeline", "stage": "Build", "progress": 30, "health": "ok" },
+      { "name": "Outreach Leads Factory", "type": "Outbound pipeline", "stage": "Build", "progress": 30, "health": "ok" },
+      { "name": "Faceless YouTube", "type": "Video channel", "stage": "Planned", "progress": 20, "health": "planned" }
     ]
   },
   "leads": {

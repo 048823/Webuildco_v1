@@ -44,7 +44,7 @@ Images: none required for v1 (og.png is the site-wide share image). If a piece n
 
 1. Every note links to **exactly one money page** (/method/ or /pricing/) in body copy, plus the standard CTA block.
 2. Every note links to **1–2 sibling notes** with descriptive anchors (no "click here").
-3. Link to **one /industries/ page** when the example genuinely fits; skip otherwise.
+3. Link to **one /companies/ page** when the example genuinely fits; skip otherwise.
 4. Every **new** note gets ≥2 inbound links in the same PR: its /notes/ index card + one contextual link added to the most-related existing note.
 5. Ceiling: ~5 internal links per 1,000 words. Never link the same target twice in one body.
 
@@ -55,9 +55,9 @@ Images: none required for v1 (og.png is the site-wide share image). If a piece n
 | 1 | AI automation agency vs hiring in-house: 2026 AUD cost comparison | AI automation ROI Australia, hire AI agent vs employee | MOFU | 1 ✅ |
 | 2 | What is an AI agent? (expanded, FAQ + schema) | what is an AI agent, AI agent examples | TOFU | 1 ✅ |
 | 3 | AI agent vs virtual assistant: which does an AU SMB actually need? | AI agent vs virtual assistant Australia | MOFU | 1 ✅ |
-| 4 | How to automate admin work (a triage method, not a tool list) | automate admin work Australia | BOFU | 2 |
-| 5 | AI receptionist for Australian SMBs: what it is, what it costs | AI receptionist Australia | BOFU | 2 |
-| 6 | What a missed call costs an AU service business (payback math) | missed call cost, AI voice agent for business | MOFU | 2 |
+| 4 | How to automate admin work (a triage method, not a tool list) | automate admin work Australia | BOFU | 2 ✅ |
+| 5 | AI receptionist for Australian SMBs: what it is, what it costs | AI receptionist Australia | BOFU | 2 ✅ |
+| 6 | What a missed call costs an AU service business (payback math) | missed call cost, AI voice agent for business | MOFU | 2 ✅ |
 | 7 | AI voice agent Australia: the buyer's guide | AI voice agent Australia | BOFU | 3 |
 | 8 | Lead qualification automation: from enquiry to booked call | lead qualification automation Australia | BOFU | 3 |
 | 9 | How to hire an AI agent (the process, start to handover) | how to hire an AI agent, hire AI agent Australia | BOFU | 3 |
@@ -71,9 +71,8 @@ Images: none required for v1 (og.png is the site-wide share image). If a piece n
 | 17 | HR & recruiting: candidate screening agents that don't ghost people | lead/candidate qualification + industry | MOFU | 6 |
 | 18 | Legal intake automation: first-touch without the risk | AI intake legal Australia | MOFU | 7 |
 | 19 | The AI automation ROI calculator, explained (companion to /tools/ page) | AI automation ROI calculator | MOFU | 7 |
-| 20 | Islamic finance back-office automation (compliance-aware) | automation Islamic finance Australia | MOFU | 8 |
 
-Weeks 6–8 industry pieces reuse the /industries/ pages as the money-page link. Queue refills from WEB-22 research (r/keyword tables) as weeks complete.
+Weeks 6–7 company pieces reuse the /companies/ pages as the money-page link. Queue refills from WEB-22 research (r/keyword tables) as weeks complete.
 
 ## GEO question bank (answer-engine layer) — added 15 July 2026
 

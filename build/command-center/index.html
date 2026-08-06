@@ -36,7 +36,7 @@
       <span class="w-[26px] h-[26px] rounded-xl bg-obsidian grid place-items-center"><span class="w-[11px] h-[11px] rounded-[3px] bg-lime"></span></span>
       WeBuild<span class="text-slate font-normal">Co</span>
     </a>
-    <div class="hidden md:flex gap-32 text-body font-medium"><a href="/build/" class="text-obsidian font-semibold hover:text-obsidian transition-colors">Build</a><a href="/work/" class="text-slate hover:text-obsidian transition-colors">Work</a><a href="/industries/" class="text-slate hover:text-obsidian transition-colors">Industries</a><a href="/method/" class="text-slate hover:text-obsidian transition-colors">Method</a><a href="/pricing/" class="text-slate hover:text-obsidian transition-colors">Pricing</a><a href="/about/" class="text-slate hover:text-obsidian transition-colors">About</a></div>
+    <div class="hidden md:flex items-center gap-32 text-body font-medium"><div class="relative group"><a href="/build/" class="text-obsidian font-semibold hover:text-obsidian transition-colors inline-flex items-center gap-6" aria-haspopup="true">Build<span class="text-[9px] text-slate translate-y-px transition-transform group-hover:rotate-180" aria-hidden="true">▼</span></a><div class="absolute left-1/2 -translate-x-1/2 top-full pt-16 hidden group-hover:block group-focus-within:block z-50"><div class="bg-snow rounded-2xl-2 shadow-subtle-2 border border-fog p-8 min-w-[248px]"><a href="/build/multi-agent-orchestration/" class="block px-16 py-8 rounded-xl text-body text-slate hover:text-obsidian hover:bg-mist transition-colors">Multi-Agent Orchestration</a><a href="/build/command-center/" class="block px-16 py-8 rounded-xl text-body text-slate hover:text-obsidian hover:bg-mist transition-colors">Command Center</a><a href="/build/company-brain/" class="block px-16 py-8 rounded-xl text-body text-slate hover:text-obsidian hover:bg-mist transition-colors">Company Brain</a><a href="/build/messaging-integration/" class="block px-16 py-8 rounded-xl text-body text-slate hover:text-obsidian hover:bg-mist transition-colors">Messaging Integration</a><a href="/build/premium-websites/" class="block px-16 py-8 rounded-xl text-body text-slate hover:text-obsidian hover:bg-mist transition-colors">Premium Websites</a></div></div></div><div class="relative group"><a href="/companies/" class="text-slate hover:text-obsidian transition-colors inline-flex items-center gap-6" aria-haspopup="true">Companies<span class="text-[9px] text-slate translate-y-px transition-transform group-hover:rotate-180" aria-hidden="true">▼</span></a><div class="absolute left-1/2 -translate-x-1/2 top-full pt-16 hidden group-hover:block group-focus-within:block z-50"><div class="bg-snow rounded-2xl-2 shadow-subtle-2 border border-fog p-8 min-w-[248px]"><a href="/companies/hr-recruiting/" class="block px-16 py-8 rounded-xl text-body text-slate hover:text-obsidian hover:bg-mist transition-colors">HR & recruiting</a><a href="/companies/migration-agents/" class="block px-16 py-8 rounded-xl text-body text-slate hover:text-obsidian hover:bg-mist transition-colors">Migration agents</a><a href="/companies/legal/" class="block px-16 py-8 rounded-xl text-body text-slate hover:text-obsidian hover:bg-mist transition-colors">Legal</a><a href="/companies/cybersecurity/" class="block px-16 py-8 rounded-xl text-body text-slate hover:text-obsidian hover:bg-mist transition-colors">Cybersecurity</a><a href="/companies/solar/" class="block px-16 py-8 rounded-xl text-body text-slate hover:text-obsidian hover:bg-mist transition-colors">Solar</a></div></div></div><a href="/method/" class="text-slate hover:text-obsidian transition-colors">Method</a><a href="/pricing/" class="text-slate hover:text-obsidian transition-colors">Pricing</a><a href="/about/" class="text-slate hover:text-obsidian transition-colors">About</a></div>
     <div class="flex items-center gap-12">
       <a href="https://cal.com/webuildco/intro" target="_blank" rel="noopener" class="hidden sm:inline-flex items-center bg-obsidian text-snow text-body font-medium rounded-full px-20 py-12 shadow-subtle hover:brightness-115 hover:-translate-y-px transition cursor-pointer">Book an intro call →</a>
       <button id="menuBtn" class="md:hidden w-[44px] h-[44px] rounded-full bg-snow border border-pebble grid place-items-center cursor-pointer shrink-0" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
@@ -44,7 +44,7 @@
       </button>
     </div>
   </div>
-  <div id="mobileMenu" class="hidden md:hidden bg-mist border-b border-fog px-24 pb-20"><a href="/build/" class="block py-12 text-subheading font-medium text-obsidian border-b border-fog">Build</a><a href="/work/" class="block py-12 text-subheading font-medium text-obsidian border-b border-fog">Work</a><a href="/industries/" class="block py-12 text-subheading font-medium text-obsidian border-b border-fog">Industries</a><a href="/method/" class="block py-12 text-subheading font-medium text-obsidian border-b border-fog">Method</a><a href="/pricing/" class="block py-12 text-subheading font-medium text-obsidian border-b border-fog">Pricing</a><a href="/about/" class="block py-12 text-subheading font-medium text-obsidian border-b border-fog">About</a><a href="https://cal.com/webuildco/intro" target="_blank" rel="noopener" class="inline-flex items-center bg-obsidian text-snow text-body font-medium rounded-full px-20 py-12 mt-16">Book an intro call →</a></div>
+  <div id="mobileMenu" class="hidden md:hidden bg-mist border-b border-fog px-24 pb-20"><div class="border-b border-fog py-6"><a href="/build/" class="block pt-12 pb-4 text-subheading font-medium text-obsidian">Build</a><div class="pl-16 pb-8"><a href="/build/multi-agent-orchestration/" class="block py-8 text-body text-slate hover:text-obsidian transition-colors">Multi-Agent Orchestration</a><a href="/build/command-center/" class="block py-8 text-body text-slate hover:text-obsidian transition-colors">Command Center</a><a href="/build/company-brain/" class="block py-8 text-body text-slate hover:text-obsidian transition-colors">Company Brain</a><a href="/build/messaging-integration/" class="block py-8 text-body text-slate hover:text-obsidian transition-colors">Messaging Integration</a><a href="/build/premium-websites/" class="block py-8 text-body text-slate hover:text-obsidian transition-colors">Premium Websites</a></div></div><div class="border-b border-fog py-6"><a href="/companies/" class="block pt-12 pb-4 text-subheading font-medium text-obsidian">Companies</a><div class="pl-16 pb-8"><a href="/companies/hr-recruiting/" class="block py-8 text-body text-slate hover:text-obsidian transition-colors">HR & recruiting</a><a href="/companies/migration-agents/" class="block py-8 text-body text-slate hover:text-obsidian transition-colors">Migration agents</a><a href="/companies/legal/" class="block py-8 text-body text-slate hover:text-obsidian transition-colors">Legal</a><a href="/companies/cybersecurity/" class="block py-8 text-body text-slate hover:text-obsidian transition-colors">Cybersecurity</a><a href="/companies/solar/" class="block py-8 text-body text-slate hover:text-obsidian transition-colors">Solar</a></div></div><a href="/method/" class="block py-12 text-subheading font-medium text-obsidian border-b border-fog">Method</a><a href="/pricing/" class="block py-12 text-subheading font-medium text-obsidian border-b border-fog">Pricing</a><a href="/about/" class="block py-12 text-subheading font-medium text-obsidian border-b border-fog">About</a><a href="https://cal.com/webuildco/intro" target="_blank" rel="noopener" class="inline-flex items-center bg-obsidian text-snow text-body font-medium rounded-full px-20 py-12 mt-16">Book an intro call →</a></div>
 </nav>
 <main id="main">
 
@@ -57,6 +57,63 @@
     </div>
   </div>
 </header>
+
+<section class="pb-48">
+  <div class="max-w-[1200px] mx-auto px-24">
+    <div id="mc" role="img" aria-label="Sample Command Center dashboard showing live business vitals — pipeline, jobs in flight, cash position and capacity — a leads-per-week trend, and an agent activity feed with an item awaiting approval." class="bg-obsidian rounded-3xl-2 p-20 md:p-28 relative overflow-hidden text-snow">
+      <div class="flex items-center justify-between gap-12 mb-20">
+        <div class="flex items-center gap-8">
+          <span class="w-8 h-8 rounded-full bg-lime inline-block shadow-[0_0_10px_2px_rgba(200,230,54,0.5)]"></span>
+          <span class="text-caption uppercase tracking-widest text-ash font-medium">Command Center · live</span>
+        </div>
+        <span class="text-caption uppercase tracking-widest text-ash/60 font-medium">Sample view</span>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-12 mb-12">
+        <div class="bg-ink/60 rounded-2xl-2 p-16 border border-white/5">
+          <div class="text-caption uppercase tracking-widest text-ash font-medium mb-8">Pipeline</div>
+          <div class="text-heading-sm font-bold text-snow" data-mc="val" data-kind="money" data-base="184000">$184k</div>
+          <div class="text-[12px] text-lime mt-4">▲ open deals</div>
+        </div>
+        <div class="bg-ink/60 rounded-2xl-2 p-16 border border-white/5">
+          <div class="text-caption uppercase tracking-widest text-ash font-medium mb-8">Jobs in flight</div>
+          <div class="text-heading-sm font-bold text-snow" data-mc="val" data-kind="int" data-base="27">27</div>
+          <div class="text-[12px] text-ash mt-4">6 need a human</div>
+        </div>
+        <div class="bg-ink/60 rounded-2xl-2 p-16 border border-white/5">
+          <div class="text-caption uppercase tracking-widest text-ash font-medium mb-8">Cash position</div>
+          <div class="text-heading-sm font-bold text-snow" data-mc="val" data-kind="money" data-base="96000">$96k</div>
+          <div class="text-[12px] text-lime mt-4">▲ this month</div>
+        </div>
+        <div class="bg-ink/60 rounded-2xl-2 p-16 border border-white/5">
+          <div class="text-caption uppercase tracking-widest text-ash font-medium mb-8">Capacity</div>
+          <div class="text-heading-sm font-bold text-snow" data-mc="val" data-kind="pct" data-base="82">82%</div>
+          <div class="text-[12px] text-ash mt-4">booked next 2 wks</div>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-[1.5fr_1fr] gap-12">
+        <div class="bg-ink/60 rounded-2xl-2 p-16 border border-white/5">
+          <div class="flex items-center justify-between">
+            <span class="text-caption uppercase tracking-widest text-ash font-medium">Leads in · per week</span>
+            <span class="text-caption text-ash/70">last 24 wks</span>
+          </div>
+          <svg viewBox="0 0 100 34" preserveAspectRatio="none" class="w-full h-[64px] mt-12" aria-hidden="true">
+            <polyline data-mc="sparkline" fill="none" stroke="#c8e636" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" points="0,20 4.3,18 8.7,21 13,17 17.4,19 21.7,15 26.1,18 30.4,14 34.8,17 39.1,13 43.5,16 47.8,12 52.2,15 56.5,11 60.9,14 65.2,10 69.6,13 73.9,12 78.3,9 82.6,12 87,10 91.3,13 95.7,11 100,9"></polyline>
+          </svg>
+        </div>
+        <div class="bg-ink/60 rounded-2xl-2 p-16 border border-white/5">
+          <div class="text-caption uppercase tracking-widest text-ash font-medium mb-8">Agent activity</div>
+          <div data-mc="feed">
+            <div class="flex items-center gap-8 py-6"><span class="w-6 h-6 rounded-full bg-lime shrink-0"></span><span class="text-body text-ash flex-1 truncate">Approval granted · invoice sent</span><span class="text-[11px] text-slate shrink-0">now</span></div>
+            <div class="flex items-center gap-8 py-6 border-t border-white/5"><span class="w-6 h-6 rounded-full bg-ember shrink-0"></span><span class="text-body text-snow flex-1 truncate">Invoice drafted · awaiting your approval</span><span class="text-[11px] text-slate shrink-0">2m</span></div>
+            <div class="flex items-center gap-8 py-6 border-t border-white/5"><span class="w-6 h-6 rounded-full bg-ash shrink-0"></span><span class="text-body text-ash flex-1 truncate">Lead qualified · intro call booked</span><span class="text-[11px] text-slate shrink-0">4m</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <section class="pb-64">
   <div class="max-w-[1200px] mx-auto px-24">
@@ -157,7 +214,6 @@
       <div>
         <h3 class="text-caption uppercase tracking-widest text-slate font-medium mb-16">Company</h3>
         <a href="/about/" class="block text-body text-slate hover:text-obsidian transition mb-8">About</a>
-        <a href="/work/" class="block text-body text-slate hover:text-obsidian transition mb-8">Work</a>
         <a href="/notes/" class="block text-body text-slate hover:text-obsidian transition mb-8">Notes from the build</a>
         <a href="/contact/" class="block text-body text-slate hover:text-obsidian transition">Contact</a>
       </div>
@@ -175,5 +231,6 @@ addEventListener('scroll',()=>nav.classList.toggle('border-fog',scrollY>8),{pass
 const mb=document.getElementById('menuBtn'),mm=document.getElementById('mobileMenu');
 if(mb)mb.addEventListener('click',()=>{const open=mm.classList.toggle('hidden')===false;mb.setAttribute('aria-expanded',open);});
 </script>
+<script defer src="/build/mission-control.js"></script>
 </body>
 </html>

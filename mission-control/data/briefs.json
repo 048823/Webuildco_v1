@@ -1,0 +1,648 @@
+[
+  {
+    "id": "eod-2026-08-05",
+    "type": "eod",
+    "period_label": "Wed, 05 Aug",
+    "generated_at": "2026-08-05T11:33:46Z",
+    "wins": [
+      "Kuala Lumpur / travel references removed from the About page: Shipped live. Held on wording approval since 01-Aug; Johan's 14:47 comment cleared it and it deployed six minutes later",
+      "The 31-Jul board instruction is finally live: /companies/ and all six children return 200; every /industries/ path 301s; sitemap and llms.txt clean",
+      "25 stuck PRs triaged and ruled in one pass: 7 MERGE, 10 CLOSE, 6 mechanical-check, 2 HOLD. One standing merge rule set instead of 25 questions. Tagline ruled — unblocked PR #23, stuck 16 days on a question already answered",
+      "Root cause of the runtime blackout identified: Not Hermes. Every CEO scheduling loop is bound to Johan's MacBook. When it sleeps the platform creates no task at all, so the slot is unrecoverable — not merely delayed",
+      "Catch-up watchdog shipped: Backfills missed slots after wake, so it does not need the host awake at dispatch. Fire-once idempotency, fail-closed, max 3/hr, external-send allowlist excluded",
+      "The live-campaign breach found and escalated: Campaign 4fbd93ea active, unbroken 8/business-day sends since 27-Jul. Suppression scope widened 571 → 827 and pre-authorised to execute on key arrival",
+      "\"56 sends, 0 replies proves the copy is broken\" struck from the record: 0 replies in 32 contacts is the most likely outcome of a campaign performing at benchmark; 95% upper bound on our true reply rate is 9.4%. Three copy defects survive on their own...",
+      "Two-minute proof asset verified, not accepted on description: ffprobe: 118.24s, no audio track — \"two minutes, no sound\" exact. Frames show the real app with live state changes, draft only badges, nothing sendable fired. One overclaim caught and corrected"
+    ],
+    "next3": [
+      "WEB-460 item 0 — pause the live campaign: One button in Instantly. 8 more contraventions fire if it is not pressed",
+      "WEB-460 item 0b — write-scoped Instantly key: Generate, vault it. Never paste it to me",
+      "WEB-468 — suppress 827 addresses: Pre-authorised: executes the moment a key lands, no second round trip. Re-read /emails at 08:15 and post the count"
+    ]
+  },
+  {
+    "id": "eod-2026-08-04",
+    "type": "eod",
+    "period_label": "Tue, 04 Aug",
+    "generated_at": "2026-08-04T11:50:37Z",
+    "wins": [
+      "Vendor-provenance question answered, and it flipped the remediation default: All 641 records, all 29 mailed leads, one paid vendor (A-Leads). The mirror case is dead. R2a (suppress all 571, blocklist not delete) fires 08:00 Wed. R2b (\"contact nobody\")...",
+      "Pin cite corrected before a paid lawyer read it: s 6D(4)(c), not (4)(d). Paragraph (d) is Commonwealth contracted service providers — would have burned the first ten minutes of a paid opinion",
+      "Lawyer brief written and ready to send: Q1 = APP 5 / s 6D(4)(c) over 641 people. Q2 = role-address cl 4(2), worth ~350 vs ~1,800 contacts. Sits behind one number from the board",
+      "Runtime cutover gate answered from artifacts, not marketing: Multica runs headless on Linux — confirmed. multica-cli-0.4.17-linux-amd64/-arm64 shipping, multica daemon start --foreground in the installed CLI's own help. The Mac mini column is closed...",
+      "Declined a board spend rather than ask for it uninformed: Hermes is KVM1 (1 vCPU / 4 GB / 50 GB), under-spec by my own rule. I did not ask the board to buy RAM on a box nobody can log into — 2.78 GB resident and 28.75 GB disk consumed, and no one has ever...",
+      "Board asks consolidated from three cards into one: Three asks, asked serially across three days on three issues, none landed. The routing was broken, not the asking. One card, three items, ~3 minutes total, each with a stated default",
+      "Crawler provenance schema v2 shipped, including the refusal gate I rejected at 12:00: Stale checkpoints excluded/counted/non-zero, unknown off-domain sources become unclassified and drop, regression test added, npm test passes. The control now refuses...",
+      "Two board instructions from 31-Jul verified genuinely live: /work/ and /work/webuild-cmo-agent/ both 301, Work gone from nav, control path 404s so the redirect is real not a fallback. GitHub links confirmed gone from homepage and /about/"
+    ],
+    "next3": [
+      "A-Leads export, provenance-tagged (WEB-450, morning priority #1): /mcp in an interactive Claude Code session, authorise a-leads. Default if unanswered: 1,500 paid credits written off, WEB-450 closes cancelled — asset expired unused, and the write-off is...",
+      "Merge PR #47 and triage 26 stuck PRs (WEB-462): Part 1: merge PR #47, prove live with status codes not a claim. Part 2: all 26 open PRs into MERGE / CLOSE / DECIDE, one table, no merging past #47 until I rule",
+      "R2b — whether to contact the 641 (WEB-437): Reply with a number, or \"yes ~A$1,400\", or \"no\". Default: no advice by 17:00 Fri 07-Aug → R2b returns to the board as a forced decision. I will not rule it and no agent will"
+    ]
+  },
+  {
+    "id": "eod-2026-08-03",
+    "type": "eod",
+    "period_label": "Mon, 03 Aug",
+    "generated_at": "2026-08-03T11:36:57Z",
+    "wins": [
+      "Proved the outbound campaign was NOT frozen — 56 sends since 28-Jul, 16 today inside the blackout: Breach found, enumerated per-message, reconciled against emails_sent_count",
+      "Paused the Migration Agent campaign, CEO-authorised, no board wait: status=2, not_sending_status=4 since 14:04:10; emails_sent_count held at 56 through three later reads",
+      "Sized the exposure: 51 of 56 messages, to 29 of 32 people, no defensible consent basis; 8 mailboxes, 4 domains: Only 3 contacts we have ever mailed have an undisputed basis",
+      "Shipped SSVS-v1 — the send-state verification standard, with a backtest that FAILs at 31-Jul 11:50: Root cause fixed, not the incident. Also caught that the 06:00 gate + 08:30 check were never cron triggers at all",
+      "Send-stack config hardened: 08:15 verification slot added; daily icebreaker autopilot (e137e2c1) paused: Read-verified; on today's timeline the 08:15 slot catches 8 sends instead of 16",
+      "A-Leads enrichment permanently OFF — and the Thursday credit expiry decoupled from the open legal question: A-Leads' own API takes name+domain and returns deliverability signals only. Generated ≠ published. Tuesday export unblocked",
+      "A-Leads Tuesday run-sheet accepted; crawl queue capped, query plan uncapped; NDIS 1000→600, RTO 350: Retracted my own board ask in the process — credit pricing is published, settles for 1 credit tomorrow",
+      "Found the publication-provenance crawler does not exist — written in ephemeral dirs, gone with them: Every plan on the table ends \"then the crawler runs\". Rebuild commissioned: checkpoint-and-resume mandatory, address_class tagging, code in version control"
+    ],
+    "next3": [
+      "WEB-386 A1 — suppress 571 / restart at 70: Fold A1 into the WEB-437 thread where Johan is demonstrably reading. No sixth comment on WEB-386",
+      "WEB-437 — remediation R1/R2/R3 for the 29 mailed against verdict: Defaults to R2 (suppress all 571, contact nobody) and I execute it",
+      "WEB-444 Tier 1 branch protection: Apply Tier 1 on the word. Until then any agent can deploy to the live site unreviewed"
+    ]
+  },
+  {
+    "id": "morning-2026-08-01",
+    "type": "morning",
+    "period_label": "Sat, 01 Aug",
+    "generated_at": "2026-07-31T22:10:18Z",
+    "wins": [
+      "GST status — WEB-372 sat blocked \"pending a registered BAS agent\" with a A$300–800 budget attached. The answer was one public URL: WEBUILD CO PTY LTD, ABN 30 695 704 020, GST registered from 01 Jul 2026. Free, 30 seconds. That issue is now unblocked and",
+      "\"Is 0 replies from 32 contacts bad?\" — binomial arithmetic, not judgement. At n=32, a campaign performing at the 2026 platform average (3.43%) shows zero replies 38% of the time. We have been reading noise as signal for a week. The real finding is",
+      "Spam Act s.18 — answered by reading the Act. For the record: a header-only unsubscribe on a plain-text message would not have been defensible",
+      "Install fee — answered by reading five competitors' public price pages. Do not ship A$750 flat",
+      "You made a decision at 22:34 and it shipped in 60 seconds. On WEB-383 — \"can you proceed with the recommendation. we need to stay Compliant\" — CRO executed at 22:35 and verified from a fresh GET: the opt-out line is present in 6/6 variants",
+      "The Second Shift ran five for five overnight — five research questions, zero production actions, zero external messages, zero deletions. The headline is uncomfortable"
+    ],
+    "next3": [
+      "Consent-basis audit of the 641 — provenance, named-vs-generic address split, inferred-consent verdict (WEB-400)",
+      "Amend the WEB-342 ramp checklist before the nod fires — stage 8→12→16, reserve ≥50% capacity for step-1 sends, drop 32/day, adopt STOP-1/STOP-2 (WEB-401)",
+      "Install-hours cost model — steps × hours × who-runs-it, first-in-vertical vs steady-state (WEB-402)"
+    ]
+  },
+  {
+    "id": "monthly-2026-07-31",
+    "type": "monthly",
+    "period_label": "July 2026",
+    "generated_at": "2026-07-31T21:19:15.217Z",
+    "wins": [
+      "Day 4 send window verified end-to-end: 8 sent 10:00:55 (all step 2), 0 replies, 0 bounces, 0 unsubscribes, 16/16 warm-up at 100. Window closed clean 15:00",
+      "Spam Act unsubscribe defect found, diagnosed, staged: Steps 2/3 carry no visible unsubscribe; insert_unsubscribe_header is header-only and the campaign is text_only. CRO staged byte-exact replacement copy for all four step-2 variants at 14:08. Campaign",
+      "Execution gate on WEB-383 un-jammed: I had written \"approve on this issue\" while raising the ask on WEB-281 — making myself the relay on the one item with a hard cutoff. Now: approval on either issue is sufficient and final, CRO executes on sight, weekend",
+      "Pricing page Stage 3 spec approved: UXDesigner's 154-line spec read in full and approved without changes; mobile column-seam collapse and the who-runs-it axis both verified",
+      "Pricing page built to spec: CTO delivered in 20 min. pricingPageData is a genuine single source for every name/price/unit/note/CTA; card order Starter > Takeoff > Operate > Scale holds; pending copy tokenized; escapeHtml unasked-for good practice",
+      "Pricing packaging + who-runs-it axis settled: Axis confirmed by default at 12:00 after 41h board silence. Ladder: Starter · Takeoff · Operate · Scale. Johan's names won over mine and CRO's; \"Start Pty. Ltd.\" refused as a SKU (~54 founder-hours one-off vs",
+      "Board-card v2 defaults fired: Fired 11:15 (09:00 slot was dead — late, not skipped). Publish nods closed as expired (WEB-332); claude-seo approved with a prove-it-first Brilliant Co exclusion gate (WEB-381); PR #37 remove recorded as CEO-decided (WEB-318)",
+      "Weekend board decision card staged early: Eight decisions on one page, ordered by cutoff and cost of delay, each with what it costs if Monday 08:00 passes unanswered. Built at 20:00 rather than left to this 21:30 run — the run that died last night",
+      "Day 2 send window verified clean end-to-end (08:30 catch-up checks + 11:45 + 15:10 autopilots): PASS — GO for Thu 30-Jul. 8 sent / 24 cumulative, 0 bounces, 0 spam/unsub, 0 real replies (2 benign OOO), warmup 16/16 @ 100, renders clean. Ledger corrected",
+      "Send-pace root cause found: 8/day is a capacity ceiling (8 idle inboxes), not the campaign cap: B→C ramp staged: attach idle 8 → 16/day now; gate-checked raise to 32/day after ≥5 clean days. No Instantly config change until the nod"
+    ],
+    "next3": [
+      "WEB-383 unsubscribe fix: Reply approved on WEB-383 or WEB-281",
+      "RAMP 8/day → 16/day (WEB-342): One word on WEB-386 #2",
+      "WEB-384 pricing build: Three string edits once #3 and #4 land. CTO has an explicit Monday-morning out"
+    ]
+  },
+  {
+    "id": "morning-2026-07-31",
+    "type": "morning",
+    "period_label": "Fri, 31 Jul",
+    "generated_at": "2026-07-31T18:07:00Z",
+    "wins": [],
+    "next3": [
+      "Correct WEB-386. Close #1, demote #4, attach run 3's staging amendment to #2, attach run 5's ranking to #3. Add no new items",
+      "Sequencing rule for the ramp — say it once, plainly: before ramping, fix what the ramp will be spent on. Consent audit (action 2) and step-1 capacity reservation (action 5) both come before the nod executes, not after",
+      "Land the WEB-342 checklist amendment (action 4) before anything else touches the campaign. It is pre-staged to run same-hour on approval"
+    ],
+    "industry_pulse": [
+      "s.16 consent basis for the 641 leads is undocumented. Cold B2B outbound rests on inferred consent under Spam Act Sch 2 cl 4, which requires the address be conspicuously published, reasonably assumed published with agreement, and tied to a particular",
+      "B2 would contravene on any B1 opt-out. stop_on_reply is campaign-scoped; the Act is account-scoped, with a 5-business-day clock. No workspace-wide suppression list exists. This gates any B2 launch",
+      "Accrued GST liability on invoices raised since 01 Jul 2026. Registration is live from 1 July. Any invoice raised on or after that date owes 1/11th to the ATO whether or not GST was charged. If invoices went out without it, the liability already exists and",
+      "The ramp is a 100% single-day volume step at the level that is actually scored. Reputation is measured per domain, not per mailbox. All 16 inboxes sit on 4 domains, so 8→16 doubles per-domain cold volume 2→4/day in one step. WEB-342's \"free 2× with zero"
+    ]
+  },
+  {
+    "id": "eod-2026-07-31",
+    "type": "eod",
+    "period_label": "Fri, 31 Jul",
+    "generated_at": "2026-07-31T11:34:14Z",
+    "wins": [
+      "Day 4 send window verified end-to-end: 8 sent 10:00:55 (all step 2), 0 replies, 0 bounces, 0 unsubscribes, 16/16 warm-up at 100. Window closed clean 15:00",
+      "Spam Act unsubscribe defect found, diagnosed, staged: Steps 2/3 carry no visible unsubscribe; insert_unsubscribe_header is header-only and the campaign is text_only. CRO staged byte-exact replacement copy for all four step-2 variants at 14:08. Campaign...",
+      "Execution gate on WEB-383 un-jammed: I had written \"approve on this issue\" while raising the ask on WEB-281 — making myself the relay on the one item with a hard cutoff. Now: approval on either issue is sufficient and final, CRO executes on sight, weekend...",
+      "Pricing page Stage 3 spec approved: UXDesigner's 154-line spec read in full and approved without changes; mobile column-seam collapse and the who-runs-it axis both verified",
+      "Pricing page built to spec: CTO delivered in 20 min. pricingPageData is a genuine single source for every name/price/unit/note/CTA; card order Starter > Takeoff > Operate > Scale holds; pending copy tokenized; escapeHtml unasked-for good practice",
+      "Pricing packaging + who-runs-it axis settled: Axis confirmed by default at 12:00 after 41h board silence. Ladder: Starter · Takeoff · Operate · Scale. Johan's names won over mine and CRO's; \"Start Pty. Ltd.\" refused as a SKU (~54 founder-hours one-off vs...",
+      "Board-card v2 defaults fired: Fired 11:15 (09:00 slot was dead — late, not skipped). Publish nods closed as expired (WEB-332); claude-seo approved with a prove-it-first Brilliant Co exclusion gate (WEB-381); PR #37 remove recorded as CEO-decided (WEB-318)",
+      "Weekend board decision card staged early: Eight decisions on one page, ordered by cutoff and cost of delay, each with what it costs if Monday 08:00 passes unanswered. Built at 20:00 rather than left to this 21:30 run — the run that died last night"
+    ],
+    "next3": [
+      "WEB-383 unsubscribe fix: Reply approved on WEB-383 or WEB-281",
+      "RAMP 8/day → 16/day (WEB-342): One word on WEB-386 #2",
+      "WEB-384 pricing build: Three string edits once #3 and #4 land. CTO has an explicit Monday-morning out"
+    ]
+  },
+  {
+    "id": "morning-2026-07-29",
+    "type": "morning",
+    "period_label": "Wed, 29 Jul",
+    "generated_at": "2026-07-29T17:07:16Z",
+    "wins": [],
+    "next3": [
+      "Review current blockers",
+      "Pick the highest-leverage next action",
+      "Update Mission Control after execution"
+    ]
+  },
+  {
+    "id": "eod-2026-07-29",
+    "type": "eod",
+    "period_label": "Wed, 29 Jul",
+    "generated_at": "2026-07-29T11:37:47Z",
+    "wins": [
+      "Day 2 send window verified clean end-to-end (08:30 catch-up checks + 11:45 + 15:10 autopilots): PASS — GO for Thu 30-Jul. 8 sent / 24 cumulative, 0 bounces, 0 spam/unsub, 0 real replies (2 benign OOO), warmup 16/16 @ 100, renders clean. Ledger corrected:...",
+      "Send-pace root cause found: 8/day is a capacity ceiling (8 idle inboxes), not the campaign cap: B→C ramp staged: attach idle 8 → 16/day now; gate-checked raise to 32/day after ≥5 clean days. No Instantly config change until the nod",
+      "Default-on-silence ruling fired for the first time — row 7 breach post auto-reworked to evergreen at the 12:00 cutoff: CMO rework accepted on all four criteria (news-peg dropped, core preserved, real-offer CTA, merit restage). Queue governance now works...",
+      "Trend Briefing triaged, ruled, drafted, and folded into the queue inside one day: Queue 20 → 22 rows, all 🔒. Lyzr X-thread staged with the Fri 31-Jul 12:00 auto-expiry baked in at draft time (row-7 lesson applied proactively)",
+      "PR #38 (Mission Control brief-endpoint fix) validated and accepted: Root-cause fix, tests green, Workers Builds green. Merge = production deploy → board-gated",
+      "claude-seo assessed and install scoped (Johan's direct request): Endorsed as a discovery-call proof-of-value weapon. On-nod scope: install → audit webuildco.com.au only → CEO review before prospect use; zero spend; Brilliant Co excluded (segregation)",
+      "Two board-card routing gaps found and fixed; standing rail set: PR #36 (WEB-317) had silently dropped off the card on regeneration — restored as ask #7. Rail: an ask leaves the card only when its gate resolves on the issue",
+      "Desk hygiene: 3 loops closed: WEB-115 done (gate passed 23-Jul, sat 6 days), WEB-282 cancelled (stale analytics window, rolls into 31-Jul run), WEB-337 cancelled (dead autopilot, scope already covered by the WEB-336 fold)"
+    ],
+    "next3": [
+      "08:00 Morning Standup + 4 other morning slots (03:00/04:00/06:00/09:00): One-word migration nod; CTO installs same day",
+      "Overnight research queue from EOD 28-Jul (4 requests): Re-queued below; all still current",
+      "Seven board asks: See card below — most are one word"
+    ]
+  },
+  {
+    "id": "eod-2026-07-28",
+    "type": "eod",
+    "period_label": "Tue, 28 Jul",
+    "generated_at": "2026-07-28T11:37:00Z",
+    "wins": [
+      "Day 1 live send window verified clean end-to-end (08:30 / 12:00 / 15:10 checks): PASS — 16/40 sent, 0 hard bounces, 0 spam, 0 unsubs, warmup 16/16 @ 100, renders clean on live SENT messages; GO for Wednesday",
+      "Send-day verification gaps closed permanently: Two new CRO autopilots created and both fired on schedule on day one: midday check 11:45 (4d88d1a6), close-of-window report 15:10 (e46f42cc)",
+      "Icebreaker coverage 41 → 641/641 leads (100%): Wednesday's throughput limiter removed; target was ≥200 by 08:00, CRO delivered all 600 same day with grounded, QA-sampled lines",
+      "Brief cadence automation live in production: Accepted after live validation: morning/EOD crons verified enabled, production /mission-control/ returns 200, briefs data auth-gated",
+      "Content pipeline fully staged for the gate: WEB-321/322 briefs accepted; queue folded + deduped, breach post staged verbatim-final with T1 citation pack, 3h ahead of due",
+      "Desk hygiene: Digest #3 executed + 12 stale Daily Logs closed + 2 site-health incidents closed: in_review column 39 → 24 (15 reversible parks, ruling 5f3afcac); board now reads honest; site-health false-positive class verified closed (6 clean runs)"
+    ],
+    "next3": [
+      "WEB-326 CI deploy workflow: Johan: land the attached patch (or grant a workflow-scope credential) and add CLOUDFLARE_API_TOKEN + CLOUDFLARE_ACCOUNT_ID repo secrets",
+      "Optora outcome (WEB-45): Post one word on WEB-45 — live / follow-up / dead — pack ships same day",
+      "Posts #5/#6 publish + PR #36/#37 merges: Nods; if silent, row 7 breach post auto-reworks to evergreen at 29-Jul 12:00 per CEO default-on-silence ruling (WEB-332)"
+    ]
+  },
+  {
+    "id": "morning-2026-07-28",
+    "type": "morning",
+    "period_label": "Tue, 28 Jul",
+    "generated_at": "2026-07-27T22:07:45Z",
+    "wins": [
+      "Launch chain verified green end-to-end. After you pressed launch at 17:21, CRO root-caused your 20:49 greeting bug by 21:42 — Instantly doesn't process single-brace spintax {a|b} — fixed all 6 variants across 3 steps via API, re-verified 0 braces, and",
+      "Pre-send gate PASSED at 03:15 (live API checks): Active · 40/day · Mon–Fri 08:00–15:00 · stop-on-reply ON · tracking OFF · 641 leads · all 16 inboxes at warmup score 100",
+      "06:00 icebreaker run delivered: 40 best-fit PRIMARY leads personalized (each traced to a real URL, no fabrication), ~601 ride the strong fallback opener. One discovery: yesterday's icebreaker pushes were wiped when the leads were re-uploaded, so this was",
+      "5/5 overnight runs completed — second consecutive clean night (runtime stayed awake): send-monitoring runbook + reply-conversion playbook (WEB-281), runtime loss ledger rebased (WEB-196), CI deploy-workflow spec (WEB-123), morning-chain pre-flight that",
+      "Optora: the A$9,000 + A$900/mo pricing pack was in your hands for the D-Day meeting. No outcome posted on WEB-45 yet — the follow-up pack skipped five times overnight per spec and is now staged (WEB-324)",
+      "Failed/incomplete: the Kimi K3 hook died at the publish gate (forecast, ratified by silence) — the one plainly stated miss. Content cadence still gated. WEB-196 nod still pending; yesterday it cost 5 of 14 first-shift slots including your bug-report window"
+    ],
+    "next3": [
+      "First live send window verified clean (WEB-325 — started)",
+      "Optora outcome → follow-up pack (WEB-324 staged)",
+      "Reliability nods: WEB-196 migration + reply-sweep"
+    ]
+  },
+  {
+    "id": "morning-2026-07-27",
+    "type": "morning",
+    "period_label": "Mon, 27 Jul",
+    "generated_at": "2026-07-27T18:08:52Z",
+    "wins": [
+      "Campaign is verified send-ready. Live API checks at 03:15: Active, 40/day, Mon–Fri 08:00–15:00, stop-on-reply ON, tracking OFF, 0 spintax braces across all 6 variants, all 16 inboxes ≥90 warmup. The 20:49 greeting bug is fixed and re-verified; broken",
+      "Expectations for today: 40 sends spread across 08:00–15:00. Normal day 1 = 0–2 replies, 0–1 bounces, zero complaints. Real replies arrive days 2–7. The runbook's PAUSE triggers (≥3 bounces, any complaint, any render defect, warmup drop on 3+ inboxes) are",
+      "Reply speed is the conversion lever — <5 min response = 21× more likely to qualify; 78% of buyers pick the first responder. Playbook with copy-paste skeletons is on WEB-281; interested replies deserve a phone answer in <15 min over a polished one at 5 pm",
+      "Reliability math got sharper: 37% of all scheduled slots lost since 16-Jul to one failure class (host sleep). Yesterday it cost 5/14 first-shift slots including your 20:49 bug-report window. Today it guards live sends"
+    ],
+    "next3": [
+      "08:30 first-send verification (runbook): confirm sends firing, pull 2–3 SENT messages, greeting renders clean, 0 bounces",
+      "Optora — chase the outcome; a live deal beats 641 cold leads",
+      "WEB-196 + reply-sweep nods — two words, both reliability-critical"
+    ],
+    "industry_pulse": [
+      "Host sleep 06:00–08:00 would silently kill the icebreaker run and the re-verify — while Instantly sends at 08:00 regardless (external). No agent-side mitigation exists without the WEB-196 migration. This is the single highest-leverage nod on the board",
+      "Reply detection has no scheduled owner (found 04:00). Day 1–2 fallback: your Instantly Unibox on mobile. Cheap permanent fix below",
+      "Residual, accepted: ~5 h drift window between the 03:15 gate check and 08:00 — agents are locked out of campaign state, so drift probability is low"
+    ]
+  },
+  {
+    "id": "eod-2026-07-27",
+    "type": "eod",
+    "period_label": "Mon, 27 Jul",
+    "generated_at": "2026-07-27T11:38:54Z",
+    "wins": [
+      "Outbound launch went LIVE: CSV dropped 14:38 (1,000 rows) → CRO pipeline cut to 735 primary → off-ICP audit deleted 94, kept your 21 yellow recruiters → 641 clean leads; send settings verified safe (40/day, Mon–Fri 08:00–15:00, stop-on-reply); you pressed...",
+      "Icebreaker autopilot ACTIVE: CRO built + activated the 40/day icebreaker researcher (never sends, never resumes); 9 researched icebreakers with sources already delivered; first run 06:00 Tue",
+      "Optora D-Day pricing pack: Your 16:15 \"tonight is dday\" → pack delivered 16:23: A$9,000 build (Foundation Pilot, fixed, 50/50) + A$900/mo retainer + expansion menu, branded PDF + talk track",
+      "Production drift found + fixed: PR #27 (merged by you 20-Jul) never reached production; CTO deployed main ab9f79c at 17:14, briefs page + PR #17 verified live. Root cause: repo has no CI deploy workflow — second silent-drift incident this week",
+      "Autopilot schedule hardening: WEB-311 accepted, trigger verified live: BrainOS ingest moved to 22:15 — tonight is the first night the ingest doesn't race this report",
+      "Content engine week set up: WEB-309 weekly plan accepted (6 binding rulings), WEB-312 cadence restart accepted (17-row queue, #5/#6 staged verbatim-final), WEB-315 competitor refresh accepted (link-penalty CTA rule now live on all drafts), WEB-317 week-2...",
+      "Website audit + hygiene PR: WEB-314 accepted; WEB-318 opened PR #37 (Optora route drift, apex 301, canonicals) — deploy board-gated after the accidental-deploy near-miss (caught, reverted, verified clean)",
+      "Stale-desk sweep — 6 cleared: WEB-5, WEB-86, WEB-230, WEB-316 → done; WEB-300, WEB-308 → cancelled; WEB-45 state-mapped at 16:04 — superseded 11 minutes later by your D-Day reply, deal treated as live"
+    ],
+    "next3": [
+      "Greeting renders \"hi hello\" in SENT samples + footer collapsed on mobile (your 20:49 report) + track-opens question (17:21): Pull sent samples via API, fix every sequence step, verify rendered previews, GO/PAUSE rec to you",
+      "Posts #5/#6 publish → Kimi K3 slot DIED: Your nod releases #5/#6; K3 angle is dead",
+      "WEB-196 runtime migration nod: Nod → CTO installs same day"
+    ]
+  },
+  {
+    "id": "morning-2026-07-26",
+    "type": "morning",
+    "period_label": "Sun, 26 Jul",
+    "generated_at": "2026-07-26T18:11:37Z",
+    "wins": [],
+    "next3": [
+      "Review current blockers",
+      "Pick the highest-leverage next action",
+      "Update Mission Control after execution"
+    ],
+    "industry_pulse": [
+      "Launch-morning thundering herd (material): 9 scheduled runs hit 07:00–09:00 today on the still-unfixed WEB-196 host. One host sleep in that window kills the standup, the content verify, and the board-card cycle — on the day the CSV gate closes at 14:00",
+      "Calendar, not agents: every agent-side task is done. The only things that can now slip Monday are board inputs (CSV by 14:00; silence = Migration slips Tue 28-Jul, ratified)",
+      "Minor: legacy \"[AI SDR]\" Instantly campaign reads accounts_unhealthy — not sending, not blocking; CRO to archive post-launch"
+    ]
+  },
+  {
+    "id": "eod-2026-07-26",
+    "type": "eod",
+    "period_label": "Sun, 26 Jul",
+    "generated_at": "2026-07-26T11:34:50Z",
+    "wins": [
+      "Micro-list adjudication: WEB-296 + WEB-297 accepted, CEO ruling recorded: Role-account strip stays (CRO's own larger-sample recommendation adopted over the Option A relax ask). 1 send-ready insurance row: Pace Migration. 13 role + 4 form firms held as warm...",
+      "WEB-281 lead-list intake → in_review: all agent-side scope complete: Pipeline built and CEO-approved, both campaigns verified paused + 0 leads (re-checked live tonight), all 3 children closed. Only Johan's CSV + GO word remain",
+      "WEB-294 OMARA fallback adjudicated → done: Probe failed (MARA register JS/permission-walled, no per-record emails at zero spend) — compile correctly withheld per the ratified gate. Dead branch, closed clean",
+      "WEB-303 board directive (Optora removal) verified → done: Case-study URL 404s on www and non-www; zero Optora references on /work/, sitemap, homepage. Filed by Johan 20:22, verified and closed same evening",
+      "WEB-289 + WEB-290 accepted → done (Sat 09:00): Content queue Option A ratified; all 4 week-1 deliverability thresholds (bounce floor, warm-up pause rule, Postmaster, resume criteria) now binding records",
+      "Content queue complete: WEB-286 + WEB-292 → done (Sat 12:00): 13-item single ranked queue on WEB-274, WEB-287's 5 LinkedIn ideas folded in place, publish-ready the instant the #5/#6 nod lands",
+      "WEB-270 VPS disk crisis closed → done (Sat 13:00): Independently verified via Hostinger metrics API: disk ~60% used (was at cap; root cause 20.45GB Docker build cache). RM 0 resolution, no plan upgrade. 30-day recheck armed (WEB-293, backlog, due 24-Aug)",
+      "WEB-284 accepted; WEB-283 (Obsidian daily reports) delivered → in_review to Johan: 14 backfill reports + wiki ingested, daily ingest autopilot live, canonical folder repointed. Awaiting Johan's confirm"
+    ],
+    "next3": [
+      "A-leads CSV intake (WEB-281 scopes 2–4): Drop CSV on WEB-281/WEB-254; clean → split → test batch → read-back fires same day",
+      "Sat EOD report (WEB-299): Covered by this report; WEB-299 cancelled with pointer",
+      "Sat-night/Sun-AM second-shift research (Monday-runbook overnight work): Re-queued tonight (see Overnight Research Requests)"
+    ]
+  },
+  {
+    "id": "morning-2026-07-25",
+    "type": "morning",
+    "period_label": "Sat, 25 Jul",
+    "generated_at": "2026-07-24T22:08:36Z",
+    "wins": [
+      "Monday activation runbook (WEB-281 b9d70a72, linked from WEB-141): CSV drop → clean → test batch → read-back → GO → activation → week-1 ramp, with abort criteria at every step. Two gaps closed: GO-without-billing-confirm = no activation; day-1 kill",
+      "Fallback lead sources (WEB-281): no existing workspace list is email-viable — the real zero-spend fallback is compiling from public registers. Ranked: #1 OMARA (Migration, verified live), #2 RCSA (HR, manual-paced), #3 Seek advertisers. Real bottleneck is",
+      "Run-ledger audit (WEB-196 1ffc7ab6): Thursday's 21:00 slot confirmed lost (skipped — scheduler fired, runtime didn't answer; host-sleep class). Verified loss corrected to 53/170 slots = 31% since 16-Jul (supersedes the \"≥47 since 1-Jul\" figure; ledgers",
+      "Idea 2 truthful reframes (WEB-274): Option A \"missed-call maths\" (411 Locals study) and Option B \"87% deployed, 12% satisfied\" (AssemblyAI) — both citation-gated, zero fabricated data. Two circular vendor stats added to the strike list",
+      "Weekend coverage verified: all four CEO loops cron-fire 7 days/week (Sydney tz) — but the whole weekend rides on the WEB-196 host staying awake",
+      "Yesterday's EOD (WEB-285) posted on time; second shift ran 5/5 slots and delivered all four overnight research requests"
+    ],
+    "next3": [
+      "WEB-196 nod → CTO installs keep-awake fix before the weekend",
+      "A-leads CSV chase — Friday drop = comfortable branch",
+      "Idea 2 reframe pick + ONE ranked content queue (WEB-289, fires now)"
+    ]
+  },
+  {
+    "id": "morning-2026-07-24",
+    "type": "morning",
+    "period_label": "Fri, 24 Jul",
+    "generated_at": "2026-07-24T18:04:17Z",
+    "wins": [],
+    "next3": [
+      "WEB-196 nod → CTO same-day install (weekend de-risk)",
+      "CSV chase with the Sun-18:00 comfortable-branch deadline stated plainly",
+      "Idea 2 reframe pick (CMO, today)"
+    ],
+    "industry_pulse": [
+      "Weekend host-sleep window (new, actionable): CSV landing Sat/Sun needs the runtime awake — both the hourly loop and the CRO's mention-triggered run die silently if the host sleeps. 31% verified loss rate; weekends likely worse (machine unattended). WEB-196",
+      "CSV timing compounds: every day without the CSV pushes the clean/test-batch work toward the compressed Monday-14:00 branch. Fallback compile (OMARA) is manual-paced — it needs a Sunday-evening decision, not a Monday-morning one",
+      "Content cadence broken: #5/#6 still unpublished; Idea 2 unblocks only if CMO picks a reframe today"
+    ]
+  },
+  {
+    "id": "eod-2026-07-24",
+    "type": "eod",
+    "period_label": "Fri, 24 Jul",
+    "generated_at": "2026-07-24T11:35:44Z",
+    "wins": [
+      "Instantly send-readiness audit (WEB-276): Gate CLEARED — 16/16 inboxes 100/100 across 4 domains, live-API verified; 28-Jul-safe verdict; closed 13:09, beat its 15:00 deadline",
+      "Launch-prep punch list (WEB-254): Board-rejected fabricated case study patched out of the live Migration Agent draft; HR Recruitment campaign built from approved copy; settings checklist applied; line-break bug fixed across all 12 emails; live API...",
+      "Lead-intake pipeline (WEB-281, new): Cleaning pipeline built and CEO-approved before the CSV even lands: dedupe/verify → ICP split → researched icebreaker → test batch → live read-back. Day-1 ramp rule made binding (~20–30 sends/day total, week-1 ramp to 80)",
+      "Canonical GO date locked: Monday 27-Jul: Standup's \"28-Jul = Monday\" mislabel caught and corrected; deliverability owner confirmed 27-Jul safe (20 days warm-up, all scores 100, DMARC p=reject); 402 billing flip root-caused (billing state, not key scope)",
+      "WEB-115 imagery export-final (WEB-277): 4 export conditions cleared, Editor gate passed zero revisions; parked at board publish gate",
+      "Spec-site positioning deltas (WEB-278): WEB-117 wedges live on all 5 spec previews; CEO spot-checked 2/5 live (HTTP 200, noindex, zero forms)",
+      "Trend briefing fold-in (WEB-279): Accepted with corrections; integrity rail applied (1 struck, 3 citation-gated, 3 folded into WEB-274 with provenance)",
+      "Content ideas review (WEB-274): 4/5 ideas + trend angles T1–T3 approved; Idea 2 HELD — claims a voice-agent test that never ran (fabrication class); CTA fix to real offer name"
+    ],
+    "next3": [
+      "Decision card — 8 items (WEB-275): One reply, any time — processed the hour it lands; re-presented at Monday standup",
+      "A-leads CSV drop (WEB-281): Drop CSV on WEB-281 or WEB-254 → CRO same-day SLA",
+      "GO word for Monday send (WEB-141): The word GO Monday morning + 10-sec billing-through-1-Aug confirm in the same reply"
+    ]
+  },
+  {
+    "id": "eod-2026-07-23",
+    "type": "eod",
+    "period_label": "Thu, 23 Jul",
+    "generated_at": "2026-07-23T11:35:40Z",
+    "wins": [
+      "Standup P2–P5 all delivered by 09:00 (call sheet v2, posts #5/#6 finals, pipeline verify, GST fold-in): WEB-265/266/267/268 all approved → done, hours ahead of deadline",
+      "Migration/HR outbound chain copy-final: WEB-256 approved (A$300 Foundations Session = canonical CTA); WEB-254 approved after killing 2 fabricated case studies; chain WEB-63/64 → WEB-256 → WEB-254 → WEB-221 closed end-to-end",
+      "Back-office demo slice: architecture → working demo in ONE day: Architecture approved 12:00; all 4 stage issues (WEB-260/258/261/259) built + approved by 14:00. PRs #30–#33 all CI-green. Delivered 23-Jul vs 2–3 wk estimate",
+      "No-GO default executed cleanly at 18:01: WEB-163 promoted → CTO shipped 5 spec-site previews in ~25 min → approved 19:00. Dial pack now complete (sheet + openers + previews). GO-to-dial latency ~1h",
+      "Higgsfield forensics + re-baseline: True balance 1,504.5 credits (not ~1,996); gap was pre-freeze in-flight jobs — freeze held, zero spend in 5 days. CDO batch queue endorsed, one-line board approval staged",
+      "Content governance locked: WEB-114 8-week plan v2 approved (now the operating calendar); WEB-262 briefing + WEB-263 ideas approved — caught idea #5 fabricated client claim, parked it; WEB-253 avatars done",
+      "Ops hygiene: stale-review triage #3: WEB-271 digest: 32 stale in_review items scored — 2 cancel / 13 park / 6 CEO-review / 11 keep. Board-gated, 15 mechanical flips ready on ACCEPT DIGEST 3",
+      "VPS disk decision packaged: Don't pay RM 649 cart; RM-0 cleanup via Hermes first; upgrade only if post-cleanup disk >70% / RAM >85%"
+    ],
+    "next3": [
+      "GO B launch decision (WEB-141): ONE decision card at 08:00 standup: GO-CALL-3 / GO-EMAIL · Optora live/dead · WEB-196 nod (+ WEB-199 approve 1–6 line)",
+      "Posts #5/#6 publish: One line on WEB-244",
+      "WEB-196 runtime sleep fix: One nod; CTO installs same day"
+    ]
+  },
+  {
+    "id": "morning-2026-07-22",
+    "type": "morning",
+    "period_label": "Wed, 22 Jul",
+    "generated_at": "2026-07-22T18:07:21Z",
+    "wins": [
+      "WEB-141 (P0): No-GO re-plan memo pre-written and staged on WEB-141 — activates only if GO B stays silent past today 18:00 AEST. Core finding: all three re-plan options terminate in the same constraint — a Johan action. The board answers tooling asks",
+      "Finance (P1): ABR public record: WeBuild Co Pty Ltd GST-registered from 01-Jul-2026 → the 28-Jul BAS deadline is NOT live (no Q4 registration; first BAS due 28-Oct). Pressure off. New live obligation found instead: invoices since 1-Jul must charge GST —",
+      "Call sheet (P1): 20 domains re-verified live on WEB-221 — 15 fresh (incl. row 1's hacked-site opener, spam links still live), 5 must not be dialled on the recorded defect (rebuilds/fixed sites; 3 of those re-angled to stronger pitches, e.g. Big Sky's WP",
+      "Optora (P2): Day-22 revival package on WEB-45 — no negative signals, silence is ours not theirs; their footprint grew (22 cities listed vs the June brief's stats — brief flagged outdated); no careers page = contractor-bench thesis confirmed. 3-line",
+      "Citation pack (P2): Posted on WEB-244 — 3–5 vintage-labelled citations per launch-week post + #5/#6 mapping. Caught two factual errors before publication: the \"5% fully enabled\" stat was misattributed to NAB (it's Deloitte Nov-2025); the Salesforce 9k→5k"
+    ],
+    "next3": [
+      "Lead with the GO B countdown — expires 18:00 today. Both branches are now fully staged: GO → WEB-163 build night + dial-ready call sheet; no-GO → the WEB-141 memo rules at 24-Jul standup, zero nights lost",
+      "Verify the first daily content run on the fixed CONTENT_HOME config (WEB-251 fix meets production this morning) and triage today's WEB-247/248-successor drops",
+      "Push #5/#6 approval — with the citation pack, approval-to-final-copy is now same-hour, not same-day"
+    ],
+    "industry_pulse": [
+      "Pipeline QA gap: a misattributed stat survived TrendScout → CEO triage → CMO fold-in without source verification. One community-note on a launch post would cost more than the whole content engine has earned. Fix: make citation verification explicit in",
+      "Runtime: 5/5 tonight is luck, not cure — yesterday cost 12 dead slots. WEB-196 remains a one-nod fix",
+      "Copy risk: Posts A/B carry the WEB-247 brand flag (leverage framing, tagline stays out pending WEB-195 #3)"
+    ]
+  },
+  {
+    "id": "morning-2026-07-23",
+    "type": "morning",
+    "period_label": "Thu, 23 Jul",
+    "generated_at": "2026-07-22T18:07:19Z",
+    "wins": [],
+    "next3": [
+      "Review current blockers",
+      "Pick the highest-leverage next action",
+      "Update Mission Control after execution"
+    ]
+  },
+  {
+    "id": "eod-2026-07-22",
+    "type": "eod",
+    "period_label": "Wed, 22 Jul",
+    "generated_at": "2026-07-22T12:37:06Z",
+    "wins": [
+      "Cadence restored after the 6-run overnight blackout: Morning Standup reconstructed and posted; orphan EOD 07-21 closed with pointer: WEB-249 done; WEB-246 cancelled",
+      "Post #3 LIVE on the webuildai LinkedIn page, Post #4 queued — the content engine's first external ship. Publish path permanently unblocked: Buffer key fetched from 1Password at runtime, keys-not-prompts respected: WEB-227 done; 4-day publish gap closed",
+      "Trend Briefing delivered (after re-trigger) and accepted; launch-week posting sequence adopted (Salesforce/headcount → AU AI Standards → NAB gap → Anthropic/Blackstone): WEB-247 done",
+      "Content Ideas delivered with honest evidence labelling (no fabricated LinkedIn numbers — now the standard); CEO config rulings: X seed list approved, no new LinkedIn scraper: WEB-248 done",
+      "Both pipeline defects surfaced by WEB-248 fixed same-day by CTO (8-minute turnaround): ScrapeCreators root-caused to endpoint design (zero spend needed), CONTENT_HOME repointed off the TCC wall, 103 tests pass: WEB-251 done"
+    ],
+    "next3": [
+      "WEB-141 launch ruling: One line — GO B — revives the 24-Jul launch; CTO build night pre-staged (WEB-163)",
+      "WEB-196 LaunchAgent approval: One nod",
+      "Posts #5/#6 board approval: Approve or edit the two drafts"
+    ]
+  },
+  {
+    "id": "morning-2026-07-21",
+    "type": "morning",
+    "period_label": "Tue, 21 Jul",
+    "generated_at": "2026-07-20T18:06:56Z",
+    "wins": [],
+    "next3": [
+      "Review current blockers",
+      "Pick the highest-leverage next action",
+      "Update Mission Control after execution"
+    ]
+  },
+  {
+    "id": "eod-2026-07-20",
+    "type": "eod",
+    "period_label": "Mon, 20 Jul",
+    "generated_at": "2026-07-20T11:35:34Z",
+    "wins": [
+      "Ops hygiene batch #1 — 38 closes, 2 PRs opened, analytics autopilot amended: Accepted ~2h ahead of 12:00 deadline",
+      "20-row cold-call sheet (rows 1–5 = hottest-5, DM names audited, ToS-safe): Accepted ~5h early; caught ASAP Painting site rebuild → stale audit flagged",
+      "Offer one-pager (3-tier ladder, Islamic-finance payment terms, GST flagged open): Accepted — canonical pricing artifact for WEB-144 Stripe links",
+      "Spec-site content.json ×5 + call openers: Bounced once (row 4 opener cited a site ASAP no longer has — would have burned credibility on the call), fixed in 4 min, re-verified against the raw PR branch file, accepted",
+      "Post #3 publish package + board approval: Board approved Posts #3 AND #4 (14:14/14:22) — first publish approvals ever. Publish itself still gated (see below)",
+      "Top-5 LinkedIn ideas: Accepted; ideas #1/#4 flagged lead bets, folded into the WEB-227 ranked queue",
+      "Weekly content plan v2: Bounced twice — see incident below — v2 canonical accepted on mechanical grep (retired tagline 0×, Metricool 0×)",
+      "Week 2 SEO note pages (3 pages, full JSON-LD, 16 FAQs): Accepted; merge held for board"
+    ],
+    "next3": [
+      "Publish Posts #3 + #4 (both board-approved): Add key at publish.buffer.com/settings/api → CMO agent custom env, reply \"key added\"; CMO publishes same hour",
+      "WEB-141 trio: cold-call GO · Stripe live · PPL pilot: Answer GO/no-GO. Calls can start the same hour",
+      "PR #28 + #29 merge (SEO notes + audit fixes): One nod deploys both"
+    ]
+  },
+  {
+    "id": "weekly-2026-07-20",
+    "type": "weekly",
+    "period_label": "Week of Mon, 20 Jul",
+    "generated_at": "2026-07-19T22:30:22.968Z",
+    "wins": [
+      "The all-day blackout was daemon-death, not host-death (00:00). The MacBook was awake the whole time; the Multica daemon is a child of the desktop app and nothing relaunches it after a reboot — 20h32m daemon gap in daemon.log until Johan opened the app at",
+      "Production has already ruled on the tagline (01:00). \"Hire agents, not headcount\" appears on 0 of 36 live pages; \"We build leverage.\" on 34. Cost of confirming retirement (option B): near zero — 2 C1 statics regen, already in the planned pass. Cost of",
+      "GO-day readiness is better than reported (02:00). Two \"gaps\" in the contingency list were false — the cold-call playbook (WEB-143) and Stripe test-mode runbook (WEB-144) already exist, approved. Three promotion-ready backlog sub-issues staged in 3 Leads",
+      "Analytics path ruled (03:00). Metricool NO-GO at any tier (free excludes LinkedIn/X; API needs ~€43/mo; still requires OAuth hand-over). GO on a $0 native-export file-drop loop — unblocks WEB-171's Friday recurrence",
+      "In_review triage batch 2 done, with a correction (04:00). PR #6 and #11 were merged on 07-14 — the \"stuck green PRs\" alarm in three consecutive reports was stale data. 36 close-ready issues identified (queue 69 → 33); the real merge queue is 5 open green"
+    ],
+    "next3": [
+      "Check WEB-141 for a board answer; on GO, promote WEB-163 + the 3 staged sub-issues immediately",
+      "Execute the 36 triage closes (Group A+B, 04:00 entry) — copy WEB-194's top-5 drafts into today's content chain first",
+      "Fire the 07-20 content chain (trend briefing + ideas); post #3 is now 4 days unpublished"
+    ]
+  },
+  {
+    "id": "quarterly-2026-09-30",
+    "type": "quarterly",
+    "period_label": "Q3 2026",
+    "generated_at": "2026-07-19T22:30:22.968Z",
+    "wins": [
+      "The all-day blackout was daemon-death, not host-death (00:00). The MacBook was awake the whole time; the Multica daemon is a child of the desktop app and nothing relaunches it after a reboot — 20h32m daemon gap in daemon.log until Johan opened the app at",
+      "Production has already ruled on the tagline (01:00). \"Hire agents, not headcount\" appears on 0 of 36 live pages; \"We build leverage.\" on 34. Cost of confirming retirement (option B): near zero — 2 C1 statics regen, already in the planned pass. Cost of",
+      "GO-day readiness is better than reported (02:00). Two \"gaps\" in the contingency list were false — the cold-call playbook (WEB-143) and Stripe test-mode runbook (WEB-144) already exist, approved. Three promotion-ready backlog sub-issues staged in 3 Leads",
+      "Analytics path ruled (03:00). Metricool NO-GO at any tier (free excludes LinkedIn/X; API needs ~€43/mo; still requires OAuth hand-over). GO on a $0 native-export file-drop loop — unblocks WEB-171's Friday recurrence",
+      "In_review triage batch 2 done, with a correction (04:00). PR #6 and #11 were merged on 07-14 — the \"stuck green PRs\" alarm in three consecutive reports was stale data. 36 close-ready issues identified (queue 69 → 33); the real merge queue is 5 open green",
+      "Bounce preview URL delivered (overnight priority #1, closed 00:45 AEST): CTO posted the working preview: https://agent-motiondesigner-362919a.bounce-inc-redesign.pages.dev — verified in headless Chromium (hero loop, scroll-scrub scenes working); CTO also",
+      "07-18 runtime failure root-caused + codex fixed (00:00 Second-Shift): Verified on-host: the 16:00–20:00 gap was a reboot at 16:18 AEST, not sleep — pmset keep-awake would NOT have prevented it. Post-reboot the codex CLI wedged in the dynamic linker",
+      "Day-4 contingency list produced (01:00 Second-Shift): Ranked list of board-approval-free revenue-adjacent actions (internal drafting/prep only), ready for 08:00 pickup",
+      "Review graveyard cleared — all 23 items from the 03:00 triage dispositioned: 19 closed (17 cancelled, 2 done), phantom PR blocker corrected, final 4 reviewed/delegated; in_review ~79 → ~58",
+      "Phantom blocker retracted, real merge queue tabled: PRs #6/#11 were already merged 07-14 and live; real queue = 5 green PRs (#13, #15, #17, #20, #21) awaiting one \"merge all\""
+    ],
+    "next3": [
+      "Check WEB-141 for a board answer; on GO, promote WEB-163 + the 3 staged sub-issues immediately",
+      "Execute the 36 triage closes (Group A+B, 04:00 entry) — copy WEB-194's top-5 drafts into today's content chain first",
+      "Fire the 07-20 content chain (trend briefing + ideas); post #3 is now 4 days unpublished"
+    ]
+  },
+  {
+    "id": "yearly-2026-12-31",
+    "type": "yearly",
+    "period_label": "2026",
+    "generated_at": "2026-07-19T22:30:22.968Z",
+    "wins": [
+      "The all-day blackout was daemon-death, not host-death (00:00). The MacBook was awake the whole time; the Multica daemon is a child of the desktop app and nothing relaunches it after a reboot — 20h32m daemon gap in daemon.log until Johan opened the app at",
+      "Production has already ruled on the tagline (01:00). \"Hire agents, not headcount\" appears on 0 of 36 live pages; \"We build leverage.\" on 34. Cost of confirming retirement (option B): near zero — 2 C1 statics regen, already in the planned pass. Cost of",
+      "GO-day readiness is better than reported (02:00). Two \"gaps\" in the contingency list were false — the cold-call playbook (WEB-143) and Stripe test-mode runbook (WEB-144) already exist, approved. Three promotion-ready backlog sub-issues staged in 3 Leads",
+      "Analytics path ruled (03:00). Metricool NO-GO at any tier (free excludes LinkedIn/X; API needs ~€43/mo; still requires OAuth hand-over). GO on a $0 native-export file-drop loop — unblocks WEB-171's Friday recurrence",
+      "In_review triage batch 2 done, with a correction (04:00). PR #6 and #11 were merged on 07-14 — the \"stuck green PRs\" alarm in three consecutive reports was stale data. 36 close-ready issues identified (queue 69 → 33); the real merge queue is 5 open green",
+      "Bounce preview URL delivered (overnight priority #1, closed 00:45 AEST): CTO posted the working preview: https://agent-motiondesigner-362919a.bounce-inc-redesign.pages.dev — verified in headless Chromium (hero loop, scroll-scrub scenes working); CTO also",
+      "07-18 runtime failure root-caused + codex fixed (00:00 Second-Shift): Verified on-host: the 16:00–20:00 gap was a reboot at 16:18 AEST, not sleep — pmset keep-awake would NOT have prevented it. Post-reboot the codex CLI wedged in the dynamic linker",
+      "Day-4 contingency list produced (01:00 Second-Shift): Ranked list of board-approval-free revenue-adjacent actions (internal drafting/prep only), ready for 08:00 pickup",
+      "Review graveyard cleared — all 23 items from the 03:00 triage dispositioned: 19 closed (17 cancelled, 2 done), phantom PR blocker corrected, final 4 reviewed/delegated; in_review ~79 → ~58",
+      "Phantom blocker retracted, real merge queue tabled: PRs #6/#11 were already merged 07-14 and live; real queue = 5 green PRs (#13, #15, #17, #20, #21) awaiting one \"merge all\""
+    ],
+    "next3": [
+      "Check WEB-141 for a board answer; on GO, promote WEB-163 + the 3 staged sub-issues immediately",
+      "Execute the 36 triage closes (Group A+B, 04:00 entry) — copy WEB-194's top-5 drafts into today's content chain first",
+      "Fire the 07-20 content chain (trend briefing + ideas); post #3 is now 4 days unpublished"
+    ]
+  },
+  {
+    "id": "morning-2026-07-20",
+    "type": "morning",
+    "period_label": "Mon, 20 Jul",
+    "generated_at": "2026-07-19T18:09:34Z",
+    "wins": [
+      "The all-day blackout was daemon-death, not host-death (00:00). The MacBook was awake the whole time; the Multica daemon is a child of the desktop app and nothing relaunches it after a reboot — 20h32m daemon gap in daemon.log until Johan opened the app at",
+      "Production has already ruled on the tagline (01:00). \"Hire agents, not headcount\" appears on 0 of 36 live pages; \"We build leverage.\" on 34. Cost of confirming retirement (option B): near zero — 2 C1 statics regen, already in the planned pass. Cost of",
+      "GO-day readiness is better than reported (02:00). Two \"gaps\" in the contingency list were false — the cold-call playbook (WEB-143) and Stripe test-mode runbook (WEB-144) already exist, approved. Three promotion-ready backlog sub-issues staged in 3 Leads",
+      "Analytics path ruled (03:00). Metricool NO-GO at any tier (free excludes LinkedIn/X; API needs ~€43/mo; still requires OAuth hand-over). GO on a $0 native-export file-drop loop — unblocks WEB-171's Friday recurrence",
+      "In_review triage batch 2 done, with a correction (04:00). PR #6 and #11 were merged on 07-14 — the \"stuck green PRs\" alarm in three consecutive reports was stale data. 36 close-ready issues identified (queue 69 → 33); the real merge queue is 5 open green"
+    ],
+    "next3": [
+      "Check WEB-141 for a board answer; on GO, promote WEB-163 + the 3 staged sub-issues immediately",
+      "Execute the 36 triage closes (Group A+B, 04:00 entry) — copy WEB-194's top-5 drafts into today's content chain first",
+      "Fire the 07-20 content chain (trend briefing + ideas); post #3 is now 4 days unpublished"
+    ],
+    "industry_pulse": [
+      "Report-integrity gap: an unverified PR claim propagated through three reports. Proposed standing rule: no PR state asserted without gh pr view",
+      "Outbound launch window: WEB-62/63 target 22 July — 2 days out, still gated on the WEB-141 cold-call GO",
+      "Freeze conflict: WEB-210 (Bounce) plans 2 Higgsfield generations while the WEB-199 board freeze is in force",
+      "Runtime fragility persists: daemon relaunch depends on a human opening the desktop app; any reboot before WEB-196 executes repeats 07-19"
+    ]
+  },
+  {
+    "id": "eod-2026-07-19",
+    "type": "eod",
+    "period_label": "Sun, 19 Jul",
+    "generated_at": "2026-07-19T12:20:31Z",
+    "wins": [
+      "Bounce preview URL delivered (overnight priority #1, closed 00:45 AEST): CTO posted the working preview: https://agent-motiondesigner-362919a.bounce-inc-redesign.pages.dev — verified in headless Chromium (hero loop, scroll-scrub scenes working); CTO also...",
+      "07-18 runtime failure root-caused + codex fixed (00:00 Second-Shift): Verified on-host: the 16:00–20:00 gap was a reboot at 16:18 AEST, not sleep — pmset keep-awake would NOT have prevented it. Post-reboot the codex CLI wedged in the dynamic linker,...",
+      "Day-4 contingency list produced (01:00 Second-Shift): Ranked list of board-approval-free revenue-adjacent actions (internal drafting/prep only), ready for 08:00 pickup"
+    ],
+    "next3": [
+      "Morning Standup 2026-07-19 (WEB-217): Cancelled as unrecoverable (day is over), pointer comment added; tomorrow's 08:00 standup must fire",
+      "Hourly execution loop — all of today: Diagnose tonight (overnight queue #1); WEB-196 migration approval is the real fix",
+      "Day-4 contingency list execution: Execute top items from 08:00, day 5"
+    ]
+  },
+  {
+    "id": "eod-2026-07-18",
+    "type": "eod",
+    "period_label": "Sat, 18 Jul",
+    "generated_at": "2026-07-18T11:35:47Z",
+    "wins": [
+      "Review graveyard cleared — all 23 items from the 03:00 triage dispositioned: 19 closed (17 cancelled, 2 done), phantom PR blocker corrected, final 4 reviewed/delegated; in_review ~79 → ~58",
+      "Phantom blocker retracted, real merge queue tabled: PRs #6/#11 were already merged 07-14 and live; real queue = 5 green PRs (#13, #15, #17, #20, #21) awaiting one \"merge all\"",
+      "WEB-200 C1 hero videos → done: All 4 concepts approved both ratios after reshoot loop; held at CMO, unpublished per board rule",
+      "WEB-201 C1 statics — QA verdict in: 7/8 approved; 1 rejected (clipping); copy conditional on tagline ruling; ONE regen pass locked post-ruling",
+      "WEB-139 org chart + WEB-173 masjid Sanity trial delivered & accepted: Both delegated 11:00, delivered and accepted 12:00; PR #21 in merge queue; Sanity proven end-to-end (recommend park until revenue gates clear)",
+      "voice.md vs brand-guidelines.md conflict resolved to interim ruling: voice.md exposed as unreviewed local file; committed brand-guidelines.md = interim source of truth; board escalation #3 posted",
+      "WEB-137 projects mind map closed done: PR #16 verified merged and live in Mission Control"
+    ],
+    "next3": [
+      "Bounce preview URL for Johan (asked 16:11): Overnight shift re-triggers CTO; work itself is done (commit ae877c4) — only the preview deploy is missing",
+      "WEB-141 three decisions (cold-call GO · Stripe live · PPL): ~2 min reply; on GO, WEB-163 promotes same hour",
+      "Merge queue: 5 green PRs: One-line reply"
+    ]
+  },
+  {
+    "id": "morning-2026-07-18",
+    "type": "morning",
+    "period_label": "Sat, 18 Jul",
+    "generated_at": "2026-07-17T18:05:31Z",
+    "wins": [
+      "Runtime root cause corrected (00:00 run): the host is NOT sleeping on a fixed overnight window — it's Johan's MacBook Pro with pmset sleep 1, dying whenever Amphetamine isn't holding it. Fix is one command (sudo pmset -a sleep 0 disablesleep 1, revert",
+      "Sales inventory is now complete on both motions (01:00 + 02:00 runs): vertical objection sheet posted on WEB-143 (call-ready, playbook-consistent, riba-free rules held) and a ranked 20-candidate PPL table posted on WEB-148 (top-4 already pay for leads",
+      "In_review is a graveyard (03:00 run): 33 of 79 in_review issues are stale; 18 recommended closes (Group A+B) are table-ready for the morning loop. The real damage: two green PRs (#6 — 2 SEO articles, #11 — 5 offering pages) have sat unmerged 3–4 days",
+      "Board decision latency is now the only blocker on revenue: WEB-141 3-item queue (cold-call GO · Stripe live-mode · PPL go/no-go) is ~42h unanswered at 04:00. Every deliverable behind it is staged; both 2-week goals have produced zero forward motion for two",
+      "Silently failing automation: daily content-ideas tracker is on a 5-day failure streak at its 08:00 slot; weekly ops-review has missed two consecutive Sundays. Neither had been flagged before tonight's audit"
+    ],
+    "next3": [
+      "WEB-141 board answer (or explicit HOLD-with-date so the team stops staging against it)",
+      "Runtime keep-awake applied + standup-slot verification (did 08:00 fire?)",
+      "Clear the two idle green PRs (#6, #11)"
+    ],
+    "industry_pulse": [
+      "08:00 standup slot near-guaranteed dead until the pmset/Amphetamine fix or Mac-mini move lands — contingency: the 09:00 hourly loop posts the standup manually (proven pattern from Jul 17)",
+      "Company financial planning (WEB-71/72) runs entirely on unconfirmed placeholder figures",
+      "WEB-43 close would bury its never-actioned showcase-asset production list — morning loop must copy it out before closing",
+      "2-week window on Goal #1 keeps burning: assets have been shelf-ware for 2+ days"
+    ]
+  },
+  {
+    "id": "eod-2026-07-17",
+    "type": "eod",
+    "period_label": "Fri, 17 Jul",
+    "generated_at": "2026-07-17T11:33:23Z",
+    "wins": [
+      "Mission Control live Multica data shipped to production: PR #18 (API + secrets) and PR #19 (Upcoming Blogs + Outbound Leads tabs) reviewed, merged, deployed; Johan set secrets same evening",
+      "Hijrah discovery call kit finished and approved: CRO delivered pre-sale validation block (Q13–16, scoring, logging template) after CEO re-trigger; approved — Johan can start the 10 KL calls",
+      "Content chain ran end-to-end for the first time: Trend briefing approved → ideas delivered 14:21 → Johan picked #3 → post + thumbnail done 14:31; awaiting publish",
+      "Inbound leads triaged out of pipeline: Penang City Council + Perlis Tourism both reviewed and PARKED (procurement walls, no 2-week fit) — pipeline stays focused on Goal #1 AU SMBs",
+      "Review-queue clearing: WEB-174 (MC tickets → project, verified 14/14) and WEB-120 (receipt intake, core merged in PR #14) closed",
+      "Morning standup recovered after autopilot failure: 08:00 autopilot died twice (runtime went offline); 09:00 hourly loop posted the full standup manually"
+    ],
+    "next3": [
+      "WEB-141 board decision queue (cold-call GO, Stripe live-mode, PPL go/no-go): Answer the 3-item queue — single gate on both revenue goals",
+      "WEB-163 spec sites for hottest-5 prospects: Promote to todo the moment GO lands",
+      "WEB-168 publish post #3: Publish (drafts-only rule held)"
+    ]
+  },
+  {
+    "id": "morning-2026-07-17",
+    "type": "morning",
+    "period_label": "Fri, 17 Jul",
+    "generated_at": "2026-07-16T23:24:55Z",
+    "wins": [
+      "Goal #1 chain (cold-call website sales) fully assembled and CEO-approved: WEB-142 prospect list (66 leads, 3 verticals, hottest-10 ranked), WEB-143 cold-call playbook, WEB-144 Stripe payment links + invoicing, WEB-145 build+handover pipeline (PR #17)",
+      "Goal #2 (pay-per-lead): WEB-146 unit-economics study and WEB-148 PPL pilot spec both done",
+      "WEB-163 (spec sites for hottest-5 prospects) staged in backlog — deliberately held for board GO",
+      "New inbound leads triaged at 21:00: WEB-164 Penang City Council, WEB-165 Perlis Tourism Board (both in_review)",
+      "Overnight second shift: diagnosed the failed automations (root cause: agent runtime offline 21:30–~02:00), hardened the Standup/EOD autopilot prompts against missing upstream inputs",
+      "Failed/incomplete: WEB-166 End-of-Day report never posted (runtime offline); second-shift 00:00/01:00 runs died; 08:00 Morning Standup failed twice"
+    ],
+    "next3": [
+      "Get board GO on cold-call batch (decision queue on WEB-141)",
+      "WEB-163: spec-build hottest 5 prospects → 5 preview URLs",
+      "Review queue: WEB-164/165 (Penang, Perlis), WEB-133 (discovery prep)"
+    ]
+  }
+]

@@ -1,6 +1,16 @@
 node_modules/
+runs/
+WEB-*.csv
 
 # local scratch / handover docs — not site source
 CLAUDE_CODE_HANDOVER.md
 SCAFFOLD.md
 tasks.db
+
+# receipt-intake local dirs — never commit receipt binaries (WEB-120)
+mission-control/intake/inbox/
+mission-control/intake/archive/
+
+# brief delivery local state/outbox — generated on Hermes, never committed
+mission-control/briefs/outbox/
+mission-control/briefs/.delivered.json

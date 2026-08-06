@@ -1,6 +1,6 @@
 // Runnable check for the session-token scheme: node worker.test.mjs
 import assert from "node:assert";
-import { makeToken, validToken } from "./worker.js";
+import worker, { makeToken, normalizeMultica, validToken } from "./worker.js";
 
 const secret = "test-secret-please-change";
 const token = await makeToken(secret);
@@ -12,4 +12,70 @@ assert(!(await validToken(secret, "9999999999.deadbeef")), "forged signature mus
 assert(!(await validToken(secret, "0.anything")), "expired token must fail");
 assert(!(await validToken(secret, "")), "empty token must fail");
 
-console.log("ok: auth token scheme");
+const briefsAsset = JSON.stringify([{ id: "eod-2026-07-31", type: "eod" }]);
+const mockEnv = {
+  MC_SECRET: secret,
+  MC_PASSWORD: "test-password",
+  MC_VERIFY_TOKEN: "verify-token",
+  ASSETS: {
+    fetch: async () => new Response(briefsAsset, {
+      headers: { "Content-Type": "application/json; charset=utf-8" },
+    }),
+  },
+};
+
+let res = await worker.fetch(new Request("https://example.test/mission-control/data/briefs.json"), mockEnv);
+assert.equal(res.headers.get("Content-Type"), "text/html; charset=utf-8");
+assert((await res.text()).includes("Mission Control"), "unauthenticated briefs JSON must stay gated");
+
+res = await worker.fetch(new Request("https://example.test/mission-control/data/briefs.json", {
+  headers: { "X-Mission-Control-Verify": "verify-token" },
+}), mockEnv);
+assert.equal(res.headers.get("Content-Type"), "application/json; charset=utf-8");
+assert.equal((await res.json())[0].id, "eod-2026-07-31");
+
+res = await worker.fetch(new Request("https://example.test/mission-control/", {
+  headers: { "X-Mission-Control-Verify": "verify-token" },
+}), mockEnv);
+assert.equal(res.headers.get("Content-Type"), "text/html; charset=utf-8");
+assert((await res.text()).includes("Board access only."), "verification token must not unlock the UI");
+
+const normalized = normalizeMultica({
+  workspaceName: "WeBuild Co",
+  projects: [
+    { id: "p1", title: "Mission Control", status: "planned", done_count: 2, issue_count: 4, lead_id: "a1" },
+    { id: "p2", title: "Place", status: "active", done_count: 3, issue_count: 8, lead_id: "a1" },
+    { id: "p3", title: "Leads Pipeline", status: "in_progress", done_count: 5, issue_count: 14, lead_id: "a1" },
+  ],
+  issues: { total: 12, issues: [
+    { id: "i1", identifier: "WEB-1", title: "Wire API", status: "blocked", assignee_id: "a1", project_id: "p1" },
+    { id: "i2", identifier: "WEB-62", title: "Outbound playbooks for Priority 1 industries", status: "in_review", assignee_id: "a1", project_id: "p3" },
+  ] },
+  blogIssues: [
+    { id: "b1", identifier: "WEB-79", title: "Agentic content engine: automated weekly SEO/GEO publishing cadence", status: "in_review", assignee_id: "a1", project_id: "p2", updated_at: "2026-07-17T00:00:00Z" },
+    { id: "b2", identifier: "WEB-168", title: "Content ideas — 2026-07-17", status: "in_review", assignee_id: "a1", project_id: "p2", updated_at: "2026-07-17T01:00:00Z" },
+  ],
+  agents: [{ id: "a1", name: "CTO", description: "Technical delivery", status: "working" }],
+});
+
+assert.equal(normalized.workspace, "WeBuild Co");
+assert.equal(normalized.summary.tasks, 12);
+assert.equal(normalized.summary.task_status.blocked, 1);
+assert.equal(normalized.projects[0].progress, 50);
+assert.equal(normalized.projects[0].lead, "CTO");
+assert.equal(normalized.issues[0].project, "Mission Control");
+assert.equal(normalized.issues[0].assignee, "CTO");
+assert.equal(normalized.agents[0].status, "working");
+assert.equal(normalized.summary.blogs, 1);
+assert.equal(normalized.blogs.live, true);
+assert.equal(normalized.blogs.cards[0].title, "Agentic content engine: automated weekly SEO/GEO publishing cadence");
+assert.equal(normalized.blogs.cards[0].col, "Review");
+assert.equal(normalized.blogs.cards[0].project, "Place");
+assert(!normalized.blogs.cards.some((card) => card.title.startsWith("Content ideas")));
+assert.equal(normalized.summary.leads.projects, 1);
+assert.equal(normalized.leads.live, true);
+assert.equal(normalized.leads.projects[0].title, "Leads Pipeline");
+assert.equal(normalized.leads.tasks[0].title, "Outbound playbooks for Priority 1 industries");
+assert.equal(normalized.leads.tasks[0].project, "Leads Pipeline");
+
+console.log("ok: worker auth + multica normalization");

@@ -1,0 +1,32 @@
+{
+  "offers": {
+    "foundation_pilot": {
+      "name": "Foundation Pilot",
+      "build_fee_aud_ex_gst": 9000,
+      "build_fee_terms": "One-off fixed build fee, billed 50/50 across two milestones.",
+      "retainer_aud_ex_gst_per_month": 900,
+      "retainer_scope": {
+        "starts": "go-live",
+        "covers": [
+          "one role",
+          "one city",
+          "hosting from go-live",
+          "monitoring from go-live",
+          "inbox connector upkeep from go-live",
+          "monthly scoring tune-up",
+          "hours-saved report"
+        ],
+        "excludes": [
+          "additional roles",
+          "additional cities",
+          "additional integrations",
+          "client-mgmt agent",
+          "live tickets",
+          "competitive intel",
+          "company brain"
+        ],
+        "exclusion_note": "Expansion-menu items are per-deal step-ups, never quoted off this retainer."
+      }
+    }
+  }
+}
