@@ -14,3 +14,11 @@ tasks.db
 wrangler.jsonc
 .assetsignore
 .gitignore
+
+# Internal tooling and lead data — must never be served (WEB-497).
+# tools/publication-crawler/fixtures/web400-smoke-50.csv was live at
+# https://webuildco.com.au/tools/publication-crawler/fixtures/web400-smoke-50.csv
+# (HTTP 200, 50 named contacts) until this entry was added.
+tools/publication-crawler
+tools/suppression
+runs
