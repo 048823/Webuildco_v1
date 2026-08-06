@@ -132,10 +132,11 @@ const pricingPageData = {
     eyebrow: "Pricing",
     headline: "Stop renting automation. Own the system.",
     subline: "Cancel anytime and keep everything we built.",
-    notice: "Prices are AUD, GST-inclusive, and provisional pending WEB-372. Starter's A$750 install fee remains the open board decision.",
+    notice: "All prices are provisional and not yet final. Starter's install fee is still being decided.",
     enterpriseLine: "Something bigger? Talk to us."
   },
   pendingCopy: {
+    gstBasis: { token: "{{GST_BASIS}}", value: "Prices are in AUD. GST treatment is being confirmed." },
     heroLabel: { token: "{{HERO_LABEL}}", value: "Most agencies start here" },
     connectorLabel: { token: "{{UPGRADE_CONNECTOR_LABEL}}", value: "Found it hard? \u2192" },
     connectorAccessible: { token: "{{UPGRADE_CONNECTOR_A11Y_LABEL}}", value: "Found it hard? Talk to us about Operate." }
@@ -154,7 +155,7 @@ const pricingPageData = {
       name: "Starter",
       price: "A$300",
       unit: "/mo",
-      priceNote: "+ A$750 install",
+      priceNote: "+ A$750 install (provisional)",
       scope: "one agent",
       details: ["One catalogue agent in your own accounts.", "Alerts to your inbox. Email support in two business days.", "No build slot, no calls after setup."],
       ctaKey: "starter"
@@ -267,7 +268,7 @@ function renderPricing(){
   document.getElementById("pricingEyebrow").textContent = page.eyebrow;
   document.getElementById("pricingHeadline").textContent = page.headline;
   document.getElementById("pricingSubline").textContent = page.subline;
-  document.getElementById("pricingNotice").textContent = page.notice;
+  document.getElementById("pricingNotice").textContent = `${pricingPageData.pendingCopy.gstBasis.value} ${page.notice}`;
   document.getElementById("enterpriseLine").textContent = page.enterpriseLine;
 
   const connector = pricingPageData.pendingCopy.connectorLabel.value;

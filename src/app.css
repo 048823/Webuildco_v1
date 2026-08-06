@@ -160,6 +160,15 @@ body{font-family:var(--font-cosmica);-webkit-font-smoothing:antialiased}
 .catalogue-caption{margin-top:24px;border-left:3px solid var(--color-lime-deep);padding-left:16px;font-size:20px;line-height:1.35;font-weight:800;color:var(--color-obsidian)}
 
 @media(min-width:768px){
+  .starter-detail-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .starter-boundaries{grid-column:1 / span 2}
+  .catalogue-spotlight{grid-column:3 / span 2}
+}
+
+/* Four plan cards abreast need >=1024px: below that a card is ~165px and the
+   price digits overflow the card. 768-1023 keeps the mobile treatment, whose
+   sticky full-width band headers carry the column seam (spec section 8). */
+@media(min-width:1024px){
   .pricing-columns{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
   .pricing-column--you{border-right:1px solid var(--color-pebble);padding-right:28px}
   .pricing-plan-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -169,9 +178,6 @@ body{font-family:var(--font-cosmica);-webkit-font-smoothing:antialiased}
   .pricing-desktop-upgrade::before{content:"";position:absolute;left:12%;right:37%;top:28px;border-top:2px dashed var(--color-lime-deep)}
   .pricing-desktop-upgrade::after{content:"";position:absolute;left:62.4%;top:23px;width:10px;height:10px;border-right:2px solid var(--color-lime-deep);border-top:2px solid var(--color-lime-deep);transform:rotate(45deg)}
   .pricing-desktop-upgrade span{position:absolute;left:25%;top:6px;background:var(--color-mist);padding:4px 10px;border-radius:var(--radius-md);font-size:14px;line-height:1.4;font-weight:800;color:var(--color-obsidian)}
-  .starter-detail-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
-  .starter-boundaries{grid-column:1 / span 2}
-  .catalogue-spotlight{grid-column:3 / span 2}
 }
 
 @media(max-width:399px){
