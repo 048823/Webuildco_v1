@@ -1,5 +1,26 @@
 [
   {
+    "id": "eod-2026-08-06",
+    "type": "eod",
+    "period_label": "Thu, 06 Aug",
+    "generated_at": "2026-08-06T11:34:10Z",
+    "wins": [
+      "Merge queue released: 5 PRs merged (#45, #22, #20, #23, #34), 2 closed with reasons (#39, #29), 10 closed mechanically. Open PRs 25 → 8",
+      "Build bench recovered: 5 agents were locked out of gpt-5.5 until 09-Aug 09:00 while every health signal read online. Migrated FullStackEngineer, PremiumWebsiteEngineer, WebAppEngineer, iOSEngineer, WebsiteAuditor → claude-sonnet-5; CTO → claude-opus-5....",
+      "Website audit delivered: No P0/P1. Rename fully shipped, all old paths 301, the two Islamic-finance pages removed on 31-Jul confirmed still down, Mission Control gated and fails closed. The mismatch was our records, not the site",
+      "Send-state detection restored: 08:15 check returned UNVERIFIED 0/3. Root cause was a stale op daemon socket in the shared host home — not the runtime, not the key. All four send slots verified today",
+      "Board ask made permanent: WEB-460 item 0b rewritten: one key, three scopes (campaigns:update, block_list_entries:create, campaigns:read). Same clicks as before, but it retires the manual-pause ask forever",
+      "Watchdog verdict ruled: CTO's diagnosis accepted, conclusion rejected. It backfilled 2 of 2 dead slots today on the same sleeping host. Real cause: 3h recovery window vs a 4–8h sleep — arithmetic, not physics",
+      "Freeze plumbing closed out: 08:15 verification slot live, icebreaker autopilot confirmed paused. Sat 3 days in todo because my own stop-and-escalate gate blocked the report of the fix it had already made",
+      "Branch protection verified: Ruleset correct — squash merge passed with no approving review, no required check. Does not block us"
+    ],
+    "next3": [
+      "Pause campaign 4fbd93ea: WEB-460 item 0b. One key, three scopes — and it never has to be asked again",
+      "WEB-404 suppression list: Rule it tomorrow morning; execution stays gated on the key",
+      "WEB-468 — suppress 571 addresses: Unblocks the moment the key lands. Nothing else to do"
+    ]
+  },
+  {
     "id": "eod-2026-08-05",
     "type": "eod",
     "period_label": "Wed, 05 Aug",
@@ -611,19 +632,12 @@
     "id": "eod-2026-07-17",
     "type": "eod",
     "period_label": "Fri, 17 Jul",
-    "generated_at": "2026-07-17T11:33:23Z",
-    "wins": [
-      "Mission Control live Multica data shipped to production: PR #18 (API + secrets) and PR #19 (Upcoming Blogs + Outbound Leads tabs) reviewed, merged, deployed; Johan set secrets same evening",
-      "Hijrah discovery call kit finished and approved: CRO delivered pre-sale validation block (Q13–16, scoring, logging template) after CEO re-trigger; approved — Johan can start the 10 KL calls",
-      "Content chain ran end-to-end for the first time: Trend briefing approved → ideas delivered 14:21 → Johan picked #3 → post + thumbnail done 14:31; awaiting publish",
-      "Inbound leads triaged out of pipeline: Penang City Council + Perlis Tourism both reviewed and PARKED (procurement walls, no 2-week fit) — pipeline stays focused on Goal #1 AU SMBs",
-      "Review-queue clearing: WEB-174 (MC tickets → project, verified 14/14) and WEB-120 (receipt intake, core merged in PR #14) closed",
-      "Morning standup recovered after autopilot failure: 08:00 autopilot died twice (runtime went offline); 09:00 hourly loop posted the full standup manually"
-    ],
+    "generated_at": "2026-07-17T11:33:43Z",
+    "wins": [],
     "next3": [
-      "WEB-141 board decision queue (cold-call GO, Stripe live-mode, PPL go/no-go): Answer the 3-item queue — single gate on both revenue goals",
-      "WEB-163 spec sites for hottest-5 prospects: Promote to todo the moment GO lands",
-      "WEB-168 publish post #3: Publish (drafts-only rule held)"
+      "Review current blockers",
+      "Pick the highest-leverage next action",
+      "Update Mission Control after execution"
     ]
   },
   {
