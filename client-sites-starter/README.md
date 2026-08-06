@@ -9,6 +9,8 @@ Files:
 ## Build a spec site (target: 3–5/day, one person)
 
 1. **Gather** (5 min): prospect's name, phone, 3 services, 3 reviews (lift from their Google listing), a hero photo (their Facebook, or an Unsplash stand-in), brand colour.
+
+> **Reviews: verbatim or nothing.** A spec site carries a real named business, so an invented customer quote on it is misleading conduct under Australian Consumer Law (ss 18, 29(1)(e)) — and the exposure is ours, because we author and host the page. Never write, paraphrase or place-hold a review. Either paste the review text verbatim from their live Google listing, with the reviewer's name exactly as it appears there, and record the listing URL in `_reviews_verified_source` — or delete the whole reviews section from `index.html`. `npm test` fails if an unsourced quote reaches a prospect draft.
 2. **Fill** (5 min): copy `content.example.json` → `content-<client>.json`, fill it. Then either:
    - hand `index.html` + the JSON to Claude Code: *"fill every `{{TOKEN}}` in index.html from this JSON, save as `<client>.html`"*, or
    - find-replace the tokens by hand.
