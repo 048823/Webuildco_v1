@@ -5,21 +5,40 @@ import process from 'node:process';
 import { classifyAddress, stemInContext } from './lib/classify.mjs';
 import { readCsv, writeCsv } from './lib/csv.mjs';
 import { emailDomain, hashRecord, normalizeDomain, normalizeUrlForFetch, safeFileKey, sameDomain } from './lib/domain.mjs';
+import {
+  buildCl42eToGMapping,
+  EVIDENCE_RECORD_VERSION,
+  normalizeInputSourceClass,
+  resolvePublicationSourceClass,
+} from './lib/evidence.mjs';
 import { extractLinks, extractPublishedEmails, hasRestrictionText, htmlToVisibleText, looksUnrendered } from './lib/html.mjs';
+import { writeCrawlerOutputs } from './lib/output.mjs';
 import { RobotsCache } from './lib/robots.mjs';
 
 const USER_AGENT = 'WeBuildCo-PublicationCrawler/1.0 (+https://webuildco.com.au)';
-const VERSION = '2026-08-03.web442';
+const VERSION = EVIDENCE_RECORD_VERSION;
 const OUTPUT_COLUMNS = [
   'domain',
   'company_name',
   'email',
   'address_class',
+  'source_class',
+  'source_class_basis',
+  'input_source_class',
   'publication_url',
+  'source_url',
+  'source_capture_timestamp',
   'publication_evidence',
+  'published_context',
   'evidence_context',
   'evidence_method',
   'evidence_visibility',
+  'anti_spam_statement_present',
+  'anti_spam_statement_basis',
+  'cl_4_2_e_to_g_mapping',
+  'evidence_screenshot_ref',
+  'evidence_screenshot_sha256',
+  'evidence_record_version',
   'stem_in_context',
   'cl_4_2_d_verdict',
   'cl_4_2_d_basis',
@@ -32,8 +51,23 @@ const DROPPED_COLUMNS = [
   'company_name',
   'email',
   'address_class',
+  'source_class',
+  'source_class_basis',
+  'input_source_class',
   'publication_url',
+  'source_url',
+  'source_capture_timestamp',
   'publication_evidence',
+  'published_context',
+  'evidence_context',
+  'evidence_method',
+  'evidence_visibility',
+  'anti_spam_statement_present',
+  'anti_spam_statement_basis',
+  'cl_4_2_e_to_g_mapping',
+  'evidence_screenshot_ref',
+  'evidence_screenshot_sha256',
+  'evidence_record_version',
   'drop_reason',
   'cl_4_2_d_verdict',
   'cl_4_2_d_basis',
@@ -122,7 +156,7 @@ async function main() {
   });
 
   const finalCheckpoints = await loadCheckpoints(checkpointDir);
-  const summary = await writeOutputs({
+  const summary = await writeCrawlerOutputs({
     inputRows,
     checkpoints: finalCheckpoints,
     output,
@@ -131,9 +165,16 @@ async function main() {
     startedAt,
     skipped,
     completedThisRun: runState.completedThisRun,
+    version: VERSION,
+    outputColumns: OUTPUT_COLUMNS,
+    droppedColumns: DROPPED_COLUMNS,
   });
 
   console.log(JSON.stringify(summary, null, 2));
+  if (summary.stale_checkpoint_count > 0) {
+    console.error(`Refused ${summary.stale_checkpoint_count} stale checkpoint(s); rerun without interruption so every output row is ${VERSION}.`);
+    process.exitCode = 2;
+  }
 }
 
 async function crawlDomain(inputRow, context) {
@@ -193,20 +234,37 @@ async function crawlDomain(inputRow, context) {
   }
 
   for (const page of pages) {
+    const antiSpamStatementPresent = hasRestrictionText(htmlToVisibleText(page.html));
     for (const found of extractPublishedEmails(page.html, page.final_url)) {
       if (!sameDomain(emailDomain(found.email), inputRow.domain)) continue;
       const addressClass = classifyAddress(found.email);
+      const stemInContextValue = stemInContext(found.email, found.evidence_context);
+      const sourceClass = resolvePublicationSourceClass(inputRow, found.publication_url);
       const row = {
         domain: inputRow.domain,
         company_name: inputRow.company_name,
         email: found.email,
         address_class: addressClass,
+        source_class: sourceClass.source_class,
+        source_class_basis: sourceClass.source_class_basis,
+        input_source_class: normalizeInputSourceClass(inputRow),
         publication_url: found.publication_url,
+        source_url: found.publication_url,
+        source_capture_timestamp: page.fetched_at,
         publication_evidence: found.publication_evidence,
+        published_context: found.evidence_context,
         evidence_context: found.evidence_context,
         evidence_method: found.evidence_method,
         evidence_visibility: found.evidence_visibility,
-        stem_in_context: stemInContext(found.email, found.evidence_context),
+        anti_spam_statement_present: antiSpamStatementPresent ? 'yes' : 'no',
+        anti_spam_statement_basis: antiSpamStatementPresent
+          ? `restriction text detected on publication page: ${page.final_url}`
+          : 'no restriction text detected on publication page',
+        cl_4_2_e_to_g_mapping: buildCl42eToGMapping({ addressClass, stemInContextValue }),
+        evidence_screenshot_ref: '',
+        evidence_screenshot_sha256: '',
+        evidence_record_version: EVIDENCE_RECORD_VERSION,
+        stem_in_context: stemInContextValue,
         cl_4_2_d_verdict: '',
         cl_4_2_d_basis: '',
         crawled_at: new Date().toISOString(),
@@ -238,6 +296,8 @@ async function crawlDomain(inputRow, context) {
     };
     if (withVerdict.address_class === 'junk') {
       droppedRows.push(toDroppedRow(withVerdict, 'artifact address, not a usable publication target'));
+    } else if (withVerdict.source_class === 'unclassified') {
+      droppedRows.push(toDroppedRow(withVerdict, 'publication source class unclassified'));
     } else if (withVerdict.cl_4_2_d_verdict === 'restricted') {
       droppedRows.push(toDroppedRow(withVerdict, 'cl 4(2)(d) restricted'));
     } else if (withVerdict.cl_4_2_d_verdict === 'unchecked') {
@@ -398,6 +458,8 @@ function scoreTermsPath(pathname) {
 
 async function fetchAndRecord(fetcher, url, fetches) {
   const result = await fetcher(url);
+  const fetchedAt = new Date().toISOString();
+  const page = { ...result, fetched_at: fetchedAt };
   fetches.push({
     url,
     final_url: result.final_url,
@@ -405,8 +467,9 @@ async function fetchAndRecord(fetcher, url, fetches) {
     ok: result.ok,
     failure_reason: result.failure_reason,
     bytes: result.bytes,
+    fetched_at: fetchedAt,
   });
-  return result;
+  return page;
 }
 
 function createPageFetcher({ robots, timeoutMs, maxBytes }) {
@@ -527,8 +590,23 @@ function toDroppedRow(row, dropReason) {
     company_name: row.company_name,
     email: row.email,
     address_class: row.address_class,
+    source_class: row.source_class,
+    source_class_basis: row.source_class_basis,
+    input_source_class: row.input_source_class,
     publication_url: row.publication_url,
+    source_url: row.source_url,
+    source_capture_timestamp: row.source_capture_timestamp,
     publication_evidence: row.publication_evidence,
+    published_context: row.published_context,
+    evidence_context: row.evidence_context,
+    evidence_method: row.evidence_method,
+    evidence_visibility: row.evidence_visibility,
+    anti_spam_statement_present: row.anti_spam_statement_present,
+    anti_spam_statement_basis: row.anti_spam_statement_basis,
+    cl_4_2_e_to_g_mapping: row.cl_4_2_e_to_g_mapping,
+    evidence_screenshot_ref: row.evidence_screenshot_ref,
+    evidence_screenshot_sha256: row.evidence_screenshot_sha256,
+    evidence_record_version: row.evidence_record_version,
     drop_reason: dropReason,
     cl_4_2_d_verdict: row.cl_4_2_d_verdict,
     cl_4_2_d_basis: row.cl_4_2_d_basis,
@@ -581,87 +659,6 @@ function toManifestRecord(checkpoint) {
     completed_at: checkpoint.completed_at,
     checkpoint: `${safeFileKey(checkpoint.domain)}.json`,
   };
-}
-
-async function writeOutputs({ inputRows, checkpoints, output, droppedOutput, summaryOutput, startedAt, skipped, completedThisRun }) {
-  const completed = inputRows.map((row) => checkpoints.get(row.domain)).filter(Boolean);
-  const rows = dedupeRows(completed.flatMap((checkpoint) => checkpoint.rows ?? []));
-  const droppedRows = completed.flatMap((checkpoint) => checkpoint.dropped_rows ?? []);
-  await writeCsv(output, rows, OUTPUT_COLUMNS);
-  await writeCsv(droppedOutput, droppedRows, DROPPED_COLUMNS);
-
-  const elapsedSeconds = Math.max(0.001, (Date.now() - startedAt.getTime()) / 1000);
-  const statusBreakdown = countBy(completed, (checkpoint) => checkpoint.failure_reason || 'published_address_scan_completed');
-  const fetchCount = completed.reduce((sum, checkpoint) => sum + Number(checkpoint.fetch_count ?? 0), 0);
-  const summary = {
-    version: VERSION,
-    started_at: startedAt.toISOString(),
-    completed_at: new Date().toISOString(),
-    elapsed_seconds: Number(elapsedSeconds.toFixed(3)),
-    input_domains: inputRows.length,
-    completed_domains: completed.length,
-    completed_this_run: completedThisRun,
-    skipped_completed: skipped.length,
-    domains_per_hour: Number(((completedThisRun || completed.length) / elapsedSeconds * 3600).toFixed(2)),
-    fetch_count: fetchCount,
-    fetches_per_domain: completed.length ? Number((fetchCount / completed.length).toFixed(2)) : 0,
-    output_rows: rows.length,
-    dropped_rows: droppedRows.length,
-    failure_rate_breakdown: {
-      unreachable: statusBreakdown.unreachable ?? 0,
-      unrendered: statusBreakdown.unrendered ?? 0,
-      bot_blocked: statusBreakdown.bot_blocked ?? 0,
-      robots_disallowed: statusBreakdown.robots_disallowed ?? 0,
-      no_published_address: statusBreakdown.no_published_address ?? 0,
-    },
-    smoke_report: buildSmokeReport(inputRows, completed),
-    output,
-    dropped_output: droppedOutput,
-    summary_output: summaryOutput,
-  };
-
-  await writeFile(summaryOutput, `${JSON.stringify(summary, null, 2)}\n`, 'utf8');
-  return summary;
-}
-
-function buildSmokeReport(inputRows, checkpoints) {
-  if (!inputRows.some((row) => row.expected_web400_verdict && row.expected_email)) return null;
-  const byDomain = new Map(checkpoints.map((checkpoint) => [checkpoint.domain, checkpoint]));
-  const rows = inputRows.map((row) => {
-    const checkpoint = byDomain.get(row.domain);
-    const foundExpectedEmail = (checkpoint?.all_published_rows ?? []).some((published) => published.email === String(row.expected_email).toLowerCase());
-    let actual = 'NOT_PUBLISHED';
-    if (foundExpectedEmail) {
-      actual = 'PUBLISHED';
-    } else if (['unreachable', 'timeout', 'bot_blocked', 'robots_disallowed'].includes(checkpoint?.failure_reason)) {
-      actual = 'UNVERIFIABLE';
-    }
-    return {
-      domain: row.domain,
-      expected_email: row.expected_email,
-      expected: row.expected_web400_verdict,
-      actual,
-      match: actual === row.expected_web400_verdict,
-      failure_reason: checkpoint?.failure_reason ?? '',
-    };
-  });
-  return {
-    rows,
-    total: rows.length,
-    matched: rows.filter((row) => row.match).length,
-    delta: rows.filter((row) => !row.match).length,
-    by_expected: countBy(rows, (row) => row.expected),
-    by_actual: countBy(rows, (row) => row.actual),
-  };
-}
-
-function countBy(rows, keyFn) {
-  const counts = {};
-  for (const row of rows) {
-    const key = keyFn(row) || 'unknown';
-    counts[key] = (counts[key] ?? 0) + 1;
-  }
-  return counts;
 }
 
 async function runQueue(items, concurrency, worker) {
