@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="no-js">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>document.documentElement.className=document.documentElement.className.replace('no-js','')</script>
 <title>AI Agents for Australian SMBs — Built, Proven, Owned | WeBuild Co</title>
 <meta name="description" content="AI agents for Australian SMBs. We scope, build and wire AI agents into the tools you already run — live in weeks, owned by you.">
 <link rel="canonical" href="https://www.webuildco.com.au/">
@@ -20,6 +21,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/app.css">
+<!-- .reveal rests at opacity:0 and only the IntersectionObserver clears it, so
+     without JS the whole page reads blank. Kept here rather than in src/app.css
+     so it needs no Tailwind rebuild; .no-js is stripped in <head> above, before
+     first paint, so JS visitors never see it. -->
+<style>.no-js .reveal{opacity:1;transform:none}</style>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-CML7HQ61XR"></script>
 <script>
@@ -86,10 +92,10 @@
 
     <!-- Stat blocks -->
     <div class="flex flex-wrap justify-center gap-x-64 gap-y-28 mt-48">
-      <div class="reveal"><div class="text-heading-lg font-bold text-obsidian" data-literal="100%">0</div><div class="text-[13px] text-slate">yours at handover — code, keys, docs</div></div>
-      <div class="reveal"><div class="text-heading-lg font-bold text-obsidian" data-count="30" data-suffix="-day">0</div><div class="text-[13px] text-slate">tuning included with every install</div></div>
-      <div class="reveal"><div class="text-heading-lg font-bold text-obsidian" data-literal="24/7">0</div><div class="text-[13px] text-slate">always on, no leave</div></div>
-      <div class="reveal"><div class="text-heading-lg font-bold text-obsidian" data-count="3" data-prefix="wk ">0</div><div class="text-[13px] text-slate">typical time to live</div></div>
+      <div class="reveal"><div class="text-heading-lg font-bold text-obsidian" data-literal="100%">100%</div><div class="text-[13px] text-slate">yours at handover — code, keys, docs</div></div>
+      <div class="reveal"><div class="text-heading-lg font-bold text-obsidian" data-count="30" data-suffix="-day">30-day</div><div class="text-[13px] text-slate">tuning included with every install</div></div>
+      <div class="reveal"><div class="text-heading-lg font-bold text-obsidian" data-literal="24/7">24/7</div><div class="text-[13px] text-slate">always on, no leave</div></div>
+      <div class="reveal"><div class="text-heading-lg font-bold text-obsidian" data-count="3" data-prefix="wk ">wk 3</div><div class="text-[13px] text-slate">typical time to live</div></div>
     </div>
 
     <!-- Marquee -->
@@ -119,7 +125,7 @@
 
       <!-- A · Founding slots -->
       <div class="md:col-start-1 md:row-start-1 bg-snow rounded-3xl-3 p-28 shadow-subtle-2 hover:-translate-y-4 hover:shadow-lg transition reveal">
-        <div class="text-display-sm font-bold text-obsidian leading-none" data-count="5">0</div>
+        <div class="text-display-sm font-bold text-obsidian leading-none" data-count="5">5</div>
         <div class="text-body text-slate font-light mt-8">founding slots, and that's the cap</div>
         <div class="flex gap-8 mt-20" aria-hidden="true">
           <span class="pip w-24 h-8 rounded-full border border-pebble" style="--d:0"></span>
@@ -175,7 +181,7 @@
             <svg viewBox="0 0 20 20" class="absolute inset-0 m-auto w-20 h-20"><path d="M4 10.5l3.5 3.5L16 6" stroke="#09090b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none" class="tick-draw"/></svg>
           </span>
           <div>
-            <div class="text-heading font-bold text-obsidian leading-none" data-literal="30 days">0</div>
+            <div class="text-heading font-bold text-obsidian leading-none" data-literal="30 days">30 days</div>
             <div class="text-body text-slate font-light mt-4">supervised proving run</div>
           </div>
         </div>
@@ -194,7 +200,7 @@
 
       <!-- E · Tools it plugs into. Names must stay in step with the hero marquee. -->
       <div class="md:col-start-3 md:row-start-1 bg-snow rounded-3xl-3 p-28 shadow-subtle-2 hover:-translate-y-4 hover:shadow-lg transition reveal">
-        <div class="text-display-sm font-bold text-obsidian leading-none" data-count="10">0</div>
+        <div class="text-display-sm font-bold text-obsidian leading-none" data-count="10">10</div>
         <div class="text-body text-slate font-light mt-8 mb-20">tools it already plugs into</div>
         <div class="flex flex-wrap gap-8">
           <span class="chip border border-pebble text-slate text-caption font-medium rounded-full px-12 py-4" style="--d:0">Gmail</span>
@@ -214,7 +220,7 @@
            highlight walks in sequence, not at random. -->
       <div class="md:col-start-3 md:row-start-2 bg-fog rounded-3xl-3 py-28 overflow-hidden reveal">
         <div class="px-28">
-          <div class="text-heading font-bold text-obsidian leading-none" data-count="12">0</div>
+          <div class="text-heading font-bold text-obsidian leading-none" data-count="12">12</div>
           <div class="text-body text-slate font-light mt-4 mb-20">jobs we build agents for</div>
         </div>
         <div class="relative flex flex-col gap-8">
@@ -234,7 +240,7 @@
       <a href="/pricing/" class="md:col-start-3 md:row-start-3 relative rounded-3xl-3 p-28 bg-obsidian overflow-hidden hover:-translate-y-4 transition reveal block">
         <div class="absolute -bottom-64 -right-40 w-[280px] h-[280px] rounded-full bg-lime/20 blur-3xl wash-drift" aria-hidden="true"></div>
         <div class="relative">
-          <div class="text-display-sm font-bold text-lime leading-none" data-literal="A$300">0</div>
+          <div class="text-display-sm font-bold text-lime leading-none" data-literal="A$300">A$300</div>
           <div class="text-body text-ash font-light mt-8">Foundations Session — credited toward your install</div>
           <p class="text-[13px] text-snow font-light mt-20">Fixed quote before any build. No lock-in, ever.</p>
           <span class="inline-flex items-center gap-8 text-[13px] font-medium text-lime mt-16">See pricing <span aria-hidden="true">→</span></span>
@@ -345,9 +351,9 @@
             <span class="text-body text-lime font-medium mt-12 inline-block">See founding terms →</span>
           </a>
           <div class="grid grid-cols-3 gap-16 mt-20">
-            <div class="bg-snow/5 border border-snow/10 rounded-2xl-2 p-20"><div class="text-heading font-bold text-lime" data-literal="100%">0</div><div class="text-caption text-ash">yours at handover</div></div>
-            <div class="bg-snow/5 border border-snow/10 rounded-2xl-2 p-20"><div class="text-heading font-bold text-lime" data-literal="A$300">0</div><div class="text-caption text-ash">session, credited to install</div></div>
-            <div class="bg-snow/5 border border-snow/10 rounded-2xl-2 p-20"><div class="text-heading font-bold text-lime" data-literal="24/7">0</div><div class="text-caption text-ash">coverage, no ramp-up</div></div>
+            <div class="bg-snow/5 border border-snow/10 rounded-2xl-2 p-20"><div class="text-heading font-bold text-lime" data-literal="100%">100%</div><div class="text-caption text-ash">yours at handover</div></div>
+            <div class="bg-snow/5 border border-snow/10 rounded-2xl-2 p-20"><div class="text-heading font-bold text-lime" data-literal="A$300">A$300</div><div class="text-caption text-ash">session, credited to install</div></div>
+            <div class="bg-snow/5 border border-snow/10 rounded-2xl-2 p-20"><div class="text-heading font-bold text-lime" data-literal="24/7">24/7</div><div class="text-caption text-ash">coverage, no ramp-up</div></div>
           </div>
         </div>
       </div>
