@@ -116,10 +116,52 @@ body{font-family:var(--font-cosmica);-webkit-font-smoothing:antialiased}
 .rail{scrollbar-width:none}
 .rail::-webkit-scrollbar{display:none}
 
+/* ===== Proof grid (#proof) =====
+   All of it rides the existing .reveal observer — a tile only starts moving
+   once it has '.in'. Per-item offsets come from an inline --d index so the
+   stagger stays in the markup and this stays one rule per effect. */
+.marquee-rev{animation:scrollx 26s linear infinite reverse}
+.marquee-rev:hover{animation-play-state:paused}
+
+/* A — five slots, filling in order. Deliberately never lands on a count:
+   /founding-five/ says "ask how many remain", so neither does this. */
+@keyframes pip{0%,12%{background:var(--color-lime);border-color:var(--color-lime)}20%,100%{background:transparent;border-color:var(--color-pebble)}}
+.reveal.in .pip{animation:pip 5s linear infinite;animation-delay:calc(var(--d,0)*1s)}
+
+/* B — supervised trial ring drawing to full, one shot */
+.ring-draw{stroke-dasharray:126;stroke-dashoffset:126}
+@keyframes ringdraw{to{stroke-dashoffset:0}}
+.reveal.in .ring-draw{animation:ringdraw 1.2s cubic-bezier(.2,.7,.3,1) .15s forwards}
+.tick-draw{stroke-dasharray:18;stroke-dashoffset:18}
+.reveal.in .tick-draw{animation:ringdraw .35s ease-out 1.15s forwards}
+
+/* C — scope → quote → build → handover, lighting in sequence */
+@keyframes stepin{to{opacity:1}}
+.step{opacity:.3}
+.reveal.in .step{animation:stepin .45s ease-out forwards;animation-delay:calc(var(--d,0)*.14s)}
+
+/* E — one tool chip hot at a time, 900ms each across a 9s loop */
+@keyframes chiphot{0%,6%{background:var(--color-obsidian);color:var(--color-lime);border-color:var(--color-obsidian)}9%,100%{background:transparent;color:var(--color-slate);border-color:var(--color-pebble)}}
+.reveal.in .chip{animation:chiphot 9s linear infinite;animation-delay:calc(var(--d,0)*.9s)}
+
+/* F — the highlight walks left-to-right in order rather than at random:
+   it should read as a queue being worked, which is what an agent does. */
+@keyframes pillhot{0%,5%{background:var(--color-lime);color:var(--color-obsidian);border-color:var(--color-lime)}8%,100%{background:transparent;color:var(--color-slate);border-color:var(--color-pebble)}}
+.reveal.in .pill{animation:pillhot 7.2s linear infinite;animation-delay:calc(var(--d,0)*.6s)}
+
+/* G — slow drift on the lime wash, our material instead of a 3D render */
+@keyframes drift{50%{transform:translate3d(0,-10px,0) scale(1.06)}}
+.reveal.in .wash-drift{animation:drift 14s ease-in-out infinite}
+
 @media(prefers-reduced-motion:reduce){
   *{animation:none!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
   .reveal{opacity:1;transform:none}
   .float-banner{transform:none}
+  /* Anything whose resting state is mid-animation has to be given its end
+     state here, or reduced motion turns it into a blank tile. */
+  .ring-draw{stroke-dashoffset:0}
+  .tick-draw{stroke-dashoffset:0}
+  .step{opacity:1}
 }
 :focus-visible{outline:2px solid var(--color-obsidian);outline-offset:2px;border-radius:4px}
 
