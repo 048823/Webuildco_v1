@@ -1,5 +1,26 @@
 [
   {
+    "id": "eod-2026-08-07",
+    "type": "eod",
+    "period_label": "Fri, 07 Aug",
+    "generated_at": "2026-08-07T11:34:10Z",
+    "wins": [
+      "Remediation evidence rebuilt on measured ground truth: 80 messages / 55 people / 256 leads, reconciled 4 ways. Cohorts split at the 03-Aug freeze: 56 msgs/32 people before, 24 msgs/23 people after — all post-freeze contacts were first contacts",
+      "Suppression system built, fails closed, write gated off: Account-wide gate; raises on unreadable/stale/malformed store; no env-var off switch (mechanically enforced by test). Payload bug caught that would have 400'd the first real write",
+      "Replacement address source decided: RCSA selected. Address-rate floor >=60 named addresses / 100 domains replaces the 15% bar workspace-wide. \"Step 0\" anti-consent grep now a standing rule. A-Leads killed",
+      "Dispatch standard shipped: 28/28 agents carry the explicit-@mention rule, one copy each. 4 autopilots firing into frozen projects paused",
+      "Watchdog silent-drop fixed: Root cause was the jq selector, not the enum. Three unhandled failure reasons found, not one; real values carry an agent_error. prefix a bare enum would have missed",
+      "CEO invocation path repaired: CEO agent was permission_mode: private, invocation_targets: [] — the only exec set that way. Every @CEO escalation ever posted dispatched nothing. Fixed; first mention-created CEO run in this workspace's history verified",
+      "Falsely-closed audit delivered: 88% of checkable done actually done, re-verified against systems rather than against the reporting agent's comment",
+      "Production deploy defect diagnosed: Workers Builds, not Pages. Any branch build deploys to production, last build wins, drafts not exempt. 8 of last 10 deployments came from non-main. Repo CLAUDE.md corrected on main"
+    ],
+    "next3": [
+      "Stop the campaign (WEB-460 item 0b): Create the 4-scope key, or remove the 8 sending mailboxes. Either stops it",
+      "Cloudflare non-production branch deploy (WEB-460 item 5): One dropdown, ~30s. Default if unanswered: CTO reddens the Workers check on all 11 open PRs, killing previews",
+      "Legal spend cap (WEB-437): One number, or \"no\""
+    ]
+  },
+  {
     "id": "morning-2026-08-06",
     "type": "morning",
     "period_label": "Thu, 06 Aug",
@@ -648,20 +669,12 @@
     "id": "eod-2026-07-18",
     "type": "eod",
     "period_label": "Sat, 18 Jul",
-    "generated_at": "2026-07-18T11:35:47Z",
-    "wins": [
-      "Review graveyard cleared — all 23 items from the 03:00 triage dispositioned: 19 closed (17 cancelled, 2 done), phantom PR blocker corrected, final 4 reviewed/delegated; in_review ~79 → ~58",
-      "Phantom blocker retracted, real merge queue tabled: PRs #6/#11 were already merged 07-14 and live; real queue = 5 green PRs (#13, #15, #17, #20, #21) awaiting one \"merge all\"",
-      "WEB-200 C1 hero videos → done: All 4 concepts approved both ratios after reshoot loop; held at CMO, unpublished per board rule",
-      "WEB-201 C1 statics — QA verdict in: 7/8 approved; 1 rejected (clipping); copy conditional on tagline ruling; ONE regen pass locked post-ruling",
-      "WEB-139 org chart + WEB-173 masjid Sanity trial delivered & accepted: Both delegated 11:00, delivered and accepted 12:00; PR #21 in merge queue; Sanity proven end-to-end (recommend park until revenue gates clear)",
-      "voice.md vs brand-guidelines.md conflict resolved to interim ruling: voice.md exposed as unreviewed local file; committed brand-guidelines.md = interim source of truth; board escalation #3 posted",
-      "WEB-137 projects mind map closed done: PR #16 verified merged and live in Mission Control"
-    ],
+    "generated_at": "2026-07-18T11:36:03Z",
+    "wins": [],
     "next3": [
-      "Bounce preview URL for Johan (asked 16:11): Overnight shift re-triggers CTO; work itself is done (commit ae877c4) — only the preview deploy is missing",
-      "WEB-141 three decisions (cold-call GO · Stripe live · PPL): ~2 min reply; on GO, WEB-163 promotes same hour",
-      "Merge queue: 5 green PRs: One-line reply"
+      "Review current blockers",
+      "Pick the highest-leverage next action",
+      "Update Mission Control after execution"
     ]
   },
   {
