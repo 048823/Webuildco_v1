@@ -14,3 +14,6 @@ mission-control/intake/archive/
 # brief delivery local state/outbox — generated on Hermes, never committed
 mission-control/briefs/outbox/
 mission-control/briefs/.delivered.json
+
+# filled spec-site drafts are real prospect data — public repo, never commit (WEB-519)
+client-sites-starter/prospects/

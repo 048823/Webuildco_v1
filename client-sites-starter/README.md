@@ -12,6 +12,9 @@ Files:
 
 > **Reviews: verbatim or nothing.** A spec site carries a real named business, so an invented customer quote on it is misleading conduct under Australian Consumer Law (ss 18, 29(1)(e)) — and the exposure is ours, because we author and host the page. Never write, paraphrase or place-hold a review. Either paste the review text verbatim from their live Google listing, with the reviewer's name exactly as it appears there, and record the listing URL in `_reviews_verified_source` — or delete the whole reviews section from `index.html`. `npm test` fails if an unsourced quote reaches a prospect draft.
 2. **Fill** (5 min): copy `content.example.json` → `content-<client>.json`, fill it. Then either:
+
+> **A filled draft is lead data — keep it out of git.** This repo is public: a committed prospect JSON puts a real business's contact details and your call notes where anyone who clones it can read them, and `.assetsignore` does nothing about that (it only controls what Cloudflare serves). Keep filled drafts on your machine. `npm test` fails on a committed CSV or `prospects/` file carrying a real address, phone or link (WEB-519).
+
    - hand `index.html` + the JSON to Claude Code: *"fill every `{{TOKEN}}` in index.html from this JSON, save as `<client>.html`"*, or
    - find-replace the tokens by hand.
 3. **Eyeball** (2 min): open the file in a browser. Fix obvious gaps. Duplicate/delete service + review cards to fit.
