@@ -15,10 +15,9 @@ wrangler.jsonc
 .assetsignore
 .gitignore
 
-# Internal tooling and lead data — must never be served (WEB-497).
-# tools/publication-crawler/fixtures/web400-smoke-50.csv was live at
-# https://webuildco.com.au/tools/publication-crawler/fixtures/web400-smoke-50.csv
-# (HTTP 200, 50 named contacts) until this entry was added.
+# Internal tooling and lead data — must never be served (WEB-497, WEB-514).
+# A crawler fixture under tools/ was reachable as a static asset before these
+# entries existed. Tooling directories stay out of the deployed asset set.
 tools/publication-crawler
 tools/suppression
 runs
