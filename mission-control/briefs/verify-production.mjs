@@ -1,5 +1,6 @@
 // Verify the deployed Mission Control brief without exposing board credentials.
 import { readFileSync, readdirSync, existsSync } from "node:fs";
+import { execFileSync } from "node:child_process";
 import { BRIEFS_PATH } from "./build-briefs.mjs";
 import { assertSendable, loadStore, storeFromEntries } from "../../tools/suppression/lib/gate.mjs";
 
@@ -102,6 +103,67 @@ export function assertPreSendGateNotBypassable() {
   console.log("pre-send suppression gate is un-configurable and fails closed");
 }
 
+// WEB-519. This repo is public, so anything committed to it is readable by
+// anyone who clones or browses it. `.assetsignore` does not help — it only
+// decides what Cloudflare serves, never what is in git. Real lead data has
+// landed here twice that way: a crawler fixture of 50 real businesses with
+// named contact addresses (WEB-514), and prospect drafts under the spec-site
+// starter. Both times a human caught it after the fact.
+//
+// One rule covers both shapes: contact details in a committed data file must be
+// synthetic. Email and web hosts must be RFC 2606 reserved (example.com/.net/
+// .org, .example, .test, .invalid, .localhost); a placeholder phone number ends
+// in eight zeros. Only tracked files are checked — an uncommitted working copy
+// of a real lead list is not an exposure.
+const RESERVED_HOST = /(?:^|\.)(?:example\.(?:com|net|org)|example|test|invalid|localhost)$/i;
+const EMAIL_HOST = /[A-Za-z0-9._%+-]+@([A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)+)/g;
+const URL_HOST = /https?:\/\/([A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)+)/gi;
+// AU landline or mobile, however it is spaced: +61 4xx xxx xxx, 04xx xxx xxx, (02) xxxx xxxx.
+const AU_PHONE = /(?:\+?61[\s-]?|\b0)[2-478](?:[\s-]?\d){8}\b/g;
+const PROSPECTS = `${STARTER}/prospects`;
+
+export function findLeadData(file, text) {
+  // One line per distinct value — a draft repeats its own domain a dozen times.
+  const problems = new Set();
+  const say = (kind, value) =>
+    problems.add(`${file}: ${kind} ${value} — lead data committed to a public repo; use a reserved example domain / all-zero phone`);
+
+  for (const [, host] of text.matchAll(EMAIL_HOST)) {
+    if (!RESERVED_HOST.test(host)) say("real email address at", host);
+  }
+  for (const phone of text.match(AU_PHONE) || []) {
+    if (!/0{8}$/.test(phone.replace(/\D/g, ""))) say("real phone number", phone);
+  }
+  // A prospect draft is built from a real business's own site, so its links are
+  // as identifying as its contact fields. CSV columns hold bare domains, which
+  // the email rule already covers.
+  if (file.includes("/prospects/")) {
+    for (const [, host] of text.matchAll(URL_HOST)) {
+      if (!RESERVED_HOST.test(host)) say("link to a real site", host);
+    }
+  }
+  return [...problems];
+}
+
+export function findCommittedLeadData() {
+  // A detector that silently stopped matching would pass everything.
+  if (!findLeadData("canary.csv", "email\ncanary@webuildco.com.au\n").length) {
+    throw new Error("lead-data detector matched nothing on a known-bad sample — the check itself is broken");
+  }
+
+  const tracked = execFileSync("git", ["ls-files", "-z"], { encoding: "utf8" }).split("\0").filter(Boolean);
+  const files = tracked.filter((file) => file.endsWith(".csv") || (file.startsWith(`${PROSPECTS}/`) && file.endsWith(".json")));
+  return files.flatMap((file) => findLeadData(file, readFileSync(file, "utf8")));
+}
+
+export function assertNoCommittedLeadData() {
+  const problems = findCommittedLeadData();
+  if (problems.length) {
+    throw new Error(`real lead data committed to a public repo (WEB-519):\n  - ${problems.join("\n  - ")}`);
+  }
+  console.log("no real lead data in committed fixtures or prospect drafts");
+}
+
 const ORIGIN = (process.env.MC_BASE_URL || "https://webuildco.com.au").replace(/\/+$/, "");
 const type = process.argv[2];
 
@@ -109,6 +171,7 @@ const type = process.argv[2];
 if (type === "--testimonials-only") {
   assertPreSendGateNotBypassable();
   assertNoUnsourcedTestimonials();
+  assertNoCommittedLeadData();
   process.exit(0);
 }
 
@@ -116,6 +179,7 @@ if (!type) throw new Error("usage: npm run briefs:verify -- <morning|eod|weekly|
 
 assertPreSendGateNotBypassable();
 assertNoUnsourcedTestimonials();
+assertNoCommittedLeadData();
 
 const readJson = (file) => JSON.parse(readFileSync(file, "utf8"));
 const latest = (briefs) => briefs
