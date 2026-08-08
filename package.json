@@ -6,7 +6,8 @@
   "scripts": {
     "build:css": "npx @tailwindcss/cli -i src/app.css -o app.css --minify",
     "watch:css": "npx @tailwindcss/cli -i src/app.css -o app.css --watch",
-    "build": "npm run build:css",
+    "guard:branch": "[ -z \"$WORKERS_CI\" ] || [ \"$WORKERS_CI_BRANCH\" = main ] || { echo \"WEB-515 guard: branch '$WORKERS_CI_BRANCH' is not main - refusing to build, so no deploy runs.\" >&2; exit 1; }",
+    "build": "npm run guard:branch && npm run build:css",
     "test": "node worker.test.mjs && node mission-control/intake/log-expense.test.mjs && node mission-control/briefs/build-briefs.test.mjs && npm run starter:check-reviews && npm run publication-crawler:test",
     "starter:check-reviews": "node client-sites-starter/check-reviews.mjs",
     "publication-crawler:test": "node --test tools/publication-crawler/test/*.test.mjs",
