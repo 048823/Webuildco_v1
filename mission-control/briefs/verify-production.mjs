@@ -1,6 +1,7 @@
 // Verify the deployed Mission Control brief without exposing board credentials.
 import { readFileSync, readdirSync, existsSync } from "node:fs";
 import { BRIEFS_PATH } from "./build-briefs.mjs";
+import { assertSendable, loadStore, storeFromEntries } from "../../tools/suppression/lib/gate.mjs";
 
 // WEB-489. A spec site carries a real named business, so an invented customer
 // quote on it is misleading conduct (ACL ss 18, 29(1)(e)) and the exposure is
@@ -53,17 +54,67 @@ export function assertNoUnsourcedTestimonials(root = STARTER) {
   console.log("no unsourced testimonial copy in the spec-site starter");
 }
 
+// WEB-497. Contacting someone who opted out is a Spam Act s 16 contravention,
+// so the pre-send gate is not allowed to have an off switch. Two rules:
+//   1. The gate reads no environment variable — no SUPPRESSION_SKIP=1 exists.
+//   2. It fails closed. Missing store, or a suppressed address in any
+//      equivalent form, must raise. "Nothing suppressed" is never the default.
+const GATE_SOURCES = ["tools/suppression/lib/gate.mjs", "tools/suppression/lib/address.mjs"];
+
+export function findPreSendGateBypasses() {
+  const problems = [];
+
+  for (const file of GATE_SOURCES) {
+    if (!existsSync(file)) {
+      problems.push(`${file}: missing — the pre-send gate is gone, every send is unsuppressed`);
+      continue;
+    }
+    // A comment may name process.env; code may not read it.
+    const code = readFileSync(file, "utf8").replace(/\/\/.*$/gm, "").replace(/\/\*[\s\S]*?\*\//g, "");
+    if (/process\s*\.\s*env/.test(code)) {
+      problems.push(`${file}: reads process.env — the gate must not be configurable, an env var is a bypass`);
+    }
+  }
+  if (problems.length) return problems;
+
+  const attempt = (label, run) => {
+    try {
+      run();
+      problems.push(label);
+    } catch {
+      /* raising is the pass condition */
+    }
+  };
+  attempt("loadStore() returned instead of raising on a missing store — an unreachable store must stop the send", () => loadStore("tools/suppression/.no-such-store.json"));
+
+  const store = storeFromEntries(["Jane.Doe@Example.com.au", "blocked-domain.com"], new Date().toISOString());
+  for (const candidate of ["jane.doe@example.com.au", "JANE.DOE@EXAMPLE.COM.AU", "jane.doe+b2@example.com.au", "anyone@blocked-domain.com"]) {
+    attempt(`${candidate} passed the pre-send gate while suppressed`, () => assertSendable([candidate], store));
+  }
+  return problems;
+}
+
+export function assertPreSendGateNotBypassable() {
+  const problems = findPreSendGateBypasses();
+  if (problems.length) {
+    throw new Error(`pre-send suppression gate is bypassable (WEB-497):\n  - ${problems.join("\n  - ")}`);
+  }
+  console.log("pre-send suppression gate is un-configurable and fails closed");
+}
+
 const ORIGIN = (process.env.MC_BASE_URL || "https://webuildco.com.au").replace(/\/+$/, "");
 const type = process.argv[2];
 
 // Runs standalone so `npm test` gates the repo without needing production or a brief.
 if (type === "--testimonials-only") {
+  assertPreSendGateNotBypassable();
   assertNoUnsourcedTestimonials();
   process.exit(0);
 }
 
 if (!type) throw new Error("usage: npm run briefs:verify -- <morning|eod|weekly|monthly|quarterly|yearly> | --testimonials-only");
 
+assertPreSendGateNotBypassable();
 assertNoUnsourcedTestimonials();
 
 const readJson = (file) => JSON.parse(readFileSync(file, "utf8"));
