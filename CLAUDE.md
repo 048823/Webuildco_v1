@@ -7,8 +7,7 @@ Static site hosted on GitHub (repo: Webuildco_v1) -> auto-deployed to Cloudflare
 
 ## Deploy pipeline — read this before you push anything
 
-This is **not** Pages, and it is **not** main-only. Correcting a wrong line that stood here
-until 07-Aug 2026 and misled every agent that read it (WEB-507).
+This is **not** Pages. Deploys run through Workers Builds, the Cloudflare Git integration.
 
 - `webuildco.com.au` and `www.webuildco.com.au` are **Custom Domains bound to the Worker
   `webuild`, environment `production`**. A Custom Domain serves whatever version currently
@@ -16,18 +15,32 @@ until 07-Aug 2026 and misled every agent that read it (WEB-507).
 - `wrangler.jsonc` declares `"name": "webuild"` and has no `routes`, no `env`, no
   `workers_dev`. **One Worker name means one deploy target.** There is no staging environment
   and no separate preview target for a build to land in.
-- **A build on ANY branch deploys to production. Last build wins.** Not just `main`. Not just
-  merged PRs. A push is enough — an open PR is not required, and a *draft* PR is not exempt.
 
-Evidence, 2026-08-07: 8 of the last 10 production deployments came from a branch other than
-`main`. Draft PR #46 (`agent/cto/8503987e`) took the apex at 23:19 UTC on 06-Aug;
-`agent/cdo/proof-grid` took it at 02:17 UTC on 07-Aug while still unmerged. Worker versions
-152-161 map 1:1 to all 10 deployments, each deployment 0.3-0.5s after its version upload.
+### Why feature branches were taking the apex (WEB-507, corrected WEB-515)
 
-**Consequence:** pushing to a feature branch is a production deploy. Treat every push to
-every branch as `push = live`, and expect the site to silently revert to whatever built most
-recently. Containment is tracked on WEB-507; until it lands, this section is current
-behaviour, not history.
+An earlier version of this section said "a build on ANY branch deploys to production" and
+blamed Cloudflare. That was wrong, and it is deleted. Cloudflare's default for a
+non-production branch is `npx wrangler versions upload` — it uploads a version and shifts
+**no** traffic.
+
+The real cause is one overridden field on our account: **Settings > Build > Non-production
+branch deploy command**, changed from `versions upload` to a deploy. That single field is why
+8 of the last 10 production deployments came from a branch other than `main` (draft PR #46
+`agent/cto/8503987e` took the apex at 23:19 UTC 06-Aug; `agent/cdo/proof-grid` at 02:17 UTC
+07-Aug while still unmerged). Correcting the field is board-gated and owned by Johan.
+
+### The repo-side guard
+
+`wrangler.jsonc` sets `build.command` to `npm run guard:branch`. Wrangler runs it before every
+deploy and every `versions upload`, so it fires no matter how the dashboard build command is
+configured. Inside Workers Builds (`$WORKERS_CI` set) any branch other than `main` exits 1 and
+the build stops before the deploy step. Outside Workers Builds it is a no-op, so local builds
+and `wrangler dev` are unaffected. Covered by `guard-branch.test.mjs`.
+
+**The guard only protects branches that contain it.** A branch cut before it landed, or one
+that never rebases onto `main`, still deploys to the apex on push. Rebase onto `main` before
+pushing, and until the dashboard field is corrected treat any pre-guard branch as `push =
+live`.
 
 ## Your job
 When I ask for edits:
@@ -59,7 +72,8 @@ does not close an issue.
 
 ## Rules
 - ALWAYS show me the diff/summary and ask for confirmation BEFORE pushing to main, since push = live production.
-- The same applies to feature branches: a branch push deploys to production too. Confirm first.
+- Feature branches: confirm first too, unless the branch is rebased onto a `main` that carries
+  the `guard:branch` check. Without the guard, a branch push is a production deploy.
 - Use clear conventional commit messages (e.g. "fix: correct contact email", "feat: add services section").
 - Never force-push. Never rewrite history on main.
 - Flag structurally risky changes (deleting files, big rewrites) before committing.
