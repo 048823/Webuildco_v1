@@ -2,6 +2,12 @@
   "name": "webuild",
   "main": "worker.js",
   "compatibility_date": "2026-07-10",
+  // WEB-515: wrangler runs this before every deploy / versions upload, so the branch
+  // guard fires regardless of what the Workers Builds "build command" field is set to.
+  // No-op outside Workers Builds ($WORKERS_CI unset), so local dev is unaffected.
+  "build": {
+    "command": "npm run guard:branch"
+  },
   "assets": {
     "directory": ".",
     "binding": "ASSETS",
