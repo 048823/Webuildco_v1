@@ -7,7 +7,7 @@
     "build:css": "npx @tailwindcss/cli -i src/app.css -o app.css --minify",
     "watch:css": "npx @tailwindcss/cli -i src/app.css -o app.css --watch",
     "build": "npm run build:css",
-    "test": "node worker.test.mjs && node mission-control/intake/log-expense.test.mjs && node mission-control/briefs/build-briefs.test.mjs && npm run testimonials:verify && npm run publication-crawler:test && npm run suppression:test",
+    "test": "node worker.test.mjs && node --test proof-numbers.test.mjs && node mission-control/intake/log-expense.test.mjs && node mission-control/briefs/build-briefs.test.mjs && npm run testimonials:verify && npm run publication-crawler:test && npm run suppression:test",
     "suppression:test": "node --test tools/suppression/test/*.test.mjs",
     "suppression:check": "node tools/suppression/check.mjs",
     "suppression:reconcile": "python3 tools/suppression/optout-scan.py",

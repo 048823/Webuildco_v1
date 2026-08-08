@@ -7,7 +7,7 @@ import { normalizeDomain } from './lib/domain.mjs';
 import { decodeHtmlEntities, htmlToVisibleText } from './lib/html.mjs';
 
 const USER_AGENT = 'WeBuildCo-RegisterHarvester/1.0 (+https://webuildco.com.au)';
-const REGISTER_COLUMNS = ['icp', 'source', 'domain', 'source_name', 'source_url', 'record_id', 'fetched_at', 'notes'];
+const REGISTER_COLUMNS = ['icp', 'input_source_class', 'source', 'domain', 'source_name', 'source_url', 'record_id', 'fetched_at', 'notes'];
 
 async function main() {
   const options = parseArgs(process.argv.slice(2));
@@ -43,6 +43,7 @@ async function runHarvester(id, outDir, harvester) {
   } catch (error) {
     const fallback = {
       icp: sourceIcp(id),
+      input_source_class: 'public_register',
       source: id,
       domain: '',
       source_name: '',
@@ -72,6 +73,7 @@ async function harvestCricos() {
       if (!domain) return null;
       return {
         icp: 'rto_education',
+        input_source_class: 'public_register',
         source: 'CRICOS Institutions.csv',
         domain,
         source_name: record['Trading Name'] || record['Institution Name'] || '',
@@ -105,6 +107,7 @@ async function harvestFta() {
     if (!domain) continue;
     rows.push({
       icp: 'freight_customs',
+      input_source_class: 'third_party_directory',
       source: 'Freight & Trade Alliance member directory',
       domain,
       source_name: htmlToVisibleText(name),
@@ -132,6 +135,7 @@ async function harvestVicCav() {
 
   rows.push({
     icp: 'property_management',
+    input_source_class: 'public_register',
     source: 'Consumer Affairs Victoria estate agents public register',
     domain: '',
     source_name: '',
@@ -156,6 +160,7 @@ async function harvestNdisProviderFinder() {
   const status = response.status === 401 || response.status === 403 || response.status === 429 ? 'bot_blocked' : 'unavailable';
   const rows = [{
     icp: 'ndis_allied_health',
+    input_source_class: 'public_register',
     source: 'NDIA Provider Finder',
     domain: '',
     source_name: '',
@@ -223,7 +228,7 @@ function printHelp() {
 Usage:
   node tools/publication-crawler/harvest-registers.mjs --out-dir runs/registers
 
-Outputs one CSV per ICP with: icp, source, domain, source_name, source_url, record_id, fetched_at, notes.
+Outputs one CSV per ICP with: icp, input_source_class, source, domain, source_name, source_url, record_id, fetched_at, notes.
 The tool refuses Customs Brokers Hub and records robots/bot blocks instead of bypassing them.
 `);
 }
