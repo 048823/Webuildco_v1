@@ -69,6 +69,7 @@ const fmtDate = (s) => {
 
 let DATA = {};
 let CREATIVE = {}; // data/creative.json — owned by ECD, drives the Creative section
+let MARKETING = {}; // data/marketing.json — owned by CMO, drives the Marketing group
 let BRIEFS = []; // data/briefs.json — generated from Board Reports / Daily Logs
 let DELIV = {}; // data/deliverables.json — client delivery: clients, projects, tasks, time, deployments, portal
 const hasLiveBlogs = () => Boolean(DATA.multica?.live && DATA.multica?.blogs?.live);
@@ -77,28 +78,35 @@ const hasLiveLeads = () => Boolean(DATA.multica?.live && DATA.multica?.leads?.li
 const leadsData = () => hasLiveLeads() ? DATA.multica.leads : (DATA.leads || { campaigns: [] });
 
 // ---- Section definitions ----
+// `grp` drives the sidebar headings; sections render in this order within a group.
 const SECTIONS = [
-  { id: "overview", group: "Overview", title: "Overview", ic: "◫", desc: "Company at a glance — to-dos, briefs, live snapshot", flag: "manual", render: renderOverview },
-  { id: "briefs", group: "Overview", title: "Briefs", ic: "▥", desc: "Morning, EOD & cadence reports", flag: "manual", render: renderBriefs },
-  { id: "projects", group: "Overview", title: "Projects", ic: "▤", desc: "Client pipeline + internal projects", flag: "manual", render: renderProjects },
-  { id: "deliverables", group: "Overview", title: "Deliverables", ic: "▣", desc: "Client work & progress — projects, tasks, time, deployments, portal", flag: "manual", render: renderDeliverables },
-  { id: "crm", group: "Sales", title: "CRM", ic: "❏", desc: "Contacts & companies", flag: "manual", render: renderCrm },
-  { id: "pipeline", group: "Sales", title: "Pipeline", ic: "▩", desc: "Every deal by stage — open and closed", flag: "manual", render: renderPipeline },
-  { id: "deals", group: "Sales", title: "Deals", ic: "◇", desc: "Deal list — value, stage & probability", flag: "manual", render: renderDeals },
-  { id: "proposals", group: "Sales", title: "Proposals", ic: "▭", desc: "Quotes out — draft, sent & accepted", flag: "manual", render: renderProposals },
-  { id: "activities", group: "Sales", title: "Activities", ic: "➤", desc: "Calls, emails & meetings against each deal", flag: "manual", render: renderActivities },
-  { id: "prospects", group: "Outbound", title: "Prospects", ic: "◉", desc: "Target accounts before they become leads", flag: "manual", render: renderProspects },
-  { id: "leads", group: "Outbound", title: "Leads", ic: "◎", desc: "Sourced contacts and where each one sits", flag: "needs", render: renderLeads },
-  { id: "campaigns", group: "Outbound", title: "Email Campaigns", ic: "✉", desc: "Instantly & A-leads sequences", flag: "needs", render: renderCampaigns },
-  { id: "templates", group: "Outbound", title: "Templates", ic: "▤", desc: "Sequence copy — one card per step", flag: "manual", render: renderTemplates },
-  { id: "blogs", group: "Content", title: "Upcoming Blogs", ic: "▦", desc: "Blog prep & publish schedule", flag: "manual", render: renderBlogs },
-  { id: "creative", group: "Content", title: "Creative", ic: "✎", desc: "Mood boards, ideas pipeline & production schedule", flag: "manual", render: renderCreative },
-  { id: "finance", group: "Company", title: "Finance", ic: "$", desc: "Subscriptions birds-eye view", flag: "manual", render: renderFinance },
-  { id: "research", group: "Company", title: "Research", ic: "◈", desc: "Latest trending news", flag: "needs", render: renderResearch },
-  { id: "apis", group: "System", title: "APIs & MCPs", ic: "⌁", desc: "Every API and MCP available to the agents", flag: "live", render: renderApis },
-  { id: "skills", group: "System", title: "Skills", ic: "✦", desc: "All installed skills by area", flag: "live", render: renderSkills },
-  { id: "planner", group: "System", title: "Workflow Planner", ic: "⟐", desc: "Compose a workflow from skills + APIs", flag: "live", render: renderPlanner },
-  { id: "multica", group: "System", title: "Multica", ic: "◆", desc: "Workspace activity — tasks, projects & agents", flag: "needs", render: renderMultica },
+  // WEB-680 board default #3: this is PR #68's taxonomy (Company / Marketing / System).
+  // PR #66's Sales and Outbound groups are folded into it rather than kept as top-level groups.
+  { id: "overview", grp: "Company", title: "Overview", ic: "◫", desc: "Company at a glance — to-dos, briefs, live snapshot", flag: "manual", render: renderOverview },
+  { id: "briefs", grp: "Company", title: "Briefs", ic: "▥", desc: "Morning, EOD & cadence reports", flag: "manual", render: renderBriefs },
+  { id: "projects", grp: "Company", title: "Projects", ic: "▤", desc: "Client pipeline + internal projects", flag: "manual", render: renderProjects },
+  { id: "deliverables", grp: "Company", title: "Deliverables", ic: "▣", desc: "Client work & progress — projects, tasks, time, deployments, portal", flag: "manual", render: renderDeliverables },
+  { id: "crm", grp: "Company", title: "CRM", ic: "❏", desc: "Contacts & companies", flag: "manual", render: renderCrm },
+  { id: "pipeline", grp: "Company", title: "Pipeline", ic: "▩", desc: "Every deal by stage — open and closed", flag: "manual", render: renderPipeline },
+  { id: "deals", grp: "Company", title: "Deals", ic: "◇", desc: "Deal list — value, stage & probability", flag: "manual", render: renderDeals },
+  { id: "proposals", grp: "Company", title: "Proposals", ic: "▭", desc: "Quotes out — draft, sent & accepted", flag: "manual", render: renderProposals },
+  { id: "activities", grp: "Company", title: "Activities", ic: "➤", desc: "Calls, emails & meetings against each deal", flag: "manual", render: renderActivities },
+  { id: "finance", grp: "Company", title: "Finance", ic: "$", desc: "Subscriptions birds-eye view", flag: "manual", render: renderFinance },
+  { id: "research", grp: "Company", title: "Research", ic: "◈", desc: "Latest trending news", flag: "needs", render: renderResearch },
+  { id: "posts", grp: "Marketing", title: "Content Calendar", ic: "▣", desc: "Social posts by production stage", flag: "manual", render: renderPosts },
+  { id: "blogs", grp: "Marketing", title: "Upcoming Blogs", ic: "▦", desc: "Blog prep & publish schedule", flag: "manual", render: renderBlogs },
+  { id: "creative", grp: "Marketing", title: "Creative", ic: "✎", desc: "Mood boards, ideas pipeline & production schedule", flag: "manual", render: renderCreative },
+  { id: "campaigns", grp: "Marketing", title: "Campaigns", ic: "◐", desc: "Organic & offer campaigns — budget, window, target", flag: "manual", render: renderCampaigns },
+  { id: "ads", grp: "Marketing", title: "Ad Campaigns", ic: "◉", desc: "Paid performance by channel — spend, CTR, CPA, ROAS", flag: "manual", render: renderAds },
+  { id: "prospects", grp: "Marketing", title: "Prospects", ic: "⊙", desc: "Target accounts before they become leads", flag: "manual", render: renderProspects },
+  { id: "leads", grp: "Marketing", title: "Leads", ic: "◎", desc: "Sourced contacts and where each one sits", flag: "needs", render: renderLeads },
+  { id: "email-campaigns", grp: "Marketing", title: "Email Campaigns", ic: "✉", desc: "Instantly & A-leads sequences", flag: "needs", render: renderEmailCampaigns },
+  { id: "templates", grp: "Marketing", title: "Templates", ic: "▤", desc: "Sequence copy — one card per step", flag: "manual", render: renderTemplates },
+  { id: "analytics", grp: "Marketing", title: "Analytics", ic: "◭", desc: "Weekly snapshots across channels", flag: "manual", render: renderAnalytics },
+  { id: "apis", grp: "System", title: "APIs & MCPs", ic: "⌁", desc: "Every API and MCP available to the agents", flag: "live", render: renderApis },
+  { id: "skills", grp: "System", title: "Skills", ic: "✦", desc: "All installed skills by area", flag: "live", render: renderSkills },
+  { id: "planner", grp: "System", title: "Workflow Planner", ic: "⟐", desc: "Compose a workflow from skills + APIs", flag: "live", render: renderPlanner },
+  { id: "multica", grp: "System", title: "Multica", ic: "◆", desc: "Workspace activity — tasks, projects & agents", flag: "needs", render: renderMultica },
 ];
 
 const FLAG_LABEL = { live: "Live", manual: "Manual data", needs: "Needs credential" };
@@ -138,6 +146,7 @@ function renderOverview() {
   const outboundCount = hasLiveLeads() ? (leadsData().summary?.projects || 0) : (d.outbound?.leads || []).length;
   const openTodos = (d.todos || []).filter((t) => !t.done).length;
   const open = openDeals();
+  const postsQueued = (MARKETING.posts?.cards || []).filter((c) => c.col !== "Published").length;
   return `
   <div class="grid g4">
     ${statCard("Active projects", projCount, "clients + internal")}
@@ -160,6 +169,7 @@ function renderOverview() {
       ${snap("Outbound", outboundCount + (hasLiveLeads() ? " projects" : " leads"), "leads")}
       ${snap("Deliverables", `${dvClients().filter((c) => c.kind === "active").length} active · ${dvClients().filter((c) => c.kind === "potential").length} in pipeline`, "deliverables")}
       ${snap("Blogs", blogCount + " cards", "blogs")}
+      ${snap("Content calendar", postsQueued + " posts queued", "posts")}
       ${snap("Finance", money(monthly) + "/mo", "finance")}
       ${snap("APIs / MCPs", APIS.filter((a) => a.status === "connected").length + " connected", "apis")}
       ${snap("Skills", Object.values(SKILLS).flat().length + " installed", "skills")}
@@ -504,7 +514,10 @@ function renderProspects() {
     <td><span class="badge dark">${esc(p.source || "—")}</span></td></tr>`).join("") || '<tr><td colspan="6" class="muted">No prospects.</td></tr>'}</tbody></table></div>`;
 }
 
-function renderCampaigns() {
+// WEB-680: PR #66 and PR #68 both shipped a `renderCampaigns` / `campaigns` section.
+// Marketing keeps the plain name (board default #3 — #68's taxonomy wins); the outbound
+// sequences are Email Campaigns, id `email-campaigns`.
+function renderEmailCampaigns() {
   const rows = outboundData().campaigns || [];
   const pct = (n, d) => d ? Math.round(n / d * 100) + "%" : "0%";
   if (!rows.length) return `<div class="card"><p class="muted">No campaigns.</p></div>`;
@@ -757,6 +770,113 @@ function renderBlogs() {
   }).join("")}</div>`;
 }
 
+// ---- Marketing (content calendar · campaigns · ad campaigns · analytics) ----
+// All four read data/marketing.json; the paid maths lives in marketing-metrics.js.
+const mkNote = (t) => t ? `<div class="section-note">${esc(t)}</div>` : "";
+const empty = (t) => `<div class="card"><p class="muted">${esc(t)}</p></div>`;
+const curr = () => MARKETING.currency || "AUD";
+const pct = (n) => (Math.round(n * 10) / 10) + "%";
+const roas = (n) => (Math.round(n * 100) / 100) + "×";
+
+function renderPosts() {
+  const p = MARKETING.posts || {};
+  const cols = p.columns || [];
+  const cards = p.cards || [];
+  if (!cols.length) return empty("No content calendar yet — add posts to data/marketing.json.");
+  return mkNote(MARKETING._note) + `<div class="kan${cols.length > 4 ? " kan5" : ""}">${cols.map((col) => {
+    const items = cards.filter((c) => c.col === col);
+    return `<div class="col"><h4>${esc(col)}<span>${items.length}</span></h4>${items.map((c) => `
+      <div class="item">
+        <div class="t">${esc(c.title || "")}</div>
+        <div class="m">${[c.channel, c.date, c.owner].filter(Boolean).map(esc).join(" · ")}</div>
+      </div>`).join("") || '<p class="muted tiny">—</p>'}</div>`;
+  }).join("")}</div>`;
+}
+
+function renderCampaigns() {
+  const rows = MARKETING.campaigns || [];
+  if (!rows.length) return empty("No campaigns yet — add them to data/marketing.json.");
+  const live = rows.filter((c) => String(c.status || "").toLowerCase() === "active");
+  const budget = rows.reduce((s, c) => s + (+c.budget || 0), 0);
+  return mkNote(MARKETING._note) + `<div class="grid g3">
+    ${statCard("Active", live.length, "running now")}
+    ${statCard("Campaigns", rows.length, "all time")}
+    ${statCard("Budget", money(budget, curr()), "committed across all")}
+  </div>
+  <div class="grid g2" style="margin-top:16px">${rows.map((c) => `
+    <div class="card">
+      <h3>${esc(c.name || "Untitled")} <span class="badge ${statusCls(c.status)}">${esc(c.status || "—")}</span></h3>
+      <p class="muted tiny" style="margin-top:-8px">${esc(c.channels || "")}${c.goal ? " · " + esc(c.goal) : ""}</p>
+      <div class="kv"><span class="k">Budget</span><span class="v">${money(+c.budget || 0, curr())}</span></div>
+      <div class="kv"><span class="k">Window</span><span class="v">${esc(c.start || "—")} → ${esc(c.end || "—")}</span></div>
+      <div class="kv"><span class="k">Target</span><span class="v">${esc(c.target || "—")}</span></div>
+    </div>`).join("")}</div>`;
+}
+
+function renderAds() {
+  const cfg = MARKETING.ads || {};
+  const channels = cfg.channels || [];
+  if (!channels.length) return empty("No ad channels configured — add them to data/marketing.json.");
+  const blended = MarketingMetrics.blendedRollup(channels);
+  const tabs = [...blended.channels.map((c) => [c.key, c.label]), ["analytics", "Analytics"]];
+  setTimeout(() => wireTabs("adTabs", "ad-"), 0);
+  return `<div class="tabs" id="adTabs">${tabs.map(([k, l], i) => `
+    <button class="tab ${i ? "" : "active"}" data-tab="${esc(k)}">${esc(l)}</button>`).join("")}</div>
+  ${mkNote(cfg._note || MARKETING._note)}
+  ${blended.channels.map((ch, i) => `<div class="tabpage ${i ? "" : "active"}" id="ad-${esc(ch.key)}">${renderAdChannel(ch)}</div>`).join("")}
+  <div class="tabpage" id="ad-analytics">${renderAdBlend(blended)}</div>`;
+}
+
+function renderAdChannel(ch) {
+  const c = curr();
+  return `<div class="grid g4">
+    ${statCard("Spend", money(ch.spend, c), ch.count + " campaign" + (ch.count === 1 ? "" : "s"))}
+    ${statCard("Conversions", ch.conversions, ch.conversions ? money(ch.cpa, c) + " CPA" : "no conversions yet")}
+    ${statCard("Revenue", money(ch.revenue, c), "attributed")}
+    ${statCard("ROAS", roas(ch.roas), "return on ad spend")}
+  </div>
+  <div class="card" style="margin-top:16px"><h3>${esc(ch.label)} campaigns <span class="badge">${ch.active} active</span></h3>
+    <table><thead><tr><th>Campaign</th><th>Status</th><th>Spend</th><th>Conv</th><th>CTR</th><th>CPA</th><th>ROAS</th></tr></thead><tbody>${ch.campaigns.map((r) => `
+      <tr><td><b>${esc(r.name || "Untitled")}</b>${r.objective ? `<div class="tiny muted">${esc(r.objective)}</div>` : ""}</td>
+      <td><span class="badge ${statusCls(r.status)}">${esc(r.status || "—")}</span></td>
+      <td>${money(r.spend, c)}</td><td>${r.conversions}</td><td>${pct(r.ctr)}</td>
+      <td>${r.conversions ? money(r.cpa, c) : "—"}</td><td>${roas(r.roas)}</td></tr>`).join("")}</tbody></table></div>`;
+}
+
+function renderAdBlend(b) {
+  const c = curr();
+  const bar = (label, value, max, text) => `<div class="kv"><span class="k">${esc(label)}</span><span class="v" style="flex:1;text-align:left">
+    <span class="bar" style="display:block"><span style="width:${max > 0 ? Math.round((value / max) * 100) : 0}%"></span></span></span><span class="v">${esc(text)}</span></div>`;
+  const maxSpend = Math.max(...b.channels.map((ch) => ch.spend), 0);
+  const maxRoas = Math.max(...b.channels.map((ch) => ch.roas), 0);
+  return `<div class="grid g4">
+    ${statCard("Total spend", money(b.spend, c), b.channels.length + " channels")}
+    ${statCard("Total revenue", money(b.revenue, c), "attributed")}
+    ${statCard("Conversions", b.conversions, b.conversions ? money(b.cpa, c) + " CPA" : "no conversions yet")}
+    ${statCard("Blended ROAS", roas(b.roas), "across channels")}
+  </div>
+  <div class="grid g2" style="margin-top:16px">
+    <div class="card"><h3>Spend by channel</h3>${b.channels.map((ch) => bar(ch.label, ch.spend, maxSpend, money(ch.spend, c))).join("")}</div>
+    <div class="card"><h3>ROAS by channel</h3>${b.channels.map((ch) => bar(ch.label, ch.roas, maxRoas, roas(ch.roas))).join("")}</div>
+  </div>`;
+}
+
+function renderAnalytics() {
+  const a = MARKETING.analytics || {};
+  const rows = a.snapshots || [];
+  if (!rows.length) return empty("No snapshots yet — add them to data/marketing.json.");
+  const latest = MarketingMetrics.latestSnapshots(rows);
+  const sorted = [...rows].sort((x, y) => String(y.date || "").localeCompare(String(x.date || "")));
+  const delta = (d) => d == null ? "" : `<span class="badge ${d < 0 ? "bad" : "ok"}">${d > 0 ? "+" : ""}${d}%</span>`;
+  return mkNote(a._note || MARKETING._note) + `<div class="grid g4">${latest.map((m) => `
+    <div class="card"><div class="muted tiny">${esc(m.source)}</div>
+      <div class="stat small" style="margin-top:6px">${esc(String(m.value))} ${delta(m.delta)}</div>
+      <div class="muted tiny" style="margin-top:4px">${esc(m.metric)} · ${esc(m.date || "")}</div></div>`).join("")}</div>
+  <div class="card" style="margin-top:16px"><h3>All snapshots <span class="badge">${rows.length}</span></h3>
+    <table><thead><tr><th>Date</th><th>Source</th><th>Metric</th><th>Value</th></tr></thead><tbody>${sorted.map((r) => `
+      <tr><td class="muted">${esc(r.date || "—")}</td><td>${esc(r.source || "")}</td><td class="muted">${esc(r.metric || "")}</td><td><b>${esc(String(r.value))}</b></td></tr>`).join("")}</tbody></table></div>`;
+}
+
 // ---- Creative Studio (mood boards + ideas pipeline + schedule) ----
 const CR_STATUS = { draft: "", idea: "", review: "warn", "in review": "warn", "in production": "info", approved: "ok", scheduled: "lime" };
 const statusPill = (s) => `<span class="badge ${CR_STATUS[String(s || "").toLowerCase()] || ""}">${esc(s || "—")}</span>`;
@@ -813,14 +933,19 @@ function renderSchedule(rows) {
     <tr><td class="muted">${esc(r.date || "—")}</td><td>${esc(r.platform || "")}</td><td><b>${esc(r.asset || "")}</b></td><td>${statusPill(r.status)}</td></tr>`).join("")}</tbody></table></div>`;
 }
 
-function wireCreative() {
-  const tabs = $("#crTabs"); if (!tabs) return;
+// Shared by Creative and Ad Campaigns — pages are id'd `<prefix><tab>`.
+function wireTabs(tabsId, prefix) {
+  const tabs = document.getElementById(tabsId); if (!tabs) return;
   tabs.onclick = (e) => {
     const b = e.target.closest(".tab"); if (!b) return;
     tabs.querySelectorAll(".tab").forEach((t) => t.classList.toggle("active", t === b));
-    document.querySelectorAll(".tabpage").forEach((p) => p.classList.toggle("active", p.id === "cr-" + b.dataset.tab));
+    document.querySelectorAll(`.tabpage[id^="${prefix}"]`).forEach((p) => p.classList.toggle("active", p.id === prefix + b.dataset.tab));
   };
-  const lb = $("#crLightbox");
+}
+
+function wireCreative() {
+  wireTabs("crTabs", "cr-");
+  const lb = $("#crLightbox"); if (!lb) return;
   document.querySelectorAll(".tile[data-full]").forEach((t) => {
     t.onclick = () => { lb.querySelector("img").src = t.dataset.full; lb.querySelector("figcaption").textContent = t.dataset.cap; lb.classList.add("open"); };
   });
@@ -943,12 +1068,9 @@ const note = (t) => `<div class="section-note"><b>Placeholder:</b> ${esc(t)}</di
 
 // ---- Router / shell ----
 function buildNav() {
-  let group = "";
-  $("#nav").innerHTML = SECTIONS.map((s) => {
-    const head = s.group && s.group !== group ? `<div class="grp">${esc(s.group)}</div>` : "";
-    group = s.group || group;
-    return `${head}<a data-id="${s.id}"><span class="ic">${s.ic}</span>${s.title}</a>`;
-  }).join("");
+  const groups = [...new Set(SECTIONS.map((s) => s.grp || "Company"))];
+  $("#nav").innerHTML = groups.map((g) => `<div class="grp">${esc(g)}</div>` +
+    SECTIONS.filter((s) => (s.grp || "Company") === g).map((s) => `<a data-id="${s.id}"><span class="ic">${s.ic}</span>${s.title}</a>`).join("")).join("");
   $("#pages").innerHTML = SECTIONS.map((s) => `<section class="page" id="pg-${s.id}"></section>`).join("");
 }
 function go(raw = "overview") {
@@ -988,6 +1110,8 @@ async function boot() {
   catch { DATA = {}; }
   try { CREATIVE = await (await fetch("/mission-control/data/creative.json", { cache: "no-store" })).json(); }
   catch { CREATIVE = {}; }
+  try { MARKETING = await (await fetch("/mission-control/data/marketing.json", { cache: "no-store" })).json(); }
+  catch { MARKETING = {}; }
   try { BRIEFS = await (await fetch("/mission-control/data/briefs.json", { cache: "no-store" })).json(); if (!Array.isArray(BRIEFS)) BRIEFS = []; }
   catch { BRIEFS = []; }
   try { DELIV = await (await fetch("/mission-control/data/deliverables.json", { cache: "no-store" })).json(); }

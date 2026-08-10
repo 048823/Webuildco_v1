@@ -1,0 +1,106 @@
+{
+  "_note": "SAMPLE / MANUAL DATA — owned by the CMO. Edit this file to update the Marketing sections (Content Calendar, Campaigns, Ad Campaigns, Analytics). Numbers below are placeholders that show the shape, not reported performance. WeBuild's own spend only: client-managed ad accounts stay segregated and never surface on this board.",
+  "updated": "2026-08-10",
+  "currency": "AUD",
+  "posts": {
+    "columns": ["Idea", "Drafting", "Scheduled", "Published"],
+    "cards": [
+      { "title": "Hire agents, not headcount — the 90-second version", "col": "Scheduled", "channel": "LinkedIn", "date": "2026-08-12", "owner": "CMO" },
+      { "title": "What a lead-qualification agent costs to run for a year", "col": "Scheduled", "channel": "Newsletter", "date": "2026-08-14", "owner": "CMO" },
+      { "title": "Voice agent demo — inbound call to booked job", "col": "Drafting", "channel": "YouTube", "date": "2026-08-19", "owner": "ECD" },
+      { "title": "Founding Five: what the offer actually includes", "col": "Drafting", "channel": "LinkedIn", "date": "2026-08-21", "owner": "CMO" },
+      { "title": "Three jobs an Aussie SMB should never hand an agent", "col": "Idea", "channel": "X", "date": "", "owner": "CMO" },
+      { "title": "Behind the build: the CTO agent's week", "col": "Idea", "channel": "LinkedIn", "date": "", "owner": "CTO" },
+      { "title": "Agent readiness checklist (carousel)", "col": "Idea", "channel": "LinkedIn", "date": "", "owner": "ECD" },
+      { "title": "Why we ship monitoring before we ship the agent", "col": "Published", "channel": "LinkedIn", "date": "2026-08-05", "owner": "CMO" },
+      { "title": "July recap — what shipped", "col": "Published", "channel": "Newsletter", "date": "2026-08-01", "owner": "CMO" }
+    ]
+  },
+  "campaigns": [
+    {
+      "name": "Founding Five",
+      "channels": "LinkedIn + Email",
+      "goal": "Sign the first 5 clients at foundation pricing",
+      "status": "active",
+      "budget": 1500,
+      "start": "2026-08-01",
+      "end": "2026-09-30",
+      "target": "2 signed clients"
+    },
+    {
+      "name": "Agent Audit lead magnet",
+      "channels": "Website + LinkedIn",
+      "goal": "Free audit as the top-of-funnel offer",
+      "status": "active",
+      "budget": 600,
+      "start": "2026-07-15",
+      "end": "2026-09-15",
+      "target": "40 audit requests"
+    },
+    {
+      "name": "Sydney SMB outbound — Q3",
+      "channels": "Instantly + A-leads",
+      "goal": "Cold outbound to Sydney trades & services",
+      "status": "active",
+      "budget": 900,
+      "start": "2026-07-01",
+      "end": "2026-09-30",
+      "target": "15 booked calls"
+    },
+    {
+      "name": "Launch week",
+      "channels": "LinkedIn",
+      "goal": "Site relaunch awareness push",
+      "status": "completed",
+      "budget": 400,
+      "start": "2026-06-02",
+      "end": "2026-06-16",
+      "target": "—"
+    }
+  ],
+  "ads": {
+    "_note": "Manual entry until the Adspirer MCP is wired to sync spend, clicks, conversions and revenue on a schedule.",
+    "channels": [
+      {
+        "key": "linkedin",
+        "label": "LinkedIn Ads",
+        "campaigns": [
+          { "name": "Founding Five — Sydney SMB", "objective": "leads", "status": "active", "spend": 620, "impressions": 41000, "clicks": 390, "conversions": 11, "revenue": 4800 },
+          { "name": "Agent Audit — retargeting", "objective": "leads", "status": "active", "spend": 240, "impressions": 12800, "clicks": 210, "conversions": 6, "revenue": 2600 }
+        ]
+      },
+      {
+        "key": "google",
+        "label": "Google Ads",
+        "campaigns": [
+          { "name": "AI automation agency — search brand", "objective": "leads", "status": "active", "spend": 310, "impressions": 6200, "clicks": 240, "conversions": 7, "revenue": 3100 },
+          { "name": "Voice agent — search generic", "objective": "leads", "status": "paused", "spend": 180, "impressions": 9400, "clicks": 130, "conversions": 1, "revenue": 0 }
+        ]
+      },
+      {
+        "key": "meta",
+        "label": "Meta Ads",
+        "campaigns": [
+          { "name": "Demo reel — cold awareness", "objective": "awareness", "status": "ended", "spend": 150, "impressions": 88000, "clicks": 620, "conversions": 2, "revenue": 0 }
+        ]
+      }
+    ]
+  },
+  "analytics": {
+    "_note": "Snapshots are entered weekly. Website figures come from Cloudflare, social from each platform, outbound from Instantly / A-leads.",
+    "snapshots": [
+      { "date": "2026-08-09", "source": "Website", "metric": "visitors_7d", "value": 412 },
+      { "date": "2026-08-09", "source": "Website", "metric": "leads_7d", "value": 6 },
+      { "date": "2026-08-09", "source": "LinkedIn", "metric": "followers", "value": 1240 },
+      { "date": "2026-08-09", "source": "LinkedIn", "metric": "impressions_7d", "value": 9800 },
+      { "date": "2026-08-09", "source": "Newsletter", "metric": "subscribers", "value": 318 },
+      { "date": "2026-08-09", "source": "Outbound", "metric": "replies_7d", "value": 9 },
+      { "date": "2026-08-02", "source": "Website", "metric": "visitors_7d", "value": 366 },
+      { "date": "2026-08-02", "source": "Website", "metric": "leads_7d", "value": 4 },
+      { "date": "2026-08-02", "source": "LinkedIn", "metric": "followers", "value": 1198 },
+      { "date": "2026-08-02", "source": "LinkedIn", "metric": "impressions_7d", "value": 11400 },
+      { "date": "2026-08-02", "source": "Newsletter", "metric": "subscribers", "value": 301 },
+      { "date": "2026-08-02", "source": "Outbound", "metric": "replies_7d", "value": 12 }
+    ]
+  }
+}
