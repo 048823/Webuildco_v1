@@ -6,7 +6,7 @@
 // Board default #3 also lives here: the taxonomy is PR #68's (Company / Marketing /
 // System), with #66's Sales and Outbound folded in rather than kept as their own groups.
 // ponytail: no jsdom — same vm stub as app.crm.test.mjs, assert the table not the DOM.
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import test from "node:test";
 import assert from "node:assert/strict";
 import vm from "node:vm";
@@ -27,6 +27,10 @@ function loadApp() {
     setTimeout, Intl, URL, console,
   };
   vm.createContext(ctx);
+  // app.js reads globalThis.MCSettings at load (WEB-543); in the browser settings.js is a
+  // classic <script> ahead of it, so give the vm context the same global.
+  const settings = new URL("./settings.js", import.meta.url);
+  if (existsSync(settings)) vm.runInContext(readFileSync(settings, "utf8"), ctx);
   vm.runInContext(src, ctx);
   return (expr) => vm.runInContext(expr, ctx);
 }

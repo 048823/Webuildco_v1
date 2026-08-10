@@ -167,6 +167,59 @@ tr:last-child td{border-bottom:none}
 .btn.ghost{background:var(--fog);color:var(--ink)}
 .btn:hover{filter:brightness(.96)}
 
+/* Settings */
+.mods{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.mod{position:relative;display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;cursor:pointer;background:var(--card)}
+.mod .ic{width:16px;text-align:center;color:var(--slate)}
+.mod .name{font-weight:500;font-size:13px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mod input{position:absolute;opacity:0;width:0;height:0}
+.sw{width:38px;height:22px;border-radius:999px;background:var(--pebble);position:relative;flex:0 0 auto;transition:.18s}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:var(--snow);transition:.18s;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+.mod input:checked+.sw{background:var(--ok)}
+.mod input:checked+.sw::after{transform:translateX(16px)}
+.mod input:focus-visible+.sw{outline:2px solid var(--info);outline-offset:2px}
+.card select,.card input[type=text],.card input[type=number]{font-family:inherit;font-size:13px;padding:7px 10px;border:1px solid var(--line);border-radius:9px;background:var(--card);color:var(--ink)}
+.card input[type=number]{width:96px;text-align:right}
+.card .kv .v .tabs{margin-bottom:0}
+.tagrow{display:flex;align-items:center;gap:8px;padding:7px 0;border-top:1px solid var(--fog)}
+.tagrow:first-of-type{border-top:none}
+.tagrow input[type=color]{width:34px;height:32px;padding:2px;border:1px solid var(--line);border-radius:9px;background:var(--card);cursor:pointer}
+.tagrow input[type=text]{flex:1;min-width:0}
+.tagrow .btn{padding:6px 12px;line-height:1}
+.taglist{display:flex;flex-wrap:wrap;gap:6px;justify-content:flex-end}
+td .taglist,#projFilter{justify-content:flex-start;margin-top:5px}
+.tag{display:inline-block;font-size:11px;font-weight:600;padding:3px 9px;border-radius:999px;color:var(--tc);
+  background:color-mix(in srgb,var(--tc) 14%,transparent);border:1px solid color-mix(in srgb,var(--tc) 34%,transparent)}
+.tag.pick{cursor:pointer;font-family:inherit;opacity:.42;background:transparent}
+.tag.pick.on,.tag.pick:hover{opacity:1;background:color-mix(in srgb,var(--tc) 14%,transparent)}
+
+/* Density (Settings → Appearance) */
+[data-density=compact] body{font-size:13px}
+[data-density=compact] .card{padding:12px 14px;border-radius:13px}
+[data-density=compact] td{padding:7px 9px}
+[data-density=compact] .kv{padding:6px 0}
+[data-density=compact] .stat{font-size:24px}
+[data-density=compact] .main{padding:18px 22px 40px}
+[data-density=compact] .mods{grid-template-columns:repeat(4,1fr)}
+
+/* Dark theme (Settings → Appearance). Only the tokens flip. */
+[data-theme=dark]{
+  --ink:#f4f4f5;--slate:#a1a1aa;--steel:#8b8b94;--ash:#a1a1aa;--pebble:#3f3f46;
+  --fog:#232327;--mist:#0d0d10;--snow:#18181b;--line:#2c2c31;--card:#141417;
+  --shadow:rgba(0,0,0,.5) 0 4px 16px;
+}
+[data-theme=dark] .pill.live,[data-theme=dark] .badge.ok{background:#0d3320;color:#5ee9a4}
+[data-theme=dark] .pill.manual,[data-theme=dark] .badge.warn{background:#3a2a06;color:#fbbf24}
+[data-theme=dark] .pill.needs,[data-theme=dark] .badge.bad{background:#3d1414;color:#fca5a5}
+[data-theme=dark] .badge.info{background:#14253f;color:#93c5fd}
+[data-theme=dark] .badge.dark{background:#e4e4e7;color:#18181b}
+[data-theme=dark] .section-note{background:#2a2206;border-color:#4d3c07;color:#fbbf24}
+[data-theme=dark] .kan .item,[data-theme=dark] .tab.active{background:#1e1e22}
+[data-theme=dark] .sw::after{background:#e4e4e7}
+[data-theme=dark] .side{background:#000}
+[data-theme=dark] ::-webkit-scrollbar-thumb{background:#3f3f46}
+@media(max-width:960px){[data-theme=dark] .briefs-nav{background:rgba(13,13,16,.95)}}
+
 .page{display:none}
 .page.active{display:block;animation:fade .3s}
 @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
@@ -180,6 +233,8 @@ tr:last-child td{border-bottom:none}
   .g2,.g3,.g4,.wf{grid-template-columns:1fr}
   .kan{grid-template-columns:1fr 1fr}
   .tiles{grid-template-columns:1fr 1fr}
+  .mods,[data-density=compact] .mods{grid-template-columns:1fr 1fr}
+  .taglist{justify-content:flex-start}
   .main{padding:20px}
   .briefs-nav{position:sticky;bottom:0;background:rgba(244,244,245,.95);border-top:1px solid var(--line);padding:10px 0 0}
 }

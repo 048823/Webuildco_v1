@@ -2,7 +2,7 @@
 // seed + browser-local row merge. app.js is a browser script, so it runs inside a vm
 // context with the few globals boot() touches stubbed out.
 // ponytail: no jsdom — stub what boot() reaches for, assert the pure bits.
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import test from "node:test";
 import assert from "node:assert/strict";
 import vm from "node:vm";
@@ -20,6 +20,10 @@ function loadApp(localStore = {}) {
     setTimeout, Intl, URL, console,
   };
   vm.createContext(ctx);
+  // app.js reads globalThis.MCSettings at load (WEB-543); in the browser settings.js is a
+  // classic <script> ahead of it, so give the vm context the same global.
+  const settings = new URL("./settings.js", import.meta.url);
+  if (existsSync(settings)) vm.runInContext(readFileSync(settings, "utf8"), ctx);
   vm.runInContext(src, ctx);
   const run = (expr) => vm.runInContext(expr, ctx);
   run(`DATA = { crm: { companies: [{ name: 'Bounce, Inc "AU"', industry: 'Retail', country: 'Australia', website: '' }] } }`);
