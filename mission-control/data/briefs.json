@@ -1,5 +1,25 @@
 [
   {
+    "id": "eod-2026-08-10",
+    "type": "eod",
+    "period_label": "Mon, 10 Aug",
+    "generated_at": "2026-08-10T11:34:17Z",
+    "wins": [
+      "Apex deploy hole contained across all 10 open PR branches: Every open branch now refuses its own Cloudflare build. Two contained by rebase; eight would not rebase cleanly, so the CTO applied the guard alone — a deviation from my instruction and the correct...",
+      "Root cause of the 48h outage identified: All three symptoms (silent skips, failed runs, 2h drift) are one cause: every agent in the workspace runs on a single local runtime — Claude on Dzs-MacBook-Pro.local — which is offline most of the time",
+      "WEB-532 execution order delivered: 3 silence-is-risk autopilots flipped run_only → create_issue (5619d4b0 CEO hourly, aef36324 site health, e137e2c1 icebreaker). 8 left run_only with per-item reasons. 4d88d1a6 still paused as ordered",
+      "Weekly Ops Review resurrected: WEB-528 had died queued_expired, not from a defect. Re-dispatched to COS, run 17a6a637 live, now in_progress",
+      "Always-on runtime runbook delivered as analysis: Written against the verified Multica CLI surface. Rollback path documented. Every box-level claim marked UNVERIFIED because both read-only VPS probes were denied at the permission layer — the CTO refused to...",
+      "48h in_review sweep: 5 closed done with the ruling or evidence cited in each closing comment — WEB-521, WEB-495, WEB-497, WEB-498, WEB-501",
+      "WEB-507 unblocked: The defect it diagnosed is contained; moved to in_review"
+    ],
+    "next3": [
+      "Stop the campaign (WEB-460 item 0b): Create the 4-scope Instantly key, or detach the 8 sending mailboxes. Either stops it",
+      "Legal spend cap (WEB-437): One number, or \"no\"",
+      "Cloudflare non-production branch deploy field: Settings > Build > Non-production branch deploy command, ~30s"
+    ]
+  },
+  {
     "id": "eod-2026-08-07",
     "type": "eod",
     "period_label": "Fri, 07 Aug",
@@ -653,16 +673,12 @@
     "id": "eod-2026-07-19",
     "type": "eod",
     "period_label": "Sun, 19 Jul",
-    "generated_at": "2026-07-19T12:20:31Z",
-    "wins": [
-      "Bounce preview URL delivered (overnight priority #1, closed 00:45 AEST): CTO posted the working preview: https://agent-motiondesigner-362919a.bounce-inc-redesign.pages.dev — verified in headless Chromium (hero loop, scroll-scrub scenes working); CTO also...",
-      "07-18 runtime failure root-caused + codex fixed (00:00 Second-Shift): Verified on-host: the 16:00–20:00 gap was a reboot at 16:18 AEST, not sleep — pmset keep-awake would NOT have prevented it. Post-reboot the codex CLI wedged in the dynamic linker,...",
-      "Day-4 contingency list produced (01:00 Second-Shift): Ranked list of board-approval-free revenue-adjacent actions (internal drafting/prep only), ready for 08:00 pickup"
-    ],
+    "generated_at": "2026-07-19T12:21:07Z",
+    "wins": [],
     "next3": [
-      "Morning Standup 2026-07-19 (WEB-217): Cancelled as unrecoverable (day is over), pointer comment added; tomorrow's 08:00 standup must fire",
-      "Hourly execution loop — all of today: Diagnose tonight (overnight queue #1); WEB-196 migration approval is the real fix",
-      "Day-4 contingency list execution: Execute top items from 08:00, day 5"
+      "Review current blockers",
+      "Pick the highest-leverage next action",
+      "Update Mission Control after execution"
     ]
   },
   {
