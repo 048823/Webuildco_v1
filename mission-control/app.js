@@ -77,19 +77,26 @@ const leadsData = () => hasLiveLeads() ? DATA.multica.leads : (DATA.leads || { c
 
 // ---- Section definitions ----
 const SECTIONS = [
-  { id: "overview", title: "Overview", ic: "◫", desc: "Company at a glance — to-dos, briefs, live snapshot", flag: "manual", render: renderOverview },
-  { id: "briefs", title: "Briefs", ic: "▥", desc: "Morning, EOD & cadence reports", flag: "manual", render: renderBriefs },
-  { id: "projects", title: "Projects", ic: "▤", desc: "Client pipeline + internal projects", flag: "manual", render: renderProjects },
-  { id: "crm", title: "CRM", ic: "❏", desc: "Contacts & companies", flag: "manual", render: renderCrm },
-  { id: "leads", title: "Outbound Leads", ic: "◎", desc: "Instantly & A-leads campaigns", flag: "needs", render: renderLeads },
-  { id: "blogs", title: "Upcoming Blogs", ic: "▦", desc: "Blog prep & publish schedule", flag: "manual", render: renderBlogs },
-  { id: "creative", title: "Creative", ic: "✎", desc: "Mood boards, ideas pipeline & production schedule", flag: "manual", render: renderCreative },
-  { id: "finance", title: "Finance", ic: "$", desc: "Subscriptions birds-eye view", flag: "manual", render: renderFinance },
-  { id: "research", title: "Research", ic: "◈", desc: "Latest trending news", flag: "needs", render: renderResearch },
-  { id: "apis", title: "APIs & MCPs", ic: "⌁", desc: "Every API and MCP available to the agents", flag: "live", render: renderApis },
-  { id: "skills", title: "Skills", ic: "✦", desc: "All installed skills by area", flag: "live", render: renderSkills },
-  { id: "planner", title: "Workflow Planner", ic: "⟐", desc: "Compose a workflow from skills + APIs", flag: "live", render: renderPlanner },
-  { id: "multica", title: "Multica", ic: "◇", desc: "Workspace activity — tasks, projects & agents", flag: "needs", render: renderMultica },
+  { id: "overview", group: "Overview", title: "Overview", ic: "◫", desc: "Company at a glance — to-dos, briefs, live snapshot", flag: "manual", render: renderOverview },
+  { id: "briefs", group: "Overview", title: "Briefs", ic: "▥", desc: "Morning, EOD & cadence reports", flag: "manual", render: renderBriefs },
+  { id: "projects", group: "Overview", title: "Projects", ic: "▤", desc: "Client pipeline + internal projects", flag: "manual", render: renderProjects },
+  { id: "crm", group: "Sales", title: "CRM", ic: "❏", desc: "Contacts & companies", flag: "manual", render: renderCrm },
+  { id: "pipeline", group: "Sales", title: "Pipeline", ic: "▩", desc: "Every deal by stage — open and closed", flag: "manual", render: renderPipeline },
+  { id: "deals", group: "Sales", title: "Deals", ic: "◇", desc: "Deal list — value, stage & probability", flag: "manual", render: renderDeals },
+  { id: "proposals", group: "Sales", title: "Proposals", ic: "▭", desc: "Quotes out — draft, sent & accepted", flag: "manual", render: renderProposals },
+  { id: "activities", group: "Sales", title: "Activities", ic: "➤", desc: "Calls, emails & meetings against each deal", flag: "manual", render: renderActivities },
+  { id: "prospects", group: "Outbound", title: "Prospects", ic: "◉", desc: "Target accounts before they become leads", flag: "manual", render: renderProspects },
+  { id: "leads", group: "Outbound", title: "Leads", ic: "◎", desc: "Sourced contacts and where each one sits", flag: "needs", render: renderLeads },
+  { id: "campaigns", group: "Outbound", title: "Email Campaigns", ic: "✉", desc: "Instantly & A-leads sequences", flag: "needs", render: renderCampaigns },
+  { id: "templates", group: "Outbound", title: "Templates", ic: "▤", desc: "Sequence copy — one card per step", flag: "manual", render: renderTemplates },
+  { id: "blogs", group: "Content", title: "Upcoming Blogs", ic: "▦", desc: "Blog prep & publish schedule", flag: "manual", render: renderBlogs },
+  { id: "creative", group: "Content", title: "Creative", ic: "✎", desc: "Mood boards, ideas pipeline & production schedule", flag: "manual", render: renderCreative },
+  { id: "finance", group: "Company", title: "Finance", ic: "$", desc: "Subscriptions birds-eye view", flag: "manual", render: renderFinance },
+  { id: "research", group: "Company", title: "Research", ic: "◈", desc: "Latest trending news", flag: "needs", render: renderResearch },
+  { id: "apis", group: "System", title: "APIs & MCPs", ic: "⌁", desc: "Every API and MCP available to the agents", flag: "live", render: renderApis },
+  { id: "skills", group: "System", title: "Skills", ic: "✦", desc: "All installed skills by area", flag: "live", render: renderSkills },
+  { id: "planner", group: "System", title: "Workflow Planner", ic: "⟐", desc: "Compose a workflow from skills + APIs", flag: "live", render: renderPlanner },
+  { id: "multica", group: "System", title: "Multica", ic: "◆", desc: "Workspace activity — tasks, projects & agents", flag: "needs", render: renderMultica },
 ];
 
 const FLAG_LABEL = { live: "Live", manual: "Manual data", needs: "Needs credential" };
@@ -126,13 +133,14 @@ function renderOverview() {
   const projCount = (d.projects?.clients?.length || 0) + (d.projects?.internal?.length || 0);
   const monthly = (d.finance?.subscriptions || []).reduce((s, x) => s + (x.cycle === "annual" ? x.monthly / 12 : x.monthly), 0);
   const blogCount = (blogsData().cards || []).length;
-  const outboundCount = hasLiveLeads() ? (leadsData().summary?.projects || 0) : (d.leads?.campaigns || []).length;
+  const outboundCount = hasLiveLeads() ? (leadsData().summary?.projects || 0) : (d.outbound?.leads || []).length;
   const openTodos = (d.todos || []).filter((t) => !t.done).length;
+  const open = openDeals();
   return `
   <div class="grid g4">
     ${statCard("Active projects", projCount, "clients + internal")}
     ${statCard("Open to-dos", openTodos, "across the board")}
-    ${statCard("Blogs in pipeline", blogCount, "idea → scheduled")}
+    ${statCard("Open pipeline", money(total(open), salesCur()), `${open.length} live deals`)}
     ${statCard("Monthly subs", money(monthly), "normalised /mo")}
   </div>
   <div class="grid g2" style="margin-top:16px">
@@ -145,7 +153,9 @@ function renderOverview() {
     <div class="grid g3">
       ${snap("Projects", `${d.projects?.clients?.length || 0} client · ${d.projects?.internal?.length || 0} internal`, "projects")}
       ${snap("CRM", `${crmRows("contacts").length} contacts · ${crmRows("companies").length} companies`, "crm")}
-      ${snap("Outbound", outboundCount + (hasLiveLeads() ? " projects" : " campaigns"), "leads")}
+      ${snap("Pipeline", `${money(weighted(open), salesCur())} weighted`, "pipeline")}
+      ${snap("Proposals", `${(d.sales?.proposals || []).length} out`, "proposals")}
+      ${snap("Outbound", outboundCount + (hasLiveLeads() ? " projects" : " leads"), "leads")}
       ${snap("Blogs", blogCount + " cards", "blogs")}
       ${snap("Finance", money(monthly) + "/mo", "finance")}
       ${snap("APIs / MCPs", APIS.filter((a) => a.status === "connected").length + " connected", "apis")}
@@ -396,6 +406,114 @@ function wireCrm() {
   });
 }
 
+// ---- Sales (pipeline / deals / proposals / activities) ----
+// ponytail: every total here sums raw `value` in one currency (sales.currency).
+// Add per-deal FX conversion the day a deal is priced in something else.
+const SALES_STAGES = ["Lead", "Qualified", "Proposal", "Negotiation", "Won"];
+const CLOSED = ["Won", "Lost"];
+const salesData = () => DATA.sales || {};
+const outboundData = () => DATA.outbound || {};
+const salesCur = () => salesData().currency || "AUD";
+const deals = () => salesData().deals || [];
+const openDeals = () => deals().filter((d) => !CLOSED.includes(d.stage));
+const weighted = (list) => list.reduce((s, d) => s + (+d.value || 0) * (+d.probability || 0) / 100, 0);
+const total = (list) => list.reduce((s, d) => s + (+d.value || 0), 0);
+const STAGE_CLS = { Won: "ok", Lost: "bad", Negotiation: "lime", Proposal: "info", Qualified: "warn", Lead: "" };
+const stagePill = (s) => `<span class="badge ${STAGE_CLS[s] || ""}">${esc(s || "—")}</span>`;
+
+function renderPipeline() {
+  const all = deals(), open = openDeals();
+  // Columns come from the known stages plus anything unexpected in the data, so
+  // a typo'd stage shows up as its own column instead of silently vanishing.
+  const cols = [...new Set([...SALES_STAGES, ...all.map((d) => d.stage)])];
+  return note("Seed deals from data/board.json — replace with real ones or wire a CRM.") +
+  `<div class="grid g4">
+    ${statCard("Open deals", open.length, "not won or lost")}
+    ${statCard("Pipeline value", money(total(open), salesCur()), "sum of open deals")}
+    ${statCard("Weighted", money(weighted(open), salesCur()), "value × probability")}
+    ${statCard("Won", money(total(all.filter((d) => d.stage === "Won")), salesCur()), "closed to date")}
+  </div>
+  <div class="kan kan5" style="margin-top:16px">${cols.map((col) => {
+    const items = all.filter((d) => d.stage === col);
+    return `<div class="col"><h4>${esc(col)}<span>${items.length}</span></h4>${items.map((d) => `
+      <div class="item"><div class="t">${esc(clip(d.title, 46))}</div>
+        <div class="m">${esc(d.company || "—")} · ${esc(d.owner || "Unassigned")}</div>
+        <div class="m"><b>${money(d.value || 0, salesCur())}</b> · ${esc(d.probability ?? 0)}%</div>
+      </div>`).join("") || '<p class="muted tiny">—</p>'}</div>`;
+  }).join("")}</div>`;
+}
+
+function renderDeals() {
+  const rows = deals();
+  return note("Seed deals from data/board.json.") +
+  `<div class="card"><h3>Deals <span class="pill">${rows.length}</span></h3>
+    <table><thead><tr><th>Title</th><th>Company</th><th>Stage</th><th>Value</th><th>Probability</th><th>Close</th></tr></thead><tbody>${rows.map((d) => `
+    <tr><td><b>${esc(d.title)}</b></td><td class="muted">${esc(d.company || "—")}</td><td>${stagePill(d.stage)}</td>
+    <td><b>${money(d.value || 0, salesCur())}</b></td>
+    <td><div class="bar"><span style="width:${Math.max(0, Math.min(100, +d.probability || 0))}%"></span></div><span class="tiny muted">${esc(d.probability ?? 0)}%</span></td>
+    <td class="muted">${esc(d.close || "—")}</td></tr>`).join("") || '<tr><td colspan="6" class="muted">No deals.</td></tr>'}</tbody></table></div>`;
+}
+
+const PROPOSAL_CLS = { accepted: "ok", sent: "info", draft: "", declined: "bad" };
+function renderProposals() {
+  const rows = salesData().proposals || [];
+  if (!rows.length) return `<div class="card"><p class="muted">No proposals yet.</p></div>`;
+  return `<div class="grid g3">${rows.map((p) => `
+    <div class="card"><h3>${esc(p.title)} <span class="badge ${PROPOSAL_CLS[p.status] || ""}">${esc(p.status || "—")}</span></h3>
+      <p class="muted tiny" style="margin-top:-8px">${esc(p.client || "")}</p>
+      <div class="mini"><div><b>${money(p.value || 0, salesCur())}</b><span>Value</span></div>
+        <div><b>${esc(p.items ?? 0)}</b><span>Items</span></div>
+        <div><b>${esc(p.valid || "—")}</b><span>Valid to</span></div></div>
+    </div>`).join("")}</div>`;
+}
+
+const ACT_CLS = { call: "lime", meeting: "info", email: "", linkedin: "warn" };
+function renderActivities() {
+  const rows = [...(salesData().activities || [])].sort((a, b) => String(b.date || "").localeCompare(String(a.date || "")));
+  return `<div class="card"><h3>Activities <span class="pill">${rows.length}</span></h3>
+    <table><thead><tr><th>Date</th><th>Type</th><th>Summary</th><th>Contact</th></tr></thead><tbody>${rows.map((a) => `
+    <tr><td class="muted">${esc(a.date || "—")}</td><td><span class="badge ${ACT_CLS[a.type] || ""}">${esc(a.type || "—")}</span></td>
+    <td><b>${esc(a.summary)}</b></td><td class="muted">${esc(a.contact || "—")}</td></tr>`).join("") || '<tr><td colspan="4" class="muted">Nothing logged.</td></tr>'}</tbody></table></div>`;
+}
+
+// ---- Outbound (prospects / leads / campaigns / templates) ----
+const FIT_CLS = { high: "ok", medium: "warn", low: "" };
+const LEAD_CLS = { qualified: "ok", replied: "lime", contacted: "info", new: "", bounced: "bad" };
+
+function renderProspects() {
+  const rows = outboundData().prospects || [];
+  return note("Target accounts, sourced manually or via Apify / A-leads. Promote one to Leads once there is a named contact.") +
+  `<div class="card"><h3>Target accounts <span class="pill">${rows.length}</span></h3>
+    <table><thead><tr><th>Company</th><th>Industry</th><th>Location</th><th>Size</th><th>Fit</th><th>Source</th></tr></thead><tbody>${rows.map((p) => `
+    <tr><td><b>${esc(p.company)}</b></td><td class="muted">${esc(p.industry || "—")}</td><td class="muted">${esc(p.location || "—")}</td>
+    <td class="muted">${esc(p.size || "—")}</td><td><span class="badge ${FIT_CLS[p.fit] || ""}">${esc(p.fit || "—")}</span></td>
+    <td><span class="badge dark">${esc(p.source || "—")}</span></td></tr>`).join("") || '<tr><td colspan="6" class="muted">No prospects.</td></tr>'}</tbody></table></div>`;
+}
+
+function renderCampaigns() {
+  const rows = outboundData().campaigns || [];
+  const pct = (n, d) => d ? Math.round(n / d * 100) + "%" : "0%";
+  if (!rows.length) return `<div class="card"><p class="muted">No campaigns.</p></div>`;
+  return note("Instantly and A-leads keys are not wired yet — counters stay at 0 until they are.") +
+  `<div class="grid g3">${rows.map((c) => `
+    <div class="card"><h3>${esc(c.name)} <span class="badge ${c.status === "needs-key" ? "bad" : statusCls(c.status) || ""}">${esc(c.status || "—")}</span></h3>
+      <p class="muted tiny" style="margin-top:-8px">${esc(c.tool || "")}${c.goal ? " · " + esc(c.goal) : ""}</p>
+      <div class="mini"><div><b>${esc(c.sent ?? 0)}</b><span>Sent</span></div>
+        <div><b>${pct(c.opened || 0, c.sent || 0)}</b><span>Opened</span></div>
+        <div><b>${pct(c.replied || 0, c.sent || 0)}</b><span>Replied</span></div></div>
+    </div>`).join("")}</div>`;
+}
+
+function renderTemplates() {
+  const rows = outboundData().templates || [];
+  if (!rows.length) return `<div class="card"><p class="muted">No templates.</p></div>`;
+  return `<div class="grid g2">${rows.map((t) => `
+    <div class="card"><h3>${esc(t.name)} <span class="badge ${t.channel === "linkedin" ? "info" : "lime"}">${esc(t.channel || "email")}</span><span class="pill">Step ${esc(t.step ?? 1)}</span></h3>
+      <div class="kv"><span class="k">Subject</span><span class="v">${esc(t.subject || "—")}</span></div>
+      <p class="muted tiny" style="margin-top:10px">${esc(t.body || "")}</p>
+    </div>`).join("")}</div>`;
+}
+
 function renderLeads() {
   const l = leadsData();
   if (hasLiveLeads()) {
@@ -424,11 +542,19 @@ function renderLeads() {
     </div>`;
   }
 
-  const c = l.campaigns || [];
-  return note("Instantly and A-leads API keys are not wired yet — showing seed campaign placeholders.") +
-  `<div class="card"><h3>Campaigns</h3><table><thead><tr><th>Tool</th><th>Campaign</th><th>Sent</th><th>Opened</th><th>Replied</th><th>Status</th></tr></thead><tbody>${c.map((x) => `
-    <tr><td><span class="badge dark">${esc(x.tool)}</span></td><td>${esc(x.name)}</td><td>${x.sent}</td><td>${x.opened}</td><td>${x.replied}</td>
-    <td><span class="badge ${x.status === "needs-key" ? "bad" : "ok"}">${esc(x.status)}</span></td></tr>`).join("")}</tbody></table></div>`;
+  const leads = outboundData().leads || [];
+  const count = (s) => leads.filter((x) => x.status === s).length;
+  return note("Instantly and A-leads API keys are not wired yet — showing seed leads. Campaign metrics live under Email Campaigns.") +
+  `<div class="grid g4">
+    ${statCard("Leads", leads.length, "in the list")}
+    ${statCard("Contacted", count("contacted") + count("replied") + count("qualified"), "reached at least once")}
+    ${statCard("Replied", count("replied"), "answered a sequence")}
+    ${statCard("Qualified", count("qualified"), "ready for a call")}
+  </div>
+  <div class="card" style="margin-top:16px"><h3>Leads</h3><table><thead><tr><th>Contact</th><th>Company</th><th>Title</th><th>Status</th><th>Source</th><th>Industry</th></tr></thead><tbody>${leads.map((x) => `
+    <tr><td><b>${esc(x.name)}</b></td><td>${esc(x.company || "—")}</td><td class="muted">${esc(x.title || "—")}</td>
+    <td><span class="badge ${LEAD_CLS[x.status] || ""}">${esc(x.status || "—")}</span></td>
+    <td><span class="badge dark">${esc(x.source || "—")}</span></td><td class="muted">${esc(x.industry || "—")}</td></tr>`).join("") || '<tr><td colspan="6" class="muted">No leads.</td></tr>'}</tbody></table></div>`;
 }
 
 function renderBlogs() {
@@ -629,7 +755,12 @@ const note = (t) => `<div class="section-note"><b>Placeholder:</b> ${esc(t)}</di
 
 // ---- Router / shell ----
 function buildNav() {
-  $("#nav").innerHTML = SECTIONS.map((s) => `<a data-id="${s.id}"><span class="ic">${s.ic}</span>${s.title}</a>`).join("");
+  let group = "";
+  $("#nav").innerHTML = SECTIONS.map((s) => {
+    const head = s.group && s.group !== group ? `<div class="grp">${esc(s.group)}</div>` : "";
+    group = s.group || group;
+    return `${head}<a data-id="${s.id}"><span class="ic">${s.ic}</span>${s.title}</a>`;
+  }).join("");
   $("#pages").innerHTML = SECTIONS.map((s) => `<section class="page" id="pg-${s.id}"></section>`).join("");
 }
 function go(raw = "overview") {
