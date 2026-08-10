@@ -80,6 +80,7 @@ const SECTIONS = [
   { id: "overview", title: "Overview", ic: "◫", desc: "Company at a glance — to-dos, briefs, live snapshot", flag: "manual", render: renderOverview },
   { id: "briefs", title: "Briefs", ic: "▥", desc: "Morning, EOD & cadence reports", flag: "manual", render: renderBriefs },
   { id: "projects", title: "Projects", ic: "▤", desc: "Client pipeline + internal projects", flag: "manual", render: renderProjects },
+  { id: "crm", title: "CRM", ic: "❏", desc: "Contacts & companies", flag: "manual", render: renderCrm },
   { id: "leads", title: "Outbound Leads", ic: "◎", desc: "Instantly & A-leads campaigns", flag: "needs", render: renderLeads },
   { id: "blogs", title: "Upcoming Blogs", ic: "▦", desc: "Blog prep & publish schedule", flag: "manual", render: renderBlogs },
   { id: "creative", title: "Creative", ic: "✎", desc: "Mood boards, ideas pipeline & production schedule", flag: "manual", render: renderCreative },
@@ -143,6 +144,7 @@ function renderOverview() {
   <div class="card" style="margin-top:16px"><h3>Section snapshot</h3>
     <div class="grid g3">
       ${snap("Projects", `${d.projects?.clients?.length || 0} client · ${d.projects?.internal?.length || 0} internal`, "projects")}
+      ${snap("CRM", `${crmRows("contacts").length} contacts · ${crmRows("companies").length} companies`, "crm")}
       ${snap("Outbound", outboundCount + (hasLiveLeads() ? " projects" : " campaigns"), "leads")}
       ${snap("Blogs", blogCount + " cards", "blogs")}
       ${snap("Finance", money(monthly) + "/mo", "finance")}
@@ -273,6 +275,125 @@ function renderProjects() {
   return renderProjectMap(DATA.projects) +
     `<div class="card" style="margin-top:16px"><h3>Client pipeline</h3>${tbl(DATA.projects?.clients || [])}</div>
     <div class="card" style="margin-top:16px"><h3>Internal projects</h3>${tbl(DATA.projects?.internal || [])}</div>`;
+}
+
+// ---- CRM (contacts + companies) ----
+// Seed rows come from data/board.json (crm.contacts / crm.companies). Rows added in the
+// UI live in this browser only (localStorage) — there is no CRM store behind the Worker yet.
+const CRM_KINDS = [["contacts", "Contacts"], ["companies", "Companies"]];
+const CRM_FIELDS = {
+  contacts: [["name", "Name"], ["role", "Role"], ["company", "Company"], ["email", "Email"], ["status", "Status"]],
+  companies: [["name", "Name"], ["industry", "Industry"], ["country", "Country"], ["website", "Website"]],
+};
+const CRM_STATUS = { customer: "ok", client: "ok", active: "ok", qualified: "lime", prospect: "info", lead: "info", churned: "bad", cold: "" };
+let CRM_TAB = "contacts";
+
+const crmLocal = () => { try { return JSON.parse(localStorage.getItem("mc_crm") || "{}"); } catch { return {}; } };
+const crmSaveLocal = (store) => localStorage.setItem("mc_crm", JSON.stringify(store));
+const crmRows = (kind) => [
+  ...((DATA.crm || {})[kind] || []),
+  ...((crmLocal()[kind] || []).map((r, i) => ({ ...r, _local: i }))),
+];
+const crmCell = (kind, row, key) => {
+  const v = row[key];
+  if (!v) return '<span class="muted">—</span>';
+  if (key === "name") return `<b>${esc(v)}</b>`;
+  if (key === "website") return `<a href="${esc(v)}" target="_blank" rel="noopener noreferrer">${esc(v.replace(/^https?:\/\//, ""))}</a>`;
+  if (key === "email") return `<a href="mailto:${esc(v)}">${esc(v)}</a>`;
+  if (key === "status") return `<span class="badge ${CRM_STATUS[String(v).toLowerCase()] || ""}">${esc(v)}</span>`;
+  return esc(v);
+};
+// RFC 4180: quote every field, double any embedded quote. Excel-safe on commas + newlines.
+function crmCsv(kind) {
+  const fields = CRM_FIELDS[kind];
+  const cell = (v) => `"${String(v == null ? "" : v).replace(/"/g, '""')}"`;
+  return [fields.map(([, label]) => cell(label)).join(","),
+    ...crmRows(kind).map((r) => fields.map(([k]) => cell(r[k])).join(","))].join("\r\n");
+}
+
+function renderCrmTable(kind) {
+  const fields = CRM_FIELDS[kind];
+  const rows = crmRows(kind);
+  const label = CRM_KINDS.find(([k]) => k === kind)[1];
+  const single = label.replace(/ies$/, "y").replace(/s$/, "");
+  const body = rows.length ? rows.map((r) => `
+    <tr data-find="${esc(fields.map(([k]) => r[k] || "").join(" ").toLowerCase())}">
+      ${fields.map(([k]) => `<td>${crmCell(kind, r, k)}</td>`).join("")}
+      <td style="text-align:right">${r._local == null ? "" : `<button class="lnk" data-del="${r._local}" data-kind="${kind}" title="Remove this locally-added row">×</button>`}</td>
+    </tr>`).join("") : `<tr><td colspan="${fields.length + 1}" class="muted">No ${label.toLowerCase()} yet.</td></tr>`;
+  return `<div class="card">
+    <h3>${esc(label)} <span class="pill">${rows.length}</span></h3>
+    <div class="crm-tools">
+      <input class="inp" data-search="${kind}" placeholder="Search ${label.toLowerCase()}…" aria-label="Search ${esc(label.toLowerCase())}">
+      <span class="muted tiny" data-shown="${kind}">${rows.length} shown</span>
+      <button class="btn ghost" data-export="${kind}">↓ Export CSV</button>
+      <button class="btn primary" data-new="${kind}">+ New ${esc(single.toLowerCase())}</button>
+    </div>
+    <form class="crm-form" data-form="${kind}" hidden>
+      ${fields.map(([k, l]) => `<label>${esc(l)}<input class="inp" name="${k}" ${k === "name" ? "required" : ""} ${k === "email" ? 'type="email"' : ""}></label>`).join("")}
+      <div class="crm-form-act"><button class="btn primary" type="submit">Add</button><button class="btn ghost" type="button" data-cancel="${kind}">Cancel</button></div>
+    </form>
+    <table><thead><tr>${fields.map(([, l]) => `<th>${esc(l)}</th>`).join("")}<th></th></tr></thead><tbody>${body}</tbody></table>
+  </div>`;
+}
+
+function renderCrm(route = []) {
+  if (CRM_FIELDS[route[0]]) CRM_TAB = route[0];
+  setTimeout(wireCrm, 0);
+  return `<div class="section-note"><b>Manual data:</b> seed rows live in <code>data/board.json</code>. Rows you add here are saved in this browser only — a shared CRM store needs a database behind the Worker.</div>
+  <div class="tabs" id="crmTabs">${CRM_KINDS.map(([k, l]) => `<button class="tab ${k === CRM_TAB ? "active" : ""}" data-tab="${k}">${l}</button>`).join("")}</div>
+  ${CRM_KINDS.map(([k]) => `<div class="tabpage ${k === CRM_TAB ? "active" : ""}" id="crm-${k}">${renderCrmTable(k)}</div>`).join("")}`;
+}
+
+function wireCrm() {
+  const tabs = $("#crmTabs"); if (!tabs) return;
+  tabs.onclick = (e) => { const b = e.target.closest(".tab"); if (b) go("crm/" + b.dataset.tab); };
+  document.querySelectorAll("[data-search]").forEach((inp) => {
+    inp.oninput = () => {
+      const kind = inp.dataset.search, q = inp.value.trim().toLowerCase();
+      let shown = 0;
+      document.querySelectorAll(`#crm-${kind} tbody tr[data-find]`).forEach((tr) => {
+        const hit = !q || tr.dataset.find.includes(q);
+        tr.hidden = !hit; if (hit) shown++;
+      });
+      $(`[data-shown="${kind}"]`).textContent = shown + " shown";
+    };
+  });
+  document.querySelectorAll("[data-export]").forEach((btn) => {
+    btn.onclick = () => {
+      const kind = btn.dataset.export;
+      const url = URL.createObjectURL(new Blob([crmCsv(kind)], { type: "text/csv;charset=utf-8" }));
+      const a = Object.assign(document.createElement("a"), { href: url, download: `webuild-${kind}.csv` });
+      a.click(); URL.revokeObjectURL(url);
+    };
+  });
+  document.querySelectorAll("[data-new]").forEach((btn) => {
+    btn.onclick = () => { const f = $(`[data-form="${btn.dataset.new}"]`); f.hidden = !f.hidden; if (!f.hidden) f.querySelector("input").focus(); };
+  });
+  document.querySelectorAll("[data-cancel]").forEach((btn) => {
+    btn.onclick = () => { $(`[data-form="${btn.dataset.cancel}"]`).hidden = true; };
+  });
+  document.querySelectorAll("[data-form]").forEach((form) => {
+    form.onsubmit = (e) => {
+      e.preventDefault();
+      const kind = form.dataset.form;
+      const row = {};
+      CRM_FIELDS[kind].forEach(([k]) => { const v = form.elements[k].value.trim(); if (v) row[k] = v; });
+      if (!row.name) return;
+      const store = crmLocal();
+      store[kind] = [...(store[kind] || []), row];
+      crmSaveLocal(store);
+      go("crm/" + kind);
+    };
+  });
+  document.querySelectorAll("[data-del]").forEach((btn) => {
+    btn.onclick = () => {
+      const kind = btn.dataset.kind, store = crmLocal();
+      (store[kind] || []).splice(+btn.dataset.del, 1);
+      crmSaveLocal(store);
+      go("crm/" + kind);
+    };
+  });
 }
 
 function renderLeads() {
