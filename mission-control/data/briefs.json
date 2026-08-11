@@ -1,5 +1,43 @@
 [
   {
+    "id": "morning-2026-08-11",
+    "type": "morning",
+    "period_label": "Tue, 11 Aug",
+    "generated_at": "2026-08-11T20:57:27Z",
+    "wins": [],
+    "next3": [
+      "Review current blockers",
+      "Pick the highest-leverage next action",
+      "Update Mission Control after execution"
+    ]
+  },
+  {
+    "id": "morning-2026-08-10",
+    "type": "morning",
+    "period_label": "Mon, 10 Aug",
+    "generated_at": "2026-08-10T23:01:56Z",
+    "wins": [
+      "The 48h outage root cause in the EOD and WEB-532 is wrong. The Mac host was never offline — it has been up 2d 8h continuously, spanning the whole outage. What died was the daemon, killed mid-task by a reboot at 15:14 AEST 08-Aug and never restarted for 49h",
+      "No hosted/cloud Multica runtime exists. All six registered runtimes are local; there is no create/host subcommand. That option is closed",
+      "The VPS is not needed to fix this. A ~/Library/LaunchAgents/ai.multica.daemon.plist with RunAtLoad + KeepAlive + caffeinate -i fixes the exact observed failure — installs nothing new, needs no sudo, reversible by deleting one file. Best host is MM2-Hermes",
+      "max_attempts is not configurable anywhere — swept every CLI surface and the autopilot object. Fixed platform-side at 2. So recovery must come from a catch-up sweep",
+      "Both catch-up mechanisms are broken. multica-autopilot-catchup crashes on --recent 20 full-body reads (timeout treated as fatal, unhandled up through main(), so one slow issue kills the whole pass; .err is 377KB). multica-ceo-autopilot-watchdog has never",
+      "Overnight the runtime held. 00:00, 06:00 and 08:00 slots all executed. Site health checks passed 3× (WEB-540, WEB-545, WEB-546). The outage is over as of 17:01 AEST 10-Aug",
+      "The board came back at 23:53–00:26 AEST and filed six Mission Control build requests (WEB-537/538/539/541/543/544). The CTO shipped five PRs in 33 minutes (#65–#69), all unmerged and board-gated, plus an 8-defect audit of the NoonOS app blocked on repo access"
+    ],
+    "next3": [
+      "Stop the outbound sends — the Tue 08:00 batch is the fifth breach day and no agent holds a key that can pause",
+      "Make the runtime survive without a human — LaunchAgent on MM2, then fix the two broken recovery mechanisms",
+      "Land the six board Mission Control requests — five PRs are already built and blocked only on a merge decision"
+    ],
+    "industry_pulse": [
+      "Host clock is +0800, not Sydney. The MacBook runs KL/Perth time. Server-side crons carry Australia/Sydney so dispatch is fine, but every local recovery script's idea of \"today\" and \"slot\" is 2h off. This is a separate live cause from the outage — the",
+      "Daemon contention untested. If the LaunchAgent daemon runs and someone then opens Multica.app, a second daemon start --foreground spawns on the same profile and pidfile. Verify before leaving unattended",
+      "LaunchAgent needs a login session. A reboot with no auto-login still leaves it dark. On MM2 the normal answer is auto-login on",
+      "The daemon registered 12 runtimes on start (3 providers × 4 workspaces), including all 3 in this production workspace, with no allow-list flag. A VPS install would do the same — the CTO's registration-trap read is now measured, not suspected"
+    ]
+  },
+  {
     "id": "eod-2026-08-10",
     "type": "eod",
     "period_label": "Mon, 10 Aug",
@@ -17,6 +55,30 @@
       "Stop the campaign (WEB-460 item 0b): Create the 4-scope Instantly key, or detach the 8 sending mailboxes. Either stops it",
       "Legal spend cap (WEB-437): One number, or \"no\"",
       "Cloudflare non-production branch deploy field: Settings > Build > Non-production branch deploy command, ~30s"
+    ]
+  },
+  {
+    "id": "morning-2026-08-08",
+    "type": "morning",
+    "period_label": "Sat, 08 Aug",
+    "generated_at": "2026-08-08T02:05:26Z",
+    "wins": [],
+    "next3": [
+      "Review current blockers",
+      "Pick the highest-leverage next action",
+      "Update Mission Control after execution"
+    ]
+  },
+  {
+    "id": "morning-2026-08-07",
+    "type": "morning",
+    "period_label": "Fri, 07 Aug",
+    "generated_at": "2026-08-07T20:23:10Z",
+    "wins": [],
+    "next3": [
+      "Review current blockers",
+      "Pick the highest-leverage next action",
+      "Update Mission Control after execution"
     ]
   },
   {
