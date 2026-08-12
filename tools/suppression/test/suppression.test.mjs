@@ -1,8 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtempSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { canonicalAddress, canonicalEntry } from '../lib/address.mjs';
 import { MAX_STORE_AGE_HOURS, assertSendable, loadStore, storeFromEntries } from '../lib/gate.mjs';
 import { BULK_CREATE_URL, WRITE_ENABLED, buildBulkCreateRequest, createBlocklistEntries } from '../lib/blocklist-write.mjs';
@@ -58,6 +59,31 @@ test('a fresh store on disk loads and gates', () => {
   const store = loadStore(tmp('suppression-list.json', JSON.stringify(FRESH())));
   assert.equal(store.size, 2);
   assert.throws(() => assertSendable(['jane.doe+x@example.com.au'], store), /suppressed address/);
+});
+
+// WEB-605: the durability check. The domains the reconcile unions into every
+// rebuild are repo-tracked, so this test — not a file on one machine — is what
+// fails if a suppressed domain goes missing.
+test('the repo-tracked domain blocklist still suppresses everyone at its domains', () => {
+  const path = join(dirname(fileURLToPath(import.meta.url)), '..', 'domain-blocklist.txt');
+  const domains = readFileSync(path, 'utf8')
+    .split('\n')
+    .map((line) => line.split('#')[0].trim().toLowerCase())
+    .filter(Boolean);
+
+  const store = storeFromEntries(domains, new Date().toISOString());
+  assert.equal(store.size, domains.length, 'every line must parse as a domain — a dropped line is a firm we stopped suppressing');
+  for (const domain of domains) {
+    assert.throws(() => assertSendable([`anyone@${domain}`], store), /suppressed address/, domain);
+  }
+
+  // The named regression: Selina opted out, her colleague is in the QUARANTINE
+  // lead set, and this line is the only thing that refuses him (WEB-603).
+  assert.ok(domains.includes('vanuatuadvance.com'), 'WEB-605: vanuatuadvance.com must stay suppressed');
+  for (const variant of ['dean@vanuatuadvance.com', 'Dean@VanuatuAdvance.com', 'dean+leads@vanuatuadvance.com']) {
+    assert.throws(() => assertSendable([variant], store), /suppressed address/, variant);
+  }
+  assert.equal(assertSendable(['fresh.lead@example.com.au'], store), 1);
 });
 
 test('bulk-create request matches the recorded fixture', () => {

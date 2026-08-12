@@ -10,15 +10,21 @@ appended to. Output is the store file the pre-send gate reads:
 
     {"generated_at": ..., "entries": [...], "pending": [...], "bulk_create_payload": {...}}
 
+Entries come from three sources, unioned: the Instantly blocklist, opt-out
+replies classified out of `/emails`, and two local lists — `domain-blocklist.txt`
+(repo-tracked, domains) and `$SUPPRESSION_SEED` (off-repo, addresses).
+
 Usage:
     python3 tools/suppression/optout-scan.py    # rebuild the store
     python3 tools/suppression/optout-scan.py --selftest
 
 Env:
     SUPPRESSION_STORE  store path (default runs/suppression/suppression-list.json)
-    SUPPRESSION_SEED   optional file of addresses to fold in — WEB-468's 571
-                       Migration Agents addresses live here. Keep it out of the
+    SUPPRESSION_SEED   optional file of addresses to fold in. Keep it out of the
                        repo: it is personal data and this repo is served publicly.
+                       Optional because it holds only addresses — anything that
+                       must survive a rebuild belongs in domain-blocklist.txt,
+                       which is repo-tracked and required (WEB-605).
 """
 
 import argparse
@@ -37,6 +43,9 @@ OP_VAULT = "Claude Code"
 OP_ITEM = "Instantly Read Only API 3"
 STORE = os.environ.get("SUPPRESSION_STORE", "runs/suppression/suppression-list.json")
 SEED = os.environ.get("SUPPRESSION_SEED")
+# Repo-tracked, so it survives a rebuild on any machine and is reviewable.
+# Not an env var: a path you can point elsewhere is a path that can go missing.
+DOMAIN_BLOCKLIST = pathlib.Path(__file__).with_name("domain-blocklist.txt")
 
 # Free-text opt-out intent. The live sequence's opt-out line is "Prefer I stop?
 # Just reply and let me know." — it names no keyword, so requests arrive as
@@ -185,6 +194,27 @@ def seed_entries():
     return sorted(found)
 
 
+def domain_entries(path=None):
+    """Domains suppressed account-wide — repo-tracked, so they survive a rebuild
+    on any machine and get review and history for free (WEB-605).
+
+    Fails closed twice over: a missing file raises, and a line that is not a
+    bare domain stops the rebuild rather than being skipped. A typo'd domain
+    that got silently dropped would read as "suppressed" while sending.
+    """
+    path = pathlib.Path(path or DOMAIN_BLOCKLIST)
+    found = set()
+    for number, raw in enumerate(path.read_text().splitlines(), 1):
+        line = raw.split("#", 1)[0].strip()
+        if not line:
+            continue
+        domain = SEED_DOMAIN.match(line)
+        if not domain:
+            raise SystemExit(f"{path}:{number}: not a bare domain: {line!r} — refusing to rebuild the store")
+        found.add(domain.group(1).lower())
+    return sorted(found)
+
+
 def scan():
     src, key = read_key()
     now = datetime.datetime.now(AEST)
@@ -228,7 +258,8 @@ def scan():
     # The store the gate reads. Pending opt-outs are in it from this moment —
     # suppression does not wait on the Instantly write landing (WEB-497 ruling 2).
     seed = seed_entries()
-    entries = sorted(set(blocked) | {p["address"] for p in pending} | set(seed))
+    domains = domain_entries()
+    entries = sorted(set(blocked) | {p["address"] for p in pending} | set(seed) | set(domains))
     unsuppressed = [p["address"] for p in pending if p["state"] == "PENDING"]
 
     path = pathlib.Path(STORE)
@@ -243,8 +274,15 @@ def scan():
         "bulk_create_payload": {"bl_values": unsuppressed},
     }, indent=2))
 
+    # Read back what was written, not what we meant to write: this is the check
+    # that a rebuild cannot silently drop a suppressed domain (WEB-605).
+    written = set(json.loads(path.read_text())["entries"])
+    dropped = [d for d in domains if d not in written]
+    if dropped:
+        raise SystemExit(f"REBUILD FAILED — suppressed domain(s) absent from {path}: {', '.join(dropped)}")
+
     print(f"\nSTORE  {len(entries)} entries -> {path}"
-          f"  (instantly {len(blocked)}, opt-outs {len(pending)}, seed {len(seed)})")
+          f"  (instantly {len(blocked)}, opt-outs {len(pending)}, seed {len(seed)}, domains {len(domains)})")
     print(f"STAGED {len(unsuppressed)} address(es) for block_list_entries:create — write stays off (WEB-468)")
     return pending
 
@@ -288,7 +326,24 @@ def selftest():
         SEED = was
         seed_file.unlink()
     assert got == ["a@b.com.au", "blocked-domain.com", "other.com"], got
-    print(f"selftest OK — {len(cases)} classifier cases, 2 clock cases, 2 seed-parse cases")
+
+    blocklist = pathlib.Path(__file__).parent / ".selftest-domains.txt"
+    blocklist.write_text("# comment\n\nVanuatuAdvance.com  # trailing note\nother.com\n")
+    try:
+        assert domain_entries(blocklist) == ["other.com", "vanuatuadvance.com"], domain_entries(blocklist)
+        # A line that is not a bare domain stops the rebuild instead of vanishing.
+        blocklist.write_text("dean@vanuatuadvance.com\n")
+        try:
+            domain_entries(blocklist)
+            raise AssertionError("an address in domain-blocklist.txt must stop the rebuild")
+        except SystemExit:
+            pass
+    finally:
+        blocklist.unlink()
+
+    # The live file the rebuild reads — the durability the whole exercise is for.
+    assert "vanuatuadvance.com" in domain_entries(), "WEB-605: the domain must be repo-tracked"
+    print(f"selftest OK — {len(cases)} classifier cases, 2 clock cases, 2 seed-parse cases, 3 domain-blocklist cases")
 
 
 if __name__ == "__main__":
