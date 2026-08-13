@@ -140,7 +140,7 @@ function renderOverview() {
   <div class="grid g4">
     ${statCard("Active projects", projCount, "clients + internal")}
     ${statCard("Open to-dos", openTodos, "across the board")}
-    ${statCard("Open pipeline", money(total(open), salesCur()), `${open.length} live deals`)}
+    ${statCard("Open pipeline", money(total(open), salesCur()), open.length ? `${open.length} live deals` : "no deals recorded")}
     ${statCard("Monthly subs", money(monthly), "normalised /mo")}
   </div>
   <div class="grid g2" style="margin-top:16px">
@@ -420,13 +420,18 @@ const weighted = (list) => list.reduce((s, d) => s + (+d.value || 0) * (+d.proba
 const total = (list) => list.reduce((s, d) => s + (+d.value || 0), 0);
 const STAGE_CLS = { Won: "ok", Lost: "bad", Negotiation: "lime", Proposal: "info", Qualified: "warn", Lead: "" };
 const stagePill = (s) => `<span class="badge ${STAGE_CLS[s] || ""}">${esc(s || "—")}</span>`;
+// Same marker as deliverables.json / PR #67: a row that is not a real record says so on its face.
+const demoBadge = (r) => (r && r.demo ? ' <span class="badge">demo</span>' : "");
+// WEB-660: the pipeline is empty on purpose. A dashboard that invents its own
+// revenue is worse than one showing nothing, so say why rather than look broken.
+const EMPTY_SALES = "No deals recorded. The seed deals that shipped in this section were invented and have been removed (WEB-660) — every number here stays at zero until a real, agreed deal is entered in data/board.json.";
 
 function renderPipeline() {
   const all = deals(), open = openDeals();
   // Columns come from the known stages plus anything unexpected in the data, so
   // a typo'd stage shows up as its own column instead of silently vanishing.
   const cols = [...new Set([...SALES_STAGES, ...all.map((d) => d.stage)])];
-  return note("Seed deals from data/board.json — replace with real ones or wire a CRM.") +
+  return note(all.length ? "Deals come from data/board.json — replace with a CRM feed when there is one." : EMPTY_SALES) +
   `<div class="grid g4">
     ${statCard("Open deals", open.length, "not won or lost")}
     ${statCard("Pipeline value", money(total(open), salesCur()), "sum of open deals")}
@@ -445,7 +450,7 @@ function renderPipeline() {
 
 function renderDeals() {
   const rows = deals();
-  return note("Seed deals from data/board.json.") +
+  return note(rows.length ? "Deals come from data/board.json." : EMPTY_SALES) +
   `<div class="card"><h3>Deals <span class="pill">${rows.length}</span></h3>
     <table><thead><tr><th>Title</th><th>Company</th><th>Stage</th><th>Value</th><th>Probability</th><th>Close</th></tr></thead><tbody>${rows.map((d) => `
     <tr><td><b>${esc(d.title)}</b></td><td class="muted">${esc(d.company || "—")}</td><td>${stagePill(d.stage)}</td>
@@ -457,7 +462,7 @@ function renderDeals() {
 const PROPOSAL_CLS = { accepted: "ok", sent: "info", draft: "", declined: "bad" };
 function renderProposals() {
   const rows = salesData().proposals || [];
-  if (!rows.length) return `<div class="card"><p class="muted">No proposals yet.</p></div>`;
+  if (!rows.length) return note(EMPTY_SALES) + `<div class="card"><p class="muted">No proposals out.</p></div>`;
   return `<div class="grid g3">${rows.map((p) => `
     <div class="card"><h3>${esc(p.title)} <span class="badge ${PROPOSAL_CLS[p.status] || ""}">${esc(p.status || "—")}</span></h3>
       <p class="muted tiny" style="margin-top:-8px">${esc(p.client || "")}</p>
@@ -470,22 +475,28 @@ function renderProposals() {
 const ACT_CLS = { call: "lime", meeting: "info", email: "", linkedin: "warn" };
 function renderActivities() {
   const rows = [...(salesData().activities || [])].sort((a, b) => String(b.date || "").localeCompare(String(a.date || "")));
-  return `<div class="card"><h3>Activities <span class="pill">${rows.length}</span></h3>
+  return (rows.length ? "" : note(EMPTY_SALES)) +
+  `<div class="card"><h3>Activities <span class="pill">${rows.length}</span></h3>
     <table><thead><tr><th>Date</th><th>Type</th><th>Summary</th><th>Contact</th></tr></thead><tbody>${rows.map((a) => `
     <tr><td class="muted">${esc(a.date || "—")}</td><td><span class="badge ${ACT_CLS[a.type] || ""}">${esc(a.type || "—")}</span></td>
     <td><b>${esc(a.summary)}</b></td><td class="muted">${esc(a.contact || "—")}</td></tr>`).join("") || '<tr><td colspan="4" class="muted">Nothing logged.</td></tr>'}</tbody></table></div>`;
 }
 
 // ---- Outbound (prospects / leads / campaigns / templates) ----
+// WEB-660: nothing in Outbound is a real contact or a real result. Rows carry
+// `demo: true` in board.json and render the demo badge so the page cannot be
+// misread as live outbound.
+// note() escapes its argument, so this stays plain text — the badge on each row is the visible marker.
+const DEMO_NOTE = "Every row tagged demo is an illustrative target segment, not a real contact or a real result.";
 const FIT_CLS = { high: "ok", medium: "warn", low: "" };
 const LEAD_CLS = { qualified: "ok", replied: "lime", contacted: "info", new: "", bounced: "bad" };
 
 function renderProspects() {
   const rows = outboundData().prospects || [];
-  return note("Target accounts, sourced manually or via Apify / A-leads. Promote one to Leads once there is a named contact.") +
+  return note(DEMO_NOTE + " Promote one to Leads once there is a named contact.") +
   `<div class="card"><h3>Target accounts <span class="pill">${rows.length}</span></h3>
     <table><thead><tr><th>Company</th><th>Industry</th><th>Location</th><th>Size</th><th>Fit</th><th>Source</th></tr></thead><tbody>${rows.map((p) => `
-    <tr><td><b>${esc(p.company)}</b></td><td class="muted">${esc(p.industry || "—")}</td><td class="muted">${esc(p.location || "—")}</td>
+    <tr><td><b>${esc(p.company)}</b>${demoBadge(p)}</td><td class="muted">${esc(p.industry || "—")}</td><td class="muted">${esc(p.location || "—")}</td>
     <td class="muted">${esc(p.size || "—")}</td><td><span class="badge ${FIT_CLS[p.fit] || ""}">${esc(p.fit || "—")}</span></td>
     <td><span class="badge dark">${esc(p.source || "—")}</span></td></tr>`).join("") || '<tr><td colspan="6" class="muted">No prospects.</td></tr>'}</tbody></table></div>`;
 }
@@ -494,9 +505,9 @@ function renderCampaigns() {
   const rows = outboundData().campaigns || [];
   const pct = (n, d) => d ? Math.round(n / d * 100) + "%" : "0%";
   if (!rows.length) return `<div class="card"><p class="muted">No campaigns.</p></div>`;
-  return note("Instantly and A-leads keys are not wired yet — counters stay at 0 until they are.") +
+  return note("Instantly and A-leads keys are not wired yet — counters stay at 0 until they are. " + DEMO_NOTE) +
   `<div class="grid g3">${rows.map((c) => `
-    <div class="card"><h3>${esc(c.name)} <span class="badge ${c.status === "needs-key" ? "bad" : statusCls(c.status) || ""}">${esc(c.status || "—")}</span></h3>
+    <div class="card"><h3>${esc(c.name)}${demoBadge(c)} <span class="badge ${c.status === "needs-key" ? "bad" : statusCls(c.status) || ""}">${esc(c.status || "—")}</span></h3>
       <p class="muted tiny" style="margin-top:-8px">${esc(c.tool || "")}${c.goal ? " · " + esc(c.goal) : ""}</p>
       <div class="mini"><div><b>${esc(c.sent ?? 0)}</b><span>Sent</span></div>
         <div><b>${pct(c.opened || 0, c.sent || 0)}</b><span>Opened</span></div>
@@ -507,8 +518,9 @@ function renderCampaigns() {
 function renderTemplates() {
   const rows = outboundData().templates || [];
   if (!rows.length) return `<div class="card"><p class="muted">No templates.</p></div>`;
-  return `<div class="grid g2">${rows.map((t) => `
-    <div class="card"><h3>${esc(t.name)} <span class="badge ${t.channel === "linkedin" ? "info" : "lime"}">${esc(t.channel || "email")}</span><span class="pill">Step ${esc(t.step ?? 1)}</span></h3>
+  return note("Draft sequence copy, not sending anywhere yet. " + DEMO_NOTE) +
+  `<div class="grid g2">${rows.map((t) => `
+    <div class="card"><h3>${esc(t.name)}${demoBadge(t)} <span class="badge ${t.channel === "linkedin" ? "info" : "lime"}">${esc(t.channel || "email")}</span><span class="pill">Step ${esc(t.step ?? 1)}</span></h3>
       <div class="kv"><span class="k">Subject</span><span class="v">${esc(t.subject || "—")}</span></div>
       <p class="muted tiny" style="margin-top:10px">${esc(t.body || "")}</p>
     </div>`).join("")}</div>`;
@@ -544,7 +556,7 @@ function renderLeads() {
 
   const leads = outboundData().leads || [];
   const count = (s) => leads.filter((x) => x.status === s).length;
-  return note("Instantly and A-leads API keys are not wired yet — showing seed leads. Campaign metrics live under Email Campaigns.") +
+  return note("Instantly and A-leads API keys are not wired yet. " + DEMO_NOTE + " Campaign metrics live under Email Campaigns.") +
   `<div class="grid g4">
     ${statCard("Leads", leads.length, "in the list")}
     ${statCard("Contacted", count("contacted") + count("replied") + count("qualified"), "reached at least once")}
@@ -552,7 +564,7 @@ function renderLeads() {
     ${statCard("Qualified", count("qualified"), "ready for a call")}
   </div>
   <div class="card" style="margin-top:16px"><h3>Leads</h3><table><thead><tr><th>Contact</th><th>Company</th><th>Title</th><th>Status</th><th>Source</th><th>Industry</th></tr></thead><tbody>${leads.map((x) => `
-    <tr><td><b>${esc(x.name)}</b></td><td>${esc(x.company || "—")}</td><td class="muted">${esc(x.title || "—")}</td>
+    <tr><td><b>${esc(x.name)}</b>${demoBadge(x)}</td><td>${esc(x.company || "—")}</td><td class="muted">${esc(x.title || "—")}</td>
     <td><span class="badge ${LEAD_CLS[x.status] || ""}">${esc(x.status || "—")}</span></td>
     <td><span class="badge dark">${esc(x.source || "—")}</span></td><td class="muted">${esc(x.industry || "—")}</td></tr>`).join("") || '<tr><td colspan="6" class="muted">No leads.</td></tr>'}</tbody></table></div>`;
 }

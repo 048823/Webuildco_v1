@@ -44,64 +44,43 @@
       { "name": "Recruiting prospect", "industry": "Recruitment", "country": "Australia", "website": "" }
     ]
   },
-  "_sales_note": "SEED DATA. Deal values are AUD — the pipeline totals assume a single currency. Replace with real deals or wire a CRM.",
+  "_sales_note": "EMPTY BY RULING (WEB-660). The deals, proposals and activities that shipped in PR #66 were invented — dollar values with no agreed deal behind them, feeding an open-pipeline tile that read as real revenue. They are deleted. Add a row here ONLY when the deal is real and agreed; sales.test.mjs fails the build if a value appears without a source ref.",
   "sales": {
     "currency": "AUD",
-    "deals": [
-      { "title": "Everflow — website rebuild + agent integrations", "company": "Everflow", "stage": "Won", "value": 24000, "probability": 100, "owner": "CEO", "close": "2026-07-02" },
-      { "title": "Awqaf — re-scope, smaller build", "company": "Awqaf", "stage": "Negotiation", "value": 9500, "probability": 55, "owner": "CEO", "close": "2026-08-14" },
-      { "title": "Hijra Co — migration platform build", "company": "Hijra Co", "stage": "Proposal", "value": 32000, "probability": 40, "owner": "CTO", "close": "2026-08-28" },
-      { "title": "Modest retail — support agent + doc automation", "company": "Nadia Modestwear", "stage": "Proposal", "value": 16500, "probability": 30, "owner": "CEO", "close": "2026-09-04" },
-      { "title": "Recruiting agency — voice screening agent", "company": "Recruiting prospect", "stage": "Qualified", "value": 18000, "probability": 45, "owner": "CEO", "close": "2026-08-21" },
-      { "title": "NSW trades group — lead qualification agent", "company": "Trades group NSW", "stage": "Qualified", "value": 21000, "probability": 35, "owner": "CTO", "close": "2026-09-11" },
-      { "title": "Tijara — Shariah research + Telegram agent", "company": "Tijara", "stage": "Lead", "value": 12000, "probability": 20, "owner": "CTO", "close": "2026-09-25" },
-      { "title": "Mizan — expense manager MVP", "company": "Mizan", "stage": "Lead", "value": 15000, "probability": 15, "owner": "CTO", "close": "2026-10-02" }
-    ],
-    "proposals": [
-      { "title": "Hijra Co — migration platform build", "client": "Hijra Co", "status": "sent", "value": 32000, "items": 4, "valid": "2026-08-28" },
-      { "title": "Modest retail — support agent + docs", "client": "Nadia Modestwear", "status": "draft", "value": 16500, "items": 3, "valid": "2026-09-04" },
-      { "title": "Awqaf — re-scoped build", "client": "Awqaf", "status": "accepted", "value": 9500, "items": 2, "valid": "2026-08-14" }
-    ],
-    "activities": [
-      { "date": "2026-07-16", "type": "email", "summary": "Sent re-scoped Awqaf pricing", "contact": "Awqaf — ops lead" },
-      { "date": "2026-07-15", "type": "call", "summary": "Discovery call — voice screening scope", "contact": "Recruiting prospect" },
-      { "date": "2026-07-15", "type": "meeting", "summary": "Everflow handover + support plan", "contact": "Everflow — founder" },
-      { "date": "2026-07-14", "type": "email", "summary": "Proposal delivered — migration platform", "contact": "Hijra Co" },
-      { "date": "2026-07-13", "type": "linkedin", "summary": "Connection + intro message", "contact": "Trades group NSW" },
-      { "date": "2026-07-11", "type": "email", "summary": "Follow-up #2 — no reply yet", "contact": "Nadia Modestwear" },
-      { "date": "2026-07-10", "type": "call", "summary": "Qualification call — 40 site visits/mo", "contact": "Trades group NSW" }
-    ]
+    "deals": [],
+    "proposals": [],
+    "activities": []
   },
-  "_outbound_note": "SEED DATA. Campaign counters stay at 0 until the Instantly / A-leads keys are wired — see APIs & MCPs.",
+  "_outbound_note": "SEED DATA, no revenue. Every row below carries \"demo\": true and renders with a demo badge (same marker as deliverables.json in PR #67) — target segments and sequence copy, not real contacts or results. Campaign counters stay at 0 until the Instantly / A-leads keys are wired; see APIs & MCPs.",
   "outbound": {
     "prospects": [
-      { "company": "Sydney trades group", "industry": "Trades", "location": "Sydney, NSW", "size": "25-50", "fit": "high", "source": "manual" },
-      { "company": "Perth logistics SMB", "industry": "Logistics", "location": "Perth, WA", "size": "50-100", "fit": "high", "source": "manual" },
-      { "company": "AU recruiting agencies (list)", "industry": "Recruiting", "location": "NSW", "size": "10-50", "fit": "high", "source": "A-leads" },
-      { "company": "Halal F&B distributors", "industry": "Food & beverage", "location": "VIC / NSW", "size": "20-80", "fit": "medium", "source": "Apify" },
-      { "company": "Migration advisories", "industry": "Professional services", "location": "AU / MY", "size": "5-20", "fit": "medium", "source": "manual" },
-      { "company": "Allied health clinics", "industry": "Healthcare", "location": "Sydney, NSW", "size": "10-40", "fit": "low", "source": "Apify" }
+      { "company": "Sydney trades group", "industry": "Trades", "location": "Sydney, NSW", "size": "25-50", "fit": "high", "source": "manual", "demo": true },
+      { "company": "Perth logistics SMB", "industry": "Logistics", "location": "Perth, WA", "size": "50-100", "fit": "high", "source": "manual", "demo": true },
+      { "company": "AU recruiting agencies (list)", "industry": "Recruiting", "location": "NSW", "size": "10-50", "fit": "high", "source": "A-leads", "demo": true },
+      { "company": "Halal F&B distributors", "industry": "Food & beverage", "location": "VIC / NSW", "size": "20-80", "fit": "medium", "source": "Apify", "demo": true },
+      { "company": "Migration advisories", "industry": "Professional services", "location": "AU / MY", "size": "5-20", "fit": "medium", "source": "manual", "demo": true },
+      { "company": "Allied health clinics", "industry": "Healthcare", "location": "Sydney, NSW", "size": "10-40", "fit": "low", "source": "Apify", "demo": true }
     ],
     "leads": [
-      { "name": "Ops manager", "company": "Sydney trades group", "title": "Operations Manager", "status": "qualified", "source": "manual", "industry": "Trades" },
-      { "name": "Founder", "company": "Perth logistics SMB", "title": "Founder", "status": "replied", "source": "Instantly", "industry": "Logistics" },
-      { "name": "Director", "company": "Recruiting prospect", "title": "Director", "status": "qualified", "source": "referral", "industry": "Recruiting" },
-      { "name": "GM", "company": "Halal F&B distributor", "title": "General Manager", "status": "contacted", "source": "A-leads", "industry": "Food & beverage" },
-      { "name": "Practice lead", "company": "Allied health clinic", "title": "Practice Lead", "status": "contacted", "source": "Instantly", "industry": "Healthcare" },
-      { "name": "Principal", "company": "Migration advisory", "title": "Principal", "status": "new", "source": "manual", "industry": "Professional services" },
-      { "name": "Head of ops", "company": "VIC distributor", "title": "Head of Ops", "status": "bounced", "source": "A-leads", "industry": "Food & beverage" },
-      { "name": "Owner", "company": "Modest retail brand", "title": "Owner", "status": "new", "source": "manual", "industry": "Retail" }
+      { "name": "Ops manager", "company": "Sydney trades group", "title": "Operations Manager", "status": "qualified", "source": "manual", "industry": "Trades", "demo": true },
+      { "name": "Founder", "company": "Perth logistics SMB", "title": "Founder", "status": "replied", "source": "Instantly", "industry": "Logistics", "demo": true },
+      { "name": "Director", "company": "Recruiting prospect", "title": "Director", "status": "qualified", "source": "referral", "industry": "Recruiting", "demo": true },
+      { "name": "GM", "company": "Halal F&B distributor", "title": "General Manager", "status": "contacted", "source": "A-leads", "industry": "Food & beverage", "demo": true },
+      { "name": "Practice lead", "company": "Allied health clinic", "title": "Practice Lead", "status": "contacted", "source": "Instantly", "industry": "Healthcare", "demo": true },
+      { "name": "Principal", "company": "Migration advisory", "title": "Principal", "status": "new", "source": "manual", "industry": "Professional services", "demo": true },
+      { "name": "Head of ops", "company": "VIC distributor", "title": "Head of Ops", "status": "bounced", "source": "A-leads", "industry": "Food & beverage", "demo": true },
+      { "name": "Owner", "company": "Modest retail brand", "title": "Owner", "status": "new", "source": "manual", "industry": "Retail", "demo": true }
     ],
     "campaigns": [
-      { "name": "AU SMB — ops automation", "tool": "Instantly", "goal": "Book 10 discovery calls", "sent": 0, "opened": 0, "replied": 0, "status": "needs-key" },
-      { "name": "Recruiting agencies NSW", "tool": "A-leads", "goal": "Voice screening agent pilot", "sent": 0, "opened": 0, "replied": 0, "status": "needs-key" },
-      { "name": "Trades — lead qualification", "tool": "Instantly", "goal": "Pipeline build", "sent": 0, "opened": 0, "replied": 0, "status": "draft" }
+      { "name": "AU SMB — ops automation", "tool": "Instantly", "goal": "Book 10 discovery calls", "sent": 0, "opened": 0, "replied": 0, "status": "needs-key", "demo": true },
+      { "name": "Recruiting agencies NSW", "tool": "A-leads", "goal": "Voice screening agent pilot", "sent": 0, "opened": 0, "replied": 0, "status": "needs-key", "demo": true },
+      { "name": "Trades — lead qualification", "tool": "Instantly", "goal": "Pipeline build", "sent": 0, "opened": 0, "replied": 0, "status": "draft", "demo": true }
     ],
     "templates": [
-      { "name": "Ops automation — step 1", "channel": "email", "step": 1, "subject": "the 6 hours your ops team loses each week", "body": "Short opener naming the manual process, one proof line, one-question CTA." },
-      { "name": "Ops automation — step 2", "channel": "email", "step": 2, "subject": "re: the 6 hours", "body": "Bump with a 2-line case snapshot and the same single question." },
-      { "name": "Voice screening — step 1", "channel": "email", "step": 1, "subject": "screening 40 candidates a week?", "body": "Role-specific opener, agent-handles-the-first-call framing, CTA to a 15-min call." },
-      { "name": "LinkedIn intro", "channel": "linkedin", "step": 1, "subject": "—", "body": "Connection note: one line on who we build for, no pitch." }
+      { "name": "Ops automation — step 1", "channel": "email", "step": 1, "subject": "the 6 hours your ops team loses each week", "body": "Short opener naming the manual process, one proof line, one-question CTA.", "demo": true },
+      { "name": "Ops automation — step 2", "channel": "email", "step": 2, "subject": "re: the 6 hours", "body": "Bump with a 2-line case snapshot and the same single question.", "demo": true },
+      { "name": "Voice screening — step 1", "channel": "email", "step": 1, "subject": "screening 40 candidates a week?", "body": "Role-specific opener, agent-handles-the-first-call framing, CTA to a 15-min call.", "demo": true },
+      { "name": "LinkedIn intro", "channel": "linkedin", "step": 1, "subject": "—", "body": "Connection note: one line on who we build for, no pitch.", "demo": true }
     ]
   },
   "blogs": {
