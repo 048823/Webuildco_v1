@@ -5,8 +5,20 @@ const $ = (s, r = document) => r.querySelector(s);
 const h = (html) => { const t = document.createElement("template"); t.innerHTML = html.trim(); return t.content.firstElementChild; };
 const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const clip = (s, n) => { s = String(s || ""); return s.length > n ? s.slice(0, n - 1) + "…" : s; };
-const money = (n, c = "AUD") => new Intl.NumberFormat("en-AU", { style: "currency", currency: c, maximumFractionDigits: 0 }).format(n);
 const HEALTH = { ok: "ok", warn: "warn", bad: "bad" };
+
+// ---- User settings (mission-control/settings.js, localStorage-backed) ----
+const MCS = globalThis.MCSettings;
+let S = MCS.load();
+const saveSettings = () => MCS.save(S);
+
+// Amounts in board.json are held in DATA.finance.currency; everything on screen
+// is converted to the base currency chosen in Settings.
+const money = (n, from) => {
+  const src = from || DATA.finance?.currency || "AUD";
+  return new Intl.NumberFormat("en-AU", { style: "currency", currency: S.base, maximumFractionDigits: 0 })
+    .format(MCS.convert(n, src, S.base, S.fx));
+};
 
 // ---- Real workspace inventory (APIs / MCPs) ----
 const APIS = [
@@ -107,6 +119,7 @@ const SECTIONS = [
   { id: "skills", grp: "System", title: "Skills", ic: "✦", desc: "All installed skills by area", flag: "live", render: renderSkills },
   { id: "planner", grp: "System", title: "Workflow Planner", ic: "⟐", desc: "Compose a workflow from skills + APIs", flag: "live", render: renderPlanner },
   { id: "multica", grp: "System", title: "Multica", ic: "◆", desc: "Workspace activity — tasks, projects & agents", flag: "needs", render: renderMultica },
+  { id: "settings", grp: "System", title: "Settings", ic: "⚙", desc: "Modules, appearance, currency & tags — saved in this browser", flag: "live", render: renderSettings },
 ];
 
 const FLAG_LABEL = { live: "Live", manual: "Manual data", needs: "Needs credential" };
@@ -197,7 +210,7 @@ function renderBriefs(route = []) {
       <span class="badge ${m.badge}">${esc(m.label)}</span><span class="meta">›</span>
     </button>`;
   }).join("");
-  return `<div class="tabs" id="briefTabs">${BRIEF_TYPES.map(([type, label]) => `<button class="tab ${type === "all" ? "active" : ""}" data-type="${type}">${label}</button>`).join("")}</div>
+  return `<div class="tabs" id="briefTabs">${BRIEF_TYPES.map(([type, label]) => `<button class="tab ${type === S.briefTab ? "active" : ""}" data-type="${type}">${label}</button>`).join("")}</div>
   <div class="card"><h3>Briefs <span class="pill">${briefs.length}</span></h3><div class="rowlist">${rows}</div></div>`;
 }
 
@@ -244,6 +257,8 @@ function wireBriefs() {
       d.hidden = !any;
     });
   };
+  // Settings → default brief filter: reuse the tab handler rather than duplicate it.
+  if (tabs && S.briefTab !== "all") tabs.querySelector(`[data-type="${S.briefTab}"]`)?.click();
   document.querySelectorAll("[data-brief-id]").forEach((el) => {
     el.onclick = () => go("briefs/" + el.dataset.briefId);
   });
@@ -289,13 +304,29 @@ function renderProjectMap(proj) {
   return `<div class="card"><h3>Projects mind map</h3><div class="mapwrap"><svg viewBox="0 0 1500 ${H}" preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;min-width:680px;font-family:'DM Sans',system-ui,sans-serif">${parts.join("")}</svg></div></div>`;
 }
 
+// ---- Tags (Settings → Tags; assigned per project) ----
+const tagsFor = (name) => (S.assign[name] || []).map((id) => S.tags.find((t) => t.id === id)).filter(Boolean);
+const tagColor = (t) => (MCS.isHex(t.color) ? t.color : "#52525b");
+const tagChip = (t, cls = "", attrs = "") => `<span class="tag ${cls}" style="--tc:${tagColor(t)}" ${attrs}>${esc(t.label)}</span>`;
+let PROJ_FILTER = "all";
+
 function renderProjects() {
-  const tbl = (rows) => `<table><thead><tr><th>Project</th><th>Type</th><th>Stage</th><th style="width:160px">Progress</th><th>Due</th></tr></thead><tbody>${rows.map((p) => `
-    <tr><td><b>${esc(p.name)}</b></td><td class="muted">${esc(p.type)}</td>
+  const tagged = [...(DATA.projects?.clients || []), ...(DATA.projects?.internal || [])].some((p) => tagsFor(p.name).length);
+  const tbl = (rows) => `<table><thead><tr><th>Project</th><th>Type</th><th>Stage</th><th style="width:160px">Progress</th><th>Due</th></tr></thead><tbody>${rows.map((p) => {
+    const tags = tagsFor(p.name);
+    return `<tr data-tags="${esc(tags.map((t) => t.id).join(" "))}">
+    <td><b>${esc(p.name)}</b>${tags.length ? `<div class="taglist tiny">${tags.map((t) => tagChip(t)).join("")}</div>` : ""}</td><td class="muted">${esc(p.type)}</td>
     <td><span class="badge ${HEALTH[p.health] || ""}">${esc(p.stage)}</span></td>
     <td><div class="bar"><span style="width:${p.progress}%"></span></div><span class="tiny muted">${p.progress}%</span></td>
-    <td class="muted">${esc(p.due || "—")}</td></tr>`).join("")}</tbody></table>`;
-  return renderProjectMap(DATA.projects) +
+    <td class="muted">${esc(p.due || "—")}</td></tr>`;
+  }).join("")}</tbody></table>`;
+  const filter = tagged ? `<div class="taglist" id="projFilter" style="margin-bottom:16px">
+    <button class="tag pick ${PROJ_FILTER === "all" ? "on" : ""}" style="--tc:#52525b" data-filter="all">All projects</button>
+    ${S.tags.filter((t) => Object.values(S.assign).some((ids) => ids.includes(t.id)))
+      .map((t) => `<button class="tag pick ${PROJ_FILTER === t.id ? "on" : ""}" style="--tc:${tagColor(t)}" data-filter="${esc(t.id)}">${esc(t.label)}</button>`).join("")}
+  </div>` : "";
+  if (tagged) setTimeout(wireProjects, 0);
+  return filter + renderProjectMap(DATA.projects) +
     `<div class="card" style="margin-top:16px"><h3>Client pipeline</h3>${tbl(DATA.projects?.clients || [])}</div>
     <div class="card" style="margin-top:16px"><h3>Internal projects</h3>${tbl(DATA.projects?.internal || [])}</div>`;
 }
@@ -715,6 +746,24 @@ function wireDeliverables() {
   };
 }
 
+function wireProjects() {
+  const bar = $("#projFilter");
+  if (!bar) return;
+  const apply = () => {
+    bar.querySelectorAll("[data-filter]").forEach((b) => b.classList.toggle("on", b.dataset.filter === PROJ_FILTER));
+    document.querySelectorAll("#pg-projects tr[data-tags]").forEach((r) => {
+      r.hidden = PROJ_FILTER !== "all" && !r.dataset.tags.split(" ").includes(PROJ_FILTER);
+    });
+  };
+  bar.onclick = (e) => {
+    const b = e.target.closest("[data-filter]");
+    if (!b) return;
+    PROJ_FILTER = b.dataset.filter === PROJ_FILTER ? "all" : b.dataset.filter;
+    apply();
+  };
+  apply();
+}
+
 function renderLeads() {
   const l = leadsData();
   if (hasLiveLeads()) {
@@ -727,7 +776,7 @@ function renderLeads() {
       <td>${badge(p.status)}</td>
       <td><div class="bar"><span style="width:${Math.max(0, Math.min(100, +p.progress || 0))}%"></span></div><span class="tiny muted">${esc(p.done_count || 0)}/${esc(p.issue_count || 0)} done</span></td>
       <td class="muted">${esc(p.active_tasks || 0)}</td></tr>`).join("") : `<tr><td colspan="4" class="muted">No outbound projects matched.</td></tr>`;
-    const taskRows = tasks.length ? tasks.slice(0, 12).map((t) => `
+    const taskRows = tasks.length ? tasks.slice(0, S.rows).map((t) => `
       <tr><td><b>${esc(t.identifier || t.id)}</b></td><td>${esc(t.title)}${t.project ? `<div class="tiny muted">${esc(t.project)}</div>` : ""}</td>
       <td>${badge(t.status)}</td><td class="muted">${esc(t.assignee || "Unassigned")}</td></tr>`).join("") : `<tr><td colspan="4" class="muted">No related outbound tasks returned.</td></tr>`;
     return `<div class="section-note"><b>Live:</b> Derived from Multica projects. Instantly and A-leads sender metrics can be wired later.</div>
@@ -1040,12 +1089,12 @@ function renderMultica() {
   const state = m.live
     ? `<div class="section-note"><b>Live:</b> Multica API refreshed ${esc(fmtDate(m.updated))}. Showing ${esc(sum.recent_tasks || issues.length)} recent tasks.</div>`
     : `<div class="section-note"><b>Fallback:</b> ${esc(m.error || "Multica API is not configured yet. Seed data shown.")}</div>`;
-  const projectRows = projects.length ? projects.slice(0, 12).map((p) => `
+  const projectRows = projects.length ? projects.slice(0, S.rows).map((p) => `
     <tr><td><b>${esc(p.title)}</b><div class="tiny muted">${esc(p.lead || "Unassigned")}</div></td>
     <td>${badge(p.status)}</td>
     <td><div class="bar"><span style="width:${Math.max(0, Math.min(100, +p.progress || 0))}%"></span></div><span class="tiny muted">${esc(p.done_count || 0)}/${esc(p.issue_count || 0)} done</span></td>
     <td class="muted">${esc(fmtDate(p.updated_at))}</td></tr>`).join("") : `<tr><td colspan="4" class="muted">No live projects returned.</td></tr>`;
-  const issueRows = issues.length ? issues.slice(0, 14).map((i) => `
+  const issueRows = issues.length ? issues.slice(0, S.rows).map((i) => `
     <tr><td><b>${esc(i.identifier || i.id)}</b></td><td>${esc(i.title)}${i.project ? `<div class="tiny muted">${esc(i.project)}</div>` : ""}</td>
     <td>${badge(i.status)}</td><td class="muted">${esc(i.assignee || "Unassigned")}</td></tr>`).join("") : `<tr><td colspan="4" class="muted">No live tasks returned.</td></tr>`;
   const agentRows = agents.length ? agents.map((a) => `
@@ -1066,17 +1115,207 @@ function renderMultica() {
 
 const note = (t) => `<div class="section-note"><b>Placeholder:</b> ${esc(t)}</div>`;
 
+// ---- Settings ----
+const seg = (key, opts, current) => `<div class="tabs">${opts.map(([v, label]) =>
+  `<button class="tab ${v === current ? "active" : ""}" data-seg="${key}" data-val="${esc(v)}">${esc(label)}</button>`).join("")}</div>`;
+const sel = (key, opts, current) => `<select data-set="${key}">${opts.map(([v, label]) =>
+  `<option value="${esc(v)}" ${String(v) === String(current) ? "selected" : ""}>${esc(label)}</option>`).join("")}</select>`;
+
+function renderSettings() {
+  setTimeout(wireSettings, 0);
+  const projects = [...(DATA.projects?.clients || []), ...(DATA.projects?.internal || [])];
+  const cats = [...new Set(S.tags.map((t) => t.cat))];
+  const hideable = SECTIONS.filter((s) => !MCS.PINNED.includes(s.id));
+
+  const modules = `<div class="card"><h3>Navigation — show / hide modules</h3>
+    <p class="muted tiny" style="margin:-8px 0 14px">Tailor the sidebar to your workflow. Overview and Settings always stay visible.</p>
+    <div class="mods">${hideable.map((s) => `
+      <label class="mod"><span class="ic">${s.ic}</span><span class="name">${esc(s.title)}</span>
+        <input type="checkbox" data-mod="${esc(s.id)}" ${S.hidden.includes(s.id) ? "" : "checked"}><span class="sw"></span>
+      </label>`).join("")}</div>
+    <div class="tiny muted" style="margin-top:12px">${SECTIONS.length - S.hidden.length} of ${SECTIONS.length} modules shown.</div></div>`;
+
+  const appearance = `<div class="card"><h3>Appearance</h3>
+    <div class="kv"><span class="k">Theme</span><span class="v">${seg("theme", [["system", "System"], ["light", "Light"], ["dark", "Dark"]], S.theme)}</span></div>
+    <div class="kv"><span class="k">Density</span><span class="v">${seg("density", [["comfortable", "Comfortable"], ["compact", "Compact"]], S.density)}</span></div></div>`;
+
+  const defaults = `<div class="card"><h3>Defaults</h3>
+    <p class="muted tiny" style="margin:-8px 0 14px">What loads first, and how much of it.</p>
+    <div class="kv"><span class="k">Landing module</span><span class="v">${sel("landing", MCS.visible(SECTIONS, S.hidden).map((s) => [s.id, s.title]), S.landing)}</span></div>
+    <div class="kv"><span class="k">Default brief filter</span><span class="v">${sel("briefTab", BRIEF_TYPES, S.briefTab)}</span></div>
+    <div class="kv"><span class="k">Rows per table</span><span class="v">${sel("rows", MCS.ROW_CHOICES.map((n) => [n, n + " rows"]), S.rows)}</span></div>
+    <div class="kv"><span class="k">Auto-refresh live data</span><span class="v">${sel("refresh", [[0, "Off"], [1, "Every minute"], [5, "Every 5 min"], [15, "Every 15 min"]], S.refresh)}</span></div></div>`;
+
+  const fx = `<div class="card"><h3>Finance — FX &amp; base currency</h3>
+    <p class="muted tiny" style="margin:-8px 0 14px">Every dollar figure on the board is converted to your base currency. Rates are manual — units per 1 AUD.</p>
+    <div class="kv"><span class="k">Base currency</span><span class="v">${sel("base", MCS.CURRENCIES.map((c) => [c, c]), S.base)}</span></div>
+    ${MCS.CURRENCIES.filter((c) => c !== "AUD").map((c) => `
+      <div class="kv"><span class="k">1 AUD =</span><span class="v"><input type="number" step="0.0001" min="0.0001" data-fx="${c}" value="${S.fx[c]}"> ${c}</span></div>`).join("")}
+    <div class="tiny muted" style="margin-top:12px">Example: ${money(1000, "AUD")} from A$1,000.</div></div>`;
+
+  const tags = `<div class="card"><h3>Tags — colours &amp; categories</h3>
+    <p class="muted tiny" style="margin:-8px 0 14px">Tag projects for fast, colour-coded navigation. Tags become filter chips on the Projects page.</p>
+    <datalist id="tagCats">${cats.map((c) => `<option value="${esc(c)}">`).join("")}</datalist>
+    ${S.tags.map((t) => `<div class="tagrow" data-tag="${esc(t.id)}">
+      <input type="color" value="${tagColor(t)}" data-tagfield="color" aria-label="Tag colour">
+      <input type="text" value="${esc(t.label)}" data-tagfield="label" maxlength="40" aria-label="Tag name">
+      <input type="text" value="${esc(t.cat)}" data-tagfield="cat" list="tagCats" maxlength="24" aria-label="Tag category">
+      <button class="btn ghost" data-tagdel="${esc(t.id)}" title="Delete tag">×</button>
+    </div>`).join("") || '<p class="muted tiny">No tags yet.</p>'}
+    <button class="btn ghost" data-tagnew style="margin-top:12px">+ New tag</button></div>`;
+
+  const assign = `<div class="card"><h3>Project tags</h3>
+    <p class="muted tiny" style="margin:-8px 0 14px">Click a tag to apply it to a project.</p>
+    ${projects.length ? projects.map((p) => `<div class="kv" style="align-items:center">
+      <span class="k">${esc(p.name)}</span>
+      <span class="v"><span class="taglist">${S.tags.map((t) => `<button class="tag pick ${(S.assign[p.name] || []).includes(t.id) ? "on" : ""}" style="--tc:${tagColor(t)}" data-assign="${esc(p.name)}" data-tagid="${esc(t.id)}">${esc(t.label)}</button>`).join("")}</span></span>
+    </div>`).join("") : '<p class="muted tiny">No projects in board.json yet.</p>'}</div>`;
+
+  const data = `<div class="card"><h3>Data</h3>
+    <p class="muted tiny" style="margin:-8px 0 14px">Settings are stored in this browser only (<code>localStorage</code>) — nothing is sent to the server, and they do not follow you to another device.</p>
+    <div class="kv"><span class="k">Board data</span><span class="v tiny muted">${esc(DATA.updated || "—")}</span></div>
+    <div class="kv"><span class="k">Multica API</span><span class="v">${DATA.multica?.live ? '<span class="badge ok">live</span>' : '<span class="badge warn">fallback</span>'}</span></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px">
+      <button class="btn ghost" id="setRefresh">Refresh now</button>
+      <button class="btn ghost" id="setExport">Export settings</button>
+      <label class="btn ghost" style="cursor:pointer">Import<input type="file" id="setImport" accept="application/json" hidden></label>
+      <button class="btn ghost" id="setReset" style="color:var(--bad)">Reset to defaults</button>
+    </div></div>`;
+
+  return `<div class="grid" style="gap:16px">${modules}${appearance}
+    <div class="grid g2" style="gap:16px;align-items:start">${defaults}${fx}</div>
+    <div class="grid g2" style="gap:16px;align-items:start">${tags}${assign}</div>${data}</div>`;
+}
+
+function wireSettings() {
+  const pg = $("#pg-settings");
+  if (!pg) return;
+  const repaint = () => go("settings");
+
+  pg.onchange = (e) => {
+    const el = e.target;
+    if (el.dataset.mod) {
+      S.hidden = SECTIONS.filter((s) => !MCS.PINNED.includes(s.id))
+        .filter((s) => !pg.querySelector(`[data-mod="${s.id}"]`).checked).map((s) => s.id);
+      if (S.hidden.includes(S.landing)) S.landing = "overview";
+      saveSettings(); paintNav();
+      const count = pg.querySelector(".mods")?.closest(".card")?.querySelector(".tiny.muted");
+      if (count) count.textContent = `${SECTIONS.length - S.hidden.length} of ${SECTIONS.length} modules shown.`;
+      return;
+    }
+    if (el.dataset.set) {
+      const key = el.dataset.set;
+      S = MCS.merge({ ...S, [key]: el.value });
+      saveSettings();
+      if (key === "refresh") applyRefresh();
+      return repaint();
+    }
+    if (el.dataset.fx) {
+      S = MCS.merge({ ...S, fx: { ...S.fx, [el.dataset.fx]: el.value } });
+      saveSettings();
+      return repaint();
+    }
+    if (el.dataset.tagfield) {
+      const id = el.closest("[data-tag]").dataset.tag;
+      const t = S.tags.find((x) => x.id === id);
+      if (t) { t[el.dataset.tagfield] = el.value; S = MCS.merge(S); saveSettings(); }
+      return;
+    }
+    if (el.id === "setImport") {
+      const file = el.files?.[0];
+      if (!file) return;
+      file.text().then((txt) => {
+        try { S = MCS.merge(JSON.parse(txt)); } catch { return alert("That file is not valid settings JSON."); }
+        saveSettings(); applyTheme(); applyRefresh(); paintNav(); repaint();
+      });
+    }
+  };
+
+  pg.onclick = (e) => {
+    const segBtn = e.target.closest("[data-seg]");
+    if (segBtn) {
+      S = MCS.merge({ ...S, [segBtn.dataset.seg]: segBtn.dataset.val });
+      saveSettings(); applyTheme();
+      segBtn.parentElement.querySelectorAll(".tab").forEach((t) => t.classList.toggle("active", t === segBtn));
+      return;
+    }
+    const pick = e.target.closest("[data-assign]");
+    if (pick) {
+      const name = pick.dataset.assign, id = pick.dataset.tagid;
+      const current = S.assign[name] || [];
+      S.assign[name] = current.includes(id) ? current.filter((x) => x !== id) : [...current, id];
+      if (!S.assign[name].length) delete S.assign[name];
+      saveSettings();
+      pick.classList.toggle("on");
+      return;
+    }
+    const del = e.target.closest("[data-tagdel]");
+    if (del) {
+      const id = del.dataset.tagdel;
+      S.tags = S.tags.filter((t) => t.id !== id);
+      S = MCS.merge(S); // drops the deleted id from every project assignment
+      saveSettings();
+      return repaint();
+    }
+    if (e.target.closest("[data-tagnew]")) {
+      const id = "tag-" + (S.tags.length + 1) + "-" + Math.random().toString(36).slice(2, 7);
+      S.tags = [...S.tags, { id, label: "New tag", color: "#52525b", cat: "Type" }];
+      saveSettings();
+      return repaint();
+    }
+    if (e.target.id === "setRefresh") { loadMultica().then(repaint); return; }
+    if (e.target.id === "setExport") {
+      const url = URL.createObjectURL(new Blob([JSON.stringify(S, null, 2)], { type: "application/json" }));
+      const a = Object.assign(document.createElement("a"), { href: url, download: "mission-control-settings.json" });
+      a.click(); URL.revokeObjectURL(url);
+      return;
+    }
+    if (e.target.id === "setReset" && confirm("Reset every Mission Control setting in this browser to its default?")) {
+      S = MCS.clone(MCS.DEFAULTS);
+      saveSettings(); applyTheme(); applyRefresh(); paintNav();
+      return repaint();
+    }
+  };
+}
+
+function applyTheme() {
+  const dark = S.theme === "dark" || (S.theme === "system" && matchMedia("(prefers-color-scheme: dark)").matches);
+  document.documentElement.dataset.theme = dark ? "dark" : "light";
+  document.documentElement.dataset.density = S.density;
+}
+
+let refreshTimer = null;
+function applyRefresh() {
+  if (refreshTimer) clearInterval(refreshTimer);
+  refreshTimer = null;
+  if (!S.refresh) return;
+  refreshTimer = setInterval(async () => {
+    await loadMultica();
+    if (CURRENT !== "settings") go(location.hash.slice(1) || CURRENT); // never redraw under an open editor
+  }, S.refresh * 60000);
+}
+
 // ---- Router / shell ----
-function buildNav() {
-  const groups = [...new Set(SECTIONS.map((s) => s.grp || "Company"))];
+let CURRENT = "overview";
+// Group headings (WEB-541) over the visible sections (WEB-543): hiding every module in a
+// group drops its heading too, so the sidebar never shows an empty one.
+function paintNav() {
+  const visible = MCS.visible(SECTIONS, S.hidden);
+  const groups = [...new Set(visible.map((s) => s.grp || "Company"))];
   $("#nav").innerHTML = groups.map((g) => `<div class="grp">${esc(g)}</div>` +
-    SECTIONS.filter((s) => (s.grp || "Company") === g).map((s) => `<a data-id="${s.id}"><span class="ic">${s.ic}</span>${s.title}</a>`).join("")).join("");
+    visible.filter((s) => (s.grp || "Company") === g)
+      .map((s) => `<a data-id="${s.id}" class="${s.id === CURRENT ? "active" : ""}"><span class="ic">${s.ic}</span>${s.title}</a>`).join("")).join("");
+}
+function buildNav() {
+  paintNav();
   $("#pages").innerHTML = SECTIONS.map((s) => `<section class="page" id="pg-${s.id}"></section>`).join("");
 }
 function go(raw = "overview") {
   const route = String(raw || "overview").replace(/^#?\/?/, "").split("/").filter(Boolean);
   const id = route[0] || "overview";
-  const s = SECTIONS.find((x) => x.id === id) || SECTIONS[0];
+  // A hidden module is unreachable, including by hash — fall back to Overview.
+  const s = MCS.visible(SECTIONS, S.hidden).find((x) => x.id === id) || SECTIONS[0];
+  CURRENT = s.id;
   document.querySelectorAll(".nav a").forEach((a) => a.classList.toggle("active", a.dataset.id === s.id));
   document.querySelectorAll(".page").forEach((p) => p.classList.remove("active"));
   const pg = $("#pg-" + s.id);
@@ -1105,6 +1344,8 @@ async function loadMultica() {
 }
 
 async function boot() {
+  applyTheme();
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => { if (S.theme === "system") applyTheme(); });
   buildNav();
   try { DATA = await (await fetch("/mission-control/data/board.json", { cache: "no-store" })).json(); }
   catch { DATA = {}; }
@@ -1123,7 +1364,8 @@ async function boot() {
     const snap = e.target.closest("[data-go]"); if (snap) return go(snap.dataset.go);
   });
   $("#hamb").onclick = () => $("#side").classList.toggle("open");
-  window.addEventListener("hashchange", () => go(location.hash.slice(1) || "overview"));
-  go(location.hash.slice(1) || "overview");
+  window.addEventListener("hashchange", () => go(location.hash.slice(1) || S.landing));
+  applyRefresh();
+  go(location.hash.slice(1) || S.landing);
 }
 boot();
