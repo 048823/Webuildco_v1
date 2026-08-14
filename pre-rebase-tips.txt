@@ -1,0 +1,47 @@
+WEB-719 — pre-rebase branch tips (Webuildco_v1)
+Recorded: 2026-08-15, before any force-push.
+Purpose: these are the exact remote SHAs to restore if the rebase or the test run goes wrong.
+
+main at time of recording (NOT modified by this task):
+  4a47358a3e383025d11d3ab74afad908bf65c993  main
+
+Stack, in rebase order (#65 on main, each subsequent on the one above):
+
+  PR   remote branch                     pre-rebase tip SHA
+  ---  --------------------------------  ----------------------------------------
+  #65  agent/cto/29b503f3                e8be895338f4bd8752ba5e8f8712b3ae4da844d9
+  #66  agent/cto/674da7b1                9d149f81f9f89409e3896021a5ad9aaf36a473ab
+  #67  agent/cto/2ffdbc9a                9e56ffa5e568825b14f611c4f9a2e498ad3fafb4
+  #68  agent/cto/c88779f9                739e42dd99e09f73346516423f835356fb3e04bc
+  #69  agent/cto/web-543-settings        ed906361b7f2a48f45563cbde43f623e5637b8ed
+  #73  agent/cto/f3bf561a                25d0a9b6d9142acca76390e22f22867346710f90
+  #74  agent/cto/8f3b2fe0                472b2f41929f4d5bfecd3828a05dc58b32bac6d1
+  #76  agent/cto/90953de5                d077c4b5d10ffd9baceaf8142ca09159f93cbdb6
+
+PR #75 (agent/cto/8f3b2fe0-push) is out of scope for this rebase and is not touched.
+
+Pre-rebase merge-base of main and the bottom of the stack:
+  cf793ead317a1869050a87edb5174049bda7beee
+
+RESTORE PROCEDURE
+-----------------
+Restores every branch to exactly the state above. Run from a clone of the repo.
+Each line is an explicit refspec — never use a bare `git push` on this repo, because
+`branch.<name>.merge` still points at refs/heads/main (the WEB-694 hazard), so a bare
+push targets production.
+
+  git push --force origin e8be895338f4bd8752ba5e8f8712b3ae4da844d9:refs/heads/agent/cto/29b503f3
+  git push --force origin 9d149f81f9f89409e3896021a5ad9aaf36a473ab:refs/heads/agent/cto/674da7b1
+  git push --force origin 9e56ffa5e568825b14f611c4f9a2e498ad3fafb4:refs/heads/agent/cto/2ffdbc9a
+  git push --force origin 739e42dd99e09f73346516423f835356fb3e04bc:refs/heads/agent/cto/c88779f9
+  git push --force origin ed906361b7f2a48f45563cbde43f623e5637b8ed:refs/heads/agent/cto/web-543-settings
+  git push --force origin 25d0a9b6d9142acca76390e22f22867346710f90:refs/heads/agent/cto/f3bf561a
+  git push --force origin 472b2f41929f4d5bfecd3828a05dc58b32bac6d1:refs/heads/agent/cto/8f3b2fe0
+  git push --force origin d077c4b5d10ffd9baceaf8142ca09159f93cbdb6:refs/heads/agent/cto/90953de5
+
+Note: restore uses --force, not --force-with-lease, on purpose — after our own force-push
+the remote no longer matches the lease we held, and the whole point of a restore is to
+overwrite our own work with the recorded SHA.
+
+The commits above are not garbage-collected while the PRs reference them, so these SHAs
+stay fetchable from the remote (`git fetch origin <sha>`) even after the branch moves.
