@@ -20,7 +20,8 @@
     "briefs:publish-pr": "node mission-control/briefs/publish-pr.mjs",
     "briefs:deliver": "node mission-control/briefs/deliver-briefs.mjs",
     "briefs:verify": "node mission-control/briefs/verify-production.mjs",
-    "serve": "python3 -m http.server 8000"
+    "serve": "python3 -m http.server 8000",
+    "check:overflow": "node tools/check-overflow.mjs"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.0.0",
