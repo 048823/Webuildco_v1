@@ -7,10 +7,11 @@ Spam Act is account-scoped, so per-campaign settings are not a control.
 ## Flow
 
 ```
-GET /api/v2/emails ─┐
-GET /block-lists-entries ─┼─ optout-scan.py ─→ runs/suppression/suppression-list.json ─→ check.mjs (gate)
-$SUPPRESSION_SEED ─┘                                     │
-                                                          └─→ bulk_create_payload ─→ blocklist-write.mjs (OFF)
+GET /api/v2/emails ───────┐
+GET /block-lists-entries ─┤
+domain-blocklist.txt ─────┼─ optout-scan.py ─→ runs/suppression/suppression-list.json ─→ check.mjs (gate)
+$SUPPRESSION_SEED ────────┘                             │
+                                                        └─→ bulk_create_payload ─→ blocklist-write.mjs (OFF)
 ```
 
 ```sh
@@ -29,12 +30,41 @@ npm run suppression:test
 - **Match is account-wide**: lowercased, plus-tag stripped, and a bare-domain
   entry suppresses every address at that domain.
 - **Ground truth is the API**, not our records — the store is rebuilt each run.
+- **A rebuild that drops a suppressed domain fails.** `optout-scan.py` re-reads
+  the store it just wrote and exits non-zero if any `domain-blocklist.txt` entry
+  is missing; `npm run suppression:test` fails if a domain is deleted from the
+  file. A store that silently loses entries is worse than none, because we cite it.
+
+## Where each entry lives, and what survives a rebuild (WEB-605)
+
+The store is rebuilt from scratch every run and is gitignored, so nothing in it
+is durable on its own. Durability comes from the source an entry is rebuilt
+*from*:
+
+| source | holds | durable? |
+|---|---|---|
+| `GET /emails` opt-out replies | addresses that replied "stop" | yes — re-derived from the API every run |
+| `GET /block-lists-entries` | Instantly's own blocklist | yes — lives in Instantly |
+| `domain-blocklist.txt` | domains suppressed account-wide | yes — repo-tracked, reviewed, on every machine |
+| `$SUPPRESSION_SEED` | addresses suppressed by ruling | **no** — one off-repo file, one machine |
+
+A domain therefore goes in `domain-blocklist.txt`, never only in the seed. A
+domain is not personal data, so tracking it costs nothing and buys review,
+history, and survival. Addresses stay in the seed because they are.
+
+`$SUPPRESSION_SEED` is optional and unset by default — as of 12-Aug-2026 no
+canonical seed file exists, and no machine runs the reconcile on a schedule; it
+runs on whatever agent runtime is asked to run it. Anything that must survive a
+rebuild goes in the repo file, which is why the seed being absent is not a
+breach and a missing `domain-blocklist.txt` is.
 
 ## Data handling
 
 The store and the seed hold personal data. This repo is served publicly, so
 neither may be committed: `runs/` is in `.gitignore`, and `tools/suppression`
 plus `runs` are in `.assetsignore`. Keep `$SUPPRESSION_SEED` outside the repo.
+`domain-blocklist.txt` holds domains only — no addresses, and the reconcile
+refuses to rebuild if a line is anything but a bare domain.
 
 ## The gated write
 
