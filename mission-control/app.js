@@ -70,6 +70,7 @@ const fmtDate = (s) => {
 let DATA = {};
 let CREATIVE = {}; // data/creative.json — owned by ECD, drives the Creative section
 let BRIEFS = []; // data/briefs.json — generated from Board Reports / Daily Logs
+let DELIV = {}; // data/deliverables.json — client delivery: clients, projects, tasks, time, deployments, portal
 const hasLiveBlogs = () => Boolean(DATA.multica?.live && DATA.multica?.blogs?.live);
 const blogsData = () => hasLiveBlogs() ? DATA.multica.blogs : (DATA.blogs || { columns: [], cards: [] });
 const hasLiveLeads = () => Boolean(DATA.multica?.live && DATA.multica?.leads?.live);
@@ -80,6 +81,7 @@ const SECTIONS = [
   { id: "overview", group: "Overview", title: "Overview", ic: "◫", desc: "Company at a glance — to-dos, briefs, live snapshot", flag: "manual", render: renderOverview },
   { id: "briefs", group: "Overview", title: "Briefs", ic: "▥", desc: "Morning, EOD & cadence reports", flag: "manual", render: renderBriefs },
   { id: "projects", group: "Overview", title: "Projects", ic: "▤", desc: "Client pipeline + internal projects", flag: "manual", render: renderProjects },
+  { id: "deliverables", group: "Overview", title: "Deliverables", ic: "▣", desc: "Client work & progress — projects, tasks, time, deployments, portal", flag: "manual", render: renderDeliverables },
   { id: "crm", group: "Sales", title: "CRM", ic: "❏", desc: "Contacts & companies", flag: "manual", render: renderCrm },
   { id: "pipeline", group: "Sales", title: "Pipeline", ic: "▩", desc: "Every deal by stage — open and closed", flag: "manual", render: renderPipeline },
   { id: "deals", group: "Sales", title: "Deals", ic: "◇", desc: "Deal list — value, stage & probability", flag: "manual", render: renderDeals },
@@ -156,6 +158,7 @@ function renderOverview() {
       ${snap("Pipeline", `${money(weighted(open), salesCur())} weighted`, "pipeline")}
       ${snap("Proposals", `${(d.sales?.proposals || []).length} out`, "proposals")}
       ${snap("Outbound", outboundCount + (hasLiveLeads() ? " projects" : " leads"), "leads")}
+      ${snap("Deliverables", `${dvClients().filter((c) => c.kind === "active").length} active · ${dvClients().filter((c) => c.kind === "potential").length} in pipeline`, "deliverables")}
       ${snap("Blogs", blogCount + " cards", "blogs")}
       ${snap("Finance", money(monthly) + "/mo", "finance")}
       ${snap("APIs / MCPs", APIS.filter((a) => a.status === "connected").length + " connected", "apis")}
@@ -526,6 +529,179 @@ function renderTemplates() {
     </div>`).join("")}</div>`;
 }
 
+// ---- Deliverables — client work & progress, from data/deliverables.json ----
+const DELIV_TABS = [["clients", "Clients"], ["projects", "Projects"], ["tasks", "Tasks"], ["time", "Time"], ["deploys", "Deployments"], ["portal", "Client portal"]];
+const dvClients = () => DELIV.clients || [];
+const dvClient = (id) => dvClients().find((c) => c.id === id);
+const dvName = (id) => dvClient(id)?.name || (id === "webuild" ? "WeBuild (internal)" : id || "—");
+const dvCur = () => DELIV.currency || "AUD";
+const dvDemo = (c) => (c && c.demo ? ' <span class="badge">demo</span>' : "");
+const PRIO = { urgent: "bad", high: "warn", medium: "info", low: "" };
+const INV = { paid: "ok", sent: "info", overdue: "bad", draft: "" };
+const APPR = { approved: "ok", awaiting: "warn", changes: "bad" };
+const dvBar = (pct) => `<div class="bar"><span style="width:${Math.max(0, Math.min(100, +pct || 0))}%"></span></div><span class="tiny muted">${Math.round(+pct || 0)}%</span>`;
+
+function renderDeliverables(route = []) {
+  const tab = DELIV_TABS.some(([id]) => id === route[0]) ? route[0] : "clients";
+  const cs = dvClients();
+  const pipeline = cs.filter((c) => c.kind === "potential");
+  const active = cs.filter((c) => c.kind === "active");
+  const tasks = DELIV.tasks || [];
+  const entries = DELIV.time?.entries || [];
+  const billable = entries.filter((e) => e.billable).reduce((s, e) => s + e.hours * (e.rate || 0), 0);
+  setTimeout(wireDeliverables, 0);
+  const pages = {
+    clients: renderDvClients,
+    projects: renderDvProjects,
+    tasks: renderDvTasks,
+    time: renderDvTime,
+    deploys: renderDvDeploys,
+    portal: renderDvPortal,
+  };
+  return `<div class="section-note">Rows tagged <span class="badge">demo</span> are WeBuild's own sample clients — illustrative numbers, not real engagements. <b>Optora</b> and <b>Awqaf</b> are real pipeline entries, prefilled from the work already done with them.</div>
+  <div class="grid g4">
+    ${statCard("Active clients", active.length, "in delivery")}
+    ${statCard("In pipeline", pipeline.length, "potential clients")}
+    ${statCard("Open tasks", tasks.filter((t) => t.col !== "Done").length, "across all projects")}
+    ${statCard("Billable this month", money(billable, dvCur()), "logged hours × rate")}
+  </div>
+  <div class="tabs" id="dvTabs" style="margin-top:16px">${DELIV_TABS.map(([id, label]) => `<button class="tab ${id === tab ? "active" : ""}" data-tab="${id}">${label}</button>`).join("")}</div>
+  <div id="dvPages"><div class="tabpage active" id="dv-${tab}">${pages[tab]()}</div></div>`;
+}
+
+function renderDvClients() {
+  const cs = dvClients();
+  const pipeline = cs.filter((c) => c.kind === "potential");
+  const rest = cs.filter((c) => c.kind !== "potential");
+  const value = (c) => [c.build_value ? money(c.build_value, dvCur()) + " build" : null, c.retainer ? money(c.retainer, dvCur()) + "/mo" : null].filter(Boolean).join(" · ") || "TBC";
+  const list = (title, items) => (items || []).length ? `<div style="margin-top:10px"><div class="muted tiny" style="font-weight:600">${esc(title)}</div><ul style="margin:6px 0 0 18px;font-size:13px">${items.map((x) => `<li style="margin-bottom:4px">${esc(x)}</li>`).join("")}</ul></div>` : "";
+  const cards = pipeline.map((c) => `<div class="card">
+    <h3>${esc(c.name)} <span class="badge ${HEALTH[c.health] || ""}">${esc(c.stage)}</span></h3>
+    <p class="muted tiny" style="margin-top:-8px">${esc(c.engagement)}</p>
+    <div class="kv"><span class="k">Value</span><span class="v">${esc(value(c))}</span></div>
+    <div class="kv"><span class="k">Contacts</span><span class="v tiny">${esc(c.contacts || "—")}</span></div>
+    <div class="kv"><span class="k">Profile</span><span class="v tiny">${esc(c.profile || "—")}</span></div>
+    ${list("Delivered so far", c.delivered)}
+    ${list("Blockers", c.blockers)}
+    <div class="kv" style="margin-top:10px"><span class="k"><b>Next step</b></span><span class="v tiny">${esc(c.next_step || "—")}</span></div>
+    ${(c.refs || []).length ? `<div class="chips" style="margin-top:10px">${c.refs.map((r) => `<span class="chip">${esc(r)}</span>`).join("")}</div>` : ""}
+  </div>`).join("") || '<div class="card"><p class="muted">No potential clients in the pipeline.</p></div>';
+  return `<div class="card"><h3>Pipeline — potential clients <span class="pill">${pipeline.length}</span></h3><p class="muted tiny" style="margin-top:-6px">Real engagements. Everything below is what has actually been delivered and what is blocking each one.</p></div>
+  <div class="grid g2" style="margin-top:16px">${cards}</div>
+  <div class="card" style="margin-top:16px"><h3>Clients</h3><table><thead><tr><th>Client</th><th>Engagement</th><th>Stage</th><th>Owner</th><th>Value</th></tr></thead><tbody>${rest.map((c) => `
+    <tr><td><b>${esc(c.name)}</b>${dvDemo(c)}<div class="tiny muted">${esc(c.profile || "")}</div></td>
+    <td class="muted">${esc(c.engagement)}</td>
+    <td><span class="badge ${HEALTH[c.health] || ""}">${esc(c.stage)}</span></td>
+    <td class="muted">${esc(c.owner || "—")}</td>
+    <td>${esc(value(c))}</td></tr>`).join("") || '<tr><td colspan="5" class="muted">No clients yet.</td></tr>'}</tbody></table></div>`;
+}
+
+function renderDvProjects() {
+  const rows = (DELIV.projects || []).map((p) => {
+    const c = dvClient(p.client);
+    return `<tr><td><b>${esc(p.name)}</b><div class="tiny muted">${esc(dvName(p.client))}${c && c.demo ? " · demo" : ""}</div></td>
+    <td><span class="badge ${HEALTH[p.health] || statusCls(p.status)}">${esc(p.stage)}</span></td>
+    <td>${dvBar(p.progress)}</td>
+    <td class="muted">${esc(p.due || "—")}</td>
+    <td>${p.value ? money(p.value, dvCur()) : "—"}</td></tr>`;
+  }).join("") || '<tr><td colspan="5" class="muted">No projects yet.</td></tr>';
+  return `<div class="card"><h3>Delivery projects</h3><table><thead><tr><th>Project</th><th>Stage</th><th style="width:160px">Progress</th><th>Due</th><th>Value</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+
+function renderDvTasks() {
+  const cols = DELIV.task_columns || ["Todo", "In progress", "Blocked", "Done"];
+  const tasks = DELIV.tasks || [];
+  return `<div class="kan">${cols.map((col) => {
+    const items = tasks.filter((t) => t.col === col);
+    return `<div class="col"><h4>${esc(col)}<span>${items.length}</span></h4>${items.map((t) => `
+      <div class="item"><div class="t">${esc(t.title)}</div>
+        <div class="m">${esc(dvName(t.client))}${t.project ? " · " + esc(clip(t.project, 34)) : ""}</div>
+        <div style="margin-top:6px;display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+          <span class="badge ${PRIO[t.priority] ?? ""}">${esc(t.priority || "—")}</span>
+          <span class="tiny muted">${esc(t.owner || "Unassigned")}${t.due ? " · " + esc(t.due) : ""}</span>
+        </div></div>`).join("") || '<p class="muted tiny">—</p>'}</div>`;
+  }).join("")}</div>`;
+}
+
+function renderDvTime() {
+  const t = DELIV.time || { entries: [], retainers: [] };
+  const entries = t.entries || [];
+  const hours = entries.reduce((s, e) => s + (+e.hours || 0), 0);
+  const billableHours = entries.filter((e) => e.billable).reduce((s, e) => s + (+e.hours || 0), 0);
+  const value = entries.filter((e) => e.billable).reduce((s, e) => s + e.hours * (e.rate || 0), 0);
+  const cost = entries.reduce((s, e) => s + (+e.cost || 0), 0);
+  return `${t.note ? `<div class="section-note">${esc(t.note)}</div>` : ""}
+  <div class="grid g4">
+    ${statCard("Hours logged", hours.toFixed(1), billableHours.toFixed(1) + " billable")}
+    ${statCard("Billable value", money(value, dvCur()), "at client rates")}
+    ${statCard("Est. cost", money(cost, dvCur()), "compute + tooling")}
+    ${statCard("Est. margin", money(value - cost, dvCur()), "value − cost")}
+  </div>
+  <div class="grid g2" style="margin-top:16px">
+    <div class="card"><h3>Retainer burn · ${esc(t.month || "this month")}</h3>${(t.retainers || []).map((r) => `
+      <div style="margin-bottom:12px"><div class="kv"><span class="k">${esc(dvName(r.client))}</span><span class="v tiny">${r.hours_used}h / ${r.hours_included}h</span></div>
+      ${dvBar(r.hours_included ? (r.hours_used / r.hours_included) * 100 : 0)}</div>`).join("") || '<p class="muted">No retainers.</p>'}</div>
+    <div class="card"><h3>Recent entries</h3><table><thead><tr><th>Date</th><th>Project</th><th>Who</th><th>Hours</th></tr></thead><tbody>${entries.map((e) => `
+      <tr><td class="muted">${esc(e.date)}</td><td>${esc(clip(e.project || dvName(e.client), 38))}<div class="tiny muted">${esc(dvName(e.client))}</div></td>
+      <td class="muted">${esc(e.who || "—")}</td><td><b>${(+e.hours).toFixed(1)}h</b>${e.billable ? "" : ' <span class="tiny muted">nb</span>'}</td></tr>`).join("") || '<tr><td colspan="4" class="muted">Nothing logged.</td></tr>'}</tbody></table></div>
+  </div>`;
+}
+
+function renderDvDeploys() {
+  const all = DELIV.deployments || [];
+  const groups = [...new Set(all.map((d) => d.client))];
+  const envCls = { live: "ok", staging: "warn", demo: "info" };
+  return `<div class="card"><h3>Live deployments <span class="pill">${all.length}</span></h3><p class="muted tiny" style="margin-top:-6px">Every site, app and dashboard we host — client-facing and internal.</p></div>
+  ${groups.map((g) => {
+    const rows = all.filter((d) => d.client === g);
+    const c = dvClient(g);
+    return `<div class="card" style="margin-top:16px"><h3>${esc(dvName(g))}${dvDemo(c)} <span class="badge">${rows.length}</span></h3><div class="rowlist">${rows.map((d) => `
+      <div class="row"><span class="name">${esc(d.name)}${d.url ? `<a href="${esc(d.url)}" target="_blank" rel="noopener" style="display:block;font-size:12px;color:var(--info);font-weight:600">${esc(d.url.replace(/^https?:\/\//, ""))} ↗</a>` : '<span class="tiny muted" style="display:block">not deployed</span>'}</span>
+      <span class="badge ${envCls[d.env] || ""}">${esc(d.env)}</span><span class="meta">${esc(d.audience)}</span></div>`).join("")}</div></div>`;
+  }).join("")}`;
+}
+
+function renderDvPortal(id) {
+  const cs = dvClients();
+  const cur = cs.find((c) => c.id === id) || cs[0];
+  if (!cur) return `<div class="card"><p class="muted">No clients yet.</p></div>`;
+  const p = DELIV.portal || {};
+  const projects = (DELIV.projects || []).filter((x) => x.client === cur.id);
+  const approvals = (p.approvals || []).filter((x) => x.client === cur.id);
+  const invoices = (p.invoices || []).filter((x) => x.client === cur.id);
+  return `<div class="card"><h3>Preview what ${esc(cur.name)} sees${dvDemo(cur)}</h3>
+    <p class="muted tiny" style="margin-top:-6px">Status, approvals, invoices and the compliance promises we hold ourselves to.</p>
+    <select id="dvPortalPick" style="margin-top:10px;padding:9px 12px;border:1px solid var(--line);border-radius:10px;font-family:inherit">
+      ${cs.map((c) => `<option value="${esc(c.id)}" ${c.id === cur.id ? "selected" : ""}>${esc(c.name)}${c.demo ? " (demo)" : ""}</option>`).join("")}
+    </select></div>
+  <div class="grid g2" style="margin-top:16px">
+    <div class="card"><h3>Project progress</h3>${projects.map((x) => `
+      <div style="margin-bottom:12px"><div class="kv"><span class="k">${esc(x.name)}</span><span class="v tiny">${esc(x.stage)}</span></div>${dvBar(x.progress)}</div>`).join("") || '<p class="muted">No projects.</p>'}</div>
+    <div class="card"><h3>Approvals ${approvals.length ? `<span class="pill">${approvals.length}</span>` : ""}</h3>${approvals.map((a) => `
+      <div class="kv"><span class="k">${esc(a.item)}<span class="tiny muted" style="display:block">${esc(clip(a.project || "", 42))} · ${esc(a.date)}</span></span>
+      <span class="v"><span class="badge ${APPR[a.status] || ""}">${esc(a.status)}</span></span></div>`).join("") || '<p class="muted">Nothing awaiting review.</p>'}</div>
+  </div>
+  <div class="grid g2" style="margin-top:16px">
+    <div class="card"><h3>Invoices</h3><table><tbody>${invoices.map((i) => `
+      <tr><td class="muted">${esc(i.ref)}</td><td><b>${money(i.amount, dvCur())}</b></td><td><span class="badge ${INV[i.status] || ""}">${esc(i.status)}</span></td><td class="muted">${esc(i.date)}</td></tr>`).join("") || '<tr><td class="muted">No invoices.</td></tr>'}</tbody></table></div>
+    <div class="card"><h3>Compliance</h3>${(p.compliance || []).map((x) => `
+      <div class="kv"><span class="k">✓ ${esc(x)}</span></div>`).join("") || '<p class="muted">No checklist.</p>'}</div>
+  </div>`;
+}
+
+function wireDeliverables() {
+  const tabs = $("#dvTabs"), pages = $("#dvPages");
+  if (!tabs || !pages) return;
+  tabs.onclick = (e) => {
+    const b = e.target.closest(".tab"); if (!b) return;
+    go("deliverables/" + b.dataset.tab); // tab lives in the hash, so a tab is linkable
+  };
+  pages.onchange = (e) => {
+    if (e.target.id !== "dvPortalPick") return;
+    $("#dv-portal").innerHTML = renderDvPortal(e.target.value);
+  };
+}
+
 function renderLeads() {
   const l = leadsData();
   if (hasLiveLeads()) {
@@ -814,6 +990,8 @@ async function boot() {
   catch { CREATIVE = {}; }
   try { BRIEFS = await (await fetch("/mission-control/data/briefs.json", { cache: "no-store" })).json(); if (!Array.isArray(BRIEFS)) BRIEFS = []; }
   catch { BRIEFS = []; }
+  try { DELIV = await (await fetch("/mission-control/data/deliverables.json", { cache: "no-store" })).json(); }
+  catch { DELIV = {}; }
   await loadMultica();
   $("#upd").textContent = DATA.updated ? "updated " + DATA.updated : "";
   document.addEventListener("click", (e) => {

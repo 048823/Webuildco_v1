@@ -1,0 +1,187 @@
+{
+  "_note": "Delivery data for the Deliverables section. Rows with \"demo\": true are ILLUSTRATIVE sample clients built by WeBuild to show what delivery tracking looks like — they are not real engagements and their numbers are invented. Optora and Awqaf are real pipeline entries; their fields are prefilled from WEB-45, WEB-126/127/150/151 and the Jul-2026 briefs. Edit this file to update the section.",
+  "updated": "2026-08-10",
+  "currency": "AUD",
+  "clients": [
+    {
+      "id": "optora",
+      "name": "Optora",
+      "kind": "potential",
+      "demo": false,
+      "engagement": "AI recruitment agent — HR command centre",
+      "stage": "Proposal delivered · awaiting outcome",
+      "owner": "Johan",
+      "health": "warn",
+      "since": "2026-07-01",
+      "build_value": 9000,
+      "retainer": 900,
+      "contacts": "Mustafa (CEO) · Ibrahim (People Ops, primary user) · Salahudin",
+      "profile": "Data-centre physical-layer services · 56 staff · 25+ cities · 20+ DCs · 7 countries",
+      "delivered": [
+        "Optora HR Command Center demo (single-file, Optora-branded): Cockpit, JD Builder, Processing, Open Roles, Coverage & Headcount, Certifications, Onboarding, Global Ops map, Policy Assistant",
+        "D-Day pricing pack, 27 Jul: A$9,000 fixed build (Foundation Pilot, 50/50) + A$900/mo retainer + expansion menu — branded PDF + talk track",
+        "Day-22 revival package (22 Jul) — footprint re-verified at 22 cities, contractor-bench thesis confirmed (no careers page)",
+        "Follow-up pack staged and ready to ship same day (WEB-324)"
+      ],
+      "blockers": [
+        "No outcome posted on WEB-45 — live / follow-up / dead",
+        "5 discovery questions with Ibrahim still block pilot scope (who posts jobs today, real recruiter cost, volume + FTE/contractor split, exact titles/bands, which inbox)"
+      ],
+      "next_step": "One-word outcome on WEB-45 → follow-up pack ships same day",
+      "refs": ["WEB-45", "WEB-324", "WEB-318"]
+    },
+    {
+      "id": "awqaf",
+      "name": "Awqaf (Everflow Waqf)",
+      "kind": "potential",
+      "demo": false,
+      "engagement": "everflowwaqf.org V2 rebuild + fundraising stack",
+      "stage": "Stalled at pricing · re-scope smaller",
+      "owner": "Johan",
+      "health": "warn",
+      "since": "2026-07-15",
+      "build_value": null,
+      "retainer": null,
+      "contacts": "Awqaf Australia (ACNC-registered, DGR-endorsed) — named fund",
+      "profile": "Perpetual Islamic endowment · Forever Fund + Endowment Fund · 3% of WeBuild profits flow to the waqf",
+      "delivered": [
+        "V2 site built in repo everflow-waqf-v2 (HANDOVER.md documents state, deploy setup, conventions)",
+        "Design direction + build scope written up (WEB-126, WEB-127)",
+        "Pilot-partner commercial structure defined (A$/hr + case study / testimonial / referral obligations) — later reused as the Optora pricing template"
+      ],
+      "blockers": [
+        "Deploy of V2 to the live Cloudflare site blocked — repo access / Cloudflare credentials (WEB-150)",
+        "Pricing not agreed — engagement paused pending a smaller scope"
+      ],
+      "next_step": "Unblock the V2 deploy, then re-price the smaller scope",
+      "refs": ["WEB-126", "WEB-127", "WEB-150", "WEB-151", "WEB-128", "WEB-129", "WEB-130"]
+    },
+    {
+      "id": "northshore",
+      "name": "Northshore Plumbing Co",
+      "kind": "active",
+      "demo": true,
+      "engagement": "Missed-call voice agent + booking handoff",
+      "stage": "Delivery",
+      "owner": "Johan",
+      "health": "ok",
+      "since": "2026-06-02",
+      "build_value": 6500,
+      "retainer": 750,
+      "contacts": "Demo client — illustrative data only",
+      "profile": "Sydney trades · 11 vans · after-hours calls going to voicemail",
+      "delivered": [],
+      "blockers": [],
+      "next_step": "Demo row — shows an active build mid-delivery",
+      "refs": []
+    },
+    {
+      "id": "corella",
+      "name": "Corella Legal",
+      "kind": "active",
+      "demo": true,
+      "engagement": "Document-intake automation (client onboarding packs)",
+      "stage": "Discovery",
+      "owner": "Johan",
+      "health": "ok",
+      "since": "2026-07-21",
+      "build_value": 12000,
+      "retainer": 1200,
+      "contacts": "Demo client — illustrative data only",
+      "profile": "Parramatta firm · 6 lawyers · 40+ intake packs/mo keyed by hand",
+      "delivered": [],
+      "blockers": [],
+      "next_step": "Demo row — shows a build still in discovery",
+      "refs": []
+    },
+    {
+      "id": "loop",
+      "name": "Loop Fitness Group",
+      "kind": "past",
+      "demo": true,
+      "engagement": "Lead-qualification agent across 4 sites",
+      "stage": "Complete · in support",
+      "owner": "Johan",
+      "health": "ok",
+      "since": "2026-04-08",
+      "build_value": 8000,
+      "retainer": 600,
+      "contacts": "Demo client — illustrative data only",
+      "profile": "4 gyms · web + Meta leads qualified and routed to site managers",
+      "delivered": [],
+      "blockers": [],
+      "next_step": "Demo row — shows a finished build on a support retainer",
+      "refs": []
+    }
+  ],
+  "_projects_note": "Progress % are manual estimates, not live milestone data.",
+  "projects": [
+    { "client": "optora", "name": "Foundation Pilot — Smart Hands / Amsterdam", "stage": "Proposed", "status": "pipeline", "progress": 0, "due": null, "value": 9000, "health": "planned" },
+    { "client": "optora", "name": "HR Command Center demo", "stage": "Delivered (pre-sale)", "status": "done", "progress": 100, "due": "2026-07-27", "value": 0, "health": "ok" },
+    { "client": "awqaf", "name": "everflowwaqf.org V2 — build", "stage": "Built, not deployed", "status": "blocked", "progress": 80, "due": null, "value": 0, "health": "warn" },
+    { "client": "awqaf", "name": "Fundraising stack (AI meetups · dakwah · Rattil)", "stage": "Backlog", "status": "pipeline", "progress": 5, "due": null, "value": 0, "health": "planned" },
+    { "client": "northshore", "name": "Voice agent — build & cutover", "stage": "Delivery", "status": "active", "progress": 65, "due": "2026-08-22", "value": 6500, "health": "ok" },
+    { "client": "corella", "name": "Intake automation — discovery", "stage": "Discovery", "status": "active", "progress": 25, "due": "2026-08-29", "value": 12000, "health": "ok" },
+    { "client": "loop", "name": "Lead-qualification agent", "stage": "Complete", "status": "done", "progress": 100, "due": "2026-05-30", "value": 8000, "health": "ok" }
+  ],
+  "task_columns": ["Todo", "In progress", "Blocked", "Done"],
+  "tasks": [
+    { "title": "Post the Optora outcome on WEB-45 (live / follow-up / dead)", "client": "optora", "project": "Foundation Pilot — Smart Hands / Amsterdam", "col": "Todo", "priority": "urgent", "owner": "Johan", "due": "2026-08-11" },
+    { "title": "Run the 5 discovery questions with Ibrahim", "client": "optora", "project": "Foundation Pilot — Smart Hands / Amsterdam", "col": "Todo", "priority": "high", "owner": "Johan", "due": "2026-08-14" },
+    { "title": "Follow-up pack — staged, ships on outcome", "client": "optora", "project": "Foundation Pilot — Smart Hands / Amsterdam", "col": "In progress", "priority": "high", "owner": "CTO", "due": "2026-08-11" },
+    { "title": "Deploy everflowwaqf.org V2 to the live site", "client": "awqaf", "project": "everflowwaqf.org V2 — build", "col": "Blocked", "priority": "high", "owner": "CTO", "due": null },
+    { "title": "Re-price the smaller Awqaf scope", "client": "awqaf", "project": "everflowwaqf.org V2 — build", "col": "Todo", "priority": "medium", "owner": "Johan", "due": null },
+    { "title": "Creative-director review doc (docs/80)", "client": "awqaf", "project": "everflowwaqf.org V2 — build", "col": "Todo", "priority": "low", "owner": "CTO", "due": null },
+    { "title": "Call-flow script sign-off", "client": "northshore", "project": "Voice agent — build & cutover", "col": "In progress", "priority": "high", "owner": "Johan", "due": "2026-08-13" },
+    { "title": "Port test number + failover to mobile", "client": "northshore", "project": "Voice agent — build & cutover", "col": "Todo", "priority": "medium", "owner": "CTO", "due": "2026-08-18" },
+    { "title": "Booking calendar integration", "client": "northshore", "project": "Voice agent — build & cutover", "col": "Done", "priority": "medium", "owner": "CTO", "due": "2026-08-05" },
+    { "title": "Map the 12 intake document types", "client": "corella", "project": "Intake automation — discovery", "col": "In progress", "priority": "medium", "owner": "Johan", "due": "2026-08-15" },
+    { "title": "Monthly support check — agent transcripts", "client": "loop", "project": "Lead-qualification agent", "col": "Done", "priority": "low", "owner": "CTO", "due": "2026-08-01" }
+  ],
+  "time": {
+    "month": "2026-08",
+    "note": "Hours are logged manually. Cost is the internal run-rate (compute + tooling), not a salary.",
+    "retainers": [
+      { "client": "northshore", "hours_included": 8, "hours_used": 5.5 },
+      { "client": "loop", "hours_included": 4, "hours_used": 1.5 }
+    ],
+    "entries": [
+      { "date": "2026-08-10", "client": "optora", "project": "Foundation Pilot — Smart Hands / Amsterdam", "who": "Johan", "hours": 1.5, "billable": false, "rate": 0, "cost": 0 },
+      { "date": "2026-08-08", "client": "awqaf", "project": "everflowwaqf.org V2 — build", "who": "CTO", "hours": 2.0, "billable": false, "rate": 0, "cost": 0 },
+      { "date": "2026-08-07", "client": "northshore", "project": "Voice agent — build & cutover", "who": "CTO", "hours": 3.5, "billable": true, "rate": 180, "cost": 40 },
+      { "date": "2026-08-05", "client": "northshore", "project": "Voice agent — build & cutover", "who": "Johan", "hours": 2.0, "billable": true, "rate": 180, "cost": 25 },
+      { "date": "2026-08-04", "client": "corella", "project": "Intake automation — discovery", "who": "Johan", "hours": 4.0, "billable": true, "rate": 220, "cost": 30 },
+      { "date": "2026-08-01", "client": "loop", "project": "Lead-qualification agent", "who": "CTO", "hours": 1.5, "billable": true, "rate": 150, "cost": 15 }
+    ]
+  },
+  "deployments": [
+    { "client": "awqaf", "name": "Everflow Waqf (live, V1)", "url": "https://everflowwaqf.org", "env": "live", "audience": "client" },
+    { "client": "awqaf", "name": "Everflow Waqf V2 (built, awaiting deploy)", "url": null, "env": "staging", "audience": "client" },
+    { "client": "optora", "name": "Optora HR Command Center (demo, local)", "url": null, "env": "demo", "audience": "client" },
+    { "client": "webuild", "name": "webuildco.com.au", "url": "https://www.webuildco.com.au", "env": "live", "audience": "internal" },
+    { "client": "webuild", "name": "Mission Control", "url": "https://www.webuildco.com.au/mission-control/", "env": "live", "audience": "internal" },
+    { "client": "northshore", "name": "Voice agent dashboard (demo)", "url": null, "env": "demo", "audience": "client" }
+  ],
+  "portal": {
+    "compliance": [
+      "No riba-based payment structures (fixed fee or milestone, never interest)",
+      "Client data segregated — no cross-client context or shared stores",
+      "A human signs every advance / reject decision the agent proposes",
+      "Consented inbound data only — no scraping, no bought lists"
+    ],
+    "approvals": [
+      { "client": "optora", "item": "Foundation Pilot pricing pack (A$9,000 + A$900/mo)", "project": "Foundation Pilot — Smart Hands / Amsterdam", "date": "2026-07-27", "status": "awaiting" },
+      { "client": "awqaf", "item": "V2 design direction", "project": "everflowwaqf.org V2 — build", "date": "2026-07-16", "status": "awaiting" },
+      { "client": "northshore", "item": "Call-flow script v2", "project": "Voice agent — build & cutover", "date": "2026-08-09", "status": "awaiting" },
+      { "client": "northshore", "item": "Agent voice + greeting", "project": "Voice agent — build & cutover", "date": "2026-07-30", "status": "approved" },
+      { "client": "corella", "item": "Discovery findings pack", "project": "Intake automation — discovery", "date": "2026-08-06", "status": "changes" }
+    ],
+    "invoices": [
+      { "client": "northshore", "ref": "WB-2026-014", "amount": 3250, "status": "paid", "date": "2026-06-05" },
+      { "client": "northshore", "ref": "WB-2026-022", "amount": 3250, "status": "sent", "date": "2026-08-06" },
+      { "client": "corella", "ref": "WB-2026-021", "amount": 6000, "status": "paid", "date": "2026-07-24" },
+      { "client": "loop", "ref": "WB-2026-009", "amount": 8000, "status": "paid", "date": "2026-05-30" },
+      { "client": "loop", "ref": "WB-2026-023", "amount": 600, "status": "draft", "date": "2026-08-01" }
+    ]
+  }
+}
