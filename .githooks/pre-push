@@ -1,0 +1,21 @@
+#!/bin/sh
+# WEB-694 — a fresh agent checkout inherits branch.<name>.merge = refs/heads/main with
+# push.default = upstream, so a plain `git push` on a feature branch targets main. main is
+# production (Workers Builds deploys it), so the most ordinary command in git was a deploy.
+# The last time it happened it was stopped by an unrelated GitHub token-scope rejection —
+# luck, not a control.
+#
+# git passes each ref being pushed on stdin as: <local ref> <local sha> <remote ref> <remote sha>
+# Refuse any push whose destination is main unless main is also what is being pushed from.
+# Bypassable with --no-verify, and only active where core.hooksPath is set (npm run prepare
+# does that). Branch protection on the remote is the enforcement; this is the local guard.
+status=0
+while read -r local_ref local_sha remote_ref remote_sha; do
+	if [ "$remote_ref" = "refs/heads/main" ] && [ "$local_ref" != "refs/heads/main" ]; then
+		echo "WEB-694 guard: refusing to push ${local_ref:-(delete)} to refs/heads/main — main is production." >&2
+		echo "  Push your branch instead:  git push origin HEAD" >&2
+		echo "  Then open a PR. Merging to main is Johan's call." >&2
+		status=1
+	fi
+done
+exit $status
