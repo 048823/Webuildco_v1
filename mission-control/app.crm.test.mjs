@@ -42,3 +42,12 @@ test("locally added rows append to the seed rows and carry a local index", () =>
   assert.equal(rows[1]._local, 0);
   assert.equal(run(`crmCsv("companies")`).split("\r\n").length, 3);
 });
+
+// WEB-680, board default #5: the CRM ships as a shell. crmCsv stays (and stays tested)
+// so re-enabling is one attribute, but the control is inert until the suppression
+// filter can prove an export carries no opted-out contact.
+test("CSV export is disabled until the suppression filter lands", () => {
+  const run = loadApp();
+  const html = run(`renderCrmTable("companies")`);
+  assert.match(html, /<button[^>]*data-export="companies"[^>]*\sdisabled/);
+});

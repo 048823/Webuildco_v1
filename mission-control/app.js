@@ -326,7 +326,7 @@ function renderCrmTable(kind) {
     <div class="crm-tools">
       <input class="inp" data-search="${kind}" placeholder="Search ${label.toLowerCase()}…" aria-label="Search ${esc(label.toLowerCase())}">
       <span class="muted tiny" data-shown="${kind}">${rows.length} shown</span>
-      <button class="btn ghost" data-export="${kind}">↓ Export CSV</button>
+      <button class="btn ghost" data-export="${kind}" disabled title="Export is off until the outbound suppression filter lands (WEB-680) — a CSV must not be able to carry a suppressed contact out of the board.">↓ Export CSV</button>
       <button class="btn primary" data-new="${kind}">+ New ${esc(single.toLowerCase())}</button>
     </div>
     <form class="crm-form" data-form="${kind}" hidden>
