@@ -44,10 +44,43 @@
       { "name": "Recruiting prospect", "industry": "Recruitment", "country": "Australia", "website": "" }
     ]
   },
-  "leads": {
+  "_sales_note": "EMPTY BY RULING (WEB-660). The deals, proposals and activities that shipped in PR #66 were invented — dollar values with no agreed deal behind them, feeding an open-pipeline tile that read as real revenue. They are deleted. Add a row here ONLY when the deal is real and agreed; sales.test.mjs fails the build if a value appears without a source ref.",
+  "sales": {
+    "currency": "AUD",
+    "deals": [],
+    "proposals": [],
+    "activities": []
+  },
+  "_outbound_note": "SEED DATA, no revenue. Every row below carries \"demo\": true and renders with a demo badge (same marker as deliverables.json in PR #67) — target segments and sequence copy, not real contacts or results. Campaign counters stay at 0 until the Instantly / A-leads keys are wired; see APIs & MCPs.",
+  "outbound": {
+    "prospects": [
+      { "company": "Sydney trades group", "industry": "Trades", "location": "Sydney, NSW", "size": "25-50", "fit": "high", "source": "manual", "demo": true },
+      { "company": "Perth logistics SMB", "industry": "Logistics", "location": "Perth, WA", "size": "50-100", "fit": "high", "source": "manual", "demo": true },
+      { "company": "AU recruiting agencies (list)", "industry": "Recruiting", "location": "NSW", "size": "10-50", "fit": "high", "source": "A-leads", "demo": true },
+      { "company": "Halal F&B distributors", "industry": "Food & beverage", "location": "VIC / NSW", "size": "20-80", "fit": "medium", "source": "Apify", "demo": true },
+      { "company": "Migration advisories", "industry": "Professional services", "location": "AU / MY", "size": "5-20", "fit": "medium", "source": "manual", "demo": true },
+      { "company": "Allied health clinics", "industry": "Healthcare", "location": "Sydney, NSW", "size": "10-40", "fit": "low", "source": "Apify", "demo": true }
+    ],
+    "leads": [
+      { "name": "Ops manager", "company": "Sydney trades group", "title": "Operations Manager", "status": "qualified", "source": "manual", "industry": "Trades", "demo": true },
+      { "name": "Founder", "company": "Perth logistics SMB", "title": "Founder", "status": "replied", "source": "Instantly", "industry": "Logistics", "demo": true },
+      { "name": "Director", "company": "Recruiting prospect", "title": "Director", "status": "qualified", "source": "referral", "industry": "Recruiting", "demo": true },
+      { "name": "GM", "company": "Halal F&B distributor", "title": "General Manager", "status": "contacted", "source": "A-leads", "industry": "Food & beverage", "demo": true },
+      { "name": "Practice lead", "company": "Allied health clinic", "title": "Practice Lead", "status": "contacted", "source": "Instantly", "industry": "Healthcare", "demo": true },
+      { "name": "Principal", "company": "Migration advisory", "title": "Principal", "status": "new", "source": "manual", "industry": "Professional services", "demo": true },
+      { "name": "Head of ops", "company": "VIC distributor", "title": "Head of Ops", "status": "bounced", "source": "A-leads", "industry": "Food & beverage", "demo": true },
+      { "name": "Owner", "company": "Modest retail brand", "title": "Owner", "status": "new", "source": "manual", "industry": "Retail", "demo": true }
+    ],
     "campaigns": [
-      { "tool": "Instantly", "name": "AU SMB — Ops automation", "sent": 0, "opened": 0, "replied": 0, "status": "needs-key" },
-      { "tool": "A-leads", "name": "Recruiting agencies NSW", "sent": 0, "opened": 0, "replied": 0, "status": "needs-key" }
+      { "name": "AU SMB — ops automation", "tool": "Instantly", "goal": "Book 10 discovery calls", "sent": 0, "opened": 0, "replied": 0, "status": "needs-key", "demo": true },
+      { "name": "Recruiting agencies NSW", "tool": "A-leads", "goal": "Voice screening agent pilot", "sent": 0, "opened": 0, "replied": 0, "status": "needs-key", "demo": true },
+      { "name": "Trades — lead qualification", "tool": "Instantly", "goal": "Pipeline build", "sent": 0, "opened": 0, "replied": 0, "status": "draft", "demo": true }
+    ],
+    "templates": [
+      { "name": "Ops automation — step 1", "channel": "email", "step": 1, "subject": "the 6 hours your ops team loses each week", "body": "Short opener naming the manual process, one proof line, one-question CTA.", "demo": true },
+      { "name": "Ops automation — step 2", "channel": "email", "step": 2, "subject": "re: the 6 hours", "body": "Bump with a 2-line case snapshot and the same single question.", "demo": true },
+      { "name": "Voice screening — step 1", "channel": "email", "step": 1, "subject": "screening 40 candidates a week?", "body": "Role-specific opener, agent-handles-the-first-call framing, CTA to a 15-min call.", "demo": true },
+      { "name": "LinkedIn intro", "channel": "linkedin", "step": 1, "subject": "—", "body": "Connection note: one line on who we build for, no pitch.", "demo": true }
     ]
   },
   "blogs": {
