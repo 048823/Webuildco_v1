@@ -1,0 +1,28 @@
+# WEB-694 — PARKED, NOT ACTIVE. Nothing runs from workflows-pending/.
+#
+# To turn it on:  git mv .github/workflows-pending/test.yml .github/workflows/test.yml
+#
+# That move needs a token with `workflow` scope. The agent token does not have it — pushing
+# this file under .github/workflows/ is rejected outright and takes the whole push with it:
+#   ! [remote rejected] refusing to allow an OAuth App to create or update workflow
+#     `.github/workflows/test.yml` without `workflow` scope
+# which is why it did not land with WEB-687 either. It sits here so the move is one command
+# the moment the scope exists.
+#
+# Until then every guard in this repo (board, proof-numbers, testimonials, suppression,
+# guard-branch, guard-push) only fires when somebody runs `npm test` by hand.
+name: test
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm ci
+      - run: npm test
