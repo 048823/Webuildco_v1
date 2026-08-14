@@ -268,13 +268,15 @@ function wireBriefs() {
 }
 
 // Radial mind map of DATA.projects — same data as the table below. Rail colour = health
-// (ok/warn = green/amber, planned/other = grey), gauge = progress %.
+// (ok/warn = green/amber, planned/other = grey). WEB-694 removed the per-node progress
+// gauge: it was drawing an invented percentage at the size of a measurement. A sourced
+// number renders in the table, which has room for the ref; the map shows structure only.
 function renderProjectMap(proj) {
   const groups = [
     { name: "Clients", side: -1, nodes: proj?.clients || [] },
     { name: "Internal", side: 1, nodes: proj?.internal || [] },
   ];
-  const CW = 214, CH = 60, cx = 750;
+  const CW = 214, CH = 48, cx = 750;
   const gap = 106;
   const maxN = Math.max(groups[0].nodes.length, groups[1].nodes.length, 1);
   const H = Math.max(480, maxN * gap + 110);
@@ -289,16 +291,12 @@ function renderProjectMap(proj) {
     g.nodes.forEach((p, i) => {
       const ny = startY + i * gap, left = nodeCx - CW / 2, top = ny - CH / 2;
       const col = HC[p.health] || "var(--steel)";
-      const gx = left + 14, gy = top + CH - 16, gw = CW - 62, pct = Math.max(0, Math.min(100, +p.progress || 0));
       parts.push(link(bx + dir * 34, by, nodeCx - dir * CW / 2, ny));
       parts.push(`<g>
         <rect x="${left}" y="${top}" rx="12" width="${CW}" height="${CH}" fill="var(--card)" stroke="var(--line)" stroke-width="1.5"/>
         <rect x="${left}" y="${top}" width="5" height="${CH}" rx="2.5" style="fill:${col}"/>
-        <text x="${left + 16}" y="${top + 22}" font-size="13" font-weight="600" style="fill:var(--ink)">${esc(clip(p.name, 24))}</text>
-        <text x="${left + 16}" y="${top + 37}" font-size="10" style="fill:var(--slate)">${esc(clip(p.stage || "", 26))}</text>
-        <rect x="${gx}" y="${gy}" width="${gw}" height="7" rx="3.5" style="fill:var(--fog)"/>
-        <rect x="${gx}" y="${gy}" width="${gw * pct / 100}" height="7" rx="3.5" style="fill:var(--lime-deep)"/>
-        <text x="${left + CW - 12}" y="${gy + 8}" font-size="11" font-weight="700" text-anchor="end" style="fill:var(--ink)">${pct}%</text>
+        <text x="${left + 16}" y="${top + 21}" font-size="13" font-weight="600" style="fill:var(--ink)">${esc(clip(p.name, 24))}</text>
+        <text x="${left + 16}" y="${top + 36}" font-size="10" style="fill:var(--slate)">${esc(clip(p.stage || "", 26))}</text>
       </g>`);
     });
     parts.push(`<g><circle cx="${bx}" cy="${by}" r="34" fill="var(--mist)" stroke="var(--line)" stroke-width="2"/><text x="${bx}" y="${by + 4}" font-size="12" font-weight="700" text-anchor="middle" style="fill:var(--ink)">${g.name}</text></g>`);
@@ -313,6 +311,14 @@ const tagColor = (t) => (MCS.isHex(t.color) ? t.color : "#52525b");
 const tagChip = (t, cls = "", attrs = "") => `<span class="tag ${cls}" style="--tc:${tagColor(t)}" ${attrs}>${esc(t.label)}</span>`;
 let PROJ_FILTER = "all";
 
+// WEB-694 — a progress bar reads as a measurement and has no room for a caveat, so
+// it renders only for a row that names where the number was measured. No ref, no bar:
+// the row shows its stage and nothing more. board.test.mjs fails the build on a
+// `progress` without a `ref`, so an estimate cannot get back in through the data file.
+const projProgress = (p) => (p && p.ref && p.progress != null
+  ? `<div class="bar"><span style="width:${Math.max(0, Math.min(100, +p.progress || 0))}%"></span></div><span class="tiny muted">${Math.max(0, Math.min(100, +p.progress || 0))}% · ${esc(p.ref)}</span>`
+  : `<span class="tiny muted">not measured</span>`);
+
 function renderProjects() {
   const tagged = [...(DATA.projects?.clients || []), ...(DATA.projects?.internal || [])].some((p) => tagsFor(p.name).length);
   const tbl = (rows) => `<table><thead><tr><th>Project</th><th>Type</th><th>Stage</th><th style="width:160px">Progress</th><th>Due</th></tr></thead><tbody>${rows.map((p) => {
@@ -320,7 +326,7 @@ function renderProjects() {
     return `<tr data-tags="${esc(tags.map((t) => t.id).join(" "))}">
     <td><b>${esc(p.name)}</b>${tags.length ? `<div class="taglist tiny">${tags.map((t) => tagChip(t)).join("")}</div>` : ""}</td><td class="muted">${esc(p.type)}</td>
     <td><span class="badge ${HEALTH[p.health] || ""}">${esc(p.stage)}</span></td>
-    <td><div class="bar"><span style="width:${p.progress}%"></span></div><span class="tiny muted">${p.progress}%</span></td>
+    <td>${projProgress(p)}</td>
     <td class="muted">${esc(p.due || "—")}</td></tr>`;
   }).join("")}</tbody></table>`;
   const filter = tagged ? `<div class="taglist" id="projFilter" style="margin-bottom:16px">

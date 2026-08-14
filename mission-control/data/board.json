@@ -9,29 +9,29 @@
   ],
   "_briefs_note": "WEB-687: every number in this block needs a `ref` naming the issue and read date it was measured on. No ref, no number — mission-control/board.test.mjs fails the build. Do not compute a rate here; quote counts from the cited source.",
   "briefs": [
-    { "title": "Pipeline health", "body": "No verified delivery figures recorded. See Projects for per-client stage — the progress bars there are estimates, not milestone data." },
+    { "title": "Pipeline health", "body": "No verified delivery figures recorded. See Projects for the per-client stage — stage is the only claim that block makes." },
     {
       "title": "Outbound",
       "body": "Instantly campaign 4fbd93ea, measured: emails sent 128, new leads contacted 69, human replies 1 (an opt-out request, not a prospect), automatic replies 5, opportunities 0.",
       "ref": "WEB-281 — read-only Instantly API read, 14-Aug-2026 11:45 AEST"
     }
   ],
-  "_projects_note": "Progress % are estimates inferred from the project brief, not live milestone data. Edit each row to make them exact — the mind map and tables both read from here.",
+  "_projects_note": "WEB-694: the 12 `progress` percentages that used to live here were estimates and are deleted. A row may carry `progress` again only with a `ref` naming the issue and read date it was measured on — mission-control/board.test.mjs fails the build otherwise, and the table renders no bar without one. `stage` is a state word, not a measurement; keep it true.",
   "projects": {
     "clients": [
-      { "name": "Recruiting prospect", "type": "Discovery — scope TBD", "stage": "Scoping", "progress": 40, "due": "2026-07-27", "health": "ok" },
-      { "name": "Everflow", "type": "Website rebuild + new projects", "stage": "Delivery", "progress": 55, "health": "ok" },
-      { "name": "Awqaf", "type": "Re-scope — smaller", "stage": "Stalled at pricing", "progress": 20, "health": "warn" },
-      { "name": "Hijra Co", "type": "Muslim migration platform", "stage": "Planned", "progress": 10, "health": "planned" },
-      { "name": "Tijara", "type": "Investing + Shariah Telegram updates", "stage": "Planned", "progress": 10, "health": "planned" },
-      { "name": "Mizan", "type": "Muslim expense manager", "stage": "Planned", "progress": 10, "health": "planned" }
+      { "name": "Recruiting prospect", "type": "Discovery — scope TBD", "stage": "Scoping", "due": "2026-07-27", "health": "ok" },
+      { "name": "Everflow", "type": "Website rebuild + new projects", "stage": "Delivery", "health": "ok" },
+      { "name": "Awqaf", "type": "Re-scope — smaller", "stage": "Stalled at pricing", "health": "warn" },
+      { "name": "Hijra Co", "type": "Muslim migration platform", "stage": "Planned", "health": "planned" },
+      { "name": "Tijara", "type": "Investing + Shariah Telegram updates", "stage": "Planned", "health": "planned" },
+      { "name": "Mizan", "type": "Muslim expense manager", "stage": "Planned", "health": "planned" }
     ],
     "internal": [
-      { "name": "Website Factory", "type": "Site generation pipeline", "stage": "Build", "progress": 40, "health": "ok" },
-      { "name": "Fable Brain", "type": "Knowledge / memory system", "stage": "Build", "progress": 40, "health": "ok" },
-      { "name": "Social Media Factory", "type": "Content pipeline", "stage": "Build", "progress": 30, "health": "ok" },
-      { "name": "Outreach Leads Factory", "type": "Outbound pipeline", "stage": "Build", "progress": 30, "health": "ok" },
-      { "name": "Faceless YouTube", "type": "Video channel", "stage": "Planned", "progress": 20, "health": "planned" }
+      { "name": "Website Factory", "type": "Site generation pipeline", "stage": "Build", "health": "ok" },
+      { "name": "Fable Brain", "type": "Knowledge / memory system", "stage": "Build", "health": "ok" },
+      { "name": "Social Media Factory", "type": "Content pipeline", "stage": "Build", "health": "ok" },
+      { "name": "Outreach Leads Factory", "type": "Outbound pipeline", "stage": "Build", "health": "ok" },
+      { "name": "Faceless YouTube", "type": "Video channel", "stage": "Planned", "health": "planned" }
     ]
   },
   "_crm_note": "SAMPLE ROWS ONLY — no real prospect or client contact details in this repo (WEB-519). Replace with real records only once the CRM has a store behind the Worker.",
