@@ -20,6 +20,23 @@ const app = readFileSync(new URL('./app.js', import.meta.url), 'utf8');
 // word-number list if that ever ships, not before.
 const METRIC = /\d|percent/i;
 
+// WEB-694 — the same rule, applied to `projects[].progress`. Twelve hardcoded
+// percentages drove the progress bars and the mind-map gauges off a `_projects_note`
+// that admitted they were estimates. A bar is worse than a number in a table: it reads
+// as measurement, has no room for a caveat, and nobody clicks it to ask where it came
+// from. They are deleted; this keeps them out. A row may carry `progress` again only
+// with a `ref` in the same shape a brief needs.
+const PROJECT_ROWS = (b) => Object.values(b.projects || {}).flat();
+
+// null = the ref is acceptable, string = why it is not. Shared by briefs and projects
+// so the two blocks cannot drift apart on what counts as a source.
+const refProblem = (ref) => {
+  if (typeof ref !== 'string' || !ref.trim()) return 'no "ref" naming the source and read date';
+  if (!/WEB-\d+/.test(ref)) return 'ref does not name the issue the number came from';
+  if (!/\d{4}/.test(ref)) return 'ref does not carry the year it was read';
+  return null;
+};
+
 test('briefs is still a list of {title, body} the Overview card can render', () => {
   assert.ok(Array.isArray(board.briefs), 'board.briefs is not an array');
   for (const b of board.briefs) {
@@ -42,9 +59,45 @@ test('no performance metric in the briefs block without a ref to where it was me
 test('a ref names a source and a read date, not just a shrug', () => {
   for (const b of board.briefs || []) {
     if (!b.ref) continue;
-    assert.match(b.ref, /WEB-\d+/, `brief "${b.title}" ref does not name the issue the number came from`);
-    assert.match(b.ref, /\d{4}/, `brief "${b.title}" ref does not carry the year it was read`);
+    assert.equal(refProblem(b.ref), null, `brief "${b.title}": ${refProblem(b.ref)}`);
   }
+});
+
+test('no progress percentage on a project without a ref to where it was measured', () => {
+  for (const p of PROJECT_ROWS(board)) {
+    if (p.progress == null) continue;
+    assert.equal(
+      refProblem(p.ref),
+      null,
+      `project "${p.name}" claims ${p.progress}% complete — ${refProblem(p.ref)}. A bar reads as ` +
+        `measurement (WEB-694). Either derive it from closed/total and cite that, or ship no bar.`,
+    );
+  }
+});
+
+test('the ref rule rejects the shapes that actually shipped', () => {
+  // Both directions: the live board passes above, these fail here. Every case is a
+  // real form the fake numbers took — bare estimate, unsourced note, undated source.
+  const bad = [
+    { name: 'bare estimate', progress: 40 },
+    { name: 'hand-waved', progress: 55, ref: '' },
+    { name: 'no issue', progress: 20, ref: 'inferred from the project brief, 2026' },
+    { name: 'no year', progress: 10, ref: 'WEB-694' },
+  ];
+  for (const p of bad) {
+    assert.ok(refProblem(p.ref), `"${p.name}" should be refused, the guard accepted it`);
+  }
+  assert.equal(refProblem('WEB-281 — read-only Instantly API read, 14-Aug-2026 11:45 AEST'), null);
+});
+
+test('the table renders a bar only for a row that carries its ref', () => {
+  assert.match(
+    app,
+    /const projProgress = \(p\) => \(p && p\.ref && p\.progress != null/,
+    'projProgress helper missing — an unsourced percentage would render as a bar again',
+  );
+  assert.match(app, /<td>\$\{projProgress\(p\)\}<\/td>/, 'Projects table no longer routes through projProgress');
+  assert.doesNotMatch(app, /\$\{pct\}%/, 'the mind-map gauge is back — it has no room for a ref');
 });
 
 test('the UI renders the ref it promises', () => {
