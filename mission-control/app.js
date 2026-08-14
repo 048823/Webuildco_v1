@@ -171,7 +171,7 @@ function renderOverview() {
     <div class="card"><h3>Daily to-dos</h3>${(d.todos || []).map((t) => `
       <div class="kv"><span class="k">${t.done ? "✓ " : "○ "}${esc(t.text)}</span><span class="v"><span class="badge">${esc(t.owner)}</span></span></div>`).join("") || '<p class="muted">No to-dos.</p>'}</div>
     <div class="card"><h3>Briefs</h3>${(d.briefs || []).map((b) => `
-      <div style="padding:10px 0;border-top:1px solid var(--fog)"><div style="font-weight:600">${esc(b.title)}</div><div class="muted tiny" style="margin-top:3px">${esc(b.body)}</div></div>`).join("") || '<p class="muted">No briefs.</p>'}</div>
+      <div style="padding:10px 0;border-top:1px solid var(--fog)"><div style="font-weight:600">${esc(b.title)}</div><div class="muted tiny" style="margin-top:3px">${esc(b.body)}</div>${briefRef(b)}</div>`).join("") || '<p class="muted">No briefs.</p>'}</div>
   </div>
   <div class="card" style="margin-top:16px"><h3>Section snapshot</h3>
     <div class="grid g3">
@@ -189,6 +189,9 @@ function renderOverview() {
     </div>
   </div>`;
 }
+// WEB-687 — a number on this card is only as good as where it was measured, so
+// the source renders with it. board.test.mjs fails the build if either is missing.
+const briefRef = (b) => (b && b.ref ? `<div class="muted tiny" style="margin-top:4px;opacity:.75">source: ${esc(b.ref)}</div>` : "");
 const statCard = (label, val, sub) => `<div class="card"><div class="muted tiny">${esc(label)}</div><div class="stat" style="margin-top:6px">${val}</div><div class="muted tiny" style="margin-top:4px">${esc(sub)}</div></div>`;
 const snap = (t, v, go) => `<div class="card" style="cursor:pointer;box-shadow:none" data-go="${go}"><div style="font-weight:600">${esc(t)}</div><div class="muted tiny" style="margin-top:4px">${esc(v)} →</div></div>`;
 
