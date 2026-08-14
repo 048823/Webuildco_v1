@@ -12,6 +12,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 
 const board = JSON.parse(readFileSync(new URL('./data/board.json', import.meta.url), 'utf8'));
+const deliv = JSON.parse(readFileSync(new URL('./data/deliverables.json', import.meta.url), 'utf8'));
 const app = readFileSync(new URL('./app.js', import.meta.url), 'utf8');
 
 // Digits and the word "percent" catch every metric that has actually shipped
@@ -73,6 +74,32 @@ test('no progress percentage on a project without a ref to where it was measured
         `measurement (WEB-694). Either derive it from closed/total and cite that, or ship no bar.`,
     );
   }
+});
+
+// WEB-704 — the same seven-row version of it, one file over. deliverables.json carried 7
+// hardcoded `progress` values rendered as bars twice in the Deliverables section, under a
+// `_projects_note` that admitted they were manual estimates. Values and note deleted, both
+// bars removed. Same rule, same `refProblem`, so the two data files cannot drift on what
+// counts as a source: a row may carry `progress` again only with a ref that names the issue
+// and the year.
+test('no progress percentage on a deliverables project without a ref to where it was measured', () => {
+  for (const p of deliv.projects || []) {
+    if (p.progress == null) continue;
+    assert.equal(
+      refProblem(p.ref),
+      null,
+      `deliverables project "${p.name}" claims ${p.progress}% complete — ${refProblem(p.ref)}. ` +
+        `A bar reads as measurement (WEB-704). Either derive it from closed/total and cite that, or ship no bar.`,
+    );
+  }
+});
+
+test('the Deliverables section renders no progress bar', () => {
+  assert.doesNotMatch(
+    app,
+    /dvBar\([a-z]+\.progress\)/,
+    'a Deliverables progress bar is back — dvBar has no room for a ref (WEB-704)',
+  );
 });
 
 test('the ref rule rejects the shapes that actually shipped', () => {

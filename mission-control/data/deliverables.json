@@ -114,15 +114,14 @@
       "refs": []
     }
   ],
-  "_projects_note": "Progress % are manual estimates, not live milestone data.",
   "projects": [
-    { "client": "optora", "name": "Foundation Pilot — Smart Hands / Amsterdam", "stage": "Proposed", "status": "pipeline", "progress": 0, "due": null, "value": 9000, "health": "planned" },
-    { "client": "optora", "name": "HR Command Center demo", "stage": "Delivered (pre-sale)", "status": "done", "progress": 100, "due": "2026-07-27", "value": 0, "health": "ok" },
-    { "client": "awqaf", "name": "everflowwaqf.org V2 — build", "stage": "Built, not deployed", "status": "blocked", "progress": 80, "due": null, "value": 0, "health": "warn" },
-    { "client": "awqaf", "name": "Fundraising stack (AI meetups · dakwah · Rattil)", "stage": "Backlog", "status": "pipeline", "progress": 5, "due": null, "value": 0, "health": "planned" },
-    { "client": "northshore", "name": "Voice agent — build & cutover", "stage": "Delivery", "status": "active", "progress": 65, "due": "2026-08-22", "value": 6500, "health": "ok" },
-    { "client": "corella", "name": "Intake automation — discovery", "stage": "Discovery", "status": "active", "progress": 25, "due": "2026-08-29", "value": 12000, "health": "ok" },
-    { "client": "loop", "name": "Lead-qualification agent", "stage": "Complete", "status": "done", "progress": 100, "due": "2026-05-30", "value": 8000, "health": "ok" }
+    { "client": "optora", "name": "Foundation Pilot — Smart Hands / Amsterdam", "stage": "Proposed", "status": "pipeline", "due": null, "value": 9000, "health": "planned" },
+    { "client": "optora", "name": "HR Command Center demo", "stage": "Delivered (pre-sale)", "status": "done", "due": "2026-07-27", "value": 0, "health": "ok" },
+    { "client": "awqaf", "name": "everflowwaqf.org V2 — build", "stage": "Built, not deployed", "status": "blocked", "due": null, "value": 0, "health": "warn" },
+    { "client": "awqaf", "name": "Fundraising stack (AI meetups · dakwah · Rattil)", "stage": "Backlog", "status": "pipeline", "due": null, "value": 0, "health": "planned" },
+    { "client": "northshore", "name": "Voice agent — build & cutover", "stage": "Delivery", "status": "active", "due": "2026-08-22", "value": 6500, "health": "ok" },
+    { "client": "corella", "name": "Intake automation — discovery", "stage": "Discovery", "status": "active", "due": "2026-08-29", "value": 12000, "health": "ok" },
+    { "client": "loop", "name": "Lead-qualification agent", "stage": "Complete", "status": "done", "due": "2026-05-30", "value": 8000, "health": "ok" }
   ],
   "task_columns": ["Todo", "In progress", "Blocked", "Done"],
   "tasks": [

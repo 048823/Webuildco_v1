@@ -654,11 +654,10 @@ function renderDvProjects() {
     const c = dvClient(p.client);
     return `<tr><td><b>${esc(p.name)}</b><div class="tiny muted">${esc(dvName(p.client))}${c && c.demo ? " · demo" : ""}</div></td>
     <td><span class="badge ${HEALTH[p.health] || statusCls(p.status)}">${esc(p.stage)}</span></td>
-    <td>${dvBar(p.progress)}</td>
     <td class="muted">${esc(p.due || "—")}</td>
     <td>${p.value ? money(p.value, dvCur()) : "—"}</td></tr>`;
-  }).join("") || '<tr><td colspan="5" class="muted">No projects yet.</td></tr>';
-  return `<div class="card"><h3>Delivery projects</h3><table><thead><tr><th>Project</th><th>Stage</th><th style="width:160px">Progress</th><th>Due</th><th>Value</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  }).join("") || '<tr><td colspan="4" class="muted">No projects yet.</td></tr>';
+  return `<div class="card"><h3>Delivery projects</h3><table><thead><tr><th>Project</th><th>Stage</th><th>Due</th><th>Value</th></tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 
 function renderDvTasks() {
@@ -728,8 +727,8 @@ function renderDvPortal(id) {
       ${cs.map((c) => `<option value="${esc(c.id)}" ${c.id === cur.id ? "selected" : ""}>${esc(c.name)}${c.demo ? " (demo)" : ""}</option>`).join("")}
     </select></div>
   <div class="grid g2" style="margin-top:16px">
-    <div class="card"><h3>Project progress</h3>${projects.map((x) => `
-      <div style="margin-bottom:12px"><div class="kv"><span class="k">${esc(x.name)}</span><span class="v tiny">${esc(x.stage)}</span></div>${dvBar(x.progress)}</div>`).join("") || '<p class="muted">No projects.</p>'}</div>
+    <div class="card"><h3>Projects</h3>${projects.map((x) => `
+      <div class="kv"><span class="k">${esc(x.name)}</span><span class="v tiny">${esc(x.stage)}</span></div>`).join("") || '<p class="muted">No projects.</p>'}</div>
     <div class="card"><h3>Approvals ${approvals.length ? `<span class="pill">${approvals.length}</span>` : ""}</h3>${approvals.map((a) => `
       <div class="kv"><span class="k">${esc(a.item)}<span class="tiny muted" style="display:block">${esc(clip(a.project || "", 42))} · ${esc(a.date)}</span></span>
       <span class="v"><span class="badge ${APPR[a.status] || ""}">${esc(a.status)}</span></span></div>`).join("") || '<p class="muted">Nothing awaiting review.</p>'}</div>
