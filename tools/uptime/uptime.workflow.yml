@@ -1,0 +1,45 @@
+# ⚠️ THIS FILE IS NOT ACTIVE HERE. Copy it to .github/workflows/uptime.yml — a
+# workflow only runs from that path, and only from the default branch.
+# It lives here because the agent GitHub token lacks the `workflow` OAuth scope,
+# so it can neither push nor API-write anything under .github/workflows/.
+# Activation steps are in the Monitoring section of the repo README.
+
+name: uptime
+
+# WEB-33. External uptime + JSON-LD monitor for the production homepage.
+# A failed run IS the alert: GitHub emails the account that owns this workflow
+# file. Escalation path and known limits are documented in the repo README.
+
+on:
+  schedule:
+    # GitHub's shortest allowed interval. Real cadence is best-effort — runs are
+    # queued and can be delayed or dropped under platform load, so treat this as
+    # "roughly every 5-20 minutes", not a guaranteed 5-minute heartbeat.
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+    inputs:
+      url:
+        description: "URL to check (blank = production homepage)"
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+# A backed-up queue must not stack checks on top of each other.
+concurrency:
+  group: uptime
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      # The URL goes through the environment, never string-interpolated into the
+      # shell — a workflow_dispatch input is untrusted text.
+      - name: Check homepage is up and still serving JSON-LD
+        env:
+          TARGET_URL: ${{ inputs.url }}
+        run: node tools/uptime/check.mjs
