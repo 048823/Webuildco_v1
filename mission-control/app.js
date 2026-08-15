@@ -586,9 +586,15 @@ function renderTemplates() {
 const DELIV_TABS = [["clients", "Clients"], ["projects", "Projects"], ["tasks", "Tasks"], ["time", "Time"], ["deploys", "Deployments"], ["portal", "Client portal"]];
 const dvClients = () => DELIV.clients || [];
 const dvClient = (id) => dvClients().find((c) => c.id === id);
-const dvName = (id) => dvClient(id)?.name || (id === "webuild" ? "WeBuild (internal)" : id || "—");
+// WEB-723 — every client name outside the Clients table renders through dvName, so the
+// "(DEMO)" tag lives here rather than at each call site: retainer bars, kanban cards, time
+// entries and deployment groups all inherit it, and a new tab cannot forget to add it.
+const dvName = (id) => { const c = dvClient(id); return c ? c.name + (c.demo ? " (DEMO)" : "") : id === "webuild" ? "WeBuild (internal)" : id || "—"; };
 const dvCur = () => DELIV.currency || "AUD";
-const dvDemo = (c) => (c && c.demo ? ' <span class="badge">demo</span>' : "");
+const dvDemo = (c) => (c && c.demo ? ' <span class="badge bad">DEMO</span>' : "");
+// WeBuild has no signed clients, so every billable figure here is demo-derived. Say so on the
+// tile instead of letting a dollar amount read as revenue (WEB-660, WEB-723).
+const dvDemoOnly = (rows) => rows.length > 0 && rows.every((r) => dvClient(r.client)?.demo);
 const PRIO = { urgent: "bad", high: "warn", medium: "info", low: "" };
 const INV = { paid: "ok", sent: "info", overdue: "bad", draft: "" };
 const APPR = { approved: "ok", awaiting: "warn", changes: "bad" };
@@ -601,7 +607,8 @@ function renderDeliverables(route = []) {
   const active = cs.filter((c) => c.kind === "active");
   const tasks = DELIV.tasks || [];
   const entries = DELIV.time?.entries || [];
-  const billable = entries.filter((e) => e.billable).reduce((s, e) => s + e.hours * (e.rate || 0), 0);
+  const billableRows = entries.filter((e) => e.billable);
+  const billable = billableRows.reduce((s, e) => s + e.hours * (e.rate || 0), 0);
   setTimeout(wireDeliverables, 0);
   const pages = {
     clients: renderDvClients,
@@ -611,12 +618,12 @@ function renderDeliverables(route = []) {
     deploys: renderDvDeploys,
     portal: renderDvPortal,
   };
-  return `<div class="section-note">Rows tagged <span class="badge">demo</span> are WeBuild's own sample clients — illustrative numbers, not real engagements. <b>Optora</b> and <b>Awqaf</b> are real pipeline entries, prefilled from the work already done with them.</div>
+  return `<div class="section-note"><b>WeBuild has no signed clients.</b> Anything tagged <span class="badge bad">DEMO</span> or <b>(DEMO)</b> is one of WeBuild's own sample clients — invented numbers, no engagement, no revenue. <b>Optora</b> and <b>Awqaf</b> are real pipeline entries, prefilled from the work already done with them.</div>
   <div class="grid g4">
-    ${statCard("Active clients", active.length, "in delivery")}
+    ${statCard("Active clients", active.length, active.every((c) => c.demo) ? "demo clients only — none signed" : `in delivery · ${active.filter((c) => c.demo).length} demo`)}
     ${statCard("In pipeline", pipeline.length, "potential clients")}
     ${statCard("Open tasks", tasks.filter((t) => t.col !== "Done").length, "across all projects")}
-    ${statCard("Billable this month", money(billable, dvCur()), "logged hours × rate")}
+    ${statCard("Billable this month", money(billable, dvCur()), dvDemoOnly(billableRows) ? "demo clients only — not revenue" : "logged hours × rate")}
   </div>
   <div class="tabs" id="dvTabs" style="margin-top:16px">${DELIV_TABS.map(([id, label]) => `<button class="tab ${id === tab ? "active" : ""}" data-tab="${id}">${label}</button>`).join("")}</div>
   <div id="dvPages"><div class="tabpage active" id="dv-${tab}">${pages[tab]()}</div></div>`;
@@ -651,8 +658,7 @@ function renderDvClients() {
 
 function renderDvProjects() {
   const rows = (DELIV.projects || []).map((p) => {
-    const c = dvClient(p.client);
-    return `<tr><td><b>${esc(p.name)}</b><div class="tiny muted">${esc(dvName(p.client))}${c && c.demo ? " · demo" : ""}</div></td>
+    return `<tr><td><b>${esc(p.name)}</b><div class="tiny muted">${esc(dvName(p.client))}</div></td>
     <td><span class="badge ${HEALTH[p.health] || statusCls(p.status)}">${esc(p.stage)}</span></td>
     <td class="muted">${esc(p.due || "—")}</td>
     <td>${p.value ? money(p.value, dvCur()) : "—"}</td></tr>`;
@@ -680,14 +686,16 @@ function renderDvTime() {
   const entries = t.entries || [];
   const hours = entries.reduce((s, e) => s + (+e.hours || 0), 0);
   const billableHours = entries.filter((e) => e.billable).reduce((s, e) => s + (+e.hours || 0), 0);
-  const value = entries.filter((e) => e.billable).reduce((s, e) => s + e.hours * (e.rate || 0), 0);
+  const billableRows = entries.filter((e) => e.billable);
+  const value = billableRows.reduce((s, e) => s + e.hours * (e.rate || 0), 0);
   const cost = entries.reduce((s, e) => s + (+e.cost || 0), 0);
+  const demoMoney = dvDemoOnly(billableRows);
   return `${t.note ? `<div class="section-note">${esc(t.note)}</div>` : ""}
   <div class="grid g4">
     ${statCard("Hours logged", hours.toFixed(1), billableHours.toFixed(1) + " billable")}
-    ${statCard("Billable value", money(value, dvCur()), "at client rates")}
+    ${statCard("Billable value", money(value, dvCur()), demoMoney ? "demo clients only — not revenue" : "at client rates")}
     ${statCard("Est. cost", money(cost, dvCur()), "compute + tooling")}
-    ${statCard("Est. margin", money(value - cost, dvCur()), "value − cost")}
+    ${statCard("Est. margin", money(value - cost, dvCur()), demoMoney ? "demo clients only — not revenue" : "value − cost")}
   </div>
   <div class="grid g2" style="margin-top:16px">
     <div class="card"><h3>Retainer burn · ${esc(t.month || "this month")}</h3>${(t.retainers || []).map((r) => `
@@ -706,8 +714,7 @@ function renderDvDeploys() {
   return `<div class="card"><h3>Live deployments <span class="pill">${all.length}</span></h3><p class="muted tiny" style="margin-top:-6px">Every site, app and dashboard we host — client-facing and internal.</p></div>
   ${groups.map((g) => {
     const rows = all.filter((d) => d.client === g);
-    const c = dvClient(g);
-    return `<div class="card" style="margin-top:16px"><h3>${esc(dvName(g))}${dvDemo(c)} <span class="badge">${rows.length}</span></h3><div class="rowlist">${rows.map((d) => `
+    return `<div class="card" style="margin-top:16px"><h3>${esc(dvName(g))} <span class="badge">${rows.length}</span></h3><div class="rowlist">${rows.map((d) => `
       <div class="row"><span class="name">${esc(d.name)}${d.url ? `<a href="${esc(d.url)}" target="_blank" rel="noopener" style="display:block;font-size:12px;color:var(--info);font-weight:600">${esc(d.url.replace(/^https?:\/\//, ""))} ↗</a>` : '<span class="tiny muted" style="display:block">not deployed</span>'}</span>
       <span class="badge ${envCls[d.env] || ""}">${esc(d.env)}</span><span class="meta">${esc(d.audience)}</span></div>`).join("")}</div></div>`;
   }).join("")}`;
@@ -724,7 +731,7 @@ function renderDvPortal(id) {
   return `<div class="card"><h3>Preview what ${esc(cur.name)} sees${dvDemo(cur)}</h3>
     <p class="muted tiny" style="margin-top:-6px">Status, approvals, invoices and the compliance promises we hold ourselves to.</p>
     <select id="dvPortalPick" style="margin-top:10px;padding:9px 12px;border:1px solid var(--line);border-radius:10px;font-family:inherit">
-      ${cs.map((c) => `<option value="${esc(c.id)}" ${c.id === cur.id ? "selected" : ""}>${esc(c.name)}${c.demo ? " (demo)" : ""}</option>`).join("")}
+      ${cs.map((c) => `<option value="${esc(c.id)}" ${c.id === cur.id ? "selected" : ""}>${esc(dvName(c.id))}</option>`).join("")}
     </select></div>
   <div class="grid g2" style="margin-top:16px">
     <div class="card"><h3>Projects</h3>${projects.map((x) => `
