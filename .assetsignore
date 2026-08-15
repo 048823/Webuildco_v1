@@ -6,6 +6,7 @@ node_modules
 .wrangler
 src
 audit
+client-sites-starter
 *.md
 package.json
 package-lock.json
@@ -13,3 +14,10 @@ tasks.db
 wrangler.jsonc
 .assetsignore
 .gitignore
+
+# Internal tooling and lead data — must never be served (WEB-497, WEB-514).
+# A crawler fixture under tools/ was reachable as a static asset before these
+# entries existed. Tooling directories stay out of the deployed asset set.
+tools/publication-crawler
+tools/suppression
+runs

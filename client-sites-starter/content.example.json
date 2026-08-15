@@ -1,0 +1,51 @@
+{
+  "_note": "One file per prospect. Fill this, then find-replace every {{TOKEN}} in index.html with the matching value (or hand this + index.html to Claude Code and say 'fill the template'). Everything a spec build needs is here.",
+
+  "BUSINESS_NAME": "Coastal Plumbing",
+  "TAGLINE": "24/7 Emergency Plumbers in Cronulla",
+  "META_DESCRIPTION": "Licensed Cronulla plumbers. Fast, upfront pricing, same-day service. Call now.",
+  "FAVICON_EMOJI": "🔧",
+
+  "BRAND_COLOR": "#0d6efd",
+  "BRAND_COLOR_DARK": "#0b5ed7",
+
+  "PHONE_RAW": "+61255501234",
+  "PHONE_DISPLAY": "(02) 5550 1234",
+  "EMAIL": "hello@coastalplumbing.com.au",
+  "ADDRESS": "12 Kingsway, Cronulla NSW 2230",
+  "HOURS": "24/7",
+  "SERVICE_AREA": "Serving the Sutherland Shire",
+  "RATING": "4.9 ★★★★★ (87 reviews)",
+
+  "HERO_EYEBROW": "Licensed & insured",
+  "HERO_HEADLINE": "Blocked drain? Burst pipe? We're there in 60 minutes.",
+  "HERO_SUBTEXT": "Upfront pricing, no call-out surprises. Local Cronulla plumbers on call day and night.",
+  "HERO_CTA": "Get a fast quote",
+  "HERO_TRUST_LINE": "Licence #123456 · Fully insured · 5-star rated",
+  "HERO_IMAGE": "https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?w=1200",
+
+  "TRUST_BADGE_1": "Licensed #123456",
+  "TRUST_BADGE_2": "Same-day service",
+
+  "SERVICES_HEADING": "What we fix",
+  "SERVICES_SUBTEXT": "No job too small. Fixed quotes before we start.",
+  "SERVICE_1_ICON": "🚿", "SERVICE_1_TITLE": "Blocked drains", "SERVICE_1_TEXT": "CCTV inspection and high-pressure jetting to clear any blockage.",
+  "SERVICE_2_ICON": "🔥", "SERVICE_2_TITLE": "Hot water systems", "SERVICE_2_TEXT": "Repair or replace gas, electric and solar hot water units.",
+  "SERVICE_3_ICON": "🚽", "SERVICE_3_TITLE": "Leaks & bursts", "SERVICE_3_TEXT": "Fast leak detection and burst-pipe repair, day or night.",
+
+  "ABOUT_HEADING": "Local, licensed, and here to stay",
+  "ABOUT_TEXT": "Family-run since 2009, we've fixed thousands of homes across the Shire. When you call, you get a real plumber, not a call centre.",
+  "ABOUT_POINT_1": "Fully licensed & insured",
+  "ABOUT_POINT_2": "Upfront fixed pricing",
+  "ABOUT_POINT_3": "Lifetime workmanship guarantee",
+  "ABOUT_IMAGE": "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=1000",
+
+  "REVIEW_1_TEXT": "{{UNSOURCED}}", "REVIEW_1_NAME": "{{UNSOURCED}}",
+  "REVIEW_2_TEXT": "{{UNSOURCED}}", "REVIEW_2_NAME": "{{UNSOURCED}}",
+  "REVIEW_3_TEXT": "{{UNSOURCED}}", "REVIEW_3_NAME": "{{UNSOURCED}}",
+
+  "CTA_HEADLINE": "Need a plumber now?",
+  "CTA_SUBTEXT": "Call for a fast, upfront quote — most jobs done same day.",
+
+  "PHONE_placeholder_ordering_note": "PHONE_RAW is used in tel: links (no spaces, +61...); PHONE_DISPLAY is what humans see."
+}

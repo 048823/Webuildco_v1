@@ -14,6 +14,10 @@
 // Optional Multica live data env vars: MULTICA_API_TOKEN (or MULTICA_TOKEN),
 // MULTICA_WORKSPACE_ID, and optionally MULTICA_API_BASE_URL. The token is used
 // only by the Worker; the browser sees normalized status data, never secrets.
+//
+// Optional machine verification env var: MC_VERIFY_TOKEN. When set, requests
+// with X-Mission-Control-Verify matching that token may fetch only the briefs
+// JSON asset for deploy verification; the Mission Control UI remains gated.
 
 const COOKIE = "mc_session";
 const TTL = 60 * 60 * 12; // 12h
@@ -65,11 +69,22 @@ function loginPage(error) {
   });
 }
 
+export function validBriefsVerification(request, env, url) {
+  const token = env.MC_VERIFY_TOKEN;
+  const supplied = request.headers.get("X-Mission-Control-Verify") || "";
+  return request.method === "GET"
+    && url.pathname === "/mission-control/data/briefs.json"
+    && !!token
+    && safeEqual(supplied, String(token));
+}
+
 // Returns a Response to short-circuit (login/redirect/logout), or null when the
 // request is authenticated and the caller should serve the asset.
 async function gate(request, env, url) {
   const secret = env.MC_SECRET;
   const password = env.MC_PASSWORD;
+
+  if (validBriefsVerification(request, env, url)) return null;
 
   if (url.pathname === "/mission-control/logout") {
     return new Response(null, {

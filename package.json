@@ -8,6 +8,18 @@
     "watch:css": "npx @tailwindcss/cli -i src/app.css -o app.css --watch",
     "guard:branch": "[ -z \"$WORKERS_CI\" ] || [ \"$WORKERS_CI_BRANCH\" = main ] || { echo \"WEB-515 guard: branch '$WORKERS_CI_BRANCH' is not main - refusing to build, so no deploy runs.\" >&2; exit 1; }",
     "build": "npm run guard:branch && npm run build:css",
+    "test": "node worker.test.mjs && node --test proof-numbers.test.mjs && node --test guard-branch.test.mjs && node mission-control/intake/log-expense.test.mjs && node mission-control/briefs/build-briefs.test.mjs && npm run testimonials:verify && npm run publication-crawler:test && npm run suppression:test",
+    "suppression:test": "node --test tools/suppression/test/*.test.mjs",
+    "suppression:check": "node tools/suppression/check.mjs",
+    "suppression:reconcile": "python3 tools/suppression/optout-scan.py",
+    "testimonials:verify": "node mission-control/briefs/verify-production.mjs --testimonials-only",
+    "publication-crawler:test": "node --test tools/publication-crawler/test/*.test.mjs",
+    "publication-crawler:smoke": "node tools/publication-crawler/crawl.mjs --input tools/publication-crawler/fixtures/web400-smoke-50.csv --output runs/web442-smoke/published-addresses.csv --dropped-output runs/web442-smoke/dropped-addresses.csv --summary-output runs/web442-smoke/summary.json --manifest runs/web442-smoke/manifest.jsonl --checkpoint-dir runs/web442-smoke/checkpoints --concurrency 8",
+    "publication-crawler:registers": "node tools/publication-crawler/harvest-registers.mjs --out-dir runs/web442-registers",
+    "briefs:build": "node mission-control/briefs/build-briefs.mjs",
+    "briefs:publish-pr": "node mission-control/briefs/publish-pr.mjs",
+    "briefs:deliver": "node mission-control/briefs/deliver-briefs.mjs",
+    "briefs:verify": "node mission-control/briefs/verify-production.mjs",
     "serve": "python3 -m http.server 8000"
   },
   "devDependencies": {

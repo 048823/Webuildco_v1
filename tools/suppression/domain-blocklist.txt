@@ -1,0 +1,20 @@
+# Domains suppressed account-wide (WEB-605).
+#
+# Every address at a domain listed here is refused by the pre-send gate, for
+# every campaign, current and future. The reconcile unions this file into the
+# store on every rebuild, so an entry here survives a rebuild by construction.
+#
+# Repo-tracked on purpose: a domain is not personal data, so version control,
+# review and durability come free. Addresses are personal data and stay in
+# $SUPPRESSION_SEED, off-repo. Before this file existed, the only copy of a
+# suppressed domain lived in that off-repo seed and evaporated on rebuild.
+#
+# One domain per line, lowercase, no '@', no addresses. '#' starts a comment.
+# Deleting a line un-suppresses a firm — review it like any other code change.
+# tools/suppression is in .assetsignore, so this file is never served.
+
+# 12-Aug-2026 — Selina at Vanuatu Advance replied "Stop please" to campaign
+# 4fbd93ea (WEB-603), the first genuine opt-out on this account. Her colleague
+# dean@vanuatuadvance.com is one of the 571 leads in the QUARANTINE set
+# (5e952209); this line is what stops him being uploaded as a fresh lead.
+vanuatuadvance.com

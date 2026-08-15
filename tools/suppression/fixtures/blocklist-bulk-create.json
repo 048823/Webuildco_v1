@@ -1,0 +1,27 @@
+{
+  "_source": "developer.instantly.ai/api/v2/blocklistentry — create + bulk-create reference, read 2026-08-07. NOT a live call: the runtime key is all:read and WEB-497 forbids attempting an Instantly write. Re-record from a real 200 the first time WRITE_ENABLED is flipped.",
+  "_scopes": ["block_list_entries:create", "block_list_entries:all", "all:create", "all:all"],
+  "request": {
+    "method": "POST",
+    "url": "https://api.instantly.ai/api/v2/block-lists-entries/bulk-create",
+    "body": {
+      "bl_values": ["blocked.user@example.com", "example.com"]
+    }
+  },
+  "response": [
+    {
+      "id": "ble_01HZY8Q2W3K5N7A9BCDEF01234",
+      "timestamp_created": "2026-03-14T12:34:56.789Z",
+      "organization_id": "org_01HZY8M9N1P2Q3R4S5T6U7V8W9",
+      "bl_value": "example.com",
+      "is_domain": true
+    },
+    {
+      "id": "ble_01HZY8Q2W3K5N7A9BCDEF05678",
+      "timestamp_created": "2026-03-14T12:34:56.789Z",
+      "organization_id": "org_01HZY8M9N1P2Q3R4S5T6U7V8W9",
+      "bl_value": "blocked.user@example.com",
+      "is_domain": false
+    }
+  ]
+}

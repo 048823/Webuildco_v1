@@ -1,4 +1,6 @@
 node_modules/
+runs/
+WEB-*.csv
 
 # local scratch / handover docs — not site source
 CLAUDE_CODE_HANDOVER.md
@@ -8,3 +10,10 @@ tasks.db
 # receipt-intake local dirs — never commit receipt binaries (WEB-120)
 mission-control/intake/inbox/
 mission-control/intake/archive/
+
+# brief delivery local state/outbox — generated on Hermes, never committed
+mission-control/briefs/outbox/
+mission-control/briefs/.delivered.json
+
+# filled spec-site drafts are real prospect data — public repo, never commit (WEB-519)
+client-sites-starter/prospects/
