@@ -29,6 +29,21 @@
       { "name": "Faceless YouTube", "type": "Video channel", "stage": "Planned", "progress": 20, "health": "planned" }
     ]
   },
+  "_crm_note": "SAMPLE ROWS ONLY — no real prospect or client contact details in this repo (WEB-519). Replace with real records only once the CRM has a store behind the Worker.",
+  "crm": {
+    "contacts": [
+      { "name": "Sample Contact A", "role": "Operations Manager", "company": "Everflow", "email": "contact-a@example.com", "status": "Client" },
+      { "name": "Sample Contact B", "role": "Founder", "company": "Awqaf", "email": "contact-b@example.com", "status": "Prospect" },
+      { "name": "Sample Contact C", "role": "Head of Recruitment", "company": "Recruiting prospect", "email": "contact-c@example.com", "status": "Qualified" },
+      { "name": "Sample Contact D", "role": "Managing Director", "company": "Bounce Inc", "email": "contact-d@example.com", "status": "Lead" }
+    ],
+    "companies": [
+      { "name": "Everflow", "industry": "Professional services", "country": "Australia", "website": "" },
+      { "name": "Awqaf", "industry": "Not-for-profit", "country": "Australia", "website": "" },
+      { "name": "Bounce Inc", "industry": "Retail / ecommerce", "country": "Australia", "website": "" },
+      { "name": "Recruiting prospect", "industry": "Recruitment", "country": "Australia", "website": "" }
+    ]
+  },
   "leads": {
     "campaigns": [
       { "tool": "Instantly", "name": "AU SMB — Ops automation", "sent": 0, "opened": 0, "replied": 0, "status": "needs-key" },
